@@ -40,15 +40,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data
 
-### Jean Doe
+### Ong Wei En
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/aquaimpact.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/aquaimpact)]
+[[portfolio](team/aquaimpact.md)]
 
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Role: Documentation
+* Responsibilities: Quality of various project documents
 
 ### James Doe
 
