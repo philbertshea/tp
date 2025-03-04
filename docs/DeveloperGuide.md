@@ -300,32 +300,134 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `TAssist` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: View all students**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  TAssist shows a list of students
+
+    Use case ends.
+
+
+**Use case: Add a student**
+
+**MSS**
+
+1.  TAssist shows a list of students
+2.  User requests to add a student into the list
+3.  TAssist adds the student
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. User provides minimally the mandatory details in the 
+correct format (name AND (phone OR telegram handle) AND email
+AND matriculation number AND (tutorial group OR lab group)).
 
-  Use case ends.
+    Use case resumes at step 3.
 
-* 3a. The given index is invalid.
+* 2b. User does not provide at least one mandatory detail 
+required to add a student.
 
-    * 3a1. AddressBook shows an error message.
+    * 2b1. TAssist shows an error message. 
+  
+      Use case resumes at step 2.
+
+* 2c. User provides details in incorrect format.
+
+    * 2c1. TAssist shows an error message.
 
       Use case resumes at step 2.
 
-*{More to be added}*
+* 2d. User adds a student already in the database (identified
+by clashing details like matriculation number)
+
+    * 2d1. TAssist shows an error message.
+
+      Use case resumes at step 2.
+
+
+**Use case: Delete a student**
+
+**MSS**
+
+1.  TAssist shows a list of students
+2.  User requests to delete a specific student in the list
+3.  TAssist deletes the student
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The list is empty.
+
+  Use case ends.
+
+* 2a. The given index is invalid.
+
+    * 2a1. TAssist shows an error message.
+
+      Use case resumes at step 2.
+
+
+**Use case: Mark attendance for a student**
+
+**MSS**
+
+1.  TAssist shows a list of students
+2.  User requests to mark attendance for a student in the list, for some week
+3.  TAssist marks the student as attended for the indicated week
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. User requests that the student be marked as not attended.
+
+    * 2a1. TAssist marks the student as not attended for the indicated week.
+
+      Use case ends.
+
+* 2b. User requests that the student be marked as on MC.
+
+    * 2b1. TAssist marks the student as on MC for the indicated week.
+
+      Use case ends.
+
+* 2c. The given index or week number are invalid.
+
+    * 2c1. TAssist shows an error message.
+
+      Use case resumes at step 2.
+
+
+**Use case: Update lab score for a student**
+
+**MSS**
+
+1.  TAssist shows a list of students
+2.  User requests to update lab score for a student in the list, for some lab session
+3.  TAssist updates the lab score for the student for the indicated lab session
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. User requests that the lab score be updated for all students in a lab session.
+
+    * 2a1. TAssist updates the lab score for all students for the indicated lab session.
+
+      Use case ends.
+
+* 2b. The given index, or lab session name, or score are invalid.
+
+    * 2b1. TAssist shows an error message.
+
+      Use case resumes at step 2.
+
 
 ### Non-Functional Requirements
 
