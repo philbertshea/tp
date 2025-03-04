@@ -11,15 +11,16 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Chin Zhen Jie
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/chinzj.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[homepage](https://github.com/ChinZJ)]
+[[github](https://github.com/ChinZJ)]
+[[portfolio](team/chinzj.md)]
 
-* Role: Project Advisor
+* Role: Deliverables and Deadlines
+* Responsibilities: Ensure project deliverables are done on time and in the right format.
 
 ### Jane Doe
 
