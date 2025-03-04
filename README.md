@@ -3,14 +3,14 @@
 [![codecov](https://codecov.io/gh/CS2103-F15-4/tp/graph/badge.svg?token=W9PDYP0LF3)](https://codecov.io/gh/CS2103-F15-4/tp)
 
 ![Ui](docs/images/Ui.png)
-  
+
 ## Introduction
 TAssist is a keyboard-driven software catered for NUS teaching assistants to streamline the management of tutorial groups.
-    
+
 ## Features
 _Coming soon._
-  
+
 ## Documentation
 * For the detailed documentation of this project, see the **[TAssist Website](https://ay2425s2-cs2103-f15-4.github.io/tp/)**.
-
+* 
 ## Additional Information
