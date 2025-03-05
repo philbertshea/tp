@@ -60,3 +60,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Code Quality
 * Responsibilities: Looks after code quality, ensures adherence to coding standards, etc.
+
+### Xuezhou Xu
+
+<img src="images/xuxuezhou.png" width="200px">
+
+[[homepage](https://xuxuezhou.github.io/)]
+[[github](https://github.com/xuxuezhou)]
+[[portfolio](team/xuxuezhou.md)]
+
+* Role: Developer
+* Interests: Embodied AI, Robotics, Reinforcement Learning
+* Responsibilities: Code
