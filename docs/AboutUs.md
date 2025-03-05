@@ -70,5 +70,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/xuxuezhou.md)]
 
 * Role: Developer
-* Interests: Embodied AI, Robotics, Reinforcement Learning
 * Responsibilities: Code
