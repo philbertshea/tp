@@ -21,7 +21,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Project Advisor
 
-### Jane Doe
+### Hannah Loh
 
 <img src="images/hhlh27.png" width="200px">
 
