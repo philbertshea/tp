@@ -69,5 +69,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/xuxuezhou)]
 [[portfolio](team/xuxuezhou.md)]
 
-* Role: Developer
-* Responsibilities: Code
+* Role: Testing
+* Responsibilities: Ensures the testing of the project is done properly and on time.
+
