@@ -280,7 +280,7 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: CS2106 TAs struggle to efficiently track progress and access student information with multiple tutorial groups and many students in each. The lack of a centralized system makes management and follow-ups tedious. TAssist provides a keyboard-driven platform that streamlines student organization into meaningful groups, enabling access to key details anytime, anywhere. 
 
 
 ### User stories
