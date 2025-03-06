@@ -291,14 +291,48 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​       | I want to …​                                                             | So that I can…​                                                                                                                                                                                         |
+|----------|---------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `*`      | new user      | access a walkthrough on basic app functionalities                        | learn how to use the app proficiently without struggling to figure it out on my own                                                                                                                                                                                 |
+| `*`      | new user      | access basic help documentation                                          | assess if the application will be useful for my needs                                                                                                                                                                                  |
+| `*`      | new user      | see an introductory video of the app                                     | learn about key features and basic usage of the application                                                                                                                                                                                 |
+| `* * *`  | user          | add a student's name                                                     | easily identify a student and know how to address them                                                                                                                                                  |
+| `* * *`  | user          | add a student's school id                                                | verify a student record (mainly for administrative purposes)                                                                                                                                            |
+| `* * *`  | user          | add a student's email address                                            | contact a student in the events like being absent etc.                                                                                                                                                  |
+| `* * *`  | user          | add a student's phone number                                             | reach them through an alternative method                                                                                                                                                                |
+| `* * *`  | user          | add a student's tutorial attendance                                      | maintain accurate administrative records.                                                                                                                                                               |
+| `* * *`  | user          | add a student's tutorial participation                                   | monitor engagement for administrative purposes.                                                                                                                                                         |
+| `* * *`  | user          | add a student's grades for labs                                          | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
+| `* * *`  | user          | add a student's notes                                                    | store any additional information that should be known about them (e.g., special conditions).                                                                                                            |
+| `*`      | user          | tag a student by home faculty                                            | manage administrative records and identify those with less exposure to relevant modules.                                                                                                                |
+| `*`      | user          | tag a student by current year                                            | manage administrative records and assess potential knowledge gaps.                                                                                                                                      |
+| `*`      | user          | tag a student by tutorial group                                          | track which group they belong to.                                                                                                                                                                       |
+| `*`      | user          | tag a student by current performance                                     | identify those who may need additional academic support.                                                                                                                                                |
+| `* * *`  | user          | delete a student                                                         | remove dropped students, incorrect entries, or outdated records.                                                                                                                                        |
+| `*`      | user          | edit a students record                                                   | minimize chance of someone else seeing them by accident                                                                                                                                                 |
+| `* * *`  | user          | view a list of all students                                              | minimize chance of someone else seeing them by accident                                                                                                                                                 |
+| `*`      | user          | filter/search students by name                                           | locate a specific student.                                                                                                                                                                              |
+| `*`      | user          | filter/search students by module code                                    | find all students taking the same module.                                                                                                                                                               |
+| `*`      | user          | filter/search students by tutorial group                                 | find all students in a class.                                                                                                                                                                           |
+| `*`      | user          | filter/search students by project group                                  | identify team members for a project.                                                                                                                                                                    |
+| `*`      | user          | filter/search students by home faculty                                   | see the distribution of students across faculties.                                                                                                                                                      |
+| `*`      | user          | filter/search students by year                                           | see the distribution of students by cohort.                                                                                                                                                             |
+| `*`      | user          | filter/search students by performance                                    | identify students who may need help.                                                                                                                                                                    |
+| `*`      | user          | export my data to JSON                                                   | store it in a structured, parseable format.                                                                                                                                                             |
+| `*`      | user          | export my data to CSV                                                    | store it in an easily readable format.                                                                                                                                                                  |
+| `*`      | user          | receive prompts when typing in commands                                  | be reminded of missing fields.                                                                                                                                                                          |
+| `*`      | user          | receive a changelog of updates                                           | stay informed about new features.                                                                                                                                                                       |
+| `*`      | lazy user     | perform batch operations for updating attendance                         | N.A.                                                                                                                                                                                                    |
+| `*`      | lazy user     | perform batch operations for updating participation                      | N.A.                                                                                                                                                                                                    |
+| `*`      | lazy user     | perform batch operations for updating grades                             | N.A.                                                                                                                                                                                                    |
+| `*`      | lazy user     | perform batch operations for deleting records by their logical groupings | remove all relevant records                                                                                                                                                                             |
+| `*`      | lazy user     | perform batch operations for deleting all records                        | start afresh with a new user profile                                                                                                                                                                    |
+| `*`      | lazy user     | import data from a CSV file                                              | quickly load data from existing records without manually establishing a new database for it                                                                                                             |
+| `*`      | lazy user     | abbreviations for commands                                               | be more proficient upon familiarizing with the application                                                                                                                                              |
+| `*`      | lazy user     | add keyboard shortcuts                                                   | customize the application to the user's preferences for higher efficiency                                                                                                                               |
+| `*`      | careless user | automate backups                                                         | rollback on royal mess ups                                                                                                                                                                              |
+| `*`      | careless user | undo and redo what i just did                                            | revert when i make mistakes                                                                                                                                                                             |
+| `*`      | careless user | receive warning messages before deleting multiple records                | avoid destroying the whole database from a messed-up command                                                                                                                                            |
 
 *{More to be added}*
 
@@ -590,9 +624,16 @@ by clashing details like matriculation number)
 12. Should have PDF-friendly developer guides and user guides.
 
 ### Glossary
-
+* **Command**: An action that the user calls to run a specified function.
+It may return a result and it may also take in a specified number of arguments.
+* **Component**: A [Name] component has its API in a [Name].java interface and implements its functionality
+using the [Name]Manager.java class following the [Name] interface.
+* **Database**: The save file of this program.
+* **Database entry**: An item saved in the database. Commonly linked to a contact. One contact is one database entry.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Sequence diagram**: a diagram that shows the flow of the program.
+* **TA**: Teaching Assistant
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -648,3 +689,4 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
