@@ -1,10 +1,15 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+
+import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
 
 /**
  * Marks the attendance of a student within an existing week.
@@ -12,6 +17,9 @@ import seedu.address.model.Model;
 public class MarkAttendanceCommand extends Command {
 
     public static final String COMMAND_WORD = "att";
+
+    public static final String MESSAGE_MARK_ATTENDED_SUCCESS
+            = "Marked Person as Attended Tutorial Week %1$d: %2$s";
 
     // Note that -u and -mc will NOT be implemented yet.
     // We will settle the mandatory parameters first.
@@ -44,9 +52,35 @@ public class MarkAttendanceCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        throw new CommandException(
-                String.format(MESSAGE_ARGUMENTS, index.getOneBased(), week)
-        );
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        Person personToEdit = lastShownList.get(index.getZeroBased());
+
+        // Currently, the command only marks people as attended.
+        personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
+
+        Person editedPerson = new Person(
+                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+                personToEdit.getAddress(), personToEdit.getAttendanceList(), personToEdit.getTags());
+
+        model.setPerson(personToEdit, editedPerson);
+        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        return new CommandResult(generateSuccessMessage(editedPerson));
+    }
+
+    /**
+     * Generates a command execution success message for
+     * {@code personToEdit}.
+     */
+    private String generateSuccessMessage(Person personToEdit) {
+        return String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                this.week,
+                Messages.format(personToEdit));
     }
 
     @Override

@@ -70,7 +70,6 @@ public class AttendanceList {
      * @param attendance New attendance to be set to.
      */
     public void setAttendanceForWeek(int week, int attendance) {
-        System.out.println(week + " " + attendance);
         checkArgument(week > 0 && week < 14, MESSAGE_CONSTRAINTS);
         checkArgument(isValidAttendance(attendance), MESSAGE_CONSTRAINTS);
         this.attendanceList.get(week - 1).setAttendance(attendance);
