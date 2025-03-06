@@ -274,6 +274,10 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
+* CS2106 Teaching Assistants (TAs) 
+* manage multiple tutorial groups per semester
+* need access to student information to track participation, assignments, and communicate with students
+* may want to identify and support weaker students who require extra attention
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
 * can type fast
