@@ -304,32 +304,273 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `TAssist` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 - View all students**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  TAssist displays all students
+
+    Use case ends.
+
+
+**Use case: UC02 - Add a student**
+
+**MSS**
+
+1.  User requests to add a student into the list 
+2.  TAssist adds the student
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. User provides only the mandatory arguments in the 
+correct format, or provides additional arguments on top
+of the mandatory arguments, all in the correct format.
+
+    Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument 
+required to add a student.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+  
+    Steps 1b1 and 1b2 are repeated until the data entered are correct.
+  
+    Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+    Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+    Use case resumes at step 2.
+
+* 1d. User adds a student already in the database (identified
+by clashing details like matriculation number)
+
+    * 1d1. TAssist shows an error message.
+
+    * 1c2. User enters new data.
+
+    Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+    Use case resumes at step 2.
+
+* 1e. Database is already full, and stores the maximum number of
+  entries that can be stored.
+
+    * 1e1. TAssist shows an error message, telling the user to delete
+    at least one student entry before adding new students.
 
   Use case ends.
 
-* 3a. The given index is invalid.
+**Use case: UC03 - Delete a student**
 
-    * 3a1. AddressBook shows an error message.
+**MSS**
 
-      Use case resumes at step 2.
+1.  User requests to delete a specific student
+2.  TAssist deletes the student
 
-*{More to be added}*
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to delete a student.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides an index that is out of range.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. User requests to delete a student that is not in the database.
+
+    * 1d1. TAssist shows an error message, saying the student has already been deleted.
+
+  Use case ends.
+
+**Use case: UC04 - Mark attendance for a student**
+
+**MSS**
+
+1.  User requests to mark attendance for a student in the list, for some week
+2.  TAssist marks the student as attended for the indicated week
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to mark a student's attendance.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides an index or week number that is out of range.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. User requests that the student be marked as not attended.
+
+    * 1d1. TAssist marks the student as not attended for the indicated week.
+
+      Use case ends.
+
+* 1e. User requests that the student be marked as on MC.
+
+    * 1e1. TAssist marks the student as on MC for the indicated week.
+
+      Use case ends.
+
+
+**Use case: UC05 - Update lab score for a student**
+
+**MSS**
+
+1.  User requests to update lab score for a student in the list, for some lab session
+2.  TAssist updates the lab score for the student for the indicated lab session
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to update a student's lab score.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides an index that is out of range, or an invalid lab session name.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. User requests that the lab score be updated for all students in a lab session.
+
+    * 1d1. TAssist updates the lab score for all students for the indicated lab session.
+
+      Use case ends.
+
+**Use case: UC06 - Load data from file**
+
+**MSS**
+
+1.  User opens the app.
+2.  TAssist loads data from a file stored at a specified location.
+3.  TAssist displays all students and their information, as loaded from file.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. File at specified location is missing.
+
+    * 2a1. TAssist displays no student data.
+  
+    Use case ends.
+
+* 2b. File at specified location cannot be parsed, due to corrupted data in file.
+
+    * 2b1. TAssist displays an error message for non-parsable data records.
+  
+    * 2b2. TAssist displays the remaining students that are parsable.
+
+  Use case ends.
+
+* 2c. File at specified location contains duplicate entries.
+
+    * 2c1. TAssist displays an error message for duplicate entries.
+
+  Use case resumes at Step 3.
+
+* 2d. File at specified location contains entries exceeding the maximum number of entries allowed.
+
+    * 2d1. TAssist displays an error message that the file contains too many entries.
+  
+    * 2d2. Starting from the first entry, TA shows up to the maximum number of entries, and omits
+      all the entries after that.
+
+  Use case ends.
+
+* 2e. File at specified location contains entries nearing the maximum number of entries allowed.
+
+    * 2e1. TAssist displays an error message, with the number of entries left that the user
+      can add, before it reaches the maximum number of entries.
+
+  Use case resumes at Step 3.
+
+**Use case: UC07 - Save data to file**
+
+**MSS**
+
+1.  User closes the app.
+2.  TAssist saves students' data into a file, at a specified location.
+
+    Use case ends.
+
 
 ### Non-Functional Requirements
 
