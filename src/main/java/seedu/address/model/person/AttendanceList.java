@@ -47,7 +47,7 @@ public class AttendanceList {
         checkArgument(isValidAttendanceString(attendanceString), MESSAGE_CONSTRAINTS);
         AttendanceList attendanceList = new AttendanceList();
         for (int i = 0; i < 13; i++) {
-            attendanceList.setAttendanceForWeek(i + 1, attendanceString.charAt(i));
+            attendanceList.setAttendanceForWeek(i + 1, Integer.parseInt(attendanceString.charAt(i) + ""));
         }
         return attendanceList;
     }
@@ -70,6 +70,7 @@ public class AttendanceList {
      * @param attendance New attendance to be set to.
      */
     public void setAttendanceForWeek(int week, int attendance) {
+        System.out.println(week + " " + attendance);
         checkArgument(week > 0 && week < 14, MESSAGE_CONSTRAINTS);
         checkArgument(isValidAttendance(attendance), MESSAGE_CONSTRAINTS);
         this.attendanceList.get(week - 1).setAttendance(attendance);
