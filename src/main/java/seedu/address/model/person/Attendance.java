@@ -12,11 +12,13 @@ public class Attendance {
     public static final int ON_MC = 2;
 
     private int attendance;
+    private final int week;
 
     /**
      * Instantiates the Attendance instance, assigning as not attended.
      */
-    public Attendance() {
+    public Attendance(int week) {
+        this.week = week;
         this.attendance = NOT_ATTENDED;
     }
 
@@ -47,6 +49,10 @@ public class Attendance {
                 || attendance == ON_MC;
     }
 
+    public String tagName() {
+        return "W" + this.week + ": " + this.attendance;
+    }
+
     @Override
     public String toString() {
         return this.attendance + "";
@@ -64,6 +70,9 @@ public class Attendance {
         }
 
         Attendance otherAttendance = (Attendance) other;
-        return this.attendance == otherAttendance.attendance;
+
+        // No two Attendance instances in the AttendanceList
+        // should have the SAME week.
+        return this.week == otherAttendance.week;
     }
 }
