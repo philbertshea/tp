@@ -21,6 +21,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_WEEK = "Week is not an unsigned integer from 1 to 13.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -120,5 +121,18 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses {@code String week} into an {@code int}.
+     *
+     * @throws ParseException if the given {@code week} is invalid.
+     */
+    public static int parseWeek(String week) throws ParseException {
+        requireNonNull(week);
+        if (!StringUtil.isValidWeek(week)) {
+            throw new ParseException(MESSAGE_INVALID_WEEK);
+        }
+        return Integer.parseInt(week);
     }
 }
