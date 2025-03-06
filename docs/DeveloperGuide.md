@@ -590,9 +590,16 @@ by clashing details like matriculation number)
 12. Should have PDF-friendly developer guides and user guides.
 
 ### Glossary
-
+* **Command**: An action that the user calls to run a specified function.
+It may return a result and it may also take in a specified number of arguments.
+* **Component**: A [Name] component has its API in a [Name].java interface and implements its functionality
+using the [Name]Manager.java class following the [Name] interface.
+* **Database**: The save file of this program.
+* **Database entry**: An item saved in the database. Commonly linked to a contact. One contact is one database entry.
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Sequence diagram**: a diagram that shows the flow of the program.
+* **TA**: Teaching Assistant
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -648,3 +655,4 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
