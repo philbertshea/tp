@@ -83,6 +83,6 @@ public class AttendanceList {
     public String toString() {
         return attendanceList.stream()
                 .map(attendance -> attendance.toString())
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining(""));
     }
 }
