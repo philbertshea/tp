@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ATTENDANCE_STRING;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_WEEK_A;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_WEEK_B;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -29,16 +30,19 @@ public class MarkAttendanceCommandTest {
     @Test
     public void execute_markAttendanceUnfilteredList_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(firstPerson).withAttendanceList("1000000000000").build();
+        String newAttendanceString = "1" + VALID_ATTENDANCE_STRING.substring(1);
+        Person editedPerson = new PersonBuilder(firstPerson).withAttendanceList(newAttendanceString).build();
+        Person originalPerson = new PersonBuilder(firstPerson).withAttendanceList(VALID_ATTENDANCE_STRING).build();
 
         MarkAttendanceCommand command = new MarkAttendanceCommand(INDEX_FIRST_PERSON, 1);
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_ATTENDED_SUCCESS,
                 1, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        expectedModel.setPerson(firstPerson, editedPerson);
+        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        expectedModel.setPerson(editedPerson, originalPerson);
     }
 
     @Test
