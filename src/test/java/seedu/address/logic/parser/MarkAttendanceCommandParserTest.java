@@ -17,7 +17,8 @@ public class MarkAttendanceCommandParserTest {
 
     @Test
     public void parse_validIndexAndWeek_success() {
-        String userInput = PREFIX_INDEX + " " + INDEX_FIRST_PERSON + " "
+        String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
         MarkAttendanceCommand expectedCommand
                 = new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A);

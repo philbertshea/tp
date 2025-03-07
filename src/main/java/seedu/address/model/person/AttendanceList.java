@@ -8,12 +8,20 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import seedu.address.model.ModelManager;
+
 /**
  * Represents a list of Attendance instances.
  */
 public class AttendanceList {
     public static final String MESSAGE_CONSTRAINTS
-            = "Week number must be unsigned integer from 1 to 13 inclusive.";
+            = "Week number must be unsigned integer from 1 to 13 inclusive.\n"
+            + "Attendance value must be 0, 1 or 2.\n"
+            + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
+    public static final String ATTENDANCE_STRING_MESSAGE_CONSTRAINTS
+            = "Attendance string must contain exactly 13 digits, each being 0, 1, or 2\n"
+            + "whereby the ith digit (from the left) represents the attendance for ith week\n"
+            + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
 
     private ArrayList<Attendance> attendanceList;
 
@@ -44,7 +52,7 @@ public class AttendanceList {
      */
     public static AttendanceList generateAttendanceList(String attendanceString) {
         requireNonNull(attendanceString);
-        checkArgument(isValidAttendanceString(attendanceString), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidAttendanceString(attendanceString), ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
         AttendanceList attendanceList = new AttendanceList();
         for (int i = 0; i < 13; i++) {
             attendanceList.setAttendanceForWeek(i + 1, Integer.parseInt(attendanceString.charAt(i) + ""));
@@ -84,5 +92,20 @@ public class AttendanceList {
         return attendanceList.stream()
                 .map(attendance -> attendance.toString())
                 .collect(Collectors.joining(""));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof AttendanceList)) {
+            return false;
+        }
+
+        AttendanceList otherAttendanceList = (AttendanceList) other;
+        return this.toString().equals(otherAttendanceList.toString());
     }
 }

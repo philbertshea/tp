@@ -10,6 +10,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
+import seedu.address.model.person.AttendanceList;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
@@ -134,5 +136,18 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_WEEK);
         }
         return Integer.parseInt(week);
+    }
+
+    /**
+     * Parses {@code String attendanceString} into an {@code AttendanceList}.
+     *
+     * @throws ParseException if the given {@code week} is invalid.
+     */
+    public static AttendanceList parseAttendanceList(String attendanceString) throws ParseException {
+        requireNonNull(attendanceString);
+        if (!AttendanceList.isValidAttendanceString(attendanceString)) {
+            throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
+        }
+        return AttendanceList.generateAttendanceList(attendanceString);
     }
 }

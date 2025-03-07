@@ -22,6 +22,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
 import seedu.address.model.person.AttendanceList;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -100,13 +101,12 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-
-        // AttendanceList cannot be edited via the EditCommand
-        AttendanceList attendanceList = personToEdit.getAttendanceList();
+        AttendanceList updatedAttendanceList
+                = editPersonDescriptor.getAttendanceList().orElse(personToEdit.getAttendanceList());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedAddress, attendanceList, updatedTags);
+                updatedAddress, updatedAttendanceList, updatedTags);
     }
 
     @Override
@@ -142,6 +142,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private AttendanceList attendanceList;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -155,6 +156,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setAttendanceList(toCopy.attendanceList);
             setTags(toCopy.tags);
         }
 
@@ -197,6 +199,14 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
+        public void setAttendanceList(AttendanceList attendanceList) {
+            this.attendanceList = attendanceList;
+        }
+
+        public Optional<AttendanceList> getAttendanceList() {
+            return Optional.ofNullable(attendanceList);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -230,6 +240,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(attendanceList, otherEditPersonDescriptor.attendanceList)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -240,6 +251,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("attendanceList", attendanceList)
                     .add("tags", tags)
                     .toString();
         }

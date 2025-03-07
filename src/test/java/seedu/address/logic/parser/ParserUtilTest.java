@@ -201,15 +201,13 @@ public class ParserUtilTest {
 
     @Test
     public void parseWeek_outOfRangeInput_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-                -> ParserUtil.parseIndex(Long.toString(0)));
-        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-                -> ParserUtil.parseIndex(Long.toString(14)));
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeek(Long.toString(0)));
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeek(Long.toString(14)));
     }
 
     @Test
     public void parseWeek_validInput_success() throws Exception {
         // No whitespaces
-        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("3"));
+        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
     }
 }

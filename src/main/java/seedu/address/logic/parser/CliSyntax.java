@@ -13,5 +13,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_INDEX = new Prefix("-i");
     public static final Prefix PREFIX_WEEK = new Prefix("-w");
-
+    public static final Prefix PREFIX_ATTENDANCE_LIST = new Prefix("-al");
 }
