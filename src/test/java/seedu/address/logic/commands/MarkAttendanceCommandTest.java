@@ -41,7 +41,7 @@ public class MarkAttendanceCommandTest {
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        expectedModel.setPerson(editedPerson, originalPerson);
+        model.setPerson(editedPerson, originalPerson);
     }
 
     @Test
