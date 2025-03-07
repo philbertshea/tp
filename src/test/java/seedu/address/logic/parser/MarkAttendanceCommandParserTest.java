@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.MarkAttendanceCommand;
 
 public class MarkAttendanceCommandParserTest {
-    public MarkAttendanceCommandParser parser = new MarkAttendanceCommandParser();
+    private MarkAttendanceCommandParser parser = new MarkAttendanceCommandParser();
 
     @Test
     public void parse_validIndexAndWeek_success() {
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
-        MarkAttendanceCommand expectedCommand
-                = new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A);
+        MarkAttendanceCommand expectedCommand =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 

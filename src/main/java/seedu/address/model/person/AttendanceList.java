@@ -8,18 +8,16 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import seedu.address.model.ModelManager;
-
 /**
  * Represents a list of Attendance instances.
  */
 public class AttendanceList {
-    public static final String MESSAGE_CONSTRAINTS
-            = "Week number must be unsigned integer from 1 to 13 inclusive.\n"
+    public static final String MESSAGE_CONSTRAINTS =
+            "Week number must be unsigned integer from 1 to 13 inclusive.\n"
             + "Attendance value must be 0, 1 or 2.\n"
             + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
-    public static final String ATTENDANCE_STRING_MESSAGE_CONSTRAINTS
-            = "Attendance string must contain exactly 13 digits, each being 0, 1, or 2\n"
+    public static final String ATTENDANCE_STRING_MESSAGE_CONSTRAINTS =
+            "Attendance string must contain exactly 13 digits, each being 0, 1, or 2\n"
             + "whereby the ith digit (from the left) represents the attendance for ith week\n"
             + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
 

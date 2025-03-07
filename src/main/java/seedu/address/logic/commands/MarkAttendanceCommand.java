@@ -18,8 +18,8 @@ public class MarkAttendanceCommand extends Command {
 
     public static final String COMMAND_WORD = "att";
 
-    public static final String MESSAGE_MARK_ATTENDED_SUCCESS
-            = "Marked Person as Attended Tutorial Week %1$d: %2$s";
+    public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
+            "Marked Person as Attended Tutorial Week %1$d: %2$s";
 
     // Note that -u and -mc will NOT be implemented yet.
     // We will settle the mandatory parameters first.
@@ -44,6 +44,13 @@ public class MarkAttendanceCommand extends Command {
 
     private final int week;
 
+    /**
+     * Instantiates the MarkAttendanceCommand instance, with the provided
+     * index and week.
+     *
+     * @param index index of person to be marked attendance for.
+     * @param week week to mark attendance of person for.
+     */
     public MarkAttendanceCommand(Index index, int week) {
         requireAllNonNull(index, week);
         this.index = index;
