@@ -20,6 +20,7 @@ public class AttendanceList {
             "Attendance string must contain exactly 13 digits, each being 0, 1, or 2\n"
             + "whereby the ith digit (from the left) represents the attendance for ith week\n"
             + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
+    public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
 
     private ArrayList<Attendance> attendanceList;
 
@@ -27,11 +28,8 @@ public class AttendanceList {
      * Instantiates the AttendanceList instance,
      * to represent a list of Attendance for 13 weeks.
      */
-    public AttendanceList() {
+    private AttendanceList() {
         this.attendanceList = new ArrayList<>();
-        for (int i = 0; i < 13; i++) {
-            this.attendanceList.add(new Attendance(i + 1));
-        }
     }
 
     /**
@@ -53,7 +51,8 @@ public class AttendanceList {
         checkArgument(isValidAttendanceString(attendanceString), ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
         AttendanceList attendanceList = new AttendanceList();
         for (int i = 0; i < 13; i++) {
-            attendanceList.setAttendanceForWeek(i + 1, Integer.parseInt(attendanceString.charAt(i) + ""));
+            attendanceList.attendanceList.add(
+                    new Attendance(i + 1, Integer.parseInt(attendanceString.charAt(i) + "")));
         }
         return attendanceList;
     }
@@ -75,10 +74,14 @@ public class AttendanceList {
      * @param week Week to set attendance for.
      * @param attendance New attendance to be set to.
      */
-    public void setAttendanceForWeek(int week, int attendance) {
+    public AttendanceList setAttendanceForWeek(int week, int attendance) {
         checkArgument(week > 0 && week < 14, MESSAGE_CONSTRAINTS);
         checkArgument(isValidAttendance(attendance), MESSAGE_CONSTRAINTS);
-        this.attendanceList.get(week - 1).setAttendance(attendance);
+        String oldAttendanceString = this.toString();
+        String newAttendanceString =
+                oldAttendanceString.substring(0, week - 1) + "1"
+                + oldAttendanceString.substring(week);
+        return AttendanceList.generateAttendanceList(newAttendanceString);
     }
 
     public Stream<Attendance> getAttendanceStream() {

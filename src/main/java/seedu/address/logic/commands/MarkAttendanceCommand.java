@@ -9,6 +9,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.AttendanceList;
 import seedu.address.model.person.Person;
 
 /**
@@ -67,12 +68,12 @@ public class MarkAttendanceCommand extends Command {
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
-        // Currently, the command only marks people as attended.
-        personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
+        AttendanceList newAttendanceList =
+                personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
 
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getAttendanceList(), personToEdit.getTags());
+                personToEdit.getAddress(), newAttendanceList, personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

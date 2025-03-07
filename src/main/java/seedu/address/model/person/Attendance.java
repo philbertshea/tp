@@ -15,17 +15,8 @@ public class Attendance {
     /**
      * Instantiates the Attendance instance, assigning as not attended.
      */
-    public Attendance(int week) {
+    public Attendance(int week, int attendance) {
         this.week = week;
-        this.attendance = NOT_ATTENDED;
-    }
-
-    /**
-     * Takes in {@code atttendance} and sets attendance to that given value.
-     *
-     * @param attendance Attendance to set to.
-     */
-    public void setAttendance(int attendance) {
         this.attendance = attendance;
     }
 
