@@ -193,4 +193,21 @@ public class ParserUtilTest {
 
         assertEquals(expectedTagSet, actualTagSet);
     }
+
+    @Test
+    public void parseWeek_invalidInput_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeek("10 a"));
+    }
+
+    @Test
+    public void parseWeek_outOfRangeInput_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeek(Long.toString(0)));
+        assertThrows(ParseException.class, () -> ParserUtil.parseWeek(Long.toString(14)));
+    }
+
+    @Test
+    public void parseWeek_validInput_success() throws Exception {
+        // No whitespaces
+        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
+    }
 }

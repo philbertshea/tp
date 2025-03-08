@@ -65,4 +65,25 @@ public class StringUtil {
             return false;
         }
     }
+
+    /**
+     * Returns true if {@code s} represents a valid week
+     * e.g. 1, 2, 3, ..., 13 <br>
+     * Will return false for any other non-null string input
+     * e.g. empty string, "-1", "0", "+1", and " 2 " (untrimmed),
+     * "3 0" (contains whitespace), "1 a" (contains letters),
+     * "14" (greater than 13)
+     * @throws NullPointerException if {@code s} is null.
+     */
+    public static boolean isValidWeek(String s) {
+        requireNonNull(s);
+
+        try {
+            int value = Integer.parseInt(s);
+            return value > 0 && value < 14
+                    && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
 }

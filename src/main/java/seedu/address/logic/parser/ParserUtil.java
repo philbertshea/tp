@@ -10,6 +10,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.AttendanceList;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
@@ -21,6 +22,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_WEEK = "Week is not an unsigned integer from 1 to 13.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -120,5 +122,31 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses {@code String week} into an {@code int}.
+     *
+     * @throws ParseException if the given {@code week} is invalid.
+     */
+    public static int parseWeek(String week) throws ParseException {
+        requireNonNull(week);
+        if (!StringUtil.isValidWeek(week)) {
+            throw new ParseException(MESSAGE_INVALID_WEEK);
+        }
+        return Integer.parseInt(week);
+    }
+
+    /**
+     * Parses {@code String attendanceString} into an {@code AttendanceList}.
+     *
+     * @throws ParseException if the given {@code week} is invalid.
+     */
+    public static AttendanceList parseAttendanceList(String attendanceString) throws ParseException {
+        requireNonNull(attendanceString);
+        if (!AttendanceList.isValidAttendanceString(attendanceString)) {
+            throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
+        }
+        return AttendanceList.generateAttendanceList(attendanceString);
     }
 }
