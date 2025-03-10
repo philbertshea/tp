@@ -12,7 +12,7 @@ import seedu.tassist.model.Model;
 import seedu.tassist.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the tassist book.
+ * Deletes a person identified using it's displayed index from the address book.
  */
 public class DeleteCommand extends Command {
 

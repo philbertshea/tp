@@ -6,7 +6,7 @@ import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
 
 /**
- * Clears the tassist book.
+ * Clears the address book.
  */
 public class ClearCommand extends Command {
 

@@ -6,7 +6,7 @@ import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import seedu.tassist.model.Model;
 
 /**
- * Lists all persons in the tassist book to the user.
+ * Lists all persons in the address book to the user.
  */
 public class ListCommand extends Command {
 

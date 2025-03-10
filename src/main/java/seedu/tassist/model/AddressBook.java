@@ -10,7 +10,7 @@ import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.UniquePersonList;
 
 /**
- * Wraps all data at the tassist-book level
+ * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSamePerson comparison)
  */
 public class AddressBook implements ReadOnlyAddressBook {
@@ -60,7 +60,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// person-level operations
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the tassist book.
+     * Returns true if a person with the same identity as {@code person} exists in the address book.
      */
     public boolean hasPerson(Person person) {
         requireNonNull(person);
@@ -68,8 +68,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Adds a person to the tassist book.
-     * The person must not already exist in the tassist book.
+     * Adds a person to the address book.
+     * The person must not already exist in the address book.
      */
     public void addPerson(Person p) {
         persons.add(p);
@@ -77,8 +77,8 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Replaces the given person {@code target} in the list with {@code editedPerson}.
-     * {@code target} must exist in the tassist book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the tassist book.
+     * {@code target} must exist in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
     public void setPerson(Person target, Person editedPerson) {
         requireNonNull(editedPerson);
@@ -88,7 +88,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the tassist book.
+     * {@code key} must exist in the address book.
      */
     public void removePerson(Person key) {
         persons.remove(key);

@@ -11,7 +11,7 @@ import seedu.tassist.commons.util.ToStringBuilder;
 import seedu.tassist.model.tag.Tag;
 
 /**
- * Represents a Person in the tassist book.
+ * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
@@ -117,7 +117,7 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("tassist", address)
+                .add("address", address)
                 .add("attendanceList", attendanceList)
                 .add("tags", tags)
                 .toString();
