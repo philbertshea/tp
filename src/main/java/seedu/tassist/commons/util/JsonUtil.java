@@ -24,7 +24,7 @@ import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
 
 /**
- * Converts a Java object instance to JSON and vice versa
+ * Converts a Java object instance to JSON and vice versa.
  */
 public class JsonUtil {
 
@@ -39,7 +39,8 @@ public class JsonUtil {
                     .addSerializer(Level.class, new ToStringSerializer())
                     .addDeserializer(Level.class, new LevelDeserializer(Level.class)));
 
-    static <T> void serializeObjectToJsonFile(Path jsonFile, T objectToSerialize) throws IOException {
+    static <T> void serializeObjectToJsonFile(Path jsonFile, T objectToSerialize)
+            throws IOException {
         FileUtil.writeToFile(jsonFile, toJsonString(objectToSerialize));
     }
 
@@ -49,8 +50,10 @@ public class JsonUtil {
     }
 
     /**
-     * Returns the JSON object from the given file or {@code Optional.empty()} object if the file is not found.
-     * If any values are missing from the file, default values will be used, as long as the file is a valid JSON file.
+     * Returns the JSON object from the given file or {@code Optional.empty()}
+     * object if the file is not found.
+     * If any values are missing from the file, default values will be used,
+     * as long as the file is a valid JSON file.
      *
      * @param filePath cannot be null.
      * @param classOfObjectToDeserialize JSON file has to correspond to the structure in the class given here.
@@ -93,7 +96,7 @@ public class JsonUtil {
 
 
     /**
-     * Converts a given string representation of a JSON data to instance of a class
+     * Converts a given string representation of a JSON data to instance of a class.
      * @param <T> The generic type to create an instance of
      * @return The instance of T with the specified values in the JSON string
      */
@@ -102,7 +105,7 @@ public class JsonUtil {
     }
 
     /**
-     * Converts a given instance of a class into its JSON data string representation
+     * Converts a given instance of a class into its JSON data string representation.
      * @param instance The T object to be converted into the JSON string
      * @param <T> The generic type to create an instance of
      * @return JSON data representation of the given class instance, in string
@@ -126,7 +129,8 @@ public class JsonUtil {
         }
 
         /**
-         * Gets the logging level that matches loggingLevelString
+         * Gets the logging level that matches loggingLevelString.
+         *
          * <p>
          * Returns null if there are no matches
          *
