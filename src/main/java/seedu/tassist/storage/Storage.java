@@ -10,7 +10,7 @@ import seedu.tassist.model.ReadOnlyUserPrefs;
 import seedu.tassist.model.UserPrefs;
 
 /**
- * API of the Storage component
+ * API of the Storage component.
  */
 public interface Storage extends AddressBookStorage, UserPrefsStorage {
 

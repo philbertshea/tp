@@ -32,8 +32,9 @@ public class LogsCenter {
     }
 
     /**
-     * Initializes loggers with the log level specified in the {@code config} object. Applies to all loggers created
-     * using {@link #getLogger(String)} and {@link #getLogger(Class)} methods except for those that are manually set.
+     * Initializes loggers with the log level specified in the {@code config} object.
+     * Applies to all loggers created using {@link #getLogger(String)} and
+     * {@link #getLogger(Class)} methods except for those that are manually set.
      */
     public static void init(Config config) {
         currentLogLevel = config.getLogLevel();
@@ -43,15 +44,17 @@ public class LogsCenter {
     }
 
     /**
-     * Creates a logger with the given name prefixed by the {@code baseLogger}'s name so that the created logger
-     * becomes a descendant of the {@code baseLogger}. Furthermore, the returned logger will have the same log handlers
-     * as the {@code baseLogger}.
+     * Creates a logger with the given name prefixed by the {@code baseLogger}'s
+     * name so that the created logger becomes a descendant of the {@code baseLogger}.
+     * Furthermore, the returned logger will have the same log handlers as the {@code baseLogger}.
      */
     public static Logger getLogger(String name) {
-        // Java organizes loggers into a hierarchy based on their names (using '.' as a separator, similar to how Java
-        // packages form a hierarchy). Furthermore, loggers without a level inherit the level of their parent logger.
-        // By prefixing names of all loggers with baseLogger's name + ".", we make the baseLogger the parent of all
-        // loggers. This allows us to change the level of all loggers simply by changing the baseLogger level.
+        // Java organizes loggers into a hierarchy based on their names (using '.' as a separator,
+        //  similar to how Java packages form a hierarchy). Furthermore,
+        // loggers without a level inherit the level of their parent logger.
+        // By prefixing names of all loggers with baseLogger's name + ".",
+        // we make the baseLogger the parent of all loggers.
+        // This allows us to change the level of all loggers simply by changing the baseLogger level.
         Logger logger = Logger.getLogger(baseLogger.getName() + "." + name);
         removeHandlers(logger);
         logger.setUseParentHandlers(true);
@@ -93,7 +96,8 @@ public class LogsCenter {
 
         // add a FileHandler to log to a file
         try {
-            FileHandler fileHandler = new FileHandler(LOG_FILE, MAX_FILE_SIZE_IN_BYTES, MAX_FILE_COUNT, true);
+            FileHandler fileHandler = new FileHandler(LOG_FILE, MAX_FILE_SIZE_IN_BYTES,
+                    MAX_FILE_COUNT, true);
             fileHandler.setFormatter(new SimpleFormatter());
             fileHandler.setLevel(Level.ALL);
             baseLogger.addHandler(fileHandler);

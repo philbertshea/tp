@@ -19,7 +19,8 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the index number used in the displayed person list.\n"
+            + ": Deletes the person identified by the index number "
+            + "used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -52,6 +53,7 @@ public class DeleteCommand extends Command {
         Person personToDelete = getTargetPerson(model);
 
         model.deletePerson(personToDelete);
+
         String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete));
         return new CommandResult(feedback);
     }
@@ -70,6 +72,7 @@ public class DeleteCommand extends Command {
             throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
         }
         return lastShownList.get(targetIndex.getZeroBased());
+
     }
 
     @Override

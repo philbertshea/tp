@@ -9,7 +9,7 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.NameContainsKeywordsPredicate;
 
 /**
- * Parses input arguments and creates a new FindCommand object
+ * Parses input arguments and creates a new FindCommand object.
  */
 public class FindCommandParser implements Parser<FindCommand> {
 

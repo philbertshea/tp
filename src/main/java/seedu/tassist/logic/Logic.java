@@ -11,7 +11,7 @@ import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.model.person.Person;
 
 /**
- * API of the Logic component
+ * API of the Logic component.
  */
 public interface Logic {
     /**
@@ -30,7 +30,7 @@ public interface Logic {
      */
     ReadOnlyAddressBook getAddressBook();
 
-    /** Returns an unmodifiable view of the filtered list of persons */
+    /** Returns an unmodifiable view of the filtered list of persons. */
     ObservableList<Person> getFilteredPersonList();
 
     /**

@@ -4,18 +4,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.tassist.commons.exceptions.IllegalValueException;
-import seedu.tassist.model.person.Address;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -27,8 +35,14 @@ class JsonAdaptedPerson {
 
     private final String name;
     private final String phone;
+    private final String teleHandle;
     private final String email;
-    private final String address;
+    private final String matNum;
+    private final String tutGroup;
+    private final String labGroup;
+    private final String faculty;
+    private final String year;
+    private final String remark;
     private final String attendances;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
@@ -37,12 +51,26 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("attendances") String attendances, @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("teleHande") String teleHandle,
+            @JsonProperty("email") String email,
+            @JsonProperty("matNum") String matNum,
+            @JsonProperty("tutGroup") String tutGroup,
+            @JsonProperty("labGroup") String labGroup,
+            @JsonProperty("faculty") String faculty,
+            @JsonProperty("year") String year,
+            @JsonProperty("remark") String remark,
+            @JsonProperty("attendances") String attendances,
+            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
+        this.teleHandle = teleHandle;
         this.email = email;
-        this.address = address;
+        this.matNum = matNum;
+        this.tutGroup = tutGroup;
+        this.labGroup = labGroup;
+        this.faculty = faculty;
+        this.year = year;
+        this.remark = remark;
         this.attendances = attendances;
         if (tags != null) {
             this.tags.addAll(tags);
@@ -55,8 +83,14 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(Person source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
+        teleHandle = source.getTeleHandle().value;
         email = source.getEmail().value;
-        address = source.getAddress().value;
+        matNum = source.getMatNum().value;
+        tutGroup = source.getTutGroup().value;
+        labGroup = source.getLabGroup().value;
+        faculty = source.getFaculty().value;
+        year = source.getYear().value;
+        remark = source.getRemark().value;
         attendances = source.getAttendanceList().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -74,53 +108,109 @@ class JsonAdaptedPerson {
             personTags.add(tag.toModelType());
         }
 
-        if (name == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
-        }
-        if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
-        }
-        final Name modelName = new Name(name);
+        final Name modelName = validateAndCreate(name, Name.class, Name::isValidName,
+                Name.MESSAGE_CONSTRAINTS, Name::new);
 
-        if (phone == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
-        }
-        if (!Phone.isValidPhone(phone)) {
-            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
-        }
-        final Phone modelPhone = new Phone(phone);
+        final Phone modelPhone = validateAndCreate(phone, Phone.class, Phone::isValidPhone,
+                Phone.MESSAGE_CONSTRAINTS, Phone::new);
 
-        if (email == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
-        }
-        if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
-        }
-        final Email modelEmail = new Email(email);
+        final TeleHandle modelTeleHandle = validateAndCreate(teleHandle, TeleHandle.class,
+                TeleHandle::isValidTeleHandle, TeleHandle.MESSAGE_CONSTRAINTS, TeleHandle::new);
 
-        if (address == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
-        }
-        if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
-        }
-        final Address modelAddress = new Address(address);
+        final Email modelEmail = validateAndCreate(email, Email.class, Email::isValidEmail,
+                Email.MESSAGE_CONSTRAINTS, Email::new);
 
-        if (attendances == null) {
-            throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, AttendanceList.class.getSimpleName()));
-        }
-        if (!AttendanceList.isValidAttendanceString(attendances)) {
-            throw new IllegalValueException(AttendanceList.MESSAGE_CONSTRAINTS);
-        }
-        final AttendanceList modelAttendanceList = AttendanceList.generateAttendanceList(attendances);
+        final MatNum modelMatNum = validateAndCreate(matNum, MatNum.class,
+                MatNum::isValidMatNum, MatNum.MESSAGE_CONSTRAINTS, MatNum::new);
+
+        final TutGroup modelTutGroup = validateAndCreate(tutGroup, TutGroup.class,
+                TutGroup::isValidTutGroup, TutGroup.MESSAGE_CONSTRAINTS, TutGroup::new);
+
+        final LabGroup modelLabGroup = validateAndCreate(labGroup, LabGroup.class,
+                LabGroup::isValidLabGroup, LabGroup.MESSAGE_CONSTRAINTS, LabGroup::new);
+
+        final Faculty modelFaculty = validateAndCreate(faculty, Faculty.class,
+                Faculty::isValidFaculty, Faculty.MESSAGE_CONSTRAINTS, Faculty::new);
+
+        final Year modelYear = validateAndCreate(year, Year.class,
+                Year::isValidYear, Year.MESSAGE_CONSTRAINTS, Year::new);
+
+        final Remark modelRemark = validateAndCreate(remark, Remark.class, Remark::new);
+
+        final AttendanceList modelAttendanceList = validateAndCreate(attendances,
+                AttendanceList.class, AttendanceList::isValidAttendanceString,
+                AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelAttendanceList, modelTags);
+        return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,
+                modelMatNum, modelTutGroup, modelLabGroup, modelFaculty, modelYear, modelRemark,
+                modelAttendanceList, modelTags);
+    }
+
+    /**
+     * Validates if the value is not null.
+     *
+     * @param value     {@code String} value to validate.
+     * @param objClass  {@code Class} of the model object.
+     * @throws IllegalValueException    If the value fails validation.
+     */
+    private <T> void validateNull(String value, Class<T> objClass) throws IllegalValueException {
+        if (value == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, objClass.getSimpleName()));
+        }
+    }
+
+    /**
+     * Validates if the value satisfies the constraints defined by the validator.
+     *
+     * @param value                     {@code String} value to validate.
+     * @param validator                 {@code Predicate} testing if the value satisfies constraints.
+     * @param errorMessage              The error message to use if validation fails.
+     * @throws IllegalValueException    If the value fails validation.
+     */
+    private void validateConstraints(String value,
+            Predicate<String> validator, String errorMessage) throws IllegalValueException {
+        if (!validator.test(value)) {
+            throw new IllegalValueException(errorMessage);
+        }
+    }
+
+    /**
+     * Validates if the value is not null, then creates a model object.
+     *
+     * @param value                     {@code String} value to validate.
+     * @param objClass                  {@code Class} of the model object.
+     * @param constructor               {@code Function} converting the {@code value} to the model object.
+     * @return                          The created model object.
+     * @throws IllegalValueException    If the value fails validation.
+     */
+    private <T> T validateAndCreate(String value, Class<T> objClass,
+            Function<String, T> constructor) throws IllegalValueException {
+        validateNull(value, objClass);
+        return constructor.apply(value);
+    }
+
+    /**
+     * Validates if the value is not null and satisfies any constraints, then creates a model object.
+     * Null must be checked for first to prevent null pointers.
+     *
+     * @param value                     {@code String} value to validate.
+     * @param objClass                  {@code Class} of the model object.
+     * @param validator                 {@code Predicate} testing if the value satisfies constraints.
+     * @param errorMessage              The error message to use if validation fails.
+     * @param constructor               {@code Function} converting the {@code value} to the model object.
+     * @return                          The created model object.
+     * @throws IllegalValueException    If the value fails validation.
+     */
+    private <T> T validateAndCreate(String value, Class<T> objClass,
+            Predicate<String> validator, String errorMessage,
+            Function<String, T> constructor) throws IllegalValueException {
+
+        validateNull(value, objClass);
+        validateConstraints(value, validator, errorMessage);
+
+        return constructor.apply(value);
     }
 
 }
