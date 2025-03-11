@@ -59,7 +59,7 @@ public class PersonCard extends UiPart<Region> {
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
     public PersonCard(Person person, int displayedIndex) {
-        // todo: Change UI layout in future
+        // todo:  zhenjie Change UI layout in future
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");

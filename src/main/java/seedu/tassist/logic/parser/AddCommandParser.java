@@ -74,7 +74,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        // todo
+        // todo zhenjie
         Person person = new Person(name, phone, teleHandle, email,
                 matNum, tutGrp, labGrp, faculty, year, remark, attendanceList, tagList);
 

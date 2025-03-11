@@ -121,7 +121,7 @@ public class JsonAdaptedPersonTest {
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
-    // todo: create invalid and null permtuations for all other attributes
+    // todo: zhenjie create invalid and null permtuations for all other attributes
 
     @Test
     public void toModelType_nullAttendance_throwsIllegalValueException() {
