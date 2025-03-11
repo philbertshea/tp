@@ -73,12 +73,16 @@ public class PersonUtil {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
-        descriptor.getTeleHandle().ifPresent(teleHandle -> sb.append(PREFIX_TELE_HANDLE).append(teleHandle.value).append(" "));
+        descriptor.getTeleHandle().ifPresent(teleHandle -> sb.append(PREFIX_TELE_HANDLE)
+                .append(teleHandle.value).append(" "));
         descriptor.getEmail().ifPresent(email -> sb.append(PREFIX_EMAIL).append(email.value).append(" "));
         descriptor.getMatNum().ifPresent(matNum -> sb.append(PREFIX_MAT_NUM).append(matNum.value).append(" "));
-        descriptor.getTutGroup().ifPresent(tutGroup -> sb.append(PREFIX_TUT_GROUP).append(tutGroup.value).append(" "));
-        descriptor.getLabGroup().ifPresent(labGroup -> sb.append(PREFIX_LAB_GROUP).append(labGroup.value).append(" "));
-        descriptor.getFaculty().ifPresent(faculty -> sb.append(PREFIX_FACULTY).append(faculty.value).append(" "));
+        descriptor.getTutGroup().ifPresent(tutGroup -> sb.append(PREFIX_TUT_GROUP)
+                .append(tutGroup.value).append(" "));
+        descriptor.getLabGroup().ifPresent(labGroup -> sb.append(PREFIX_LAB_GROUP)
+                .append(labGroup.value).append(" "));
+        descriptor.getFaculty().ifPresent(faculty -> sb.append(PREFIX_FACULTY)
+                .append(faculty.value).append(" "));
         descriptor.getYear().ifPresent(year -> sb.append(PREFIX_REMARK).append(year.value).append(" "));
         descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_YEAR).append(remark.value).append(" "));
         descriptor.getAttendanceList().ifPresent(attendanceList -> sb.append(PREFIX_ATTENDANCE_LIST)
