@@ -1,17 +1,11 @@
 package seedu.tassist.logic.parser;
 
-import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import java.util.stream.Stream;
 
-import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 

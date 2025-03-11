@@ -10,6 +10,8 @@ import java.util.Set;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.ReadOnlyAddressBook;
+import seedu.tassist.storage.CsvAddressBookStorage;
 import seedu.tassist.storage.JsonAddressBookStorage;
 import seedu.tassist.storage.StorageManager;
 
@@ -46,23 +48,16 @@ public class ExportDataCommand extends Command {
      */
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        if(!VALID_EXTENSIONS.contains(extension)) {
-            throw new CommandException(String.format(INVALID_ARGUMENT_EXTENSION, extension));
-        }
-        //TODO: Validate Filename
+        validateExtension(extension);
+        validateFileName(fileName);
 
-        if(extension.equals("json")) {
-            Path p = Paths.get("data" , fileName + ".json");
-            JsonAddressBookStorage jsonAddressBookStorage = new JsonAddressBookStorage(p);
-            try {
-                jsonAddressBookStorage.saveAddressBook(model.getAddressBook());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        Path filePath = Paths.get("data", fileName + "." + extension);
+
+        try {
+            saveAddressBook(model.getAddressBook(), filePath, extension);
             return new CommandResult(String.format(MESSAGE_SUCCESS, fileName + "." + extension));
-        }
-        else {
-            throw new CommandException(String.format(MESSAGE_ARGUMENTS, fileName, extension));
+        } catch (IOException e) {
+            throw new CommandException("Failed to save file: " + e.getMessage(), e);
         }
     }
 
@@ -80,5 +75,39 @@ public class ExportDataCommand extends Command {
         ExportDataCommand e = (ExportDataCommand) other;
         return fileName.equals(e.fileName)
                 && extension.equals(e.extension);
+    }
+
+    /**
+     * Validates if the provided extension is supported.
+     */
+    private void validateExtension(String extension) throws CommandException {
+        if (!VALID_EXTENSIONS.contains(extension)) {
+            throw new CommandException(String.format(INVALID_ARGUMENT_EXTENSION, extension));
+        }
+    }
+
+    /**
+     * Placeholder for validating filenames.
+     */
+    private void validateFileName(String fileName) throws CommandException {
+        if (!fileName.matches("^[a-zA-Z0-9-_]+$")) { // Simple alphanumeric with dashes/underscores
+            throw new CommandException(String.format("Invalid filename: %s", fileName));
+        }
+    }
+
+    /**
+     * Saves the AddressBook to the specified file path based on the file extension.
+     */
+    private void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath, String extension) throws IOException {
+        switch (extension) {
+        case "json":
+            new JsonAddressBookStorage(filePath).saveAddressBook(addressBook);
+            break;
+        case "csv":
+            new CsvAddressBookStorage(filePath).saveAddressBook(addressBook);
+            break;
+        default:
+            throw new IllegalArgumentException("Unsupported file extension: " + extension);
+        }
     }
 }
