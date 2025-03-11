@@ -1,7 +1,5 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
