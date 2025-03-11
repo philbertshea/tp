@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_BOB;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -48,10 +47,6 @@ public class EditPersonDescriptorTest {
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
-        // different address -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withAddress(VALID_ADDRESS_BOB).build();
-        assertFalse(DESC_AMY.equals(editedAmy));
-
         // different tags -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(DESC_AMY.equals(editedAmy));
@@ -59,13 +54,20 @@ public class EditPersonDescriptorTest {
 
     @Test
     public void toStringMethod() {
+        // todo: zhenjie update editpersondescriptor fields
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         String expected = EditPersonDescriptor.class.getCanonicalName() + "{name="
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
-                + editPersonDescriptor.getPhone().orElse(null) + ", email="
-                + editPersonDescriptor.getEmail().orElse(null) + ", address="
-                + editPersonDescriptor.getAttendanceList().orElse(null) + ", attendanceList="
-                + editPersonDescriptor.getAddress().orElse(null) + ", tags="
+                + editPersonDescriptor.getPhone().orElse(null) + ", teleHandle="
+                + editPersonDescriptor.getTeleHandle().orElse(null) + ", email="
+                + editPersonDescriptor.getEmail().orElse(null) + ", matNum="
+                + editPersonDescriptor.getMatNum().orElse(null) + ", tutGroup="
+                + editPersonDescriptor.getTutGroup().orElse(null) + ", labGroup="
+                + editPersonDescriptor.getLabGroup().orElse(null) + ", faculty="
+                + editPersonDescriptor.getFaculty().orElse(null) + ", year="
+                + editPersonDescriptor.getYear().orElse(null) + ", remark="
+                + editPersonDescriptor.getRemark().orElse(null) + ", attendanceList="
+                + editPersonDescriptor.getAttendanceList().orElse(null) + ", tags="
                 + editPersonDescriptor.getTags().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }

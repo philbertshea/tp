@@ -35,9 +35,21 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
-    private Label address;
+    private Label teleHandle;
     @FXML
     private Label email;
+    @FXML
+    private Label matNum;
+    @FXML
+    private Label tutGroup;
+    @FXML
+    private Label labGroup;
+    @FXML
+    private Label faculty;
+    @FXML
+    private Label year;
+    @FXML
+    private Label remark;
     @FXML
     private FlowPane tags;
     @FXML
@@ -47,13 +59,21 @@ public class PersonCard extends UiPart<Region> {
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
     public PersonCard(Person person, int displayedIndex) {
+        // todo:  zhenjie Change UI layout in future
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
+        teleHandle.setText(person.getTeleHandle().value);
         email.setText(person.getEmail().value);
+        matNum.setText(person.getMatNum().value);
+        tutGroup.setText(person.getTutGroup().value);
+        labGroup.setText(person.getLabGroup().value);
+        faculty.setText(person.getFaculty().value);
+        year.setText(person.getYear().value);
+        remark.setText(person.getRemark().value);
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));

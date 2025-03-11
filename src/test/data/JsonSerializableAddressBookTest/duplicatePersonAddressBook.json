@@ -2,15 +2,27 @@
   "persons": [ {
     "name": "Alice Pauline",
     "phone": "94351253",
+    "teleHandle" : "@tele",
     "email": "alice@example.com",
-    "address": "123, Jurong West Ave 6, #08-111",
+    "matNum" : "A0000000Y",
+    "tutGroup" : "T01",
+    "labGroup" :  "B01",
+    "faculty" :  "SoC",
+    "year" :  "3",
+    "remark" : "todo",
     "attendances" : "0000000000000",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
+    "teleHandle" : "@tele",
     "email": "pauline@example.com",
-    "address": "4th street",
+    "matNum" : "A0000000Y",
+    "tutGroup" : "T01",
+    "labGroup" :  "B01",
+    "faculty" :  "SoC",
+    "year" :  "3",
+    "remark" : "todo",
     "attendances" : "0000000000000"
   } ]
 }
