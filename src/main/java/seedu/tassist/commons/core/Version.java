@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Represents a version with major, minor and patch number
+ * Represents a version with major, minor and patch number.
  */
 public class Version implements Comparable<Version> {
 
@@ -58,7 +58,8 @@ public class Version implements Comparable<Version> {
         Matcher versionMatcher = VERSION_PATTERN.matcher(versionString);
 
         if (!versionMatcher.find()) {
-            throw new IllegalArgumentException(String.format(EXCEPTION_STRING_NOT_VERSION, versionString));
+            throw new IllegalArgumentException(String.format(EXCEPTION_STRING_NOT_VERSION,
+                    versionString));
         }
 
         return new Version(Integer.parseInt(versionMatcher.group(1)),
