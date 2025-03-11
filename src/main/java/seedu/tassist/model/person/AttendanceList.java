@@ -48,11 +48,13 @@ public class AttendanceList {
      */
     public static AttendanceList generateAttendanceList(String attendanceString) {
         requireNonNull(attendanceString);
-        checkArgument(isValidAttendanceString(attendanceString), ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidAttendanceString(attendanceString),
+                ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
         AttendanceList attendanceList = new AttendanceList();
         for (int i = 0; i < 13; i++) {
             attendanceList.attendanceList.add(
-                    new Attendance(i + 1, Integer.parseInt(attendanceString.charAt(i) + "")));
+                    new Attendance(i + 1,
+                            Integer.parseInt(attendanceString.charAt(i) + "")));
         }
         return attendanceList;
     }

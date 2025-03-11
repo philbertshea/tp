@@ -33,7 +33,7 @@ import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**
- * Parses input arguments and creates a new AddCommand object
+ * Parses input arguments and creates a new AddCommand object.
  */
 public class AddCommandParser implements Parser<AddCommand> {
 
@@ -52,7 +52,8 @@ public class AddCommandParser implements Parser<AddCommand> {
                 || !anyPrefixesPresent(argMultimap, PREFIX_PHONE, PREFIX_TELE_HANDLE)
                 || !anyPrefixesPresent(argMultimap, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP))
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    AddCommand.MESSAGE_USAGE));
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
@@ -60,7 +61,8 @@ public class AddCommandParser implements Parser<AddCommand> {
                 PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
-        TeleHandle teleHandle = ParserUtil.parseTeleHandle(argMultimap.getValue(PREFIX_TELE_HANDLE).get());
+        TeleHandle teleHandle = ParserUtil.parseTeleHandle(argMultimap
+                .getValue(PREFIX_TELE_HANDLE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         MatNum matNum = ParserUtil.parseMatNum(argMultimap.getValue(PREFIX_MAT_NUM).get());
         TutGroup tutGrp = ParserUtil.parseTutGroup(argMultimap.getValue(PREFIX_TUT_GROUP).get());
@@ -83,16 +85,20 @@ public class AddCommandParser implements Parser<AddCommand> {
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
      */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap,
+              Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(
+                prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
     /**
      * Returns true if either of the prefixes contains an {@code Optional} value in the given
      * {@Code ArgumentMultimap}.
      */
-    private static boolean anyPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    private static boolean anyPrefixesPresent(ArgumentMultimap argumentMultimap,
+            Prefix... prefixes) {
+        return Stream.of(prefixes).anyMatch(
+                prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 

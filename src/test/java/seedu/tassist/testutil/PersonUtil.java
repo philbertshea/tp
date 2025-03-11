@@ -37,19 +37,6 @@ public class PersonUtil {
      */
     public static String getPersonDetails(Person person) {
         StringBuilder sb = new StringBuilder();
-//        sb.append(PREFIX_NAME + person.getName().fullName + " ");
-//        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
-//        sb.append(PREFIX_TELE_HANDLE + person.getTeleHandle().value + " ");
-//        sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
-//        sb.append(PREFIX_MAT_NUM + person.getMatNum().value + " ");
-//        sb.append(PREFIX_TUT_GROUP + person.getTutGroup().value + " ");
-//        sb.append(PREFIX_LAB_GROUP + person.getLabGroup().value + " ");
-//        sb.append(PREFIX_FACULTY + person.getFaculty().value + " ");
-//        sb.append(PREFIX_YEAR + person.getYear().value + " ");
-//        sb.append(PREFIX_REMARK + person.getRemark().value + " ");
-//        person.getTags().stream().forEach(
-//            s -> sb.append(PREFIX_TAG + s.tagName + " ")
-//        );
         sb.append(PREFIX_NAME).append(person.getName().fullName).append(" ");
         sb.append(PREFIX_PHONE).append(person.getPhone().value).append(" ");
         sb.append(PREFIX_TELE_HANDLE).append(person.getTeleHandle().value).append(" ");
