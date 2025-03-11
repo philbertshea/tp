@@ -9,7 +9,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  */
 public class Email {
 
-    private static final String SPECIAL_CHARACTERS = "+_.-";
+    private static final String SPECIAL_CHARACTERS = "+_.-"; // todo change in future
     public static final String MESSAGE_CONSTRAINTS = "Emails should be of the format local-part@domain "
             + "and adhere to the following constraints:\n"
             + "1. The local-part should only contain alphanumeric characters and these special characters, excluding "
@@ -20,7 +20,8 @@ public class Email {
             + "The domain name must:\n"
             + "    - end with a domain label at least 2 characters long\n"
             + "    - have each domain label start and end with alphanumeric characters\n"
-            + "    - have each domain label consist of alphanumeric characters, separated only by hyphens, if any.";
+            + "    - have each domain label consist of alphanumeric characters, separated only by hyphens, if any."
+            + "3. All hyphens should be encapsulated in \"\"";
     // alphanumeric and special characters
     private static final String ALPHANUMERIC_NO_UNDERSCORE = "[^\\W_]+"; // alphanumeric characters except underscore
     private static final String LOCAL_PART_REGEX = "^" + ALPHANUMERIC_NO_UNDERSCORE + "([" + SPECIAL_CHARACTERS + "]"

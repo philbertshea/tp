@@ -11,8 +11,15 @@ import seedu.tassist.commons.util.StringUtil;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -53,13 +60,13 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String phone} into a {@code Phone}.
-     * Leading and trailing whitespaces will be trimmed.
+     * All spaces will be trimmed.
      *
      * @throws ParseException if the given {@code phone} is invalid.
      */
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
-        String trimmedPhone = phone.trim();
+        String trimmedPhone = phone.replaceAll("\\s+", "");
         if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
@@ -67,18 +74,118 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String teleHandle} into a {@code TeleHandle}.
+     * All spaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code teleHandle} is invalid.
+     */
+    public static TeleHandle parseTeleHandle(String teleHandle) throws ParseException {
+        requireNonNull(teleHandle);
+        String trimmedTeleHandle = teleHandle.replaceAll("\\s+", "");
+        if (!TeleHandle.isValidTeleHandle(trimmedTeleHandle)) {
+            throw new ParseException(TeleHandle.MESSAGE_CONSTRAINTS);
+        }
+        return new TeleHandle(trimmedTeleHandle);
+    }
+
+    /**
      * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
+     * All spaces will be trimmed.
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
-        String trimmedEmail = email.trim();
+        String trimmedEmail = email.replaceAll("\\s+", "");
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
         return new Email(trimmedEmail);
+    }
+
+    /**
+     * Parses a {@code String matNum} into a {@code MatNum}.
+     * All spaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code } is invalid.
+     */
+    public static MatNum parseMatNum(String matNum) throws ParseException {
+        requireNonNull(matNum);
+        String trimmedMatNum = matNum.replaceAll("\\s+", "");
+        if (!MatNum.isValidMatNum(trimmedMatNum)) {
+            throw new ParseException(MatNum.MESSAGE_CONSTRAINTS);
+        }
+        return new MatNum(trimmedMatNum);
+    }
+
+    /**
+     * Parses a {@code String tutGroup} into a {@code TutGroup}.
+     * All spaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tutGroup} is invalid.
+     */
+    public static TutGroup parseTutGroup(String tutGroup) throws ParseException {
+        requireNonNull(tutGroup);
+        String trimmedTutGroup = tutGroup.replaceAll("\\s+", "");
+        if (!TutGroup.isValidTutGroup(trimmedTutGroup)) {
+            throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
+        }
+        return new TutGroup(trimmedTutGroup);
+    }
+
+    /**
+     * Parses a {@code String labGroup} into a {@code LabGroup}.
+     * All spaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code labGroup} is invalid.
+     */
+    public static LabGroup parseLabGroup(String labGroup) throws ParseException {
+        requireNonNull(labGroup);
+        String trimmedLabGroup = labGroup.replaceAll("\\s+", "");
+        if (!LabGroup.isValidLabGroup(trimmedLabGroup)) {
+            throw new ParseException(LabGroup.MESSAGE_CONSTRAINTS);
+        }
+        return new LabGroup(trimmedLabGroup);
+    }
+
+    /**
+     * Parses a {@code String faculty} into a {@code Faculty}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code faculty} is invalid.
+     */
+    public static Faculty parseFaculty(String faculty) throws ParseException {
+        requireNonNull(faculty);
+        String trimmedFaculty = faculty.trim();
+        if (!Faculty.isValidFaculty(trimmedFaculty)) {
+            throw new ParseException(Faculty.MESSAGE_CONSTRAINTS);
+        }
+        return new Faculty(trimmedFaculty);
+    }
+
+    /**
+     * Parses a {@code String year} into a {@code Year}.
+     * All spaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code year} is invalid.
+     */
+    public static Year parseYear(String year) throws ParseException {
+        requireNonNull(year);
+        String trimmedYear = year.replaceAll("\\s+", "");
+        if (!Year.isValidYear(trimmedYear)) {
+            throw new ParseException(Year.MESSAGE_CONSTRAINTS);
+        }
+        return new Year(trimmedYear);
+    }
+
+    /**
+     * Parses a {@code String remark} into a {@code Remark}.
+     *
+     * @throws ParseException if the given {@code remark} is invalid.
+     */
+    public static Remark parseRemark(String remark) throws ParseException {
+        requireNonNull(remark);
+        return new Remark(remark);
     }
 
     /**

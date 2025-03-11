@@ -54,11 +54,19 @@ public class EditPersonDescriptorTest {
 
     @Test
     public void toStringMethod() {
+        // todo: zhenjie update editpersondescriptor fields
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         String expected = EditPersonDescriptor.class.getCanonicalName() + "{name="
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
-                + editPersonDescriptor.getPhone().orElse(null) + ", email="
-                + editPersonDescriptor.getEmail().orElse(null) + ", attendanceList="
+                + editPersonDescriptor.getPhone().orElse(null) + ", teleHandle="
+                + editPersonDescriptor.getTeleHandle().orElse(null) + ", email="
+                + editPersonDescriptor.getEmail().orElse(null) + ", matNum="
+                + editPersonDescriptor.getMatNum().orElse(null) + ", tutGroup="
+                + editPersonDescriptor.getTutGroup().orElse(null) + ", labGroup="
+                + editPersonDescriptor.getLabGroup().orElse(null) + ", faculty="
+                + editPersonDescriptor.getFaculty().orElse(null) + ", year="
+                + editPersonDescriptor.getYear().orElse(null) + ", remark="
+                + editPersonDescriptor.getRemark().orElse(null) + ", attendanceList="
                 + editPersonDescriptor.getAttendanceList().orElse(null) + ", tags="
                 + editPersonDescriptor.getTags().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());

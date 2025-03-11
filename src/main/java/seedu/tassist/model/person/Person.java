@@ -19,7 +19,15 @@ public class Person {
     // Identity fields
     private final Name name;
     private final Phone phone;
+    private final TeleHandle teleHandle;
     private final Email email;
+    private final MatNum matNum;
+    private final TutGroup tutGroup;
+    private final LabGroup labGroup;
+    private final Faculty faculty;
+    private final Year year;
+    private final Remark remark;
+
 
     // Data fields
     private final AttendanceList attendanceList;
@@ -28,12 +36,21 @@ public class Person {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email,
-                  AttendanceList attendanceList, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, tags, attendanceList);
+    public Person(Name name, Phone phone, TeleHandle teleHandle, Email email,
+                  MatNum matNum, TutGroup tutGroup, LabGroup labGroup, Faculty faculty, Year year,
+                  Remark remark, AttendanceList attendanceList, Set<Tag> tags) {
+        requireAllNonNull(name, phone, teleHandle, email,
+                matNum, tutGroup, labGroup, faculty, remark, attendanceList, tags);
         this.name = name;
         this.phone = phone;
+        this.teleHandle = teleHandle;
         this.email = email;
+        this.matNum = matNum;
+        this.tutGroup = tutGroup;
+        this.labGroup = labGroup;
+        this.faculty = faculty;
+        this.year = year;
+        this.remark = remark;
         this.attendanceList = attendanceList;
         this.tags.addAll(tags);
     }
@@ -46,9 +63,38 @@ public class Person {
         return phone;
     }
 
+    public TeleHandle getTeleHandle() {
+        return teleHandle;
+    }
+
     public Email getEmail() {
         return email;
     }
+
+    public MatNum getMatNum() {
+        return matNum;
+    }
+
+    public TutGroup getTutGroup() {
+        return tutGroup;
+    }
+
+    public LabGroup getLabGroup() {
+        return labGroup;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public Remark getRemark() {
+        return remark;
+    }
+
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

@@ -22,9 +22,16 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -95,13 +102,21 @@ public class EditCommand extends Command {
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
+        TeleHandle updatedTeleHandle = personToEdit.getTeleHandle(); // todo: update if needed
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        MatNum updatedMatNum = personToEdit.getMatNum(); // todo: update if needed
+        TutGroup updatedTutGroup = personToEdit.getTutGroup(); // todo: update if needed
+        LabGroup updatedLabGroup = personToEdit.getLabGroup(); // todo: update if needed
+        Faculty updatedFaculty = personToEdit.getFaculty(); // todo: update if needed
+        Year updatedYear = personToEdit.getYear(); // todo: update if needed
+        Remark updatedRemark = personToEdit.getRemark(); // todo: update if needed
         AttendanceList updatedAttendanceList =
                 editPersonDescriptor.getAttendanceList().orElse(personToEdit.getAttendanceList());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedAttendanceList, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedTeleHandle, updatedEmail,
+                updatedMatNum, updatedTutGroup, updatedLabGroup, updatedFaculty, updatedYear,
+                updatedRemark, updatedAttendanceList, updatedTags);
     }
 
     @Override
@@ -135,7 +150,14 @@ public class EditCommand extends Command {
     public static class EditPersonDescriptor {
         private Name name;
         private Phone phone;
+        private TeleHandle teleHandle;
         private Email email;
+        private MatNum matNum;
+        private TutGroup tutGroup;
+        private LabGroup labGroup;
+        private Faculty faculty;
+        private Year year;
+        private Remark remark;
         private AttendanceList attendanceList;
         private Set<Tag> tags;
 
@@ -182,6 +204,34 @@ public class EditCommand extends Command {
 
         public Optional<Email> getEmail() {
             return Optional.ofNullable(email);
+        }
+
+        public Optional<TeleHandle> getTeleHandle() {
+            return Optional.ofNullable(teleHandle);
+        }
+
+        public Optional<MatNum> getMatNum() {
+            return Optional.ofNullable(matNum);
+        }
+
+        public Optional<TutGroup> getTutGroup() {
+            return Optional.ofNullable(tutGroup);
+        }
+
+        public Optional<LabGroup> getLabGroup() {
+            return Optional.ofNullable(labGroup);
+        }
+
+        public Optional<Faculty> getFaculty() {
+            return Optional.ofNullable(faculty);
+        }
+
+        public Optional<Year> getYear() {
+            return Optional.ofNullable(year);
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
         }
 
         public void setAttendanceList(AttendanceList attendanceList) {
@@ -233,7 +283,14 @@ public class EditCommand extends Command {
             return new ToStringBuilder(this)
                     .add("name", name)
                     .add("phone", phone)
+                    .add("teleHandle", teleHandle)
                     .add("email", email)
+                    .add("matNum", matNum)
+                    .add("tutGroup", tutGroup)
+                    .add("labGroup", labGroup)
+                    .add("faculty", faculty)
+                    .add("year", year)
+                    .add("remark", remark)
                     .add("attendanceList", attendanceList)
                     .add("tags", tags)
                     .toString();

@@ -72,8 +72,10 @@ public class MarkAttendanceCommand extends Command {
                 personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
 
         Person editedPerson = new Person(
-                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                newAttendanceList, personToEdit.getTags());
+                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getTeleHandle(),
+                personToEdit.getEmail(), personToEdit.getMatNum(), personToEdit.getTutGroup(),
+                personToEdit.getLabGroup(), personToEdit.getFaculty(), personToEdit.getYear(),
+                personToEdit.getRemark(), newAttendanceList, personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
