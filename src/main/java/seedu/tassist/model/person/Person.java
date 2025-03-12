@@ -31,6 +31,7 @@ public class Person {
 
     // Data fields
     private final AttendanceList attendanceList;
+    private final LabScoreList labScoreList;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -38,9 +39,9 @@ public class Person {
      */
     public Person(Name name, Phone phone, TeleHandle teleHandle, Email email,
                   MatNum matNum, TutGroup tutGroup, LabGroup labGroup, Faculty faculty, Year year,
-                  Remark remark, AttendanceList attendanceList, Set<Tag> tags) {
+                  Remark remark, AttendanceList attendanceList,LabScoreList labScoreList, Set<Tag> tags) {
         requireAllNonNull(name, phone, teleHandle, email,
-                matNum, tutGroup, labGroup, faculty, remark, attendanceList, tags);
+                matNum, tutGroup, labGroup, faculty, remark, attendanceList, labScoreList, tags);
         this.name = name;
         this.phone = phone;
         this.teleHandle = teleHandle;
@@ -52,6 +53,7 @@ public class Person {
         this.year = year;
         this.remark = remark;
         this.attendanceList = attendanceList;
+        this.labScoreList = labScoreList;
         this.tags.addAll(tags);
     }
 
@@ -107,6 +109,9 @@ public class Person {
     public AttendanceList getAttendanceList() {
         return attendanceList;
     }
+    public LabScoreList getLabScoreList() {
+        return labScoreList;
+    }
 
     /**
      * Returns true if both persons have the same name.
@@ -141,13 +146,14 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && tags.equals(otherPerson.tags)
-                && attendanceList.equals(otherPerson.attendanceList);
+                && attendanceList.equals(otherPerson.attendanceList)
+                && labScoreList.equals(otherPerson.labScoreList);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, tags, attendanceList);
+        return Objects.hash(name, phone, email, tags, attendanceList, labScoreList);
     }
 
     @Override
@@ -157,6 +163,7 @@ public class Person {
                 .add("phone", phone)
                 .add("email", email)
                 .add("attendanceList", attendanceList)
+                .add("labScoreList", labScoreList)
                 .add("tags", tags)
                 .toString();
     }

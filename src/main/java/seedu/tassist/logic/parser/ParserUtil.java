@@ -9,17 +9,7 @@ import java.util.Set;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
 import seedu.tassist.logic.parser.exceptions.ParseException;
-import seedu.tassist.model.person.AttendanceList;
-import seedu.tassist.model.person.Email;
-import seedu.tassist.model.person.Faculty;
-import seedu.tassist.model.person.LabGroup;
-import seedu.tassist.model.person.MatNum;
-import seedu.tassist.model.person.Name;
-import seedu.tassist.model.person.Phone;
-import seedu.tassist.model.person.Remark;
-import seedu.tassist.model.person.TeleHandle;
-import seedu.tassist.model.person.TutGroup;
-import seedu.tassist.model.person.Year;
+import seedu.tassist.model.person.*;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -239,5 +229,23 @@ public class ParserUtil {
             throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
         }
         return AttendanceList.generateAttendanceList(attendanceString);
+    }
+
+    public static int parseLabNumber(String labNumber) throws ParseException {
+        requireNonNull(labNumber);
+        if (!LabScoreList.isValidLabNumber(labNumber)) {
+            throw new ParseException(LabScoreList.LAB_NUMBER_CONSTRAINT);
+        }
+        return Integer.parseInt(labNumber);
+    }
+
+    public static int parseLabScore(String labScore) throws ParseException {
+        requireNonNull(labScore);
+        try{
+            return Integer.parseInt(labScore);
+        } catch (NumberFormatException e) {
+            throw new ParseException(LabScoreList.INVALID_LAB_SCORE);
+        }
+
     }
 }

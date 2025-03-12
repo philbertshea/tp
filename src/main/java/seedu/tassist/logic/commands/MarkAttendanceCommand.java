@@ -75,7 +75,8 @@ public class MarkAttendanceCommand extends Command {
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getTeleHandle(),
                 personToEdit.getEmail(), personToEdit.getMatNum(), personToEdit.getTutGroup(),
                 personToEdit.getLabGroup(), personToEdit.getFaculty(), personToEdit.getYear(),
-                personToEdit.getRemark(), newAttendanceList, personToEdit.getTags());
+                personToEdit.getRemark(), newAttendanceList, personToEdit.getLabScoreList(),
+                personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

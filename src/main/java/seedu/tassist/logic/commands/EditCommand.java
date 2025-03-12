@@ -20,18 +20,7 @@ import seedu.tassist.commons.util.ToStringBuilder;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
-import seedu.tassist.model.person.AttendanceList;
-import seedu.tassist.model.person.Email;
-import seedu.tassist.model.person.Faculty;
-import seedu.tassist.model.person.LabGroup;
-import seedu.tassist.model.person.MatNum;
-import seedu.tassist.model.person.Name;
-import seedu.tassist.model.person.Person;
-import seedu.tassist.model.person.Phone;
-import seedu.tassist.model.person.Remark;
-import seedu.tassist.model.person.TeleHandle;
-import seedu.tassist.model.person.TutGroup;
-import seedu.tassist.model.person.Year;
+import seedu.tassist.model.person.*;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -116,11 +105,12 @@ public class EditCommand extends Command {
         Remark updatedRemark = personToEdit.getRemark(); // todo: update if needed
         AttendanceList updatedAttendanceList =
                 editPersonDescriptor.getAttendanceList().orElse(personToEdit.getAttendanceList());
+        LabScoreList updatedLabScoreList = personToEdit.getLabScoreList();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedTeleHandle, updatedEmail,
                 updatedMatNum, updatedTutGroup, updatedLabGroup, updatedFaculty, updatedYear,
-                updatedRemark, updatedAttendanceList, updatedTags);
+                updatedRemark, updatedAttendanceList, updatedLabScoreList ,updatedTags);
     }
 
     @Override
