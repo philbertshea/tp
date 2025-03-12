@@ -13,6 +13,9 @@ import seedu.tassist.commons.util.CsvUtil;
 import seedu.tassist.commons.util.FileUtil;
 import seedu.tassist.model.ReadOnlyAddressBook;
 
+/**
+ * A class to save the AddressBook data as a csv file on the hard disk
+ */
 public class CsvAddressBookStorage implements AddressBookStorage {
 
     private static final Logger logger = LogsCenter.getLogger(JsonAddressBookStorage.class);

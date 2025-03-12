@@ -93,8 +93,8 @@ public class ExportDataCommand extends Command {
      */
     private void validateFileName(String fileName) throws CommandException {
         if (!fileName.matches("^[a-zA-Z0-9-_]+$")) { // Simple alphanumeric with dashes/underscores
-            throw new CommandException(String.format("Invalid filename: %s \n " +
-                    "File name should contain alphanumeric characters, ", fileName));
+            throw new CommandException(String.format("Invalid filename: %s \n "
+                    + "File name should contain alphanumeric characters, ", fileName));
         }
     }
 

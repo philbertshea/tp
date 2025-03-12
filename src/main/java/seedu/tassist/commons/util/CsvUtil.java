@@ -1,11 +1,8 @@
 package seedu.tassist.commons.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -99,7 +96,9 @@ public class CsvUtil {
      * @return A properly escaped CSV string. If the input is {@code null}, an empty string is returned.
      */
     private static String escapeCsv(Object value) {
-        if (value == null) return "";
+        if (value == null) {
+            return "";
+        }
         String str = value.toString();
         if (str.contains(",") || str.contains("\"") || str.contains("\n")) {
             str = "\"" + str.replace("\"", "\"\"") + "\""; // Escape double quotes

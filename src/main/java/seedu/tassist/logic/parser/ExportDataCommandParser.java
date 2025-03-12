@@ -12,7 +12,7 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new ExportDataCommand object.
  */
-public class ExportDataCommandParser implements Parser<ExportDataCommand>{
+public class ExportDataCommandParser implements Parser<ExportDataCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the ExportDataCommand
