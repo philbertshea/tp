@@ -32,8 +32,7 @@ public class CsvAddressBookStorage implements AddressBookStorage {
     }
 
     /**
-     * Returns AddressBook data as a {@link ReadOnlyAddressBook}.
-     * Returns {@code Optional.empty()} if storage file is not found.
+     * Similar to {@link #readAddressBook()}.
      *
      * @throws DataLoadingException if loading the data from storage failed.
      */
@@ -43,31 +42,22 @@ public class CsvAddressBookStorage implements AddressBookStorage {
         return Optional.empty();
     }
 
-    /**
-     * @param filePath
-     * @see #getAddressBookFilePath()
-     */
     @Override
     public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
         //TODO: Future implementation goes here:
         return Optional.empty();
     }
 
-    /**
-     * Saves the given {@link ReadOnlyAddressBook} to the storage.
-     *
-     * @param addressBook cannot be null.
-     * @throws IOException if there was any problem writing to the file.
-     */
     @Override
     public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
         saveAddressBook(addressBook, filePath);
     }
 
     /**
-     * @param addressBook
-     * @param filePath
-     * @see #saveAddressBook(ReadOnlyAddressBook)
+     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
+     *
+     * @param addressBook the current addressbook to be stored.
+     * @param filePath location to store the csv data. Cannot be null.
      */
     @Override
     public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {

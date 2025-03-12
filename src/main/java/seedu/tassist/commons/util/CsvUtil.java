@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 
 import seedu.tassist.commons.core.LogsCenter;
 
+/**
+ * Converts a Java object instance to CSV
+ */
 public class CsvUtil {
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
@@ -19,6 +22,12 @@ public class CsvUtil {
         FileUtil.writeToFile(csvFile, toCsvString(objects));
     }
 
+    /**
+     * Converts a given list of objects from a class into its CSV data string representation.
+     * @param objects The list of objects to be converted into the CSV string
+     * @param <T> The generic type to create an instance of
+     * @return CSV data representation of the given list of class objects, in string
+     */
     public static <T> String toCsvString(List<T> objects) {
         if (objects == null || objects.isEmpty()) {
             throw new IllegalArgumentException("Object list is empty.");
@@ -39,6 +48,11 @@ public class CsvUtil {
         return header + "\n" + String.join("\n", rows);
     }
 
+    /**
+     * Retrives the name of the fields in the class and formats them into the CSV header
+     * @param clazz The class object to get the header from
+     * @return A string representation of the headers
+     */
     private static String getHeader(Class<?> clazz) {
         return List.of(clazz.getDeclaredFields())
                 .stream()
@@ -46,6 +60,12 @@ public class CsvUtil {
                 .collect(Collectors.joining(","));
     }
 
+    /**
+     * Converts a given instance of an object into is CSV data string representation
+     * @param obj The T object to be converted into the CSV string
+     * @param <T> The generic type to create an instance of
+     * @return CSV data representation of the given class instance, in string
+     */
     private static <T> String getRow(T obj) {
         try {
             return List.of(obj.getClass().getDeclaredFields())
@@ -64,6 +84,20 @@ public class CsvUtil {
         }
     }
 
+    /**
+     * Escapes a given value for safe inclusion in a CSV file.
+     * <p>
+     * This method converts an object to its string representation and ensures that
+     * special characters are properly escaped according to CSV format rules.
+     * </p>
+     * <p>
+     * If the string contains a comma (`,`), double quote (`"`), or newline (`\n`),
+     * it is enclosed in double quotes (`"`). Any existing double quotes within the
+     * string are escaped by doubling them (`""`).
+     * </p>
+     * @param value The object to be converted to a CSV-safe string. Can be {@code null}.
+     * @return A properly escaped CSV string. If the input is {@code null}, an empty string is returned.
+     */
     private static String escapeCsv(Object value) {
         if (value == null) return "";
         String str = value.toString();

@@ -9,11 +9,17 @@ import java.util.stream.Stream;
 import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses input arguments and creates a new ExportDataCommand object.
+ */
 public class ExportDataCommandParser implements Parser<ExportDataCommand>{
 
     /**
      * Parses the given {@code String} of arguments in the context of the ExportDataCommand
      * and returns an ExportDataCommand object for execution.
+     *
+     * @param args String input to be parsed
+     * @return ExportDataCommand corresponding to the String input
      * @throws ParseException if the user input does not conform the expected format
      */
     @Override
