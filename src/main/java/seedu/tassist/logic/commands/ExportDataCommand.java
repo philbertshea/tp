@@ -1,30 +1,32 @@
 package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.storage.CsvAddressBookStorage;
 import seedu.tassist.storage.JsonAddressBookStorage;
-import seedu.tassist.storage.StorageManager;
 
+/**
+ * Allows a user to export stored in the address book into CSV or JSON format.
+ */
 public class ExportDataCommand extends Command {
     public static final String COMMAND_WORD = "export";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the data in TAssist to a JSON or CSV file.\n"
-            + "Parameters:"
-            + "-f <file name>"
-            + "-e <file extension>\n"
-            + "Example: " + COMMAND_WORD + " -f userdata -e csv";
+            + "Parameters: "
+            + PREFIX_FILENAME + "FILE_NAME "
+            + PREFIX_EXTENSION + "FILE_EXTENSION\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME + "userdata " + PREFIX_EXTENSION + " csv";
 
-    public static final String MESSAGE_ARGUMENTS = "FileName: %1$s, Extension: %2$s";
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
     private static final Set<String> VALID_EXTENSIONS = Set.of("csv", "json");
@@ -32,6 +34,13 @@ public class ExportDataCommand extends Command {
     private final String fileName;
     private final String extension;
 
+    /**
+     * Instantiates the ExportDataCommand instance, with the provided
+     * fileName and extension.
+     *
+     * @param fileName index of person to be marked attendance for.
+     * @param extension week to mark attendance of person for.
+     */
     public ExportDataCommand(String fileName, String extension) {
         requireAllNonNull(fileName, extension);
 
@@ -39,13 +48,6 @@ public class ExportDataCommand extends Command {
         this.extension = extension;
     }
 
-    /**
-     * Executes the command and returns the result message.
-     *
-     * @param model {@code Model} which the command should operate on.
-     * @return feedback message of the operation result for display
-     * @throws CommandException If an error occurs during command execution.
-     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         validateExtension(extension);
@@ -87,16 +89,17 @@ public class ExportDataCommand extends Command {
     }
 
     /**
-     * Placeholder for validating filenames.
+     * Validates if the provided filename is allowed.
      */
     private void validateFileName(String fileName) throws CommandException {
         if (!fileName.matches("^[a-zA-Z0-9-_]+$")) { // Simple alphanumeric with dashes/underscores
-            throw new CommandException(String.format("Invalid filename: %s", fileName));
+            throw new CommandException(String.format("Invalid filename: %s \n " +
+                    "File name should contain alphanumeric characters, ", fileName));
         }
     }
 
     /**
-     * Saves the AddressBook to the specified file path based on the file extension.
+     * Saves the AddressBook to the specified file path and format based on the file extension.
      */
     private void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath, String extension) throws IOException {
         switch (extension) {

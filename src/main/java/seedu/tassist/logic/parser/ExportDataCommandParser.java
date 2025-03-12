@@ -12,10 +12,9 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 public class ExportDataCommandParser implements Parser<ExportDataCommand>{
 
     /**
-     * Parses {@code args} into a command and returns it.
-     *
-     * @param args
-     * @throws ParseException if {@code args} does not conform the expected format
+     * Parses the given {@code String} of arguments in the context of the ExportDataCommand
+     * and returns an ExportDataCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
      */
     @Override
     public ExportDataCommand parse(String args) throws ParseException {

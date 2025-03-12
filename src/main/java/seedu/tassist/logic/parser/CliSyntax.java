@@ -21,5 +21,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_WEEK = new Prefix("-w");
     public static final Prefix PREFIX_ATTENDANCE_LIST = new Prefix("-al");
     public static final Prefix PREFIX_FILENAME = new Prefix("-f ");
-    public static final Prefix PREFIX_EXTENSION = new Prefix("-e ");
+    public static final Prefix PREFIX_EXTENSION = new Prefix("-ext ");
 }

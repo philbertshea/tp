@@ -11,7 +11,6 @@ import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
 import seedu.tassist.commons.util.CsvUtil;
 import seedu.tassist.commons.util.FileUtil;
-import seedu.tassist.commons.util.JsonUtil;
 import seedu.tassist.model.ReadOnlyAddressBook;
 
 public class CsvAddressBookStorage implements AddressBookStorage {
