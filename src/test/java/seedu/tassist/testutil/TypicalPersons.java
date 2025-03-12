@@ -40,19 +40,19 @@ public class TypicalPersons {
             .withEmail("alice@example.com").withPhone("94351253").withTeleHandle("@alice")
             .withMatNum("A0000001X").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("1").withRemark("todo")
-            .withAttendanceList("0000000000000").withTags("friends").build();
+            .withAttendanceList("0000000000000").withLabScores().withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com").withPhone("98765432").withTeleHandle("@ben_mei")
             .withMatNum("A0000002W").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("2").withRemark("todo")
             .withTags("owesMoney", "friends")
-            .withAttendanceList("0000000000000")
+            .withAttendanceList("0000000000000").withLabScores()
             .build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withTeleHandle("@carlie")
             .withMatNum("A0000003U").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
-            .withAttendanceList("0000000000000").build();
+            .withAttendanceList("0000000000000").withLabScores().build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withTeleHandle("@meister")
             .withMatNum("A0000004R").withTutGroup("T01").withLabGroup("B01")

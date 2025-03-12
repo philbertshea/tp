@@ -44,6 +44,7 @@ class JsonAdaptedPerson {
     private final String year;
     private final String remark;
     private final String attendances;
+    private final String labScores;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -60,6 +61,7 @@ class JsonAdaptedPerson {
             @JsonProperty("year") String year,
             @JsonProperty("remark") String remark,
             @JsonProperty("attendances") String attendances,
+            @JsonProperty("labScores") String labScores,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
@@ -72,6 +74,7 @@ class JsonAdaptedPerson {
         this.year = year;
         this.remark = remark;
         this.attendances = attendances;
+        this.labScores = labScores;
         if (tags != null) {
             this.tags.addAll(tags);
         }

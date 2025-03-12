@@ -3,18 +3,7 @@ package seedu.tassist.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.tassist.model.person.AttendanceList;
-import seedu.tassist.model.person.Email;
-import seedu.tassist.model.person.Faculty;
-import seedu.tassist.model.person.LabGroup;
-import seedu.tassist.model.person.MatNum;
-import seedu.tassist.model.person.Name;
-import seedu.tassist.model.person.Person;
-import seedu.tassist.model.person.Phone;
-import seedu.tassist.model.person.Remark;
-import seedu.tassist.model.person.TeleHandle;
-import seedu.tassist.model.person.TutGroup;
-import seedu.tassist.model.person.Year;
+import seedu.tassist.model.person.*;
 import seedu.tassist.model.tag.Tag;
 import seedu.tassist.model.util.SampleDataUtil;
 
@@ -35,6 +24,8 @@ public class PersonBuilder {
     public static final String DEFAULT_REMARK = "todo";
     public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
 
+    public static final String DEFAULT_LAB_SCORES = "-1/25 -1/25 -1/25 -1/25";
+
     private Name name;
     private Phone phone;
     private TeleHandle teleHandle;
@@ -46,6 +37,7 @@ public class PersonBuilder {
     private Year year;
     private Remark remark;
     private AttendanceList attendanceList;
+    private LabScoreList labScoreList;
     private Set<Tag> tags;
 
     /**
@@ -63,6 +55,7 @@ public class PersonBuilder {
         year = new Year(DEFAULT_YEAR);
         remark = new Remark(DEFAULT_REMARK);
         attendanceList = AttendanceList.generateAttendanceList(DEFAULT_ATTENDANCE_STRING);
+        labScoreList = new LabScoreList();
         tags = new HashSet<>();
     }
 
@@ -180,12 +173,17 @@ public class PersonBuilder {
         return this;
     }
 
+    public PersonBuilder withLabScores() {
+        this.labScoreList = new LabScoreList();
+        return this;
+    }
+
     /**
      * Creates a {@code Person}.
      */
     public Person build() {
         return new Person(name, phone, teleHandle, email, matNum, tutGroup, labGroup,
-                faculty, year, remark, attendanceList, tags);
+                faculty, year, remark, attendanceList, labScoreList ,tags);
     }
 
 }

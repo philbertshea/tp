@@ -10,7 +10,7 @@ public class LabScoreList {
     public static final String LAB_NUMBER_CONSTRAINT = String.format("Lab number must be between 1 and %d", labTotal);
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
 
-    private LabScoreList(){
+    public LabScoreList(){
         for (int i = 0; i < labTotal; i++) {
             labScoreList.add(new LabScore());
         }
