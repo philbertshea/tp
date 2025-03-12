@@ -12,18 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.tassist.commons.exceptions.IllegalValueException;
-import seedu.tassist.model.person.AttendanceList;
-import seedu.tassist.model.person.Email;
-import seedu.tassist.model.person.Faculty;
-import seedu.tassist.model.person.LabGroup;
-import seedu.tassist.model.person.MatNum;
-import seedu.tassist.model.person.Name;
-import seedu.tassist.model.person.Person;
-import seedu.tassist.model.person.Phone;
-import seedu.tassist.model.person.Remark;
-import seedu.tassist.model.person.TeleHandle;
-import seedu.tassist.model.person.TutGroup;
-import seedu.tassist.model.person.Year;
+import seedu.tassist.model.person.*;
 import seedu.tassist.model.tag.Tag;
 
 /**
@@ -95,6 +84,7 @@ class JsonAdaptedPerson {
         year = source.getYear().value;
         remark = source.getRemark().value;
         attendances = source.getAttendanceList().toString();
+        labScores = source.getLabScoreList().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -144,10 +134,12 @@ class JsonAdaptedPerson {
                 AttendanceList.class, AttendanceList::isValidAttendanceString,
                 AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
 
+        final LabScoreList modelLabScoreList = new LabScoreList(); //HY update later
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,
                 modelMatNum, modelTutGroup, modelLabGroup, modelFaculty, modelYear, modelRemark,
-                modelAttendanceList, modelTags);
+                modelAttendanceList, modelLabScoreList, modelTags);
     }
 
     /**
