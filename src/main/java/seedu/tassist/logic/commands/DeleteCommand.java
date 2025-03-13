@@ -24,27 +24,55 @@ public class DeleteCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Student: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index! You currently have %d records!";
 
     private final Index targetIndex;
 
+    /**
+     * Constructs a {@code DeleteCommand} to delete the person at the specified {@code targetIndex}.
+     *
+     * @param targetIndex Index of the person in the filtered list to delete.
+     */
     public DeleteCommand(Index targetIndex) {
+        requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
     }
 
+    /**
+     * Executes the deletion command.
+     *
+     * @param model {@code Model} which the command should operate on.
+     * @return the result message of the deletion.
+     * @throws CommandException if the target index is invalid.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-        }
+        Person personToDelete = getTargetPerson(model);
 
-        Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
-                Messages.format(personToDelete)));
+
+        String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete));
+        return new CommandResult(feedback);
+    }
+
+    /**
+     * Retrieves the person corresponding to {@code targetIndex} from the model's filtered list.
+     * Uses a guard clause to handle an invalid index immediately.
+     *
+     * @param model the model to retrieve the person from.
+     * @return the person to delete.
+     * @throws CommandException if {@code targetIndex} is out of bounds.
+     */
+    private Person getTargetPerson(Model model) throws CommandException {
+        List<Person> lastShownList = model.getFilteredPersonList();
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+        }
+        return lastShownList.get(targetIndex.getZeroBased());
+
     }
 
     @Override
