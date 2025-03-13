@@ -16,7 +16,7 @@ public class LabScore {
 
     public LabScore(int labScore, int maxLabScore) {
         this.labScore = labScore;
-        this.maxLabScore = labScore;
+        this.maxLabScore = maxLabScore;
     }
 
     public void updateLabScore(int labScore){

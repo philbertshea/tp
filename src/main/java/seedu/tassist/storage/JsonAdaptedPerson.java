@@ -133,8 +133,8 @@ class JsonAdaptedPerson {
         final AttendanceList modelAttendanceList = validateAndCreate(attendances,
                 AttendanceList.class, AttendanceList::isValidAttendanceString,
                 AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
-
-        final LabScoreList modelLabScoreList = new LabScoreList(); //HY update later
+        final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
+                LabScoreList::isValidSaveString,LabScoreList.INVALID_LAB_SCORE, LabScoreList::loadLabScores); //HY update later
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,
