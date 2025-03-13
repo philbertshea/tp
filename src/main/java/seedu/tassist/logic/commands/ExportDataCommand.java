@@ -29,6 +29,8 @@ public class ExportDataCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
+    public static final String INVALID_FILENAME_ERROR = "Invalid filename: %s\n"
+            + "File name should only contain alphanumeric characters, dashes, or underscores.";
     private static final Set<String> VALID_EXTENSIONS = Set.of("csv", "json");
 
     private final String fileName;
@@ -93,8 +95,7 @@ public class ExportDataCommand extends Command {
      */
     private void validateFileName(String fileName) throws CommandException {
         if (!fileName.matches("^[a-zA-Z0-9-_]+$")) { // Simple alphanumeric with dashes/underscores
-            throw new CommandException(String.format("Invalid filename: %s\n"
-                    + "File name should only contain alphanumeric characters, dashes, or underscores.", fileName));
+            throw new CommandException(String.format(INVALID_FILENAME_ERROR, fileName));
         }
     }
 

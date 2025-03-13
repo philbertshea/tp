@@ -8,6 +8,7 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_NAME;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.ExportDataCommand.INVALID_ARGUMENT_EXTENSION;
+import static seedu.tassist.logic.commands.ExportDataCommand.INVALID_FILENAME_ERROR;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,7 @@ public class ExportDataCommandTest {
 
     @Test
     public void execute_invalidFileName_failure() {
-        String expectedMessage = String.format("Invalid filename: %s \n "
-                + "File name should contain alphanumeric characters, ", INVALID_FILE_NAME);
+        String expectedMessage = String.format(INVALID_FILENAME_ERROR, INVALID_FILE_NAME);
 
         assertCommandFailure(
                 new ExportDataCommand(INVALID_FILE_NAME, VALID_FILE_EXTENSION_CSV),
