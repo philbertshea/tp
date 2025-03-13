@@ -80,8 +80,18 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getAttendanceList().getAttendanceStream()
-                .forEach(attendance
-                        -> attendances.getChildren().add(new Label(attendance.getTagName())));
+                .forEach(attendance -> {
+                    String tagName = attendance.getTagName();
+                    Label label = new Label(tagName);
+                    if (tagName.endsWith("ATT")) {
+                        label.setStyle("-fx-background-color: #5cb338;");
+                    } else if (tagName.endsWith("NO")) {
+                        label.setStyle("-fx-background-color: #d70654;");
+                    } else if (tagName.endsWith("MC")) {
+                        label.setStyle("-fx-background-color: #df6d14;");
+                    }
+                    attendances.getChildren().add(label);
+                });
 
         final int[] labCounter = {1};
         person.getLabScoreList().getLabScores().forEach(
