@@ -39,7 +39,15 @@ public class Attendance {
     }
 
     public String tagName() {
-        return "W" + this.week + ": " + this.attendance;
+        if (this.attendance == NOT_ATTENDED) {
+            return "W" + this.week + ": NO";
+        } else if (this.attendance == ATTENDED) {
+            return "W" + this.week + ": ATT";
+        } else if (this.attendance == ON_MC) {
+            return "W" + this.week + ": MC";
+        } else {
+            return "";
+        }
     }
 
     @Override
