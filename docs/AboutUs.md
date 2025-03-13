@@ -1,6 +1,6 @@
 ---
-  layout: default.md
-  title: "About Us"
+layout: default
+title: "About Us"
 ---
 
 # About Us
@@ -22,24 +22,24 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Deliverables and Deadlines
 * Responsibilities: Ensure project deliverables are done on time and in the right format.
 
-### Jane Doe
+### Hannah Loh
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/hhlh27.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/hhlh27)]
+[[portfolio](team/hhlh27.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Integration
+* Responsibilities: In charge of versioning of the code, maintaining code repository
 
-### Johnny Doe
+### Low Hsin Yi
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/hsinyilow.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/hsinyilow)] [[portfolio](team/hsinyilow.md)]
 
-* Role: Developer
-* Responsibilities: Data
+* Role: Integration
+* Responsibilities: In charge of versioning of the code, integrating various parts of the software to create a whole.
 
 ### Ong Wei En
 
@@ -60,3 +60,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Code Quality
 * Responsibilities: Looks after code quality, ensures adherence to coding standards, etc.
+
+### Xuezhou Xu
+
+<img src="images/xuxuezhou.png" width="200px">
+
+[[homepage](https://xuxuezhou.github.io/)]
+[[github](https://github.com/xuxuezhou)]
+[[portfolio](team/xuxuezhou.md)]
+
+* Role: Testing
+* Responsibilities: Ensures the testing of the project is done properly and on time.
+

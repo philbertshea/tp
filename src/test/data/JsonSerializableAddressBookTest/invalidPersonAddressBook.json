@@ -2,7 +2,14 @@
   "persons": [ {
     "name": "Hans Muster",
     "phone": "9482424",
+    "teleHandle" : "@musty",
     "email": "invalid@email!3e",
-    "address": "4th street"
+    "matNum" : "A0000000Y",
+    "tutGroup" : "T01",
+    "labGroup" :  "B01",
+    "faculty" :  "SoC",
+    "year" :  "3",
+    "remark" : ".",
+    "attendances" : "0000000000000"
   } ]
 }
