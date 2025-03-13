@@ -1,6 +1,5 @@
 package seedu.tassist.storage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.tassist.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.exceptions.IllegalValueException;
 import seedu.tassist.commons.util.JsonUtil;
-import seedu.tassist.model.AddressBook;
-import seedu.tassist.testutil.TypicalPersons;
 
 public class JsonSerializableAddressBookTest {
 
