@@ -40,7 +40,7 @@ public class MarkAttendanceCommandParserTest {
     }
 
     @Test
-    public void parse_markOnMCValidIndexAndWeek_success() {
+    public void parse_markOnMcValidIndexAndWeek_success() {
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "

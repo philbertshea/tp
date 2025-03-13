@@ -97,7 +97,7 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
-    public void execute_markOnMCUnfilteredList_success() {
+    public void execute_markOnMcUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String existingAttendanceString = firstPerson.getAttendanceList().toString();
