@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -154,11 +155,17 @@ public class MainWindow extends UiPart<Stage> {
         fileChooser.setTitle("Save CSV File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(primaryStage);
+
         if (file != null) {
-            // TODO: Integrate with logic/storage to save file data.
-            logger.info("Save file: " + file.getAbsolutePath());
+            try {
+                logic.saveCsv(file.toPath());
+                logger.info("CSV data successfully saved to: " + file.getAbsolutePath());
+            } catch (IOException e) {
+                logger.severe("Failed to save CSV: " + e.getMessage());
+            }
         }
     }
+
 
     void show() {
         primaryStage.show();
