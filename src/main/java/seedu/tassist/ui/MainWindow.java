@@ -1,5 +1,8 @@
 package seedu.tassist.ui;
 
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -19,8 +22,6 @@ import seedu.tassist.logic.Logic;
 import seedu.tassist.logic.commands.CommandResult;
 import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**
