@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
@@ -75,4 +76,22 @@ public class StorageManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
+    @Override
+    public Optional<ReadOnlyAddressBook> readAddressBookFromCsv(Path filePath) throws DataLoadingException {
+        logger.fine("Attempting to read CSV data from file: " + filePath);
+        try {
+            CsvAddressBookStorage tempCsvStorage = new CsvAddressBookStorage(filePath);
+            AddressBook ab = tempCsvStorage.readAddressBook();
+            return Optional.of(ab);
+        } catch (IOException e) {
+            throw new DataLoadingException(e);
+        }
+    }
+
+    @Override
+    public void saveAddressBookToCsv(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        logger.fine("Attempting to write CSV data to file: " + filePath);
+        CsvAddressBookStorage tempCsvStorage = new CsvAddressBookStorage(filePath);
+        tempCsvStorage.saveAddressBook(addressBook);
+    }
 }

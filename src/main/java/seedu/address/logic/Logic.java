@@ -1,5 +1,6 @@
 package seedu.address.logic;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 import javafx.collections.ObservableList;
@@ -47,4 +48,14 @@ public interface Logic {
      * Set the user prefs' GUI settings.
      */
     void setGuiSettings(GuiSettings guiSettings);
+
+    /**
+     * Loads AddressBook data from a CSV file located at {@code filePath}.
+     */
+    void loadCsv(Path filePath) throws IOException;
+
+    /**
+     * Saves current AddressBook data to a CSV file at {@code filePath}.
+     */
+    void saveCsv(Path filePath) throws IOException;
 }

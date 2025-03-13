@@ -3,16 +3,19 @@ package seedu.address.logic;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
@@ -59,6 +62,24 @@ public class LogicManager implements Logic {
         }
 
         return commandResult;
+    }
+
+    public void loadCsv(Path filePath) throws IOException {
+        try {
+            Optional<ReadOnlyAddressBook> addressBookOptional = storage.readAddressBookFromCsv(filePath);
+            if (addressBookOptional.isPresent()) {
+                model.setAddressBook(new AddressBook(addressBookOptional.get()));
+            } else {
+                model.setAddressBook(new AddressBook());
+            }
+        } catch (DataLoadingException e) {
+            throw new IOException("Failed to load CSV data from: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void saveCsv(Path filePath) throws IOException {
+        storage.saveAddressBookToCsv(model.getAddressBook(), filePath);
     }
 
     @Override
