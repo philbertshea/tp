@@ -1,5 +1,9 @@
 package seedu.tassist.ui;
 
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+
+import java.io.File;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -9,11 +13,13 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.tassist.commons.core.GuiSettings;
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.logic.Logic;
 import seedu.tassist.logic.commands.CommandResult;
+import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
@@ -149,6 +155,37 @@ public class MainWindow extends UiPart<Stage> {
 
     void show() {
         primaryStage.show();
+    }
+
+
+    @FXML
+    private void handleExport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Data");
+
+        // Set the allowed directory
+        File allowedDirectory = new File("data");
+        if (!allowedDirectory.exists()) {
+            allowedDirectory.mkdirs(); // Create the directory if it doesn't exist
+        }
+        fileChooser.setInitialDirectory(allowedDirectory);
+
+        // Set default file extension options
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV File (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
+
+        // Show save dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+        if (file != null) {
+            String[] fileData = file.getName().split("\\.");
+            try {
+                executeCommand(ExportDataCommand.COMMAND_WORD + " "
+                        + PREFIX_FILENAME + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+            } catch (CommandException | ParseException e) {
+                logger.info("An error occurred while exporting: " + e.getMessage());
+            }
+        }
     }
 
     /**
