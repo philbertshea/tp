@@ -41,7 +41,7 @@ public class ExportDataCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportDataCommand.MESSAGE_USAGE);
         String noFileName = ExportDataCommand.COMMAND_WORD + " " + PREFIX_EXTENSION + VALID_FILE_EXTENSION_CSV;
         String noFileExtension = ExportDataCommand.COMMAND_WORD + " " + PREFIX_FILENAME + VALID_FILE_NAME;
-        
+
         // missing all parameters
         assertParseFailure(parser, ExportDataCommand.COMMAND_WORD, expectedMessage);
 
