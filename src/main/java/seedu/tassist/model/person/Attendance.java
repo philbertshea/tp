@@ -11,12 +11,12 @@ public class Attendance {
     public static final int ATTENDED = 1;
     public static final int ON_MC = 2;
 
-    private int attendance;
-    private final int week;
-
     public static final String MESSAGE_CONSTRAINTS = "Invalid week or attendance!\n"
             + "Week must be an integer from 1 to 13 inclusive.\n"
             + "Attendance must be an integer of value 0, 1, or 2.";
+
+    private int attendance;
+    private final int week;
 
     /**
      * Instantiates the Attendance instance, assigning as not attended.

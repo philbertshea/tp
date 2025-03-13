@@ -3,6 +3,7 @@ package seedu.tassist.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
 import static seedu.tassist.model.person.Attendance.isValidAttendance;
+import static seedu.tassist.model.person.Attendance.isValidWeek;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class AttendanceList {
      * @return attendance for that week.
      */
     public int getAttendanceForWeek(int week) {
-        checkArgument(week > 0 && week < 14, MESSAGE_CONSTRAINTS);
+        checkArgument(isValidWeek(week), MESSAGE_CONSTRAINTS);
         return this.attendanceList.get(week - 1).getAttendance();
     }
 
