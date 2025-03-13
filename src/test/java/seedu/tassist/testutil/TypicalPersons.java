@@ -47,7 +47,7 @@ public class TypicalPersons {
             .withMatNum("A0000002W").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("2").withRemark("todo")
             .withTags("owesMoney", "friends")
-            .withAttendanceList("0000000000000").withLabScores("4.-|-|-|-")
+            .withAttendanceList("0000000000000").withLabScores("4.10/25|-|-|-")
             .build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withTeleHandle("@carlie")
@@ -58,32 +58,35 @@ public class TypicalPersons {
             .withEmail("cornelia@example.com").withTeleHandle("@meister")
             .withMatNum("A0000004R").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("4").withRemark("todo")
-            .withAttendanceList("0000000000000").withTags("friends").build();
+            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-")
+            .withTags("friends").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTeleHandle("@ellie")
             .withMatNum("A0000005N").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("5").withRemark("todo")
-            .withAttendanceList("0000000000000").build();
+            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withTeleHandle("@kunzzz")
             .withMatNum("A0000006M").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("6").withRemark("todo")
-            .withAttendanceList("0000000000000").build();
+            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withTeleHandle("@bestie")
             .withMatNum("A0000007L").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
-            .withAttendanceList("0000000000000").build();
+            .withAttendanceList("0000000000000").withLabScores("4.25/25|-|-|-").build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
             .withEmail("stefan@example.com").withTeleHandle("@hoon")
             .withMatNum("A0000010X").withTutGroup("T01").withLabGroup("B01")
-            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000").build();
+            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
+            .withLabScores("4.25/25|-|-|-").build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
             .withEmail("hans@example.com").withTeleHandle("@id_mu")
             .withMatNum("A0000011W").withTutGroup("T01").withLabGroup("B01")
-            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000").build();
+            .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
+            .withLabScores("4.25/25|-|-|-").build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
