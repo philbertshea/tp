@@ -14,7 +14,7 @@ import seedu.tassist.commons.util.FileUtil;
 import seedu.tassist.model.ReadOnlyAddressBook;
 
 /**
- * A class to save the AddressBook data as a csv file on the hard disk
+ * A class to save the AddressBook data as a CSV file on the hard disk.
  */
 public class CsvAddressBookStorage implements AddressBookStorage {
 
@@ -28,6 +28,8 @@ public class CsvAddressBookStorage implements AddressBookStorage {
 
     /**
      * Returns the file path of the data file.
+     *
+     * @return The file path where the AddressBook is stored.
      */
     @Override
     public Path getAddressBookFilePath() {
@@ -35,32 +37,47 @@ public class CsvAddressBookStorage implements AddressBookStorage {
     }
 
     /**
-     * Similar to {@link #readAddressBook()}.
+     * Similar to {@link #readAddressBook(Path)}.
      *
-     * @throws DataLoadingException if loading the data from storage failed.
+     * @return An {@code Optional} containing the AddressBook data if available.
+     * @throws DataLoadingException if loading the data from storage fails.
      */
     @Override
     public Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
-        //TODO: Future implementation goes here:
+        // TODO: Future implementation goes here:
         return Optional.empty();
     }
 
+    /**
+     * Reads the AddressBook data from the specified file path.
+     *
+     * @param filePath The path of the CSV file to read from.
+     * @return An {@code Optional} containing the AddressBook data if available.
+     * @throws DataLoadingException if loading the data from storage fails.
+     */
     @Override
     public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
-        //TODO: Future implementation goes here:
+        // TODO: Future implementation goes here:
         return Optional.empty();
     }
 
+    /**
+     * Saves the AddressBook data to the default file path.
+     *
+     * @param addressBook The current AddressBook to be stored.
+     * @throws IOException If an I/O error occurs while writing the data.
+     */
     @Override
     public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
         saveAddressBook(addressBook, filePath);
     }
 
     /**
-     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
+     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)} but saves to a specified file path.
      *
-     * @param addressBook the current addressbook to be stored.
-     * @param filePath location to store the csv data. Cannot be null.
+     * @param addressBook The current AddressBook to be stored.
+     * @param filePath    The location to store the CSV data. Cannot be null.
+     * @throws IOException If an I/O error occurs while writing the data.
      */
     @Override
     public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
