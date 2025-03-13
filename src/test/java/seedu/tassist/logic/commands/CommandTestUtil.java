@@ -62,6 +62,9 @@ public class CommandTestUtil {
     public static final int VALID_LAB_SCORE_A = 20;
     public static final int DEFAULT_LAB_SCORE_COUNT = 4;
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
+    public static final String VALID_FILE_NAME = "tassit_data";
+    public static final String VALID_FILE_EXTENSION_CSV = "csv";
+    public static final String VALID_FILE_EXTENSION_JSON = "json";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
