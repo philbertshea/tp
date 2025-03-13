@@ -18,7 +18,7 @@ public class LabScoreList {
 
 
     public LabScoreList updateLabScore(int labNumber, int labScore){
-        labScoreList.get(labNumber).updateLabScore(labScore);
+        labScoreList.get(labNumber - 1).updateLabScore(labScore);
         return this;
     }
     public static boolean isValidLabNumber(String labNumber) {
@@ -30,6 +30,10 @@ public class LabScoreList {
         }
 
         return labNo > 0 && labNo < labTotal;
+    }
+
+    public ArrayList<LabScore> getLabScores(){
+        return labScoreList;
     }
 
 
