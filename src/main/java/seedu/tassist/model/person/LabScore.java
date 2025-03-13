@@ -1,6 +1,5 @@
 package seedu.tassist.model.person;
 
-import seedu.tassist.logic.commands.Command;
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 

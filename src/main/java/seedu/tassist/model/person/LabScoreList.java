@@ -1,9 +1,9 @@
 package seedu.tassist.model.person;
 
+import java.util.ArrayList;
+
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
-
-import java.util.ArrayList;
 
 /**
  * Handles the list of LabScore objects.
@@ -158,7 +158,7 @@ public class LabScoreList {
 
         LabScoreList o = (LabScoreList) other;
         for (int i = 0; i < o.labScoreList.size(); i++) {
-            if(!labScoreList.get(i).equals(o.labScoreList.get(i))) {
+            if (!labScoreList.get(i).equals(o.labScoreList.get(i))) {
                 return false;
             }
         }

@@ -1,8 +1,5 @@
 package seedu.tassist.logic.parser;
 
-import org.junit.jupiter.api.Test;
-import seedu.tassist.logic.commands.UpdateLabScoreCommand;
-
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_NUMBER_A;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_SCORE_A;
@@ -13,11 +10,15 @@ import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import org.junit.jupiter.api.Test;
+
+import seedu.tassist.logic.commands.UpdateLabScoreCommand;
+
 public class UpdateLabScoreCommandParserTest {
     private UpdateLabScoreCommandParser parser = new UpdateLabScoreCommandParser();
 
     @Test
-    public void SuccessCase() {
+    public void successCase() {
         String userInput = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
@@ -28,7 +29,7 @@ public class UpdateLabScoreCommandParserTest {
     }
 
     @Test
-    public void TestMissingField(){
+    public void testMissingField() {
         String errorMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 UpdateLabScoreCommand.MESSAGE_USAGE);
 

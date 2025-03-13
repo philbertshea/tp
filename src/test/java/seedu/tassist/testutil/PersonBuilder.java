@@ -3,7 +3,19 @@ package seedu.tassist.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.tassist.model.person.*;
+import seedu.tassist.model.person.AttendanceList;
+import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
+import seedu.tassist.model.person.MatNum;
+import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
+import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 import seedu.tassist.model.util.SampleDataUtil;
 
@@ -173,6 +185,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code LabScoreList} of the {@code Person} that we are building.
+     */
     public PersonBuilder withLabScores(String newLabString) {
         this.labScoreList = LabScoreList.loadLabScores(newLabString);
         return this;
@@ -183,7 +198,7 @@ public class PersonBuilder {
      */
     public Person build() {
         return new Person(name, phone, teleHandle, email, matNum, tutGroup, labGroup,
-                faculty, year, remark, attendanceList, labScoreList ,tags);
+                faculty, year, remark, attendanceList, labScoreList, tags);
     }
 
 }
