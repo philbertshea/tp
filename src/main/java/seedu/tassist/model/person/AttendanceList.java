@@ -81,7 +81,7 @@ public class AttendanceList {
         checkArgument(isValidAttendance(attendance), MESSAGE_CONSTRAINTS);
         String oldAttendanceString = this.toString();
         String newAttendanceString =
-                oldAttendanceString.substring(0, week - 1) + "1"
+                oldAttendanceString.substring(0, week - 1) + String.valueOf(attendance)
                 + oldAttendanceString.substring(week);
         return AttendanceList.generateAttendanceList(newAttendanceString);
     }

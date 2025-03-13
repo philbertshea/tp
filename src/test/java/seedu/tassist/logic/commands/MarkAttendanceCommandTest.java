@@ -18,6 +18,7 @@ import seedu.tassist.logic.Messages;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
+import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.testutil.PersonBuilder;
 
@@ -25,16 +26,95 @@ public class MarkAttendanceCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    public String getReplacedIndexAndNewString(
+            String newStatus, String existingAttendanceString,
+            int firstReplacementIndex, int secondReplacementIndex) {
+        if (firstReplacementIndex == -1) {
+            return secondReplacementIndex
+                    + existingAttendanceString.substring(0, secondReplacementIndex)
+                    + newStatus
+                    + existingAttendanceString.substring(secondReplacementIndex + 1);
+        } else {
+            return firstReplacementIndex
+                    + existingAttendanceString.substring(0, firstReplacementIndex)
+                    + newStatus
+                    + existingAttendanceString.substring(firstReplacementIndex + 1);
+        }
+    }
+
     @Test
-    public void execute_markAttendanceUnfilteredList_success() {
+    public void execute_markAttendedUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        String newAttendanceString = "1" + firstPerson.getAttendanceList().toString().substring(1);
-        Person editedPerson = new PersonBuilder(firstPerson).withAttendanceList(newAttendanceString).build();
+        String existingAttendanceString = firstPerson.getAttendanceList().toString();
+        String replacedIndexAndNewString = getReplacedIndexAndNewString(
+                String.valueOf(Attendance.ATTENDED), existingAttendanceString,
+                existingAttendanceString.indexOf(String.valueOf(Attendance.NOT_ATTENDED)),
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)));
 
-        MarkAttendanceCommand command = new MarkAttendanceCommand(INDEX_FIRST_PERSON, 1);
+        String newAttendanceString = replacedIndexAndNewString.substring(1);
+        int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
+        Person editedPerson = new PersonBuilder(firstPerson)
+                .withAttendanceList(newAttendanceString).build();
+        MarkAttendanceCommand command =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ATTENDED);
+
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_ATTENDED_SUCCESS,
-                1, Messages.format(editedPerson));
+                replacedIndex, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+    }
+
+    @Test
+    public void execute_markUnattendedUnfilteredList_success() {
+
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String existingAttendanceString = firstPerson.getAttendanceList().toString();
+        String replacedIndexAndNewString = getReplacedIndexAndNewString(
+                String.valueOf(Attendance.NOT_ATTENDED), existingAttendanceString,
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ATTENDED)),
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)));
+
+        String newAttendanceString = replacedIndexAndNewString.substring(1);
+        int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
+        Person editedPerson = new PersonBuilder(firstPerson)
+                .withAttendanceList(newAttendanceString).build();
+        MarkAttendanceCommand command =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.NOT_ATTENDED);
+
+        String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_UNATTENDED_SUCCESS,
+                replacedIndex, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+    }
+
+    @Test
+    public void execute_markOnMCUnfilteredList_success() {
+
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        String existingAttendanceString = firstPerson.getAttendanceList().toString();
+        String replacedIndexAndNewString = getReplacedIndexAndNewString(
+                String.valueOf(Attendance.ON_MC), existingAttendanceString,
+                existingAttendanceString.indexOf(String.valueOf(Attendance.NOT_ATTENDED)),
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ATTENDED)));
+
+        String newAttendanceString = replacedIndexAndNewString.substring(1);
+        int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
+        Person editedPerson = new PersonBuilder(firstPerson)
+                .withAttendanceList(newAttendanceString).build();
+        MarkAttendanceCommand command =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ON_MC);
+
+        String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_MC_SUCCESS,
+                replacedIndex, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -46,7 +126,7 @@ public class MarkAttendanceCommandTest {
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1);
+        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
@@ -58,16 +138,18 @@ public class MarkAttendanceCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
-        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1);
+        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        final MarkAttendanceCommand standardCommand = new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A);
+        final MarkAttendanceCommand standardCommand =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
 
         // same values -> return true
-        MarkAttendanceCommand commandWithSameValues = new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A);
+        MarkAttendanceCommand commandWithSameValues =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> return true
@@ -80,10 +162,16 @@ public class MarkAttendanceCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> return false
-        assertFalse(standardCommand.equals(new MarkAttendanceCommand(INDEX_SECOND_PERSON, VALID_WEEK_A)));
+        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
+                INDEX_SECOND_PERSON, VALID_WEEK_A, Attendance.ATTENDED)));
 
         // different week -> return false
-        assertFalse(standardCommand.equals(new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_B)));
+        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
+                INDEX_FIRST_PERSON, VALID_WEEK_B, Attendance.ATTENDED)));
+
+        // different attendanceStatus -> return false
+        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
+                INDEX_FIRST_PERSON, VALID_WEEK_B, Attendance.NOT_ATTENDED)));
     }
 
 }

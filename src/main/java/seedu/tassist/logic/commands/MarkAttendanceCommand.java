@@ -9,6 +9,7 @@ import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Person;
 
@@ -21,6 +22,12 @@ public class MarkAttendanceCommand extends Command {
 
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
             "Marked Person as Attended Tutorial Week %1$d: %2$s";
+
+    public static final String MESSAGE_MARK_UNATTENDED_SUCCESS =
+            "Marked Person as Unattended Tutorial Week %1$d: %2$s";
+
+    public static final String MESSAGE_MARK_MC_SUCCESS =
+            "Marked Person as on MC for Tutorial Week %1$d: %2$s";
 
     // Note that -u and -mc will NOT be implemented yet.
     // We will settle the mandatory parameters first.
@@ -45,6 +52,8 @@ public class MarkAttendanceCommand extends Command {
 
     private final int week;
 
+    private final int attendanceStatus;
+
     /**
      * Instantiates the MarkAttendanceCommand instance, with the provided
      * index and week.
@@ -52,10 +61,11 @@ public class MarkAttendanceCommand extends Command {
      * @param index index of person to be marked attendance for.
      * @param week week to mark attendance of person for.
      */
-    public MarkAttendanceCommand(Index index, int week) {
-        requireAllNonNull(index, week);
+    public MarkAttendanceCommand(Index index, int week, int attendanceStatus) {
+        requireAllNonNull(index, week, attendanceStatus);
         this.index = index;
         this.week = week;
+        this.attendanceStatus = attendanceStatus;
     }
 
     @Override
@@ -69,7 +79,7 @@ public class MarkAttendanceCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
         AttendanceList newAttendanceList =
-                personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
+                personToEdit.getAttendanceList().setAttendanceForWeek(this.week, this.attendanceStatus);
 
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getTeleHandle(),
@@ -89,7 +99,22 @@ public class MarkAttendanceCommand extends Command {
      * {@code personToEdit}.
      */
     private String generateSuccessMessage(Person personToEdit) {
-        return String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+        String message = "";
+        switch (attendanceStatus) {
+        case Attendance.ATTENDED:
+            message = MESSAGE_MARK_ATTENDED_SUCCESS;
+            break;
+        case Attendance.NOT_ATTENDED:
+            message = MESSAGE_MARK_UNATTENDED_SUCCESS;
+            break;
+        case Attendance.ON_MC:
+            message = MESSAGE_MARK_MC_SUCCESS;
+            break;
+        default:
+            message = MESSAGE_USAGE;
+        }
+
+        return String.format(message,
                 this.week,
                 Messages.format(personToEdit));
     }
@@ -105,7 +130,9 @@ public class MarkAttendanceCommand extends Command {
         }
 
         MarkAttendanceCommand e = (MarkAttendanceCommand) other;
-        return this.index.equals(e.index) && this.week == e.week;
+        return this.index.equals(e.index)
+                && this.week == e.week
+                && this.attendanceStatus == e.attendanceStatus;
     }
 
 }
