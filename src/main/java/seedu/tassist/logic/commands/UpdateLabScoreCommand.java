@@ -12,7 +12,10 @@ import seedu.tassist.model.Model;
 import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.Person;
 
-public class UpdateLabScoreCommand extends Command{
+/**
+ * Update the lab score of a student for the specified lab.
+ */
+public class UpdateLabScoreCommand extends Command {
 
     public static final String COMMAND_WORD = "lab";
 
@@ -36,8 +39,14 @@ public class UpdateLabScoreCommand extends Command{
     private final int labScore;
     private final int maxLabScore = 25; //default 25 max until optional parameter is implemented
 
-    public UpdateLabScoreCommand(Index index, int labNumber, int labScore){
-        requireAllNonNull(index, labNumber ,labScore);
+    /**
+     * Updates the lab score for the specified student for the specified lab.
+     * @param index The student index.
+     * @param labNumber The lab for the score to update.
+     * @param labScore The new score for the specified lab.
+     */
+    public UpdateLabScoreCommand(Index index, int labNumber, int labScore) {
+        requireAllNonNull(index, labNumber, labScore);
         this.index = index;
         this.labNumber = labNumber;
         this.labScore = labScore;
@@ -62,7 +71,7 @@ public class UpdateLabScoreCommand extends Command{
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format("%s %s",MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
+        return new CommandResult(String.format("%s %s", MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
                 Messages.format(personToUpdate)));
     }
 

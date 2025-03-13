@@ -6,7 +6,19 @@ import java.util.stream.Collectors;
 
 import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.ReadOnlyAddressBook;
-import seedu.tassist.model.person.*;
+import seedu.tassist.model.person.AttendanceList;
+import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
+import seedu.tassist.model.person.MatNum;
+import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
+import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
 import seedu.tassist.model.tag.Tag;
 
 /**

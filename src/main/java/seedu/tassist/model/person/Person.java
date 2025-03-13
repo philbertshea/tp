@@ -39,7 +39,7 @@ public class Person {
      */
     public Person(Name name, Phone phone, TeleHandle teleHandle, Email email,
                   MatNum matNum, TutGroup tutGroup, LabGroup labGroup, Faculty faculty, Year year,
-                  Remark remark, AttendanceList attendanceList,LabScoreList labScoreList, Set<Tag> tags) {
+                  Remark remark, AttendanceList attendanceList, LabScoreList labScoreList, Set<Tag> tags) {
         requireAllNonNull(name, phone, teleHandle, email,
                 matNum, tutGroup, labGroup, faculty, remark, attendanceList, labScoreList, tags);
         this.name = name;

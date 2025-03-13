@@ -8,7 +8,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.tassist.commons.core.LogsCenter;
-import seedu.tassist.logic.commands.*;
+import seedu.tassist.logic.commands.AddCommand;
+import seedu.tassist.logic.commands.ClearCommand;
+import seedu.tassist.logic.commands.Command;
+import seedu.tassist.logic.commands.DeleteCommand;
+import seedu.tassist.logic.commands.EditCommand;
+import seedu.tassist.logic.commands.ExitCommand;
+import seedu.tassist.logic.commands.FindCommand;
+import seedu.tassist.logic.commands.HelpCommand;
+import seedu.tassist.logic.commands.ListCommand;
+import seedu.tassist.logic.commands.MarkAttendanceCommand;
+import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**

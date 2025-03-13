@@ -1,31 +1,37 @@
 package seedu.tassist.model.person;
 
-import seedu.tassist.logic.commands.UpdateLabScoreCommand;
-
+/**
+ * Holds the score and max score for a lab.
+ */
 public class LabScore {
     private int labScore;
     private int maxLabScore = 25;
 
-    public LabScore(){
+    public LabScore() {
         labScore = -1;
     }
 
-    public LabScore(int labScore){
-        this.labScore = labScore;
-    }
-
+    /**
+     * Creates a LabScore object.
+     * @param labScore the score to initialize with.
+     * @param maxLabScore the max score of the lab to initialize.
+     */
     public LabScore(int labScore, int maxLabScore) {
         this.labScore = labScore;
         this.maxLabScore = maxLabScore;
     }
 
-    public void updateLabScore(int labScore){
+    /**
+     * Updates the lab score for this lab.
+     * @param labScore the updated lab score.
+     */
+    public void updateLabScore(int labScore) {
         this.labScore = labScore;
     }
 
     @Override
-    public String toString(){
-        if(labScore == -1) {
+    public String toString() {
+        if (labScore == -1) {
             return "-";
         }
 
@@ -33,7 +39,7 @@ public class LabScore {
     }
 
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
         if (other == this) {
             return true;
         }
