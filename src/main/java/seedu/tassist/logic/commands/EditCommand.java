@@ -24,6 +24,7 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -116,11 +117,12 @@ public class EditCommand extends Command {
         Remark updatedRemark = personToEdit.getRemark(); // todo: update if needed
         AttendanceList updatedAttendanceList =
                 editPersonDescriptor.getAttendanceList().orElse(personToEdit.getAttendanceList());
+        LabScoreList updatedLabScoreList = personToEdit.getLabScoreList();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedTeleHandle, updatedEmail,
                 updatedMatNum, updatedTutGroup, updatedLabGroup, updatedFaculty, updatedYear,
-                updatedRemark, updatedAttendanceList, updatedTags);
+                updatedRemark, updatedAttendanceList, updatedLabScoreList , updatedTags);
     }
 
     @Override

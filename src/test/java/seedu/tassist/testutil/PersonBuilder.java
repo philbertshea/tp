@@ -7,6 +7,7 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -35,6 +36,8 @@ public class PersonBuilder {
     public static final String DEFAULT_REMARK = "todo";
     public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
 
+    public static final String DEFAULT_LAB_SCORES = "-1/25 -1/25 -1/25 -1/25";
+
     private Name name;
     private Phone phone;
     private TeleHandle teleHandle;
@@ -46,6 +49,7 @@ public class PersonBuilder {
     private Year year;
     private Remark remark;
     private AttendanceList attendanceList;
+    private LabScoreList labScoreList;
     private Set<Tag> tags;
 
     /**
@@ -63,6 +67,7 @@ public class PersonBuilder {
         year = new Year(DEFAULT_YEAR);
         remark = new Remark(DEFAULT_REMARK);
         attendanceList = AttendanceList.generateAttendanceList(DEFAULT_ATTENDANCE_STRING);
+        labScoreList = new LabScoreList();
         tags = new HashSet<>();
     }
 
@@ -81,6 +86,7 @@ public class PersonBuilder {
         year = personToCopy.getYear();
         remark = personToCopy.getRemark();
         attendanceList = personToCopy.getAttendanceList();
+        labScoreList = personToCopy.getLabScoreList();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -181,11 +187,23 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code LabScoreList} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withLabScores(String newLabString) {
+        if (newLabString == "") {
+            this.labScoreList = new LabScoreList();
+        } else {
+            this.labScoreList = LabScoreList.loadLabScores(newLabString);
+        }
+        return this;
+    }
+
+    /**
      * Creates a {@code Person}.
      */
     public Person build() {
         return new Person(name, phone, teleHandle, email, matNum, tutGroup, labGroup,
-                faculty, year, remark, attendanceList, tags);
+                faculty, year, remark, attendanceList, labScoreList, tags);
     }
 
 }

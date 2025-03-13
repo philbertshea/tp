@@ -10,6 +10,7 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -39,37 +40,37 @@ public class SampleDataUtil {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), DEFAULT_TELE_HANDLE,
                     new Email("alexyeoh@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("friends")),
 
             new Person(new Name("Bernice Yu"), new Phone("99272758"), DEFAULT_TELE_HANDLE,
                     new Email("berniceyu@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("colleagues", "friends")),
 
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), DEFAULT_TELE_HANDLE,
                     new Email("charlotte@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("neighbours")),
 
             new Person(new Name("David Li"), new Phone("91031282"), DEFAULT_TELE_HANDLE,
                     new Email("lidavid@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("family")),
 
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), DEFAULT_TELE_HANDLE,
                     new Email("irfan@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("classmates")),
 
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), DEFAULT_TELE_HANDLE,
                     new Email("royb@example.com"), DEFAULT_MAT_NUM, DEFAULT_TUT_GROUP,
                     DEFAULT_LAB_GROUP, DEFAULT_FACULTY, DEFAULT_YEAR, DEFAULT_REMARK,
-                    AttendanceList.generateAttendanceList("0000000000000"),
+                    AttendanceList.generateAttendanceList("0000000000000"), new LabScoreList(),
                     getTagSet("colleagues"))
         };
     }

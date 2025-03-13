@@ -58,6 +58,10 @@ public class CommandTestUtil {
     public static final String VALID_TAG_FRIEND = "friend";
     public static final int VALID_WEEK_A = 3;
     public static final int VALID_WEEK_B = 5;
+    public static final int VALID_LAB_NUMBER_A = 1;
+    public static final int VALID_LAB_SCORE_A = 20;
+    public static final int DEFAULT_LAB_SCORE_COUNT = 4;
+    public static final int DEFAULT_LAB_MAX_SCORE = 25;
     public static final String VALID_FILE_NAME = "tassit_data";
     public static final String VALID_FILE_EXTENSION_CSV = "csv";
     public static final String VALID_FILE_EXTENSION_JSON = "json";

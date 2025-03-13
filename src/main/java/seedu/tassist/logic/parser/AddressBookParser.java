@@ -19,6 +19,7 @@ import seedu.tassist.logic.commands.FindCommand;
 import seedu.tassist.logic.commands.HelpCommand;
 import seedu.tassist.logic.commands.ListCommand;
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
+import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**
@@ -84,6 +85,8 @@ public class AddressBookParser {
 
         case MarkAttendanceCommand.COMMAND_WORD:
             return new MarkAttendanceCommandParser().parse(arguments);
+        case UpdateLabScoreCommand.COMMAND_WORD:
+            return new UpdateLabScoreCommandParser().parse(arguments);
 
         case ExportDataCommand.COMMAND_WORD:
             return new ExportDataCommandParser().parse(arguments);

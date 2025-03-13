@@ -16,6 +16,7 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -44,6 +45,7 @@ class JsonAdaptedPerson {
     private final String year;
     private final String remark;
     private final String attendances;
+    private final String labScores;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
@@ -60,6 +62,7 @@ class JsonAdaptedPerson {
             @JsonProperty("year") String year,
             @JsonProperty("remark") String remark,
             @JsonProperty("attendances") String attendances,
+            @JsonProperty("labScores") String labScores,
             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
@@ -72,6 +75,7 @@ class JsonAdaptedPerson {
         this.year = year;
         this.remark = remark;
         this.attendances = attendances;
+        this.labScores = labScores;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -92,6 +96,7 @@ class JsonAdaptedPerson {
         year = source.getYear().value;
         remark = source.getRemark().value;
         attendances = source.getAttendanceList().toString();
+        labScores = source.getLabScoreList().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -140,11 +145,14 @@ class JsonAdaptedPerson {
         final AttendanceList modelAttendanceList = validateAndCreate(attendances,
                 AttendanceList.class, AttendanceList::isValidAttendanceString,
                 AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
+        final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
+                LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SCORE,
+                LabScoreList::loadLabScores);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,
                 modelMatNum, modelTutGroup, modelLabGroup, modelFaculty, modelYear, modelRemark,
-                modelAttendanceList, modelTags);
+                modelAttendanceList, modelLabScoreList, modelTags);
     }
 
     /**

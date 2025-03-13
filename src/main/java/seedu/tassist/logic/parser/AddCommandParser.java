@@ -22,6 +22,7 @@ import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -72,11 +73,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         Remark remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
         AttendanceList attendanceList =
                 AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         // todo zhenjie
         Person person = new Person(name, phone, teleHandle, email,
-                matNum, tutGrp, labGrp, faculty, year, remark, attendanceList, tagList);
+                matNum, tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
 
         return new AddCommand(person);
     }
