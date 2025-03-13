@@ -16,8 +16,8 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the AddCommand
-     * and returns an AddCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the MarkAttendanceCommand
+     * and returns an MarkAttendanceCommand object for execution.
      *
      * @param args String input to be parsed
      * @return MarkAttendanceCommand corresponding to the String input
