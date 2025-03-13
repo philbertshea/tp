@@ -86,6 +86,7 @@ public class PersonBuilder {
         year = personToCopy.getYear();
         remark = personToCopy.getRemark();
         attendanceList = personToCopy.getAttendanceList();
+        labScoreList = personToCopy.getLabScoreList();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -189,7 +190,11 @@ public class PersonBuilder {
      * Sets the {@code LabScoreList} of the {@code Person} that we are building.
      */
     public PersonBuilder withLabScores(String newLabString) {
-        this.labScoreList = LabScoreList.loadLabScores(newLabString);
+        if (newLabString == "") {
+            this.labScoreList = new LabScoreList();
+        } else {
+            this.labScoreList = LabScoreList.loadLabScores(newLabString);
+        }
         return this;
     }
 
