@@ -81,7 +81,7 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getAttendanceList().getAttendanceStream()
                 .forEach(attendance
-                        -> attendances.getChildren().add(new Label(attendance.tagName())));
+                        -> attendances.getChildren().add(new Label(attendance.getTagName())));
 
         final int[] labCounter = {1};
         person.getLabScoreList().getLabScores().forEach(

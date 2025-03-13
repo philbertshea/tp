@@ -1,6 +1,8 @@
 package seedu.tassist.model.person;
 
 
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
+
 /**
  * Represents the attendance status for a week.
  */
@@ -12,10 +14,16 @@ public class Attendance {
     private int attendance;
     private final int week;
 
+    public static final String MESSAGE_CONSTRAINTS = "Invalid week or attendance!\n"
+            + "Week must be an integer from 1 to 13 inclusive.\n"
+            + "Attendance must be an integer of value 0, 1, or 2.";
+
     /**
      * Instantiates the Attendance instance, assigning as not attended.
      */
     public Attendance(int week, int attendance) {
+        checkArgument(isValidAttendance(attendance), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidWeek(week), MESSAGE_CONSTRAINTS);
         this.week = week;
         this.attendance = attendance;
     }
@@ -38,7 +46,14 @@ public class Attendance {
                 || attendance == ON_MC;
     }
 
-    public String tagName() {
+    /**
+     * Returns true if a given attendance is a valid attendance.
+     */
+    public static boolean isValidWeek(int week) {
+        return week > 0 && week < 14;
+    }
+
+    public String getTagName() {
         if (this.attendance == NOT_ATTENDED) {
             return "W" + this.week + ": NO";
         } else if (this.attendance == ATTENDED) {
@@ -70,6 +85,7 @@ public class Attendance {
 
         // No two Attendance instances in the AttendanceList
         // should have the SAME week.
-        return this.week == otherAttendance.week;
+        return this.week == otherAttendance.week
+                && this.attendance == otherAttendance.attendance;
     }
 }
