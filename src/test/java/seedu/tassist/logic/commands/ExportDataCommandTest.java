@@ -10,13 +10,10 @@ import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.ExportDataCommand.INVALID_ARGUMENT_EXTENSION;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.nio.file.Path;
-
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
-import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.model.UserPrefs;
 
 public class ExportDataCommandTest {
