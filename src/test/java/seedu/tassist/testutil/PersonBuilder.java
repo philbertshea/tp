@@ -173,8 +173,8 @@ public class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder withLabScores() {
-        this.labScoreList = new LabScoreList();
+    public PersonBuilder withLabScores(String newLabString) {
+        this.labScoreList = LabScoreList.loadLabScores(newLabString);
         return this;
     }
 

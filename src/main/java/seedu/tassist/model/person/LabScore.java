@@ -1,5 +1,9 @@
 package seedu.tassist.model.person;
 
+import seedu.tassist.logic.commands.Command;
+import seedu.tassist.logic.commands.UpdateLabScoreCommand;
+import seedu.tassist.logic.commands.exceptions.CommandException;
+
 /**
  * Holds the score and max score for a lab.
  */
@@ -25,7 +29,11 @@ public class LabScore {
      * Updates the lab score for this lab.
      * @param labScore the updated lab score.
      */
-    public void updateLabScore(int labScore) {
+    public void updateLabScore(int labScore) throws CommandException {
+        if (labScore > maxLabScore) {
+            throw new CommandException(
+                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE, labScore, maxLabScore));
+        }
         this.labScore = labScore;
     }
 

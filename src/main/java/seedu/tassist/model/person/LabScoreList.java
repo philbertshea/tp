@@ -1,5 +1,8 @@
 package seedu.tassist.model.person;
 
+import seedu.tassist.logic.commands.UpdateLabScoreCommand;
+import seedu.tassist.logic.commands.exceptions.CommandException;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +10,7 @@ import java.util.ArrayList;
  */
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
-    private static final int labTotal = 4;
+    private static int labTotal = 4;
     public static final String LAB_NUMBER_CONSTRAINT = String.format("Lab number must be between 1 and %d", labTotal);
 
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
@@ -42,7 +45,10 @@ public class LabScoreList {
      * @param labScore The updated score for the lab.
      * @return
      */
-    public LabScoreList updateLabScore(int labNumber, int labScore) {
+    public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
+        if (labNumber < 1 || labNumber > labTotal) {
+            throw new CommandException(String.format(UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
+        }
         labScoreList.get(labNumber - 1).updateLabScore(labScore);
         return this;
     }
@@ -80,7 +86,6 @@ public class LabScoreList {
         int total;
         int split = saveString.indexOf(".");
         try {
-
             if (split == -1) {
                 return false;
             }
@@ -94,7 +99,6 @@ public class LabScoreList {
         }
 
         for (int i = 0; i < total; i++) {
-            System.out.println(labs[i]);
             if (labs[i].equals("-")) {
                 continue;
             }
@@ -124,7 +128,6 @@ public class LabScoreList {
 
         int split = saveString.indexOf(".");
         String[] labs = saveString.substring(split + 1).split("\\Q|\\E");
-        System.out.println("here");
         return new LabScoreList(labs);
     }
 
@@ -142,4 +145,23 @@ public class LabScoreList {
         return returnString.toString();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof LabScoreList)) {
+            return false;
+        }
+
+        LabScoreList o = (LabScoreList) other;
+        for (int i = 0; i < o.labScoreList.size(); i++) {
+            if(!labScoreList.get(i).equals(o.labScoreList.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

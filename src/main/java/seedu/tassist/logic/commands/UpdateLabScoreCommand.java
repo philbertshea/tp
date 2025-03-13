@@ -34,6 +34,13 @@ public class UpdateLabScoreCommand extends Command {
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
             + "This update student of index 1 as lab 1 score as 10/10.";
 
+    public static final String MESSAGE_INVALID_LAB_NUMBER = "This lab does not exist."
+                    + "There are only %1$d labs";
+
+    public static final String MESSAGE_INVALID_SCORE =
+            "The updated score cannot exceed the maximum score for the lab."
+            + "Your input: %1$d. The maximum score for this lab: %2$d.";
+
     private final Index index;
     private final int labNumber;
     private final int labScore;
@@ -71,7 +78,8 @@ public class UpdateLabScoreCommand extends Command {
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format("%s %s", MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
+        return new CommandResult(String.format("%s %s",
+                String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getZeroBased(), labNumber, labScore),
                 Messages.format(personToUpdate)));
     }
 
