@@ -1,7 +1,6 @@
 package seedu.tassist.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.FACULTY_DESC_AMY;
@@ -26,6 +25,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.CommandResult;
+import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.ListCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.logic.parser.exceptions.ParseException;
@@ -67,8 +67,11 @@ public class LogicManagerTest {
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "delete 9";
-        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        int currentSize = model.getFilteredPersonList().size();
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        assertCommandException(deleteCommand, expectedMessage, currentSize);
     }
+
 
     @Test
     public void execute_validCommand_success() throws Exception {
@@ -119,7 +122,7 @@ public class LogicManagerTest {
      * Executes the command, confirms that a CommandException is thrown and that the result message is correct.
      * @see #assertCommandFailure(String, Class, String, Model)
      */
-    private void assertCommandException(String inputCommand, String expectedMessage) {
+    private void assertCommandException(String inputCommand, String expectedMessage, int size) {
         assertCommandFailure(inputCommand, CommandException.class, expectedMessage);
     }
 

@@ -1,6 +1,5 @@
 package seedu.tassist.testutil;
 
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ATTENDANCE_LIST;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -72,8 +71,6 @@ public class PersonUtil {
                 .append(faculty.value).append(" "));
         descriptor.getYear().ifPresent(year -> sb.append(PREFIX_REMARK).append(year.value).append(" "));
         descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_YEAR).append(remark.value).append(" "));
-        descriptor.getAttendanceList().ifPresent(attendanceList -> sb.append(PREFIX_ATTENDANCE_LIST)
-                .append(attendanceList.toString()).append(" "));
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {

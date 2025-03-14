@@ -38,6 +38,7 @@
       <Label fx:id="year" styleClass="cell_small_label" />
       <Label fx:id="remark" styleClass="cell_small_label" />
       <FlowPane fx:id="attendances" />
+      <FlowPane fx:id="labScores" />
     </VBox>
   </GridPane>
 </HBox>

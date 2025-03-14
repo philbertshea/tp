@@ -12,6 +12,7 @@
     "year" :  "1",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.2/25|-|-|-",
     "tags" : [ "friends" ]
   }, {
     "name" : "Benson Meier",
@@ -25,6 +26,7 @@
     "year" :  "2",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.10/25|-|-|-",
     "tags" : [ "owesMoney", "friends" ]
   }, {
     "name" : "Carl Kurz",
@@ -38,6 +40,7 @@
     "year" :  "3",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.15/25|-|-|-",
     "tags" : [ ]
   }, {
     "name" : "Daniel Meier",
@@ -51,6 +54,7 @@
     "year" :  "4",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.25/25|-|-|-",
     "tags" : [ "friends" ]
   }, {
     "name" : "Elle Meyer",
@@ -64,6 +68,7 @@
     "year" :  "5",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   }, {
     "name" : "Fiona Kunz",
@@ -77,6 +82,7 @@
     "year" :  "6",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   }, {
     "name" : "George Best",
@@ -90,6 +96,7 @@
     "year" :  "3",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.25/25|-|-|-",
     "tags" : [ ]
   } ]
 }

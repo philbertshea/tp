@@ -9,6 +9,7 @@ import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Person;
 
@@ -20,10 +21,13 @@ public class MarkAttendanceCommand extends Command {
     public static final String COMMAND_WORD = "att";
 
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
-            "Marked Person as Attended Tutorial Week %1$d: %2$s";
+            "%1$s (%2$s) attended Tutorial Week %3$d.";
 
-    // Note that -u and -mc will NOT be implemented yet.
-    // We will settle the mandatory parameters first.
+    public static final String MESSAGE_MARK_UNATTENDED_SUCCESS =
+            "%1$s (%2$s) did not attend Tutorial Week %3$d.";
+
+    public static final String MESSAGE_MARK_MC_SUCCESS =
+            "%1$s (%2$s) on MC for Tutorial Week %3$d.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"
@@ -45,17 +49,20 @@ public class MarkAttendanceCommand extends Command {
 
     private final int week;
 
+    private final int attendanceStatus;
+
     /**
      * Instantiates the MarkAttendanceCommand instance, with the provided
      * index and week.
      *
-     * @param index index of person to be marked attendance for.
-     * @param week week to mark attendance of person for.
+     * @param index Index of person to be marked attendance for.
+     * @param week Week to mark attendance of person for.
      */
-    public MarkAttendanceCommand(Index index, int week) {
-        requireAllNonNull(index, week);
+    public MarkAttendanceCommand(Index index, int week, int attendanceStatus) {
+        requireAllNonNull(index, week, attendanceStatus);
         this.index = index;
         this.week = week;
+        this.attendanceStatus = attendanceStatus;
     }
 
     @Override
@@ -69,13 +76,14 @@ public class MarkAttendanceCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
         AttendanceList newAttendanceList =
-                personToEdit.getAttendanceList().setAttendanceForWeek(week, 1);
+                personToEdit.getAttendanceList().setAttendanceForWeek(this.week, this.attendanceStatus);
 
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getTeleHandle(),
                 personToEdit.getEmail(), personToEdit.getMatNum(), personToEdit.getTutGroup(),
                 personToEdit.getLabGroup(), personToEdit.getFaculty(), personToEdit.getYear(),
-                personToEdit.getRemark(), newAttendanceList, personToEdit.getTags());
+                personToEdit.getRemark(), newAttendanceList, personToEdit.getLabScoreList(),
+                personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -86,11 +94,30 @@ public class MarkAttendanceCommand extends Command {
     /**
      * Generates a command execution success message for
      * {@code personToEdit}.
+     *
+     * @return String with the Success Message once MarkAttendanceCommand
+     *         is executed successfully.
      */
     private String generateSuccessMessage(Person personToEdit) {
-        return String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
-                this.week,
-                Messages.format(personToEdit));
+        String message = "";
+        switch (attendanceStatus) {
+        case Attendance.ATTENDED:
+            message = MESSAGE_MARK_ATTENDED_SUCCESS;
+            break;
+        case Attendance.NOT_ATTENDED:
+            message = MESSAGE_MARK_UNATTENDED_SUCCESS;
+            break;
+        case Attendance.ON_MC:
+            message = MESSAGE_MARK_MC_SUCCESS;
+            break;
+        default:
+            message = MESSAGE_USAGE;
+        }
+
+        return String.format(message,
+                personToEdit.getName(),
+                personToEdit.getMatNum(),
+                this.week);
     }
 
     @Override
@@ -104,7 +131,9 @@ public class MarkAttendanceCommand extends Command {
         }
 
         MarkAttendanceCommand e = (MarkAttendanceCommand) other;
-        return this.index.equals(e.index) && this.week == e.week;
+        return this.index.equals(e.index)
+                && this.week == e.week
+                && this.attendanceStatus == e.attendanceStatus;
     }
 
 }

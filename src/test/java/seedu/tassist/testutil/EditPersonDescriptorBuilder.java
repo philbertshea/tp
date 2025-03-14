@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
-import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Person;
@@ -35,7 +34,6 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
-        descriptor.setAttendanceList(person.getAttendanceList());
         descriptor.setTags(person.getTags());
     }
 
@@ -60,14 +58,6 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withEmail(String email) {
         descriptor.setEmail(new Email(email));
-        return this;
-    }
-
-    /**
-     * Sets the {@code AttendanceList} of the {@code EditPersonDescriptor} that we are building.
-     */
-    public EditPersonDescriptorBuilder withAttendanceList(String attendanceString) {
-        descriptor.setAttendanceList(AttendanceList.generateAttendanceList(attendanceString));
         return this;
     }
 

@@ -11,6 +11,7 @@
     "year" :  "3",
     "remark" : "todo",
     "attendances" : "0000000000000",
+    "labScores" : "4.2/25|-|-|-",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
@@ -23,6 +24,7 @@
     "faculty" :  "SoC",
     "year" :  "3",
     "remark" : "todo",
-    "attendances" : "0000000000000"
+    "attendances" : "0000000000000",
+    "labScores" : "4.2/25|-|-|-"
   } ]
 }
