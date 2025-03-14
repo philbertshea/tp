@@ -55,14 +55,14 @@ public class Attendance {
 
     public String getTagName() {
         switch (this.attendance) {
-            case NOT_ATTENDED:
-                return "W" + this.week + ": NO";
-            case ATTENDED:
-                return "W" + this.week + ": ATT";
-            case ON_MC:
-                return "W" + this.week + ": MC";
-            default:
-                return "";
+        case NOT_ATTENDED:
+            return "W" + this.week + ": NO";
+        case ATTENDED:
+            return "W" + this.week + ": ATT";
+        case ON_MC:
+            return "W" + this.week + ": MC";
+        default:
+            return "";
         }
     }
 
