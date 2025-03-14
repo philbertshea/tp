@@ -60,7 +60,7 @@ public class MarkAttendanceCommandTest {
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ATTENDED);
 
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_ATTENDED_SUCCESS,
-                replacedIndex, Messages.format(editedPerson));
+                editedPerson.getName(), editedPerson.getMatNum(), replacedIndex);
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -87,7 +87,7 @@ public class MarkAttendanceCommandTest {
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.NOT_ATTENDED);
 
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_UNATTENDED_SUCCESS,
-                replacedIndex, Messages.format(editedPerson));
+                editedPerson.getName(), editedPerson.getMatNum(), replacedIndex);
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -114,7 +114,7 @@ public class MarkAttendanceCommandTest {
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ON_MC);
 
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_MARK_MC_SUCCESS,
-                replacedIndex, Messages.format(editedPerson));
+                editedPerson.getName(), editedPerson.getMatNum(), replacedIndex);
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);

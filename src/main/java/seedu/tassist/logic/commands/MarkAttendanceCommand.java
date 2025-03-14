@@ -21,13 +21,13 @@ public class MarkAttendanceCommand extends Command {
     public static final String COMMAND_WORD = "att";
 
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
-            "Person attended Tutorial Week %1$d: %2$s";
+            "%1$s (%2$s) attended Tutorial Week %3$d.";
 
     public static final String MESSAGE_MARK_UNATTENDED_SUCCESS =
-            "Person did not attend Tutorial Week %1$d: %2$s";
+            "%1$s (%2$s) did not attend Tutorial Week %3$d.";
 
     public static final String MESSAGE_MARK_MC_SUCCESS =
-            "Person on MC for Tutorial Week %1$d: %2$s";
+            "%1$s (%2$s) on MC for Tutorial Week %3$d.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"
@@ -115,8 +115,9 @@ public class MarkAttendanceCommand extends Command {
         }
 
         return String.format(message,
-                this.week,
-                Messages.format(personToEdit));
+                personToEdit.getName(),
+                personToEdit.getMatNum(),
+                this.week);
     }
 
     @Override
