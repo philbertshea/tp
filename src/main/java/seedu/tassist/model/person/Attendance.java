@@ -54,14 +54,15 @@ public class Attendance {
     }
 
     public String getTagName() {
-        if (this.attendance == NOT_ATTENDED) {
-            return "W" + this.week + ": NO";
-        } else if (this.attendance == ATTENDED) {
-            return "W" + this.week + ": ATT";
-        } else if (this.attendance == ON_MC) {
-            return "W" + this.week + ": MC";
-        } else {
-            return "";
+        switch (this.attendance) {
+            case NOT_ATTENDED:
+                return "W" + this.week + ": NO";
+            case ATTENDED:
+                return "W" + this.week + ": ATT";
+            case ON_MC:
+                return "W" + this.week + ": MC";
+            default:
+                return "";
         }
     }
 

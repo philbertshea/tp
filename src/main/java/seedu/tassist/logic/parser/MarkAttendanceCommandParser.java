@@ -34,13 +34,13 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         Index index;
         int week;
         boolean isUnattended = false;
-        boolean isOnMC = false;
+        boolean isOnMc = false;
 
         try {
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
             week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
             isUnattended = !argMultimap.getValue(PREFIX_MARK_UNATTENDED).isEmpty();
-            isOnMC = !argMultimap.getValue(PREFIX_MARK_ON_MC).isEmpty();
+            isOnMc = !argMultimap.getValue(PREFIX_MARK_ON_MC).isEmpty();
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -48,14 +48,15 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-        if (isUnattended && isOnMC) {
+        if (isUnattended && isOnMc) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             MarkAttendanceCommand.MESSAGE_USAGE)
             );
-        } else if (isUnattended) {
+        }
+        if (isUnattended) {
             return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
-        } else if (isOnMC) {
+        } else if (isOnMc) {
             return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
         } else {
             return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);

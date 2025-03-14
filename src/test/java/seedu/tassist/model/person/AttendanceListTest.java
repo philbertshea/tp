@@ -21,7 +21,7 @@ public class AttendanceListTest {
     @Test
     public void isValidAttendanceString() {
 
-        // invalid week
+        // invalid attendanceString -> returns false
         assertFalse(AttendanceList.isValidAttendanceString(""));
         assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
@@ -29,7 +29,7 @@ public class AttendanceListTest {
         assertFalse(AttendanceList.isValidAttendanceString("000a*-0000000")); // Invalid Chars
         assertFalse(AttendanceList.isValidAttendanceString("0120120120123")); // Not within 0, 1 or 2
 
-        // valid attendance string
+        // valid attendanceString -> returns true
         assertTrue(AttendanceList.isValidAttendanceString("0000000000000"));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
@@ -50,7 +50,7 @@ public class AttendanceListTest {
 
     @Test
     public void getAttendanceForWeek() {
-        // invalid week
+        // invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-10000000));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-1));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(0));
@@ -58,7 +58,7 @@ public class AttendanceListTest {
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(15));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(10000000));
 
-        // valid week
+        // valid week -> returns the correct attendance value
         for (int i = 1; i <= 13; i++) {
             assertTrue(attendanceList.getAttendanceForWeek(i)
                     == Integer.parseInt(attendanceString.substring(i - 1, i)));
@@ -69,13 +69,13 @@ public class AttendanceListTest {
     @Test
     public void setAttendanceForWeek_invalidWeekOrAttendance_throwsIllegalArgumentException() {
 
-        // invalid week
+        // invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(0, Attendance.ATTENDED));
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(14, Attendance.ATTENDED));
 
-        // invalid attendance
+        // invalid attendance -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(1, -1));
         assertThrows(IllegalArgumentException.class, () ->

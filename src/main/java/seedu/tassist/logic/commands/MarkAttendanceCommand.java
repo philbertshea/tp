@@ -21,16 +21,13 @@ public class MarkAttendanceCommand extends Command {
     public static final String COMMAND_WORD = "att";
 
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
-            "Marked Person as Attended Tutorial Week %1$d: %2$s";
+            "Person attended Tutorial Week %1$d: %2$s";
 
     public static final String MESSAGE_MARK_UNATTENDED_SUCCESS =
-            "Marked Person as Unattended Tutorial Week %1$d: %2$s";
+            "Person did not attend Tutorial Week %1$d: %2$s";
 
     public static final String MESSAGE_MARK_MC_SUCCESS =
-            "Marked Person as on MC for Tutorial Week %1$d: %2$s";
-
-    // Note that -u and -mc will NOT be implemented yet.
-    // We will settle the mandatory parameters first.
+            "Person on MC for Tutorial Week %1$d: %2$s";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"

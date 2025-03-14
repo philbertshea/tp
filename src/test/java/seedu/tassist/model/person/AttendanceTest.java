@@ -21,7 +21,7 @@ public class AttendanceTest {
     @Test
     public void isValidWeek() {
 
-        // invalid week
+        // invalid week -> returns false
         assertFalse(Attendance.isValidWeek(-10000000));
         assertFalse(Attendance.isValidWeek(-1));
         assertFalse(Attendance.isValidWeek(0));
@@ -29,7 +29,7 @@ public class AttendanceTest {
         assertFalse(Attendance.isValidWeek(15));
         assertFalse(Attendance.isValidWeek(10000000));
 
-        // valid week
+        // valid week -> returns true
         for (int i = 1; i <= 13; i++) {
             assertTrue(Attendance.isValidWeek(i));
         }
@@ -42,16 +42,16 @@ public class AttendanceTest {
         Attendance attendanceDiffWeek = new Attendance(5, Attendance.ATTENDED);
         Attendance attendanceDiffAttendance = new Attendance(3, Attendance.NOT_ATTENDED);
 
-        // tag names for same Attendance object are equal
+        // tag names for same Attendance object -> equal
         assertTrue(attendance.getTagName().equals(attendance.getTagName()));
 
-        // tag names for same week and attendance are equal
+        // tag names for same week and attendance -> equal
         assertTrue(attendance.getTagName().equals(attendanceDuplicate.getTagName()));
 
-        // tag names for different week is different
+        // tag names for different week -> not equal
         assertFalse(attendance.getTagName().equals(attendanceDiffWeek.getTagName()));
 
-        // tag names for different attendance is different
+        // tag names for different attendance -> not equal
         assertFalse(attendance.getTagName().equals(attendanceDiffAttendance.getTagName()));
     }
 
