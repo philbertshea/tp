@@ -1,7 +1,6 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ATTENDANCE_LIST;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -39,7 +38,6 @@ public class AddCommand extends Command {
             + PREFIX_LAB_GROUP + " LAB GROUP "
             + PREFIX_FACULTY + " FACULTY "
             + PREFIX_YEAR + " YEAR "
-            + PREFIX_ATTENDANCE_LIST + " ATTENDANCE STRING (String of 13 integers 0, 1, or 2, OPTIONAL) "
             + PREFIX_REMARK + " REMARKS "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
@@ -52,7 +50,6 @@ public class AddCommand extends Command {
             + PREFIX_LAB_GROUP + " B02 "
             + PREFIX_FACULTY + " School of Computing "
             + PREFIX_YEAR + " 3 "
-            + PREFIX_ATTENDANCE_LIST + " 0000011111000 "
             + PREFIX_REMARK + " TA candidate "
             + PREFIX_TAG + " friends "
             + PREFIX_TAG + " owesMoney";

@@ -2,7 +2,6 @@ package seedu.tassist.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.tassist.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.tassist.logic.commands.CommandTestUtil.ATTENDANCE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.FACULTY_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.LAB_GROUP_DESC_AMY;
@@ -179,7 +178,7 @@ public class LogicManagerTest {
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + TELE_HANDLE_DESC_AMY + EMAIL_DESC_AMY + MAT_NUM_DESC_AMY
                 + TUT_GROUP_DESC_AMY + LAB_GROUP_DESC_AMY + FACULTY_DESC_AMY
-                + YEAR_DESC_AMY + ATTENDANCE_DESC_AMY + REMARK_DESC_AMY;
+                + YEAR_DESC_AMY + REMARK_DESC_AMY;
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
         ModelManager expectedModel = new ModelManager();
         expectedModel.addPerson(expectedPerson);

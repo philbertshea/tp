@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_BOB;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -46,10 +45,6 @@ public class EditPersonDescriptorTest {
 
         // different email -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
-        assertFalse(DESC_AMY.equals(editedAmy));
-
-        // different attendanceString -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withAttendanceList(VALID_ATTENDANCE_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different tags -> returns false

@@ -1,7 +1,6 @@
 package seedu.tassist.testutil;
 
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_AMY;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_STRING;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FACULTY_AMY;
@@ -95,13 +94,13 @@ public class TypicalPersons {
             .withMatNum(VALID_MAT_NUM_AMY).withTutGroup(VALID_TUT_GROUP_AMY)
             .withLabGroup(VALID_LAB_GROUP_AMY).withFaculty(VALID_FACULTY_AMY)
             .withYear(VALID_YEAR_AMY).withRemark(VALID_REMARK_AMY)
-            .withAttendanceList(VALID_ATTENDANCE_AMY).withTags(VALID_TAG_FRIEND).build();
+            .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_FRIEND).build();
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB).withTeleHandle(VALID_TELE_HANDLE_BOB)
             .withMatNum(VALID_MAT_NUM_BOB).withTutGroup(VALID_TUT_GROUP_BOB)
             .withLabGroup(VALID_LAB_GROUP_BOB).withFaculty(VALID_FACULTY_BOB)
             .withYear(VALID_YEAR_BOB).withRemark(VALID_REMARK_BOB)
-            .withAttendanceList(VALID_ATTENDANCE_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
+            .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER

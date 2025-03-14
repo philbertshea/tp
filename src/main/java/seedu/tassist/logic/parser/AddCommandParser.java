@@ -1,7 +1,6 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ATTENDANCE_LIST;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -48,7 +47,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
                         PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
-                        PREFIX_FACULTY, PREFIX_YEAR, PREFIX_ATTENDANCE_LIST, PREFIX_REMARK, PREFIX_TAG);
+                        PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG);
 
         if ((!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_EMAIL, PREFIX_MAT_NUM)
                 || !anyPrefixesPresent(argMultimap, PREFIX_PHONE, PREFIX_TELE_HANDLE)
@@ -60,7 +59,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
                 PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
-                PREFIX_FACULTY, PREFIX_YEAR, PREFIX_ATTENDANCE_LIST, PREFIX_REMARK);
+                PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         TeleHandle teleHandle = ParserUtil.parseTeleHandle(argMultimap
@@ -72,13 +71,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         Faculty faculty = ParserUtil.parseFaculty(argMultimap.getValue(PREFIX_FACULTY).get());
         Year year = ParserUtil.parseYear(argMultimap.getValue(PREFIX_YEAR).get());
         Remark remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
-
         AttendanceList attendanceList =
                 AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
-        if (argMultimap.getValue(PREFIX_ATTENDANCE_LIST).isPresent()) {
-            attendanceList = ParserUtil.parseAttendanceList(
-                    argMultimap.getValue(PREFIX_ATTENDANCE_LIST).get());
-        }
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
