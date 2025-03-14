@@ -10,6 +10,7 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
  */
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
+    public static final String INVALID_LAB_SAVE = "Lab string is loaded incorrectly";
     private static int labTotal = 4;
     public static final String LAB_NUMBER_CONSTRAINT = String.format("Lab number must be between 1 and %d", labTotal);
 
