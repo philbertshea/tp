@@ -31,7 +31,7 @@ public class Attendance {
     /**
      * Returns attendance to the parameter {@code attendance}.
      *
-     * @return attendance value of the instance.
+     * @return Attendance value of the instance.
      */
     public int getAttendance() {
         return this.attendance;
@@ -39,6 +39,8 @@ public class Attendance {
 
     /**
      * Returns true if a given attendance is a valid attendance.
+     *
+     * @return Boolean
      */
     public static boolean isValidAttendance(int attendance) {
         return attendance == ATTENDED
@@ -47,12 +49,19 @@ public class Attendance {
     }
 
     /**
-     * Returns true if a given attendance is a valid attendance.
+     * Returns true if a given week is a valid week.
+     *
+     * @return Boolean value representing whether week is a valid week.
      */
     public static boolean isValidWeek(int week) {
         return week > 0 && week < 14;
     }
 
+    /**
+     * Returns the Tag name of the Attendance object.
+     *
+     * @return Tag name to be displayed for the Attendance object.
+     */
     public String getTagName() {
         switch (this.attendance) {
         case NOT_ATTENDED:

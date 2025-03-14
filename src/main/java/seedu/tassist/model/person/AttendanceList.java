@@ -36,7 +36,7 @@ public class AttendanceList {
     /**
      * Checks if attendanceString has 13 digits, each digit being 0, 1, or 2.
      * @param attendanceString Attendance String to check.
-     * @return boolean representing whether attendanceString is valid.
+     * @return Boolean representing whether attendanceString is valid.
      */
     public static boolean isValidAttendanceString(String attendanceString) {
         return attendanceString.matches("^[012]{13}$");
@@ -64,7 +64,7 @@ public class AttendanceList {
      * Gets attendance for a particular week.
      *
      * @param week Week to get attendance for.
-     * @return attendance for that week.
+     * @return Attendance for that week.
      */
     public int getAttendanceForWeek(int week) {
         checkArgument(isValidWeek(week), MESSAGE_CONSTRAINTS);
@@ -87,6 +87,11 @@ public class AttendanceList {
         return AttendanceList.generateAttendanceList(newAttendanceString);
     }
 
+    /**
+     * Gets the Stream of Attendance objects in the Attendance List.
+     *
+     * @return Stream of Attendance objects in the Attendance List.
+     */
     public Stream<Attendance> getAttendanceStream() {
         return this.attendanceList.stream();
     }

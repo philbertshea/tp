@@ -24,7 +24,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
      *
      * @param args String input to be parsed
      * @return MarkAttendanceCommand corresponding to the String input
-     * @throws ParseException if the user input does not conform to the expected format
+     * @throws ParseException If the user input does not conform to the expected format
      */
     public MarkAttendanceCommand parse(String args) throws ParseException {
         requireNonNull(args);

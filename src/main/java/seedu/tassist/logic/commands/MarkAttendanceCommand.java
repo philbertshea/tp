@@ -55,8 +55,8 @@ public class MarkAttendanceCommand extends Command {
      * Instantiates the MarkAttendanceCommand instance, with the provided
      * index and week.
      *
-     * @param index index of person to be marked attendance for.
-     * @param week week to mark attendance of person for.
+     * @param index Index of person to be marked attendance for.
+     * @param week Week to mark attendance of person for.
      */
     public MarkAttendanceCommand(Index index, int week, int attendanceStatus) {
         requireAllNonNull(index, week, attendanceStatus);
@@ -94,6 +94,9 @@ public class MarkAttendanceCommand extends Command {
     /**
      * Generates a command execution success message for
      * {@code personToEdit}.
+     *
+     * @return String with the Success Message once MarkAttendanceCommand
+     *         is executed successfully.
      */
     private String generateSuccessMessage(Person personToEdit) {
         String message = "";
