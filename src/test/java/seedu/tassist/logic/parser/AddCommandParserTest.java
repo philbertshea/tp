@@ -1,10 +1,13 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.commands.CommandTestUtil.ATTENDANCE_DESC_AMY;
+import static seedu.tassist.logic.commands.CommandTestUtil.ATTENDANCE_DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.FACULTY_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.FACULTY_DESC_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_ATTENDANCE_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
@@ -34,6 +37,7 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.YEAR_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.YEAR_DESC_BOB;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ATTENDANCE_LIST;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -71,8 +75,8 @@ public class AddCommandParserTest {
         // todo: zhenjie vet
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
                 + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
 
         // multiple tags - all accepted
@@ -81,8 +85,8 @@ public class AddCommandParserTest {
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB
                         + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                        + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                        + REMARK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
     }
 
@@ -90,8 +94,8 @@ public class AddCommandParserTest {
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB
                 + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + TAG_DESC_FRIEND;
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + TAG_DESC_FRIEND;
 
         // multiple names
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
@@ -105,6 +109,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, EMAIL_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
+        // multiple attendanceStrings
+        assertParseFailure(parser, ATTENDANCE_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ATTENDANCE_LIST));
+
         // todo: zhenjie: change the order of arguments in future.
         // multiple fields repeated
         assertParseFailure(parser,
@@ -112,7 +120,7 @@ public class AddCommandParserTest {
                         + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM, PREFIX_TUT_GROUP,
                         PREFIX_NAME, PREFIX_PHONE, PREFIX_REMARK, PREFIX_LAB_GROUP, PREFIX_YEAR,
-                        PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_FACULTY));
+                        PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_FACULTY, PREFIX_ATTENDANCE_LIST));
 
         // invalid value followed by valid value
 
@@ -128,6 +136,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_PHONE_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
 
+        // invalid attendanceString
+        assertParseFailure(parser, INVALID_ATTENDANCE_DESC + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ATTENDANCE_LIST));
+
         // valid value followed by invalid value
 
         // invalid name
@@ -141,6 +153,10 @@ public class AddCommandParserTest {
         // invalid phone
         assertParseFailure(parser, validExpectedPersonString + INVALID_PHONE_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+
+        // invalid attendanceString
+        assertParseFailure(parser, validExpectedPersonString + INVALID_ATTENDANCE_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ATTENDANCE_LIST));
     }
 
     @Test
@@ -151,7 +167,7 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY
                 + TELE_HANDLE_DESC_AMY + EMAIL_DESC_AMY + MAT_NUM_DESC_AMY
                 + TUT_GROUP_DESC_AMY + LAB_GROUP_DESC_AMY + FACULTY_DESC_AMY
-                + YEAR_DESC_AMY + REMARK_DESC_AMY,
+                + YEAR_DESC_AMY + ATTENDANCE_DESC_AMY + REMARK_DESC_AMY,
                 new AddCommand(expectedPerson));
     }
 
@@ -183,31 +199,38 @@ public class AddCommandParserTest {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
                 + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Name.MESSAGE_CONSTRAINTS);
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Name.MESSAGE_CONSTRAINTS);
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + TELE_HANDLE_DESC_BOB
                 + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Phone.MESSAGE_CONSTRAINTS);
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Phone.MESSAGE_CONSTRAINTS);
 
         // invalid email
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
                 + INVALID_EMAIL_DESC + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Email.MESSAGE_CONSTRAINTS);
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Email.MESSAGE_CONSTRAINTS);
+
+        // invalid attendanceString
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
+                + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + INVALID_ATTENDANCE_DESC
+                + REMARK_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, Name.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
                 + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
-                + INVALID_TAG_DESC + VALID_TAG_FRIEND, Tag.MESSAGE_CONSTRAINTS);
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + ATTENDANCE_DESC_BOB
+                + REMARK_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_FRIEND, Tag.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
                 + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
-                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB,
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB
+                + ATTENDANCE_DESC_BOB + REMARK_DESC_BOB,
                 Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble

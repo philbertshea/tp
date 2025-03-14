@@ -1,9 +1,10 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.commands.CommandTestUtil.ATTENDANCE_LIST;
+import static seedu.tassist.logic.commands.CommandTestUtil.ATTENDANCE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_ATTENDANCE_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
@@ -13,7 +14,7 @@ import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_STRING;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_ATTENDANCE_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
@@ -35,6 +36,7 @@ import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.EditCommand;
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Name;
 import seedu.tassist.model.person.Phone;
@@ -83,6 +85,8 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
         assertParseFailure(parser, "1" + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // invalid tag
+        assertParseFailure(parser, "1" + INVALID_ATTENDANCE_DESC,
+                AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS); // invalid attendance string
 
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
@@ -102,11 +106,11 @@ public class EditCommandParserTest {
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + TAG_DESC_HUSBAND
-                + ATTENDANCE_LIST + EMAIL_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
+                + ATTENDANCE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withAttendanceList(VALID_ATTENDANCE_AMY).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -150,6 +154,12 @@ public class EditCommandParserTest {
         descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_FRIEND).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
+
+        // attendanceString
+        userInput = targetIndex.getOneBased() + ATTENDANCE_DESC_AMY;
+        descriptor = new EditPersonDescriptorBuilder().withAttendanceList(VALID_ATTENDANCE_AMY).build();
+        expectedCommand = new EditCommand(targetIndex, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
@@ -171,7 +181,8 @@ public class EditCommandParserTest {
         // mulltiple valid fields repeated
         userInput = targetIndex.getOneBased() + PHONE_DESC_AMY + EMAIL_DESC_AMY
                 + TAG_DESC_FRIEND + PHONE_DESC_AMY + EMAIL_DESC_AMY + TAG_DESC_FRIEND
-                + PHONE_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND;
+                + PHONE_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND
+                + ATTENDANCE_DESC_AMY;
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));

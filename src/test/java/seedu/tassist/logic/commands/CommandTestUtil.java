@@ -54,6 +54,8 @@ public class CommandTestUtil {
     public static final String VALID_REMARK_AMY = "Like skiing.";
     public static final String VALID_REMARK_BOB = "Favourite pastime: Eating";
     public static final String VALID_ATTENDANCE_STRING = "0000000000000";
+    public static final String VALID_ATTENDANCE_AMY = "0011100000022";
+    public static final String VALID_ATTENDANCE_BOB = "0012102210012";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final int VALID_WEEK_A = 3;
@@ -86,14 +88,17 @@ public class CommandTestUtil {
     public static final String YEAR_DESC_BOB = " " + PREFIX_YEAR + VALID_YEAR_BOB;
     public static final String REMARK_DESC_AMY = " " + PREFIX_REMARK + VALID_REMARK_AMY;
     public static final String REMARK_DESC_BOB = " " + PREFIX_REMARK + VALID_REMARK_BOB;
-    public static final String ATTENDANCE_LIST = " " + PREFIX_ATTENDANCE_LIST + " " + VALID_ATTENDANCE_STRING;
+    public static final String ATTENDANCE_DESC_AMY = " " + PREFIX_ATTENDANCE_LIST + " " + VALID_ATTENDANCE_AMY;
+    public static final String ATTENDANCE_DESC_BOB = " " + PREFIX_ATTENDANCE_LIST + " " + VALID_ATTENDANCE_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
-    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + " " + "James&"; // '&' not allowed in names
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + " " + "911a"; // 'a' not allowed in phones
+    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + " " + "bob!yahoo"; // missing '@' symbol
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " " + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_ATTENDANCE_DESC =
+            " " + PREFIX_ATTENDANCE_LIST + " " + "1039829382129"; // integers beyond 0-2 are invalid
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -104,10 +109,10 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_FRIEND).build();
+                .withAttendanceList(VALID_ATTENDANCE_AMY).withTags(VALID_TAG_FRIEND).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-                .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withAttendanceList(VALID_ATTENDANCE_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
     }
 
     /**
