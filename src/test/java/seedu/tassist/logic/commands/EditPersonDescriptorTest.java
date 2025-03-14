@@ -66,8 +66,7 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getLabGroup().orElse(null) + ", faculty="
                 + editPersonDescriptor.getFaculty().orElse(null) + ", year="
                 + editPersonDescriptor.getYear().orElse(null) + ", remark="
-                + editPersonDescriptor.getRemark().orElse(null) + ", attendanceList="
-                + editPersonDescriptor.getAttendanceList().orElse(null) + ", tags="
+                + editPersonDescriptor.getRemark().orElse(null) + ", tags="
                 + editPersonDescriptor.getTags().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }

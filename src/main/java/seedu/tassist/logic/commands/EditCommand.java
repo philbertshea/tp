@@ -115,14 +115,14 @@ public class EditCommand extends Command {
         Faculty updatedFaculty = personToEdit.getFaculty(); // todo: update if needed
         Year updatedYear = personToEdit.getYear(); // todo: update if needed
         Remark updatedRemark = personToEdit.getRemark(); // todo: update if needed
-        AttendanceList updatedAttendanceList =
-                editPersonDescriptor.getAttendanceList().orElse(personToEdit.getAttendanceList());
+        // AttendanceList and LabScoreList are designed not to be edited via the EditCommand.
+        AttendanceList updatedAttendanceList = personToEdit.getAttendanceList();
         LabScoreList updatedLabScoreList = personToEdit.getLabScoreList();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedTeleHandle, updatedEmail,
                 updatedMatNum, updatedTutGroup, updatedLabGroup, updatedFaculty, updatedYear,
-                updatedRemark, updatedAttendanceList, updatedLabScoreList , updatedTags);
+                updatedRemark, updatedAttendanceList, updatedLabScoreList, updatedTags);
     }
 
     @Override
@@ -164,7 +164,6 @@ public class EditCommand extends Command {
         private Faculty faculty;
         private Year year;
         private Remark remark;
-        private AttendanceList attendanceList;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {
@@ -179,7 +178,6 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
-            setAttendanceList(toCopy.attendanceList);
             setTags(toCopy.tags);
         }
 
@@ -242,14 +240,6 @@ public class EditCommand extends Command {
             return Optional.ofNullable(remark);
         }
 
-        public void setAttendanceList(AttendanceList attendanceList) {
-            this.attendanceList = attendanceList;
-        }
-
-        public Optional<AttendanceList> getAttendanceList() {
-            return Optional.ofNullable(attendanceList);
-        }
-
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -283,7 +273,6 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
-                    && Objects.equals(attendanceList, otherEditPersonDescriptor.attendanceList)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -300,7 +289,6 @@ public class EditCommand extends Command {
                     .add("faculty", faculty)
                     .add("year", year)
                     .add("remark", remark)
-                    .add("attendanceList", attendanceList)
                     .add("tags", tags)
                     .toString();
         }
