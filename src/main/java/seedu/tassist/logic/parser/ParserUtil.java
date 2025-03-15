@@ -187,6 +187,9 @@ public class ParserUtil {
      */
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
+        if (!Remark.isValidRemark(remark)) {
+            throw new ParseException(Remark.MESSAGE_CONSTRAINTS);
+        }
         return new Remark(remark);
     }
 

@@ -11,7 +11,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 public class TutGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
-            + "\nTutorial group should either start with a 'T' followed by numbers.";
+            + "\nTutorial group should either start with a 'T' or 't' followed by numbers.";
 
     public static final String VALIDATION_REGEX = "^[Tt]\\d+$";
 

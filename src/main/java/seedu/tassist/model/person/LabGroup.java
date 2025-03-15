@@ -11,7 +11,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 public class LabGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid lab group!"
-            + "\nLab group should either start with a 'B' followed by numbers.";
+            + "\nLab group should either start with a 'B' or 'b' followed by numbers.";
 
     public static final String VALIDATION_REGEX = "^[Bb]\\d+$";
 
