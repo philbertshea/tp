@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
 /**
@@ -80,8 +81,18 @@ public class PersonCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         person.getAttendanceList().getAttendanceStream()
-                .forEach(attendance
-                        -> attendances.getChildren().add(new Label(attendance.tagName())));
+                .forEach(attendance -> {
+                    String tagName = attendance.getTagName();
+                    Label label = new Label(tagName);
+                    if (tagName.endsWith(Attendance.CHECK_EMOJI_UNICODE)) {
+                        label.setStyle("-fx-background-color: #5cb338;");
+                    } else if (tagName.endsWith(Attendance.CROSS_EMOJI_UNICODE)) {
+                        label.setStyle("-fx-background-color: #d70654;");
+                    } else if (tagName.endsWith(Attendance.SICK_EMOJI_UNICODE)) {
+                        label.setStyle("-fx-background-color: #df6d14;");
+                    }
+                    attendances.getChildren().add(label);
+                });
 
         final int[] labCounter = {1};
         person.getLabScoreList().getLabScores().forEach(
