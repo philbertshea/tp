@@ -1,7 +1,8 @@
 package seedu.tassist.commons.util;
 
 /**
- * Builds a string representation of an object that is suitable as the return value of {@link Object#toString()}.
+ * Builds a string representation of an object that is suitable
+ * as the return value of {@link Object#toString()}.
  */
 public class ToStringBuilder {
     private static final String OBJECT_PREFIX = "{";

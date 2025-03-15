@@ -55,7 +55,8 @@ public class ArgumentTokenizer {
         while (prefixPosition != -1) {
             PrefixPosition extendedPrefix = new PrefixPosition(prefix, prefixPosition);
             positions.add(extendedPrefix);
-            prefixPosition = findPrefixPosition(argsString, prefix.getPrefix(), prefixPosition);
+            prefixPosition = findPrefixPosition(argsString, prefix.getPrefix(),
+                    prefixPosition + prefix.getLength());
         }
 
         return positions;
@@ -64,18 +65,25 @@ public class ArgumentTokenizer {
     /**
      * Returns the index of the first occurrence of {@code prefix} in
      * {@code argsString} starting from index {@code fromIndex}. An occurrence
-     * is valid if there is a whitespace before {@code prefix}. Returns -1 if no
+     * is valid if there is a whitespace before and after {@code prefix}. Returns -1 if no
      * such occurrence can be found.
-     * E.g if {@code argsString} = "e/hip/900", {@code prefix} = "p/" and
+     * E.g if {@code argsString} = "-e hi-p900", {@code prefix} = "-p" and
      * {@code fromIndex} = 0, this method returns -1 as there are no valid
-     * occurrences of "p/" with whitespace before it. However, if
-     * {@code argsString} = "e/hi p/900", {@code prefix} = "p/" and
-     * {@code fromIndex} = 0, this method returns 5.
+     * occurrences of "-p" with whitespace before and after it. However, if
+     * {@code argsString} = "-e hi -p 900", {@code prefix} = "-p" and
+     * {@code fromIndex} = 0, this method returns 6.
      */
     private static int findPrefixPosition(String argsString, String prefix, int fromIndex) {
-        int prefixIndex = argsString.indexOf(" " + prefix, fromIndex);
-        return prefixIndex == -1 ? -1
-                : prefixIndex + 1; // +1 as offset for whitespace
+        int prefixIndex = argsString.indexOf(" " + prefix + " ", fromIndex);
+        if (prefixIndex != -1) {
+            return prefixIndex + 1; // +1 as an offset for whitespace.
+        }
+
+        if ((argsString.endsWith(" " + prefix)) && (argsString.length() != fromIndex)) {
+            return argsString.lastIndexOf(" " + prefix) + 1;
+        }
+
+        return -1;
     }
 
     /**
