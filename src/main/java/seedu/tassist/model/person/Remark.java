@@ -11,7 +11,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  */
 public class Remark {
 
-    public static final String VALIDATION_REGEX = "^(?:\"[^\"]*-[^\"]*\"|[^-\"]*)$";
+    public static final String VALIDATION_REGEX = "^[^\"]*$";
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid remark!"
             + "\nRemarks with hyphens need to be encased in \"\"";
@@ -40,7 +40,7 @@ public class Remark {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidRemark(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
     }
 
     @Override

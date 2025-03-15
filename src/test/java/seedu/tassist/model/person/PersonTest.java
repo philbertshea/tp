@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FACULTY_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_GROUP_BOB;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;

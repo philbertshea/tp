@@ -39,7 +39,7 @@ public class TutGroup {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidTutGroup(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
     }
 
     @Override

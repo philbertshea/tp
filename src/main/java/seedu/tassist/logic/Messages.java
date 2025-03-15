@@ -15,7 +15,9 @@ public class Messages {
     public static final String MESSAGE_UNKNOWN_COMMAND = "This command is not recognised."
             + "Please try again.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
-    public static final String MESSAGE_INVALID_QUOTES = "Odd number of quotes detected!";
+    public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
+            + "\nA maximum of one quote should be found in between every flag."
+            + "\nEvery quote should be paired.";
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided"
             + "is invalid. You currently have %d records!";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";

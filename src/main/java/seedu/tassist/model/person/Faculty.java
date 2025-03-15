@@ -10,8 +10,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  */
 public class Faculty {
 
-    public static final String VALIDATION_REGEX = "^(?:\"[\\p{Alnum}][\\p{Alnum} \\&\\-]*\""
-            + "|[\\p{Alnum}][\\p{Alnum} \\&]*)";
+    public static final String VALIDATION_REGEX = "^[\\p{Alnum}][\\p{Alnum} \\&\\-]*$";
     private static final String SPECIAL_CHARACTERS = "&-";
     public static final String MESSAGE_CONSTRAINTS = "Invalid faculty!"
             + "\nFaculties should only contain alphanumeric characters, spaces, "
@@ -43,7 +42,7 @@ public class Faculty {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidFaculty(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
     }
 
     @Override

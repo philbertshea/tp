@@ -39,7 +39,7 @@ public class Year {
      * Returns true if a given string is a valid phone number.
      */
     public static boolean isValidYear(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
     }
 
     @Override
