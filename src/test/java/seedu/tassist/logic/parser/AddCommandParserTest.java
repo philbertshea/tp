@@ -67,15 +67,26 @@ public class AddCommandParserTest {
     public void parse_allFieldsPresent_success() {
         Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND).build();
 
-        // whitespace only preamble
-        // todo: zhenjie vet
+        // Whitespace only preamble.
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
                 + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
                 + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
+        // Trailing whitespace.
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB
+                + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
+                + TAG_DESC_FRIEND + PREAMBLE_WHITESPACE, new AddCommand(expectedPerson));
 
-        // multiple tags - all accepted
+        // Preamble and trailing whitespace.
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
+                + TELE_HANDLE_DESC_BOB + EMAIL_DESC_BOB + MAT_NUM_DESC_BOB + TUT_GROUP_DESC_BOB
+                + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
+                + TAG_DESC_FRIEND + PREAMBLE_WHITESPACE, new AddCommand(expectedPerson));
+
+
+        // Multiple tags - all accepted.
         Person expectedPersonMultipleTags = new PersonBuilder(BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .build();
         assertParseSuccess(parser,
@@ -93,19 +104,46 @@ public class AddCommandParserTest {
                 + LAB_GROUP_DESC_BOB + FACULTY_DESC_BOB + YEAR_DESC_BOB + REMARK_DESC_BOB
                 + TAG_DESC_FRIEND;
 
-        // multiple names
+        // Multiple names.
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
 
-        // multiple phones
+        // Multiple phones.
         assertParseFailure(parser, PHONE_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
 
-        // multiple emails
+        // Multiple Telegram handles.
+        assertParseFailure(parser, TELE_HANDLE_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE));
+
+        // Multiple emails.
         assertParseFailure(parser, EMAIL_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
-        // todo: zhenjie: change the order of arguments in future.
+        // Multiple matric numbers.
+        assertParseFailure(parser, MAT_NUM_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAT_NUM));
+
+        // Multiple tutorial groups.
+        assertParseFailure(parser, TUT_GROUP_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUT_GROUP));
+
+        // Multiple lab groups.
+        assertParseFailure(parser, LAB_GROUP_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LAB_GROUP));
+
+        // Multiple faculties.
+        assertParseFailure(parser, FACULTY_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_FACULTY));
+
+        // Multiple years.
+        assertParseFailure(parser, YEAR_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_YEAR));
+
+        // Multiple remarks.
+        assertParseFailure(parser, REMARK_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
+
         // multiple fields repeated
         assertParseFailure(parser,
                 validExpectedPersonString + PHONE_DESC_AMY + EMAIL_DESC_AMY + NAME_DESC_AMY
@@ -146,7 +184,6 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        // todo: zhenjie vet
         Person expectedPerson = new PersonBuilder(AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY
                 + TELE_HANDLE_DESC_AMY + EMAIL_DESC_AMY + MAT_NUM_DESC_AMY
@@ -160,8 +197,8 @@ public class AddCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
 
         // missing name prefix
-        // todo: zhenjie vet
-        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB,
+        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + TELE_HANDLE_DESC_BOB
+                        + EMAIL_DESC_BOB,
                 expectedMessage);
 
         // missing phone prefix

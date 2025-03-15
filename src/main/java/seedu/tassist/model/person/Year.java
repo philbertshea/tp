@@ -13,7 +13,7 @@ public class Year {
     public static final String MESSAGE_CONSTRAINTS = "Invalid year!"
             + "\nOnly digits 1 through 6 are allowed.";
 
-    public static final String VALIDATION_REGEX = "\\d{1,6}";
+    public static final String VALIDATION_REGEX = "[1-6]";
 
     public final String value;
 
