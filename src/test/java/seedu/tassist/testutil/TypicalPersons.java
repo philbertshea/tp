@@ -40,7 +40,7 @@ public class TypicalPersons {
             .withEmail("alice@example.com").withPhone("94351253").withTeleHandle("@alice")
             .withMatNum("A0000001X").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("1").withRemark("todo")
-            .withAttendanceList("0000000000000").withLabScores("")
+            .withAttendanceList("0011100000000").withLabScores("")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com").withPhone("98765432").withTeleHandle("@ben_mei")
