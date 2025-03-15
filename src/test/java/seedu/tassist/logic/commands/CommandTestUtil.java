@@ -90,10 +90,17 @@ public class CommandTestUtil {
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + " " + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + " " + VALID_TAG_HUSBAND;
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + " James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + " 911a"; // 'a' not allowed in phones
-    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + " bob!yahoo"; // missing '@' symbol
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' not allowed in tags
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + " James&"; // '&' not allowed in names.
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + " 911a"; // 'a' not allowed in phones.
+    public static final String INVALID_TELE_HANDLE_DESC = " " + PREFIX_TELE_HANDLE + " @ca"; // Longer than 5 chars.
+    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + " bob!yahoo"; // Missing '@' symbol.
+    public static final String INVALID_MAT_NUM_DESC = " " + PREFIX_MAT_NUM + " A0000000A"; // Failed checksum.
+    public static final String INVALID_TUT_GROUP_DESC = " " + PREFIX_TUT_GROUP + " C111"; // Start with 'T' or 't'.
+    public static final String INVALID_LAB_GROUP_DESC = " " + PREFIX_LAB_GROUP + " D111"; // Start with 'B' or 'b'
+    public static final String INVALID_FACULTY_DESC = " " + PREFIX_FACULTY + " @#$S"; // Only '-' and '&' allowed.
+    public static final String INVALID_YEAR_DESC = " " + PREFIX_YEAR + " 8"; // Only 1-6 allowed.
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' Not allowed in tags.
+
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
