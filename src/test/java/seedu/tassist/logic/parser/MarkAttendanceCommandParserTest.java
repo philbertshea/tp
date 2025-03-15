@@ -33,7 +33,7 @@ public class MarkAttendanceCommandParserTest {
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_UNATTENDED + " ";
+                + PREFIX_MARK_UNATTENDED;
         MarkAttendanceCommand expectedCommand =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.NOT_ATTENDED);
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -44,7 +44,7 @@ public class MarkAttendanceCommandParserTest {
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_ON_MC + " ";
+                + PREFIX_MARK_ON_MC;
         MarkAttendanceCommand expectedCommand =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ON_MC);
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -60,7 +60,7 @@ public class MarkAttendanceCommandParserTest {
 
         // no index
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_WEEK + " " + VALID_WEEK_A + " ", expectedMessage);
+                + PREFIX_WEEK + " " + VALID_WEEK_A, expectedMessage);
 
         // no week
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
@@ -70,6 +70,6 @@ public class MarkAttendanceCommandParserTest {
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_ON_MC + " " + PREFIX_MARK_UNATTENDED + " ", expectedMessage);
+                + PREFIX_MARK_ON_MC + " " + PREFIX_MARK_UNATTENDED, expectedMessage);
     }
 }

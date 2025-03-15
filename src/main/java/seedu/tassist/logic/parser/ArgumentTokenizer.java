@@ -74,13 +74,16 @@ public class ArgumentTokenizer {
      * {@code fromIndex} = 0, this method returns 6.
      */
     private static int findPrefixPosition(String argsString, String prefix, int fromIndex) {
+        int prefixIndex = argsString.indexOf(" " + prefix + " ", fromIndex);
+        if (prefixIndex != -1) {
+            return prefixIndex + 1; // +1 as an offset for whitespace.
+        }
+
         if ((argsString.endsWith(" " + prefix)) && (argsString.length() != fromIndex)) {
             return argsString.lastIndexOf(" " + prefix) + 1;
         }
 
-        int prefixIndex = argsString.indexOf(" " + prefix + " ", fromIndex);
-        return prefixIndex == -1 ? -1
-                : prefixIndex + 1; // +1 as offset for whitespace
+        return -1;
     }
 
     /**
