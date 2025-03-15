@@ -2,9 +2,16 @@ package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
@@ -42,20 +49,29 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of the person identified "
-            + "by the index number used in the displayed person list. "
-            + "Existing values will be overwritten by the input values.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_NAME + "NAME] "
-            + "[" + PREFIX_PHONE + "PHONE] "
-            + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+    public static final String MESSAGE_USAGE = "Usage: edit INDEX [OPTIONS]...\n"
+            + "\n"
+            + "Edits the details of a person identified by INDEX in the displayed list.  \n"
+            + "Existing values will be overwritten.\n"
+            + "\n"
+            + "Options:\n"
+            + "  " + PREFIX_NAME + " NAME        Update name  \n"
+            + "  " + PREFIX_PHONE + " PHONE       Update phone number  \n"
+            + "  " + PREFIX_TELE_HANDLE + " HANDLE   Update Telegram handle  \n"
+            + "  " + PREFIX_EMAIL + " EMAIL       Update email  \n"
+            + "  " + PREFIX_MAT_NUM + " MATRIC      Update matriculation number  \n"
+            + "  " + PREFIX_TUT_GROUP + " GROUP     Update tutorial group  \n"
+            + "  " + PREFIX_LAB_GROUP + " GROUP     Update lab group  \n"
+            + "  " + PREFIX_FACULTY + " FACULTY   Update faculty  \n"
+            + "  " + PREFIX_YEAR + " YEAR       Update academic year  \n"
+            + "  " + PREFIX_REMARK + " REMARKS     Update remarks  \n"
+            + "  " + PREFIX_TAG + " TAG       Add/update tags (multiple allowed)  \n"
+            + "\n"
+            + "Example:  \n"
+            + "  edit 2 -n John -p 98765432 -tele @johnDoe -e john@example.com -m A0123456J \\\n"
+            + "         -tut T01 -lab B02 -fac SOC -yr 3 -r \"TA candidate\" -tag friends -tag debt";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: \n%1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book.";
@@ -94,7 +110,7 @@ public class EditCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson)));
+                Messages.formatClean(editedPerson)));
     }
 
     /**
@@ -107,14 +123,14 @@ public class EditCommand extends Command {
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        TeleHandle updatedTeleHandle = personToEdit.getTeleHandle(); // todo: update if needed
+        TeleHandle updatedTeleHandle = editPersonDescriptor.getTeleHandle().orElse(personToEdit.getTeleHandle());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        MatNum updatedMatNum = personToEdit.getMatNum(); // todo: update if needed
-        TutGroup updatedTutGroup = personToEdit.getTutGroup(); // todo: update if needed
-        LabGroup updatedLabGroup = personToEdit.getLabGroup(); // todo: update if needed
-        Faculty updatedFaculty = personToEdit.getFaculty(); // todo: update if needed
-        Year updatedYear = personToEdit.getYear(); // todo: update if needed
-        Remark updatedRemark = personToEdit.getRemark(); // todo: update if needed
+        MatNum updatedMatNum = editPersonDescriptor.getMatNum().orElse(personToEdit.getMatNum());
+        TutGroup updatedTutGroup = editPersonDescriptor.getTutGroup().orElse(personToEdit.getTutGroup());
+        LabGroup updatedLabGroup = editPersonDescriptor.getLabGroup().orElse(personToEdit.getLabGroup());
+        Faculty updatedFaculty = editPersonDescriptor.getFaculty().orElse(personToEdit.getFaculty());
+        Year updatedYear = editPersonDescriptor.getYear().orElse(personToEdit.getYear());
+        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
         // AttendanceList and LabScoreList are designed not to be edited via the EditCommand.
         AttendanceList updatedAttendanceList = personToEdit.getAttendanceList();
         LabScoreList updatedLabScoreList = personToEdit.getLabScoreList();
@@ -177,7 +193,14 @@ public class EditCommand extends Command {
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
             setName(toCopy.name);
             setPhone(toCopy.phone);
+            setTeleHandle(toCopy.teleHandle);
             setEmail(toCopy.email);
+            setMatNum(toCopy.matNum);
+            setTutGroup(toCopy.tutGroup);
+            setLabGroup(toCopy.labGroup);
+            setFaculty(toCopy.faculty);
+            setYear(toCopy.year);
+            setRemark(toCopy.remark);
             setTags(toCopy.tags);
         }
 
@@ -185,7 +208,10 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, tags);
+            return CollectionUtil.isAnyNonNull(
+                    name, phone, teleHandle, email, matNum, tutGroup,
+                    labGroup, faculty, year, remark, tags
+            );
         }
 
         public void setName(Name name) {
@@ -216,28 +242,56 @@ public class EditCommand extends Command {
             return Optional.ofNullable(teleHandle);
         }
 
+        public void setTeleHandle(TeleHandle teleHandle) {
+            this.teleHandle = teleHandle;
+        }
+
         public Optional<MatNum> getMatNum() {
             return Optional.ofNullable(matNum);
+        }
+
+        public void setMatNum(MatNum matNum) {
+            this.matNum = matNum;
         }
 
         public Optional<TutGroup> getTutGroup() {
             return Optional.ofNullable(tutGroup);
         }
 
+        public void setTutGroup(TutGroup tutGroup) {
+            this.tutGroup = tutGroup;
+        }
+
         public Optional<LabGroup> getLabGroup() {
             return Optional.ofNullable(labGroup);
+        }
+
+        public void setLabGroup(LabGroup labGroup) {
+            this.labGroup = labGroup;
         }
 
         public Optional<Faculty> getFaculty() {
             return Optional.ofNullable(faculty);
         }
 
+        public void setFaculty(Faculty faculty) {
+            this.faculty = faculty;
+        }
+
         public Optional<Year> getYear() {
             return Optional.ofNullable(year);
         }
 
+        public void setYear(Year year) {
+            this.year = year;
+        }
+
         public Optional<Remark> getRemark() {
             return Optional.ofNullable(remark);
+        }
+
+        public void setRemark(Remark remark) {
+            this.remark = remark;
         }
 
         /**
@@ -270,9 +324,17 @@ public class EditCommand extends Command {
             }
 
             EditPersonDescriptor otherEditPersonDescriptor = (EditPersonDescriptor) other;
+
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
+                    && Objects.equals(teleHandle, otherEditPersonDescriptor.teleHandle)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
+                    && Objects.equals(matNum, otherEditPersonDescriptor.matNum)
+                    && Objects.equals(tutGroup, otherEditPersonDescriptor.tutGroup)
+                    && Objects.equals(labGroup, otherEditPersonDescriptor.labGroup)
+                    && Objects.equals(faculty, otherEditPersonDescriptor.faculty)
+                    && Objects.equals(year, otherEditPersonDescriptor.year)
+                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
