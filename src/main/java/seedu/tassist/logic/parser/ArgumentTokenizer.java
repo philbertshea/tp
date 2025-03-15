@@ -79,7 +79,7 @@ public class ArgumentTokenizer {
             return prefixIndex + 1; // +1 as an offset for whitespace.
         }
 
-        if ((argsString.endsWith(" " + prefix)) && (argsString.length() != fromIndex)) {
+        if ((argsString.endsWith(" " + prefix)) && (fromIndex < argsString.length())) {
             return argsString.lastIndexOf(" " + prefix) + 1;
         }
 
