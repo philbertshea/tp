@@ -34,21 +34,15 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label phone;
-    @FXML
-    private Label teleHandle;
+    private Label contact;
     @FXML
     private Label email;
     @FXML
     private Label matNum;
     @FXML
-    private Label tutGroup;
+    private Label classGroup;
     @FXML
-    private Label labGroup;
-    @FXML
-    private Label faculty;
-    @FXML
-    private Label year;
+    private Label facAndYear;
     @FXML
     private Label remark;
     @FXML
@@ -62,24 +56,54 @@ public class PersonCard extends UiPart<Region> {
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
     public PersonCard(Person person, int displayedIndex) {
-        // todo:  zhenjie Change UI layout in future
         super(FXML);
         this.person = person;
-        id.setText(displayedIndex + ". ");
+        id.setText(displayedIndex + "");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        teleHandle.setText(person.getTeleHandle().value);
+        matNum.setText("(" + person.getMatNum().value + ")");
+
+        String tutGroup = person.getTutGroup().value;
+        String labGroup = person.getLabGroup().value;
+        if (tutGroup.isEmpty() && !labGroup.isEmpty()) {
+            classGroup.setText(labGroup);
+        } else if (!tutGroup.isEmpty() && labGroup.isEmpty()) {
+            classGroup.setText(tutGroup);
+        } else {
+            classGroup.setText(tutGroup + " | " + labGroup);
+        }
+
+        String phone = person.getPhone().value;
+        String teleHandle = person.getTeleHandle().value;
+        if (phone.isEmpty() && !teleHandle.isEmpty()) {
+            contact.setText(teleHandle);
+        } else if (!phone.isEmpty() && teleHandle.isEmpty()) {
+            contact.setText(phone);
+        } else {
+            contact.setText(phone + "    " + teleHandle);
+        }
+
         email.setText(person.getEmail().value);
-        matNum.setText(person.getMatNum().value);
-        tutGroup.setText(person.getTutGroup().value);
-        labGroup.setText(person.getLabGroup().value);
-        faculty.setText(person.getFaculty().value);
-        year.setText(person.getYear().value);
-        remark.setText(person.getRemark().value);
+
+        String year = person.getYear().value;
+        String faculty = person.getFaculty().value;
+        if (year.isEmpty() && !faculty.isEmpty()) {
+            facAndYear.setText(faculty);
+        } else if (!year.isEmpty() && faculty.isEmpty()) {
+            facAndYear.setText("Y" + year);
+        } else {
+            facAndYear.setText("Y" + person.getYear().value + "  \u2022  " + person.getFaculty().value);
+        }
+
+        if (!person.getRemark().value.isEmpty()) {
+            remark.setText(person.getRemark().value);
+        }
+
         labScores.getChildren().add(new Label("Lab grades:"));
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
         person.getAttendanceList().getAttendanceStream()
                 .forEach(attendance -> {
                     String tagName = attendance.getTagName();
