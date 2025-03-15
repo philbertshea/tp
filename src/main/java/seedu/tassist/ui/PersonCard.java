@@ -68,8 +68,9 @@ public class PersonCard extends UiPart<Region> {
             classGroup.setText(labGroup);
         } else if (!tutGroup.isEmpty() && labGroup.isEmpty()) {
             classGroup.setText(tutGroup);
+        } else {
+            classGroup.setText(tutGroup + " | " + labGroup);
         }
-        classGroup.setText(tutGroup + " | " + labGroup);
 
         String phone = person.getPhone().value;
         String teleHandle = person.getTeleHandle().value;
@@ -77,19 +78,21 @@ public class PersonCard extends UiPart<Region> {
             contact.setText(teleHandle);
         } else if (!phone.isEmpty() && teleHandle.isEmpty()) {
             contact.setText(phone);
+        } else {
+            contact.setText(phone + "    " + teleHandle);
         }
-        contact.setText(phone + "    " + teleHandle);
 
         email.setText(person.getEmail().value);
 
         String year = person.getYear().value;
         String faculty = person.getFaculty().value;
         if (year.isEmpty() && !faculty.isEmpty()) {
-            contact.setText(faculty);
+            facAndYear.setText(faculty);
         } else if (!year.isEmpty() && faculty.isEmpty()) {
-            contact.setText(year);
+            facAndYear.setText(year);
+        } else {
+            facAndYear.setText("Y" + person.getYear().value + "  \u2022  " + person.getFaculty().value);
         }
-        facAndYear.setText("Y" + person.getYear().value + "  \u2022  " + person.getFaculty().value);
 
         if (!person.getRemark().value.isEmpty()) {
             remark.setText(person.getRemark().value);
