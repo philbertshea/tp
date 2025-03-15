@@ -1,14 +1,17 @@
 package seedu.tassist.logic.parser;
 
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_ARGUMENTS;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**
- * Parses input arguments and creates a new DeleteCommand object.
- * Expected input format: "delete INDEX" (e.g., "delete 3").
+ * Parses user input to create a {@link DeleteCommand}.
+ * Expected format: del -i (1-based integer).
+ * Throws a {@link ParseException} if the input is missing, non-numeric, or incorrectly formatted.
  */
 public class DeleteCommandParser implements Parser<DeleteCommand> {
 
@@ -16,9 +19,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
      * and returns a DeleteCommand object for execution.
      *
-     * @param args the user input arguments.
-     * @return a DeleteCommand object with a valid Index.
-     * @throws ParseException if the user input does not conform to the expected format.
+     * @param args The user-input string, e.g. "-i 2".
+     * @throws ParseException if the user input is invalid.
      */
     @Override
     public DeleteCommand parse(String args) throws ParseException {
@@ -27,19 +29,27 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
+        if (!trimmedArgs.startsWith("-i")) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        }
 
-        // Expect exactly one token (the index value).
-        String[] tokens = trimmedArgs.split("\\s+");
+        String remaining = trimmedArgs.substring(2).trim();
+        if (remaining.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        }
+
+        String[] tokens = remaining.split("\\s+");
         if (tokens.length != 1) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
         }
 
         String indexStr = tokens[0];
-        // Validate that the index consists solely of digits.
         if (!indexStr.matches("\\d+")) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
         }
 
         try {
