@@ -27,7 +27,7 @@ import seedu.tassist.model.tag.Tag;
 public class SampleDataUtil {
 
     // todo: zhenjie update all fields
-    public static final TeleHandle DEFAULT_TELE_HANDLE = new TeleHandle("@tele");
+    public static final TeleHandle DEFAULT_TELE_HANDLE = new TeleHandle("@telegram");
     public static final MatNum DEFAULT_MAT_NUM = new MatNum("A0000000Y");
     public static final TutGroup DEFAULT_TUT_GROUP = new TutGroup("T01");
     public static final LabGroup DEFAULT_LAB_GROUP = new LabGroup("B01");

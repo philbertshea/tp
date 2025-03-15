@@ -5,12 +5,13 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's tutorial group in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidTutGroup(String)}
  */
 public class TutGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
-            + "\nTutorial group should either start with a 'T' and/or contain only numbers.";
+            + "\nTutorial group should either start with a 'T' followed by numbers.";
 
     public static final String VALIDATION_REGEX = "^[Tt]\\d+$";
 
@@ -24,7 +25,14 @@ public class TutGroup {
     public TutGroup(String tutGroup) {
         requireNonNull(tutGroup);
         checkArgument(isValidTutGroup(tutGroup), MESSAGE_CONSTRAINTS);
-        value = tutGroup;
+        value = tutGroup.toUpperCase();
+    }
+
+    /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
     }
 
     /**
@@ -50,8 +58,8 @@ public class TutGroup {
             return false;
         }
 
-        Name otherTutGroup = (Name) other;
-        return value.equals(otherTutGroup.fullName);
+        TutGroup otherTutGroup = (TutGroup) other;
+        return value.equals(otherTutGroup.value);
     }
 
     @Override

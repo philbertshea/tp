@@ -5,6 +5,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's name in the address book.
+ * Compulsory field.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
@@ -13,7 +14,8 @@ public class Name {
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} \\.\\'\\/\\-]*";
+    public static final String VALIDATION_REGEX = "^(?:[\\p{Alnum}][\\p{Alnum} \\.\\/']*|"
+            + "\"[\\p{Alnum}][\\p{Alnum} \\.'\\/\\-]*\")$";
     private static final String SPECIAL_CHARACTERS = "+_.-";
     public static final String MESSAGE_CONSTRAINTS = "Invalid name!"
             + "\nNames must start with an alphanumeric character."

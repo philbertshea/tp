@@ -31,7 +31,8 @@ public class LabScore {
     public void updateLabScore(int labScore) throws CommandException {
         if (labScore > maxLabScore) {
             throw new CommandException(
-                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE, labScore, maxLabScore));
+                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE,
+                            labScore, maxLabScore));
         }
         this.labScore = labScore;
     }

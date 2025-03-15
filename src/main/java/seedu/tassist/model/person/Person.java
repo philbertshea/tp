@@ -116,7 +116,8 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons have the same matriculation number
+     * (this is a guaranteed unique form of identification).
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -125,7 +126,7 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && otherPerson.getMatNum().equals(getMatNum());
     }
 
     /**
@@ -172,13 +173,14 @@ public class Person {
         return new ToStringBuilder(this)
                 .add("name", name)
                 .add("phone", phone)
-                .add("teleHAndle", teleHandle)
+                .add("teleHandle", teleHandle)
                 .add("email", email)
                 .add("matNum", matNum)
                 .add("tutGroup", tutGroup)
                 .add("labGroup", labGroup)
                 .add("faculty", faculty)
                 .add("year", year)
+                .add("remark", remark)
                 .add("attendanceList", attendanceList)
                 .add("labScoreList", labScoreList)
                 .add("tags", tags)

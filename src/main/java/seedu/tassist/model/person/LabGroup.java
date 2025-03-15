@@ -5,12 +5,13 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's lab group in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidLabGroup(String)}
  */
 public class LabGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid lab group!"
-            + "\nLab group should either start with a 'B' and/or contain only numbers.";
+            + "\nLab group should either start with a 'B' followed by numbers.";
 
     public static final String VALIDATION_REGEX = "^[Bb]\\d+$";
 
@@ -24,7 +25,14 @@ public class LabGroup {
     public LabGroup(String labGroup) {
         requireNonNull(labGroup);
         checkArgument(isValidLabGroup(labGroup), MESSAGE_CONSTRAINTS);
-        value = labGroup;
+        value = labGroup.toUpperCase();
+    }
+
+    /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
     }
 
     /**

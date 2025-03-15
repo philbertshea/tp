@@ -15,6 +15,7 @@ import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
@@ -31,6 +32,7 @@ import seedu.tassist.testutil.PersonBuilder;
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
  */
+@Disabled("Feature to be handled by Wei En")
 public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());

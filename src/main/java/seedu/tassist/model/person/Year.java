@@ -5,10 +5,10 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's year of study in the address book.
+ * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidYear(String)}
  */
 public class Year {
-
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid year!"
             + "\nOnly digits 1 through 6 are allowed.";
@@ -26,6 +26,13 @@ public class Year {
         requireNonNull(year);
         checkArgument(isValidYear(year), MESSAGE_CONSTRAINTS);
         value = year;
+    }
+
+    /**
+     * Checks if value is empty.
+     */
+    public boolean isEmpty() {
+        return value.isEmpty();
     }
 
     /**

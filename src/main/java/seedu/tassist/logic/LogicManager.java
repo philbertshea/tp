@@ -58,9 +58,11 @@ public class LogicManager implements Logic {
         try {
             storage.saveAddressBook(model.getAddressBook());
         } catch (AccessDeniedException e) {
-            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+            throw new CommandException(String.format(
+                    FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
-            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+            throw new CommandException(String.format(
+                    FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
 
         return commandResult;
@@ -74,7 +76,8 @@ public class LogicManager implements Logic {
      */
     public void loadCsv(Path filePath) throws IOException {
         try {
-            Optional<ReadOnlyAddressBook> addressBookOptional = storage.readAddressBookFromCsv(filePath);
+            Optional<ReadOnlyAddressBook> addressBookOptional = storage
+                    .readAddressBookFromCsv(filePath);
             if (addressBookOptional.isPresent()) {
                 model.setAddressBook(new AddressBook(addressBookOptional.get()));
             } else {
