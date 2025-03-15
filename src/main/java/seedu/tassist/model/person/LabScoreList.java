@@ -1,6 +1,8 @@
 package seedu.tassist.model.person;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -40,6 +42,10 @@ public class LabScoreList {
         }
     }
 
+    public LabScoreList(LabScore[] labs) {
+        Collections.addAll(labScoreList, labs);
+    }
+
     /**
      * Updates the specified lab with the updated score.
      * @param labNumber The LabScore object to update.
@@ -50,8 +56,9 @@ public class LabScoreList {
         if (labNumber < 1 || labNumber > labTotal) {
             throw new CommandException(String.format(UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
         }
-        labScoreList.get(labNumber - 1).updateLabScore(labScore);
-        return this;
+        LabScore[] copy = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
+        copy[labNumber - 1] = copy[labNumber - 1].updateLabScore(labScore);
+        return new LabScoreList(copy);
     }
 
     /**
