@@ -19,8 +19,8 @@ public class ExportDataCommandParserTest {
     @Test
     public void parse_validFileNameAndCsvExtention_success() {
         String userInput = " "
-                + PREFIX_FILENAME + VALID_FILE_NAME + " "
-                + PREFIX_EXTENSION + VALID_FILE_EXTENSION_CSV;
+                + PREFIX_FILENAME + " " + VALID_FILE_NAME + " "
+                + PREFIX_EXTENSION + " " + VALID_FILE_EXTENSION_CSV;
         ExportDataCommand expectedCommand =
                 new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -29,8 +29,8 @@ public class ExportDataCommandParserTest {
     @Test
     public void parse_validFileNameAndJsonExtention_success() {
         String userInput = " "
-                + PREFIX_FILENAME + VALID_FILE_NAME + " "
-                + PREFIX_EXTENSION + VALID_FILE_EXTENSION_JSON;
+                + PREFIX_FILENAME + " " + VALID_FILE_NAME + " "
+                + PREFIX_EXTENSION + " " + VALID_FILE_EXTENSION_JSON;
         ExportDataCommand expectedCommand =
                 new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_JSON);
         assertParseSuccess(parser, userInput, expectedCommand);

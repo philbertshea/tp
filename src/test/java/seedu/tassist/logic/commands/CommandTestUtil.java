@@ -66,34 +66,34 @@ public class CommandTestUtil {
     public static final String VALID_FILE_EXTENSION_CSV = "csv";
     public static final String VALID_FILE_EXTENSION_JSON = "json";
 
-    public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
-    public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
-    public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
-    public static final String PHONE_DESC_BOB = " " + PREFIX_PHONE + VALID_PHONE_BOB;
-    public static final String TELE_HANDLE_DESC_AMY = " " + PREFIX_TELE_HANDLE + VALID_TELE_HANDLE_AMY;
-    public static final String TELE_HANDLE_DESC_BOB = " " + PREFIX_TELE_HANDLE + VALID_TELE_HANDLE_BOB;
-    public static final String EMAIL_DESC_AMY = " " + PREFIX_EMAIL + VALID_EMAIL_AMY;
-    public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + VALID_EMAIL_BOB;
-    public static final String MAT_NUM_DESC_AMY = " " + PREFIX_MAT_NUM + VALID_MAT_NUM_AMY;
-    public static final String MAT_NUM_DESC_BOB = " " + PREFIX_MAT_NUM + VALID_MAT_NUM_BOB;
-    public static final String TUT_GROUP_DESC_AMY = " " + PREFIX_TUT_GROUP + VALID_TUT_GROUP_AMY;
-    public static final String TUT_GROUP_DESC_BOB = " " + PREFIX_TUT_GROUP + VALID_TUT_GROUP_BOB;
-    public static final String LAB_GROUP_DESC_AMY = " " + PREFIX_LAB_GROUP + VALID_LAB_GROUP_AMY;
-    public static final String LAB_GROUP_DESC_BOB = " " + PREFIX_LAB_GROUP + VALID_LAB_GROUP_BOB;
-    public static final String FACULTY_DESC_AMY = " " + PREFIX_FACULTY + VALID_FACULTY_AMY;
-    public static final String FACULTY_DESC_BOB = " " + PREFIX_FACULTY + VALID_FACULTY_BOB;
-    public static final String YEAR_DESC_AMY = " " + PREFIX_YEAR + VALID_YEAR_AMY;
-    public static final String YEAR_DESC_BOB = " " + PREFIX_YEAR + VALID_YEAR_BOB;
-    public static final String REMARK_DESC_AMY = " " + PREFIX_REMARK + VALID_REMARK_AMY;
-    public static final String REMARK_DESC_BOB = " " + PREFIX_REMARK + VALID_REMARK_BOB;
+    public static final String NAME_DESC_AMY = " " + PREFIX_NAME + " " + VALID_NAME_AMY;
+    public static final String NAME_DESC_BOB = " " + PREFIX_NAME + " " + VALID_NAME_BOB;
+    public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + " " + VALID_PHONE_AMY;
+    public static final String PHONE_DESC_BOB = " " + PREFIX_PHONE + " " + VALID_PHONE_BOB;
+    public static final String TELE_HANDLE_DESC_AMY = " " + PREFIX_TELE_HANDLE + " " + VALID_TELE_HANDLE_AMY;
+    public static final String TELE_HANDLE_DESC_BOB = " " + PREFIX_TELE_HANDLE + " " + VALID_TELE_HANDLE_BOB;
+    public static final String EMAIL_DESC_AMY = " " + PREFIX_EMAIL + " " + VALID_EMAIL_AMY;
+    public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + " " + VALID_EMAIL_BOB;
+    public static final String MAT_NUM_DESC_AMY = " " + PREFIX_MAT_NUM + " " + VALID_MAT_NUM_AMY;
+    public static final String MAT_NUM_DESC_BOB = " " + PREFIX_MAT_NUM + " " + VALID_MAT_NUM_BOB;
+    public static final String TUT_GROUP_DESC_AMY = " " + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY;
+    public static final String TUT_GROUP_DESC_BOB = " " + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_BOB;
+    public static final String LAB_GROUP_DESC_AMY = " " + PREFIX_LAB_GROUP + " " + VALID_LAB_GROUP_AMY;
+    public static final String LAB_GROUP_DESC_BOB = " " + PREFIX_LAB_GROUP + " " + VALID_LAB_GROUP_BOB;
+    public static final String FACULTY_DESC_AMY = " " + PREFIX_FACULTY + " " + VALID_FACULTY_AMY;
+    public static final String FACULTY_DESC_BOB = " " + PREFIX_FACULTY + " " + VALID_FACULTY_BOB;
+    public static final String YEAR_DESC_AMY = " " + PREFIX_YEAR + " " + VALID_YEAR_AMY;
+    public static final String YEAR_DESC_BOB = " " + PREFIX_YEAR + " " + VALID_YEAR_BOB;
+    public static final String REMARK_DESC_AMY = " " + PREFIX_REMARK + " " + VALID_REMARK_AMY;
+    public static final String REMARK_DESC_BOB = " " + PREFIX_REMARK + " " + VALID_REMARK_BOB;
     public static final String ATTENDANCE_LIST = " " + PREFIX_ATTENDANCE_LIST + " " + VALID_ATTENDANCE_STRING;
-    public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
-    public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + " " + VALID_TAG_FRIEND;
+    public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + " " + VALID_TAG_HUSBAND;
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
-    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + " James&"; // '&' not allowed in names
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + " 911a"; // 'a' not allowed in phones
+    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + " bob!yahoo"; // missing '@' symbol
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' not allowed in tags
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -104,10 +104,10 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_FRIEND).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-                .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
     }
 
     /**

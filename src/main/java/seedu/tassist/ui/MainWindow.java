@@ -4,6 +4,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -150,6 +151,41 @@ public class MainWindow extends UiPart<Stage> {
             helpWindow.show();
         } else {
             helpWindow.focus();
+        }
+    }
+
+    /**
+     * Handles the action for loading a file.
+     */
+    @FXML
+    private void handleLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            // TODO: Integrate with logic/storage to load file data.
+            logger.info("Load file: " + file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Handles the action for saving a file.
+     */
+    @FXML
+    private void handleSave() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            try {
+                logic.saveCsv(file.toPath());
+                logger.info("CSV data successfully saved to: " + file.getAbsolutePath());
+            } catch (IOException e) {
+                logger.severe("Failed to save CSV: " + e.getMessage());
+            }
         }
     }
 
