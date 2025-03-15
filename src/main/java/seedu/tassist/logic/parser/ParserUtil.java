@@ -1,6 +1,9 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_ARGUMENTS;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -269,4 +272,65 @@ public class ParserUtil {
         }
 
     }
+
+    public static Index parseDeleteArgs(String args, String usageMessage) throws ParseException {
+        String trimmed = parseDelArgs(args, usageMessage);
+        String remaining = parseIndexFlag(trimmed, usageMessage);
+        String token = parseDelToken(remaining, usageMessage);
+        return parseNumericIndex(token, usageMessage);
+    }
+
+    /**
+     * Trims the input and checks if it’s empty. If so, throws an error about invalid format.
+     */
+    private static String parseDelArgs(String args, String usageMessage) throws ParseException {
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usageMessage));
+        }
+        return trimmedArgs;
+    }
+
+    /**
+     * Expects the string to start with "-i". If not, throws an invalid arguments error.
+     * Returns the remainder after "-i".
+     */
+    private static String parseIndexFlag(String trimmed, String usageMessage) throws ParseException {
+        if (!trimmed.startsWith("-i")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, usageMessage));
+        }
+        String remaining = trimmed.substring(2).trim();
+        if (remaining.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_MISSING_ARGUMENTS, usageMessage));
+        }
+        return remaining;
+    }
+
+    /**
+     * Splits the remainder by whitespace, ensuring exactly one token. If not, throws parse error.
+     */
+    private static String parseDelToken(String remaining, String usageMessage) throws ParseException {
+        String[] tokens = remaining.split("\\s+");
+        if (tokens.length != 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, usageMessage));
+        }
+        return tokens[0];
+    }
+
+    /**
+     * Checks if the string is numeric. If yes, parses it via parseIndex. If parseIndex fails
+     * (e.g., zero or negative), rethrows a parse exception indicating invalid command format.
+     */
+    private static Index parseNumericIndex(String indexStr, String usageMessage) throws ParseException {
+        if (!indexStr.matches("\\d+")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, usageMessage));
+        }
+
+        try {
+            return parseIndex(indexStr);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usageMessage), pe);
+        }
+    }
+
 }
