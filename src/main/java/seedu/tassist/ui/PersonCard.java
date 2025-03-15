@@ -2,16 +2,11 @@ package seedu.tassist.ui;
 
 import java.util.Comparator;
 
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
