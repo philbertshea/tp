@@ -2,11 +2,16 @@ package seedu.tassist.ui;
 
 import java.util.Comparator;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
@@ -97,18 +102,10 @@ public class PersonCard extends UiPart<Region> {
 
         labScores.getChildren().add(new Label("Lab grades:"));
 
-
-        // todo: find a way to get FlowPane to work alongside Label wrapText.
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-//                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-                .forEach(tag -> {
-                    Label label = new Label(tag.tagName);
-                    label.setWrapText(true);
-                    label.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
-                    tags.getChildren().add(label);
-                });
-
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        
         person.getAttendanceList().getAttendanceStream()
                 .forEach(attendance -> {
                     String tagName = attendance.getTagName();
