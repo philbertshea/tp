@@ -109,11 +109,11 @@ public class PersonCard extends UiPart<Region> {
                     String tagName = attendance.getTagName();
                     Label label = new Label(tagName);
                     if (tagName.endsWith(Attendance.CHECK_EMOJI_UNICODE)) {
-                        label.setStyle("-fx-background-color: #5cb338;");
+                        label.setStyle("-fx-background-color: #80EF80;");
                     } else if (tagName.endsWith(Attendance.CROSS_EMOJI_UNICODE)) {
-                        label.setStyle("-fx-background-color: #d70654;");
+                        label.setStyle("-fx-background-color: #FF746C;");
                     } else if (tagName.endsWith(Attendance.SICK_EMOJI_UNICODE)) {
-                        label.setStyle("-fx-background-color: #df6d14;");
+                        label.setStyle("-fx-background-color: #FFC067;");
                     }
                     attendances.getChildren().add(label);
                 });

@@ -54,19 +54,19 @@ public class Messages {
      */
     public static String formatClean(Person person) {
         final StringBuilder builder = new StringBuilder();
-        builder.append("Name              : ").append(person.getName()).append("\n")
-                .append("Phone             : ").append(person.getPhone()).append("\n")
-                .append("Telegram Handle   : ").append(person.getTeleHandle()).append("\n")
-                .append("Email             : ").append(person.getEmail()).append("\n")
-                .append("Matriculation No. : ").append(person.getMatNum()).append("\n")
-                .append("Tutorial Group    : ").append(person.getTutGroup()).append("\n")
-                .append("Lab Group         : ").append(person.getLabGroup()).append("\n")
-                .append("Faculty           : ").append(person.getFaculty()).append("\n")
-                .append("Year              : ").append(person.getYear()).append("\n")
-                .append("Attendance List   : ").append(person.getAttendanceList()).append("\n")
-                .append("Remarks           : ").append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
+        builder.append(" Name              : ").append(person.getName()).append("\n")
+                .append(" Phone             : ").append(person.getPhone()).append("\n")
+                .append(" Telegram Handle   : ").append(person.getTeleHandle()).append("\n")
+                .append(" Email             : ").append(person.getEmail()).append("\n")
+                .append(" Matriculation No. : ").append(person.getMatNum()).append("\n")
+                .append(" Tutorial Group    : ").append(person.getTutGroup()).append("\n")
+                .append(" Lab Group         : ").append(person.getLabGroup()).append("\n")
+                .append(" Faculty           : ").append(person.getFaculty()).append("\n")
+                .append(" Year              : ").append(person.getYear()).append("\n")
+                .append(" Attendance List   : ").append(person.getAttendanceList()).append("\n")
+                .append(" Remarks           : ").append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
                 .append("\n")
-                .append("Tags              : ");
+                .append(" Tags              : ");
         person.getTags().forEach(builder::append);
         return builder.toString();
     }

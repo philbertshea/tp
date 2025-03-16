@@ -10,7 +10,7 @@ public class Attendance {
     public static final int NOT_ATTENDED = 0;
     public static final int ATTENDED = 1;
     public static final int ON_MC = 2;
-    public static final String CHECK_EMOJI_UNICODE = "\u2705";
+    public static final String CHECK_EMOJI_UNICODE = "\u2714";
     public static final String CROSS_EMOJI_UNICODE = "\u274C";
     public static final String SICK_EMOJI_UNICODE = "\uD83C\uDF21";
 
