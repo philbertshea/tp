@@ -35,7 +35,7 @@ public class ToStringBuilder {
      *
      * @param fieldName The name of the field.
      * @param fieldValue The value of the field.
-     * @return A reference to this {@code ToStringBuilder} object,allowing method calls to be chained.
+     * @return A reference to this {@code ToStringBuilder} object, allowing method calls to be chained.
      */
     public ToStringBuilder add(String fieldName, Object fieldValue) {
         if (hasField) {
