@@ -273,6 +273,9 @@ public class ParserUtil {
 
     }
 
+    /**
+     * Parses the user input for the delete command, ensuring the format "del -i index".
+     */
     public static Index parseDeleteArgs(String args, String usageMessage) throws ParseException {
         String trimmed = parseDelArgs(args, usageMessage);
         String remaining = parseIndexFlag(trimmed, usageMessage);
