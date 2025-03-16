@@ -64,8 +64,8 @@ public class PersonCard extends UiPart<Region> {
         matNum.setText("(" + person.getMatNum().value + ")");
 
         // Guaranteed for either tutGroup or labGroup to have a value.
-        assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty()) :
-                "Both tutGroup and labGroup cannot be empty simultaneously";
+        assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty())
+                : "Both tutGroup and labGroup cannot be empty simultaneously";
         if (person.getTutGroup().isEmpty() && !person.getLabGroup().isEmpty()) {
             classGroup.setText(person.getLabGroup().value);
         } else if (!person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty()) {
@@ -75,8 +75,8 @@ public class PersonCard extends UiPart<Region> {
         }
 
         // Guaranteed for either phone or telegram Handle to have a value
-        assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty()) :
-                "Both phone and teleHandle cannot be empty simultaneously";
+        assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty())
+                : "Both phone and teleHandle cannot be empty simultaneously";
         if (person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
             contact.setText(person.getTeleHandle().value);
         } else if (!person.getPhone().isEmpty() && person.getTeleHandle().isEmpty()) {
