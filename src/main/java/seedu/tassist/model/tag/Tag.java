@@ -11,7 +11,7 @@ public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS = "Tags names should be alphanumeric "
         + "and a maximum of 60 characters.";
-    public static final String VALIDATION_REGEX = "\\p{Alnum}{1,60}";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9]{1,60}$";
 
     public final String tagName;
 
