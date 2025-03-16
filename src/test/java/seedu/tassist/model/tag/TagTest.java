@@ -6,8 +6,6 @@ import static seedu.tassist.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.tassist.model.person.Phone;
-
 public class TagTest {
 
     @Test
