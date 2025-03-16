@@ -64,7 +64,8 @@ public class Messages {
                 .append("Faculty           : ").append(person.getFaculty()).append("\n")
                 .append("Year              : ").append(person.getYear()).append("\n")
                 .append("Attendance List   : ").append(person.getAttendanceList()).append("\n")
-                .append("Remarks           : ").append(person.getRemark()).append("\n")
+                .append("Remarks           : ").append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
+                .append("\n")
                 .append("Tags              : ");
         person.getTags().forEach(builder::append);
         return builder.toString();
