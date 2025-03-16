@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# TAssist Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+This project was adapted from [AB3](https://se-education.org/addressbook-level3/) (source code provided [here](https://github.com/nus-cs2103-AY2425S2/tp))
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -274,17 +274,17 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* CS2106 Teaching Assistants (TAs) 
-* manage multiple tutorial groups per semester
-* need access to student information to track participation, assignments, and communicate with students
-* may want to identify and support weaker students who require extra attention
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* CS2106 Teaching Assistants (TAs)
+* Manage multiple tutorial groups per semester
+* Need access to student information to track participation, assignments, and communicate with students
+* May want to identify and support weaker students who require extra attention
+* Has a need to manage a significant number of contacts
+* Prefer desktop apps over other types
+* Can type fast
+* Prefers typing instead of mouse interactions
+* Is reasonably comfortable using CLI apps
 
-**Value proposition**: CS2106 TAs struggle to efficiently track progress and access student information with multiple tutorial groups and many students in each. The lack of a centralized system makes management and follow-ups tedious. TAssist provides a keyboard-driven platform that streamlines student organization into meaningful groups, enabling access to key details anytime, anywhere. 
+**Value proposition**: CS2106 TAs struggle to efficiently track progress and access student information with multiple tutorial groups and many students in each. The lack of a centralized system makes management and follow-ups tedious. TAssist provides a keyboard-driven platform that streamlines student organization into meaningful groups, enabling access to key details anytime, anywhere.
 
 
 ### User stories
@@ -338,7 +338,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `TAssist` and the **Actor** is the `user`, unless specified otherwise)
+For all use cases below, the **System** is the `TAssist` and the **Actor** is the `user`, unless specified otherwise
 
 **Use case: UC01 - View all students**
 
@@ -353,58 +353,58 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to add a student into the list 
-2.  TAssist adds the student
+1. User requests to add a student into the list.
+2. TAssist validates the input data.
+3. TAssist adds the student to the database.
+4. TAssist displays the confirmation message.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. User provides only the mandatory arguments in the 
-correct format, or provides additional arguments on top
-of the mandatory arguments, all in the correct format.
+* 1a. Database is full
 
-    Use case resumes at step 2.
-
-* 1b. User does not provide at least one mandatory argument 
-required to add a student.
-
-    * 1b1. TAssist shows an error message, requesting for missing arguments.
-
-    * 1b2. User enters new data.
-  
-    Steps 1b1 and 1b2 are repeated until the data entered are correct.
-  
-    Use case resumes at step 2.
-
-* 1c. User provides at least one argument that is invalid, or in incorrect format.
-
-    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
-
-    * 1c2. User enters new data.
-
-    Steps 1c1 and 1c2 are repeated until the data entered are correct.
-
-    Use case resumes at step 2.
-
-* 1d. User adds a student already in the database (identified
-by clashing details like matriculation number)
-
-    * 1d1. TAssist shows an error message.
-
-    * 1c2. User enters new data.
-
-    Steps 1c1 and 1c2 are repeated until the data entered are correct.
-
-    Use case resumes at step 2.
-
-* 1e. Database is already full, and stores the maximum number of
-  entries that can be stored.
-
-    * 1e1. TAssist shows an error message, telling the user to delete
-    at least one student entry before adding new students.
+  * 1a1. TAssist shows error message about database capacity.
+  * 1a2. TAssist prompts user to either delete existing entries.
 
   Use case ends.
+
+* 2a. TAssist detects only mandatory arguments provided for a student record within user input.
+
+    Use case resumes at step 3.
+
+* 2b. TAssist detects missing mandatory arguments required for a student record within user input.
+
+    * 2b1. TAssist shows an error message, requesting for provision of missing arguments.
+
+    * 2b2. User enters missing arguments.
+
+    Steps 2b1 and 2b2 are repeated until all mandatory arguments are valid.
+
+    Use case resumes at step 3.
+
+* 2c. TAssist detects invalid/incorrect format arguments in user input.
+
+    * 2c1. TAssist shows an error message, either specifying format requirements or a list of valid arguments.
+
+    * 2c2. User corrects input.
+
+    Steps 2c1 and 2c2 are repeated until the input provided is valid.
+
+    Use case resumes at step 3.
+
+* 2d. TAssist detects duplicate student entry based on user input.
+
+    * 2d1. TAssist shows an error message.
+
+    * 2d2. User enters new data.
+
+    Steps 2d1 and 2d2 are repeated until the input is valid.
+
+    Use case resumes at step 3.
+
+*a. At any time, user clears input. 
+    Use case ends.
 
 **Use case: UC03 - Delete a student**
 
@@ -563,13 +563,13 @@ by clashing details like matriculation number)
 * 2a. File at specified location is missing.
 
     * 2a1. TAssist displays no student data.
-  
+
     Use case ends.
 
 * 2b. File at specified location cannot be parsed, due to corrupted data in file.
 
     * 2b1. TAssist displays an error message for non-parsable data records.
-  
+
     * 2b2. TAssist displays the remaining students that are parsable.
 
   Use case ends.
@@ -583,7 +583,7 @@ by clashing details like matriculation number)
 * 2d. File at specified location contains entries exceeding the maximum number of entries allowed.
 
     * 2d1. TAssist displays an error message that the file contains too many entries.
-  
+
     * 2d2. Starting from the first entry, TA shows up to the maximum number of entries, and omits
       all the entries after that.
 
@@ -608,18 +608,18 @@ by clashing details like matriculation number)
 
 ### Non-Functional Requirements
 
-1. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse. 
+1. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 2. Ideally entirely keyboard driven, with minimal mouse clicks required.
-2. Should work on any _mainstream OS_ as long as it has Java `17` or above installed. 
+2. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 3. Should respond to user input relatively quickly (under 1s).
-3. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage. 
-4. Data should be stored locally and should be in a human editable text file, not involving the use of a Database Management System. 
-5. Should save backups occasionally. 
-6. Should follow Object-oriented paradigm primarily. 
+3. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+4. Data should be stored locally and should be in a human editable text file, not involving the use of a Database Management System.
+5. Should save backups occasionally.
+6. Should follow Object-oriented paradigm primarily.
 7. Should not depend on a personal remote server and function completely offline.
-8. Should work without requiring an installer. 
-9. Should work well for standard screen resolutions 1920x1080 and higher and of screen scales 100% and 125%. 
-10. Should be functional for screen resolutions 1280x720 and higher and of screen scales 150%. 
+8. Should work without requiring an installer.
+9. Should work well for standard screen resolutions 1920x1080 and higher and of screen scales 100% and 125%.
+10. Should be functional for screen resolutions 1280x720 and higher and of screen scales 150%.
 11. Product should be under 100MB, while documents should be under 15MB/file.
 12. Should have PDF-friendly developer guides and user guides.
 

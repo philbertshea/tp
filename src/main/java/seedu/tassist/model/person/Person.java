@@ -109,6 +109,7 @@ public class Person {
     public AttendanceList getAttendanceList() {
         return attendanceList;
     }
+
     public LabScoreList getLabScoreList() {
         return labScoreList;
     }
