@@ -37,7 +37,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
    * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -tut T01` : Adds a contact named `John Doe` to TAssist.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `del -i 3` : Deletes the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
 
@@ -140,19 +140,19 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a person : `delete`
+### Deleting a person : `del`
 
 Deletes the specified person from the address book.
 
-Format: `delete INDEX`
+Format: `del -i INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `list` followed by `del -i 2` deletes the 2nd person in the address book.
+* `find Betsy` followed by `del -i 1` deletes the 1st person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
