@@ -42,7 +42,7 @@ public class Faculty {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidFaculty(String test) {
-        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

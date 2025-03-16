@@ -35,14 +35,7 @@ public class MatNum {
     }
 
     /**
-     * Checks if value is empty.
-     */
-    public boolean isEmpty() {
-        return value.isEmpty();
-    }
-
-    /**
-     * Adapted from: https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js.
+     * Source: https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js.
      * Validates an NUS matriculation number by checking if it has the correct format
      * and if the checksum digit is valid.
      *
@@ -66,7 +59,7 @@ public class MatNum {
     }
 
     /**
-     * Adapted from: https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js.
+     * Source: https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js.
      * Assumes valid input.
      */
     private static String calculateMatNum(String id) {

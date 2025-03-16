@@ -11,9 +11,10 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 public class TutGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
-            + "\nTutorial group should either start with a 'T' or 't' followed by numbers.";
+            + "\nTutorial group should either start with a 'T' or 't'"
+            + "followed by a maximum of two digits larger than 0.";
 
-    public static final String VALIDATION_REGEX = "^[Tt]\\d+$";
+    public static final String VALIDATION_REGEX = "^[Tt]([1-9]|0[1-9]|[1-9]\\d)$";
 
     public final String value;
 
@@ -24,8 +25,11 @@ public class TutGroup {
      */
     public TutGroup(String tutGroup) {
         requireNonNull(tutGroup);
-        checkArgument(isValidTutGroup(tutGroup), MESSAGE_CONSTRAINTS);
-        value = tutGroup.toUpperCase();
+        // Hardcode, can change in future when relaxing assumptions.
+        String processedTutGroup = tutGroup.length() == 2
+                ? tutGroup.charAt(0) + "0" + tutGroup.charAt(1) : tutGroup;
+        checkArgument(isValidTutGroup(processedTutGroup), MESSAGE_CONSTRAINTS);
+        value = processedTutGroup.toUpperCase();
     }
 
     /**
@@ -39,7 +43,7 @@ public class TutGroup {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidTutGroup(String test) {
-        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

@@ -218,7 +218,7 @@ public class AddCommandParserTest {
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TELE_HANDLE));
 
         // Invalid email.
-        assertParseFailure(parser,  validExpectedPersonString + INVALID_EMAIL_DESC,
+        assertParseFailure(parser, validExpectedPersonString + INVALID_EMAIL_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_EMAIL));
 
         // Invalid matric number.

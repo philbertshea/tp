@@ -47,7 +47,7 @@ public class ParserUtilTest {
     private static final String VALID_WHITESPACE_PHONE = "123" + WHITESPACE + "456";
     private static final String VALID_TELE_HANDLE = "@walking_rach";
     private static final String VALID_WHITESPACE_TELE_HANDLE = WHITESPACE + "@walking_" + WHITESPACE
-            + "rach" + WHITESPACE ;
+            + "rach" + WHITESPACE;
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_WHITESPACE_EMAIL = WHITESPACE + "rachel@" + WHITESPACE
             + "example.com" + WHITESPACE;

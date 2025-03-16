@@ -11,9 +11,10 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 public class LabGroup {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid lab group!"
-            + "\nLab group should either start with a 'B' or 'b' followed by numbers.";
+            + "\nLab group should either start with a 'B' or 'b'"
+            + "followed by a maximum of two digits larger than 0.";
 
-    public static final String VALIDATION_REGEX = "^[Bb]\\d+$";
+    public static final String VALIDATION_REGEX = "^[Bb]([1-9]|0[1-9]|[1-9]\\d)$";
 
     public final String value;
 
@@ -24,8 +25,11 @@ public class LabGroup {
      */
     public LabGroup(String labGroup) {
         requireNonNull(labGroup);
-        checkArgument(isValidLabGroup(labGroup), MESSAGE_CONSTRAINTS);
-        value = labGroup.toUpperCase();
+        // Hardcode, can change in future when relaxing assumptions.
+        String processedLabGroup = labGroup.length() == 2
+                ? labGroup.charAt(0) + "0" + labGroup.charAt(1) : labGroup;
+        checkArgument(isValidLabGroup(processedLabGroup), MESSAGE_CONSTRAINTS);
+        value = processedLabGroup.toUpperCase();
     }
 
     /**
@@ -39,7 +43,7 @@ public class LabGroup {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidLabGroup(String test) {
-        return test.matches(VALIDATION_REGEX)  || test.isEmpty();
+        return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
     @Override

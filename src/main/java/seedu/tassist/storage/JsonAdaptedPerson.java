@@ -140,7 +140,8 @@ class JsonAdaptedPerson {
         final Year modelYear = validateAndCreate(year, Year.class,
                 Year::isValidYear, Year.MESSAGE_CONSTRAINTS, Year::new);
 
-        final Remark modelRemark = validateAndCreate(remark, Remark.class, Remark::new);
+        final Remark modelRemark = validateAndCreate(remark, Remark.class,
+                Remark::isValidRemark, Remark.MESSAGE_CONSTRAINTS, Remark::new);
 
         final AttendanceList modelAttendanceList = validateAndCreate(attendances,
                 AttendanceList.class, AttendanceList::isValidAttendanceString,

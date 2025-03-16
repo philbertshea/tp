@@ -42,17 +42,16 @@ public class Messages {
     public static String format(Person person) {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
-                .append("; Phone: ")
-                .append(person.getPhone())
-                .append("; Telegram Handle: ")
-                .append(person.getTeleHandle())
-                .append("; Email: ")
-                .append(person.getEmail())
-                .append("; Matriculation Number: ")
-                .append(person.getMatNum())
-                .append("; ")
-                .append("; AttendanceList: ")
-                .append(person.getAttendanceList())
+                .append("; Phone: ").append(person.getPhone())
+                .append("; Telegram Handle: ").append(person.getTeleHandle())
+                .append("; Email: ").append(person.getEmail())
+                .append("; Matriculation Number: ").append(person.getMatNum())
+                .append("; Tutorial Group: ").append(person.getTutGroup())
+                .append("; Lab Group: ").append(person.getLabGroup())
+                .append("; Faculty: ").append(person.getFaculty())
+                .append("; Year: ").append(person.getYear())
+                .append("; Remark: ").append(person.getRemark())
+                .append("; AttendanceList: ").append(person.getAttendanceList())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();
