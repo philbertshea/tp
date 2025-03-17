@@ -36,18 +36,27 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
-        String indexStr = argMultimap.getValue(PREFIX_INDEX).orElse("");
-        if (indexStr.isBlank()) {
-            throw new ParseException(
-                    String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        String rawIndex = argMultimap.getValue(PREFIX_INDEX).orElse("").trim();
+        if (rawIndex.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        }
+        String[] tokens = rawIndex.split("\\s+");
+        if (tokens.length > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        }
+        String indexStr = tokens[0];
+        if (!indexStr.matches("\\d+")) {
+            // non-numeric => "invalid arguments!"
+            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
         }
 
         try {
-            Index index = ParserUtil.parseIndex(indexStr);
+            int value = Integer.parseInt(indexStr);
+            Index index = Index.fromOneBased(value);
             return new DeleteCommand(index);
-        } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE), pe);
+
+        } catch (NumberFormatException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), e);
         }
     }
 }
