@@ -33,6 +33,7 @@ public class LabGroupTest {
         assertFalse(LabGroup.isValidLabGroup("B00")); // Zeroes only.
         assertFalse(LabGroup.isValidLabGroup("B001")); // More than two digits.
         assertFalse(LabGroup.isValidLabGroup("B111")); // More than two digits.
+        assertFalse(LabGroup.isValidLabGroup(" B 1 2 ")); // Spaces.
 
         // Valid LabGroup.
         assertTrue(LabGroup.isValidLabGroup("")); // Empty.

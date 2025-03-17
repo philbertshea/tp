@@ -33,6 +33,7 @@ public class TutGroupTest {
         assertFalse(TutGroup.isValidTutGroup("T00")); // Zeroes only.
         assertFalse(TutGroup.isValidTutGroup("T001")); // More than two digits.
         assertFalse(TutGroup.isValidTutGroup("T111")); // More than two digits.
+        assertFalse(LabGroup.isValidLabGroup(" T 1 2 ")); // Spaces.
 
         // Valid TutGroup.
         assertTrue(TutGroup.isValidTutGroup("")); // Empty.
