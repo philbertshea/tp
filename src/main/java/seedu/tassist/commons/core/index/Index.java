@@ -1,5 +1,8 @@
 package seedu.tassist.commons.core.index;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
+
 import seedu.tassist.commons.util.ToStringBuilder;
 
 /**
@@ -12,13 +15,18 @@ import seedu.tassist.commons.util.ToStringBuilder;
  * convert it back to an int if the index will not be passed to a different component again.
  */
 public class Index {
-    private int zeroBasedIndex;
+    public static final String MESSAGE_CONSTRAINTS =
+            "Index must be a positive integer (non-zero, no leading signs).";
+    private static final String VALIDATION_REGEX = "^[1-9]\\d*$";
+    private final int zeroBasedIndex;
 
     /**
      * Index can only be created by calling {@link Index#fromZeroBased(int)} or
      * {@link Index#fromOneBased(int)}.
      */
     private Index(int zeroBasedIndex) {
+        requireNonNull(zeroBasedIndex);
+        checkArgument(isValidIndex(String.valueOf(zeroBasedIndex)), MESSAGE_CONSTRAINTS);
         if (zeroBasedIndex < 0) {
             throw new IndexOutOfBoundsException();
         }
@@ -46,6 +54,13 @@ public class Index {
      */
     public static Index fromOneBased(int oneBasedIndex) {
         return new Index(oneBasedIndex - 1);
+    }
+
+    /**
+     * Returns true if {@code test} is a valid index string matching {@link #VALIDATION_REGEX}.
+     */
+    public static boolean isValidIndex(String test) {
+        return test.matches(VALIDATION_REGEX);
     }
 
     @Override
