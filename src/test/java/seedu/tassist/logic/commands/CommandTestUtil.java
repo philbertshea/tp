@@ -35,7 +35,7 @@ public class CommandTestUtil {
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
-    public static final String VALID_PHONE_AMY = "11111111";
+    public static final String VALID_PHONE_AMY = "12345678";
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_TELE_HANDLE_AMY = "@amyBee";
     public static final String VALID_TELE_HANDLE_BOB = "@bob_low";
@@ -92,8 +92,16 @@ public class CommandTestUtil {
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + " James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + " 911a"; // 'a' not allowed in phones
+    public static final String INVALID_TELE_HANDLE_DESC = " " + PREFIX_TELE_HANDLE + " ";
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + " bob!yahoo"; // missing '@' symbol
+    public static final String INVALID_MAT_NUM_DESC = " " + PREFIX_MAT_NUM + " ";
+    public static final String INVALID_TUT_GROUP_DESC = " " + PREFIX_TUT_GROUP + " ";
+    public static final String INVALID_LAB_GROUP_DESC = " " + PREFIX_LAB_GROUP + " ";
+    public static final String INVALID_FACULTY_DESC = " " + PREFIX_FACULTY + " ";
+    public static final String INVALID_YEAR_DESC = " " + PREFIX_YEAR + " ";
+    public static final String INVALID_REMARK_DESC = " " + PREFIX_REMARK + " ";
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' not allowed in tags
+
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -103,11 +111,18 @@ public class CommandTestUtil {
 
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
+                .withPhone(VALID_PHONE_AMY).withTeleHandle(VALID_TELE_HANDLE_AMY)
+                .withEmail(VALID_EMAIL_AMY).withMatNum(VALID_MAT_NUM_AMY)
+                .withTutGroup(VALID_TUT_GROUP_AMY).withLabGroup(VALID_LAB_GROUP_AMY)
+                .withFaculty(VALID_FACULTY_AMY).withYear(VALID_YEAR_AMY)
+                .withRemark(VALID_REMARK_AMY).withTags(VALID_TAG_FRIEND).build();
+
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withPhone(VALID_PHONE_BOB).withTeleHandle(VALID_TELE_HANDLE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withMatNum(VALID_MAT_NUM_BOB)
+                .withTutGroup(VALID_TUT_GROUP_BOB).withLabGroup(VALID_LAB_GROUP_BOB)
+                .withFaculty(VALID_FACULTY_BOB).withYear(VALID_YEAR_BOB)
+                .withRemark(VALID_REMARK_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
     }
 
     /**

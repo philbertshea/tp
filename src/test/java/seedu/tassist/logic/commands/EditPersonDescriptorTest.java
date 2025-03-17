@@ -6,9 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FACULTY_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_GROUP_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_BOB;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_BOB;
 
 import org.junit.jupiter.api.Test;
 
@@ -43,8 +50,36 @@ public class EditPersonDescriptorTest {
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withPhone(VALID_PHONE_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
+        // different telehandle -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTeleHandle(VALID_TELE_HANDLE_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
         // different email -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different mat_num -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withMatNum(VALID_MAT_NUM_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different tut_group -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTutGroup(VALID_TUT_GROUP_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different lab_group -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withLabGroup(VALID_LAB_GROUP_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different faculty -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withFaculty(VALID_FACULTY_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different year -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withYear(VALID_YEAR_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different remark -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withRemark(VALID_REMARK_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different tags -> returns false
