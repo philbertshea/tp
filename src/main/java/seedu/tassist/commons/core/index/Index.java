@@ -1,7 +1,6 @@
 package seedu.tassist.commons.core.index;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 import seedu.tassist.commons.util.ToStringBuilder;
 

@@ -1,9 +1,7 @@
 package seedu.tassist.logic.parser;
 
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_ARGUMENTS;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
