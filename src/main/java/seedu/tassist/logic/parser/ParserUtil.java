@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -281,6 +282,7 @@ public class ParserUtil {
      * @return List of persons from personList with the matching tutGroup.
      */
     public static List<Person> getPersonsInTutorialGroup(List<Person> personList, TutGroup tutGroup) {
+        requireAllNonNull(personList, tutGroup);
         return personList.stream()
                 .filter(person -> person.getTutGroup().equals(tutGroup))
                 .toList();

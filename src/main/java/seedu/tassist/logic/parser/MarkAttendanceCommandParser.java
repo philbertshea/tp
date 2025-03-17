@@ -3,9 +3,9 @@ package seedu.tassist.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NOT_ATTENDED;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NO_TUTORIAL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_ON_MC;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_UNATTENDED;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 
@@ -33,7 +33,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_INDEX, PREFIX_TUT_GROUP, PREFIX_WEEK,
-                PREFIX_MARK_UNATTENDED, PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL);
+                PREFIX_MARK_NOT_ATTENDED, PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL);
 
         Index index = null;
         TutGroup tutGroup = null;
@@ -48,7 +48,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
             hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
             hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
-            isUnattended = argMultimap.getValue(PREFIX_MARK_UNATTENDED).isPresent();
+            isUnattended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
             isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
             isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
         } catch (IllegalValueException ive) {

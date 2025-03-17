@@ -216,9 +216,19 @@ public class MarkAttendanceCommand extends Command {
         }
 
         MarkAttendanceCommand e = (MarkAttendanceCommand) other;
-        return this.index.equals(e.index)
-                && this.week == e.week
-                && this.attendanceStatus == e.attendanceStatus;
+        if (this.week != e.week || this.attendanceStatus != e.attendanceStatus) {
+            return false;
+        }
+
+        if (this.index == null && this.tutGroup == null) {
+            return e.index == null && e.tutGroup == null;
+        } else if (this.index == null) {
+            return e.index == null && this.tutGroup.equals(e.tutGroup);
+        } else if (this.tutGroup == null) {
+            return e.tutGroup == null && this.index.equals(e.index);
+        } else {
+            return this.index.equals(e.index) && this.tutGroup.equals(e.tutGroup);
+        }
     }
 
 }

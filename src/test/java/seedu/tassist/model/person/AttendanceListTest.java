@@ -7,8 +7,8 @@ import static seedu.tassist.testutil.Assert.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class AttendanceListTest {
-    private final String attendanceString = "2200000000111";
-    private final String attendanceStringDifferent = "2200000002111";
+    private final String attendanceString = "2233000000111";
+    private final String attendanceStringDifferent = "2233000002111";
     private final AttendanceList attendanceList =
             AttendanceList.generateAttendanceList(attendanceString);
     private final AttendanceList attendanceListDuplicate =
@@ -33,8 +33,8 @@ public class AttendanceListTest {
         assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
-        assertTrue(AttendanceList.isValidAttendanceString("0120120012012"));
-        assertTrue(AttendanceList.isValidAttendanceString("0012011120011"));
+        assertTrue(AttendanceList.isValidAttendanceString("0120123012012"));
+        assertTrue(AttendanceList.isValidAttendanceString("0012013120011"));
 
     }
 

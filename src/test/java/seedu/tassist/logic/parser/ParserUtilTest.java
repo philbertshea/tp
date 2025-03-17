@@ -5,10 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.tassist.testutil.TypicalPersons.getTypicalPersons;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -30,6 +35,7 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+    private static final TutGroup VALID_TUT_GROUP = new TutGroup("T01");
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -183,5 +189,29 @@ public class ParserUtilTest {
     public void parseWeek_validInput_success() throws Exception {
         // No whitespaces
         assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
+    }
+
+    @Test
+    public void getPersonsInTutorialGroup_nullPersonList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                ParserUtil.getPersonsInTutorialGroup(null, new TutGroup("T01")));
+    }
+
+    @Test
+    public void getPersonsInTutorialGroup_nullTutGroup_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), null));
+    }
+
+    @Test
+    public void getPersonsInTutorialGroup_validListAndTutorialGroup_success() {
+        // All Persons in provided list are of the provided tut group -> Returns the same list.
+        List<Person> expectedListReturned = getTypicalPersons();
+        assertEquals(expectedListReturned,
+                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T01")));
+
+        // None of the Persons in provided list are of the provided tut group -> Returns an empty list.
+        assertEquals(new ArrayList<Person>(),
+                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T100")));
     }
 }
