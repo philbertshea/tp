@@ -32,7 +32,6 @@ import seedu.tassist.testutil.PersonBuilder;
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
  */
-@Disabled("Feature to be handled by Wei En")
 public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());

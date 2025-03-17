@@ -100,7 +100,6 @@ public class CommandTestUtil {
     public static final String INVALID_FACULTY_DESC = " " + PREFIX_FACULTY + " @#$S"; // Only '-' and '&' allowed.
     public static final String INVALID_YEAR_DESC = " " + PREFIX_YEAR + " 8"; // Only 1-6 allowed.
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' Not allowed in tags.
-    
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
