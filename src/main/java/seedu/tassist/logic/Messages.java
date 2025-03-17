@@ -12,10 +12,14 @@ import seedu.tassist.model.person.Person;
  */
 public class Messages {
 
-    public static final String MESSAGE_UNKNOWN_COMMAND = "This command is not recognised. Please try again.";
+    public static final String MESSAGE_UNKNOWN_COMMAND = "This command is not recognised."
+            + "Please try again.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
-    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid."
-                + "You currently have %d records!";
+    public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
+            + "\nA maximum of one quote should be found in between every flag."
+            + "\nEvery quote should be paired.";
+    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided"
+            + "is invalid. You currently have %d records!";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
@@ -38,12 +42,16 @@ public class Messages {
     public static String format(Person person) {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
-                .append("; Phone: ")
-                .append(person.getPhone())
-                .append("; Email: ")
-                .append(person.getEmail())
-                .append("; AttendanceList: ")
-                .append(person.getAttendanceList())
+                .append("; Phone: ").append(person.getPhone())
+                .append("; Telegram Handle: ").append(person.getTeleHandle())
+                .append("; Email: ").append(person.getEmail())
+                .append("; Matriculation Number: ").append(person.getMatNum())
+                .append("; Tutorial Group: ").append(person.getTutGroup())
+                .append("; Lab Group: ").append(person.getLabGroup())
+                .append("; Faculty: ").append(person.getFaculty())
+                .append("; Year: ").append(person.getYear())
+                .append("; Remark: ").append(person.getRemark())
+                .append("; AttendanceList: ").append(person.getAttendanceList())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();

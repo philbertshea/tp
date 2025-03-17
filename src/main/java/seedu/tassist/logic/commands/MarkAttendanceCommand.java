@@ -85,7 +85,8 @@ public class MarkAttendanceCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
 
         AttendanceList newAttendanceList =
-                personToEdit.getAttendanceList().setAttendanceForWeek(this.week, this.attendanceStatus);
+                personToEdit.getAttendanceList()
+                        .setAttendanceForWeek(this.week, this.attendanceStatus);
 
         Person editedPerson = new Person(
                 personToEdit.getName(), personToEdit.getPhone(), personToEdit.getTeleHandle(),

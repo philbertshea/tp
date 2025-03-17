@@ -29,11 +29,12 @@ import seedu.tassist.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_WEEK = "Week is not an unsigned integer from 1 to 13.";
+    public static final String MESSAGE_INVALID_WEEK =
+            "Week is not an unsigned integer from 1 to 13.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
@@ -186,6 +187,9 @@ public class ParserUtil {
      */
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
+        if (!Remark.isValidRemark(remark)) {
+            throw new ParseException(Remark.MESSAGE_CONSTRAINTS);
+        }
         return new Remark(remark);
     }
 
@@ -234,7 +238,8 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code week} is invalid.
      */
-    public static AttendanceList parseAttendanceList(String attendanceString) throws ParseException {
+    public static AttendanceList parseAttendanceList(String attendanceString)
+            throws ParseException {
         requireNonNull(attendanceString);
         if (!AttendanceList.isValidAttendanceString(attendanceString)) {
             throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
