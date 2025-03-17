@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
@@ -16,6 +18,7 @@ import seedu.tassist.model.person.LabGroup;
 import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.Remark;
 import seedu.tassist.model.person.TeleHandle;
@@ -268,5 +271,19 @@ public class ParserUtil {
             throw new ParseException(LabScoreList.INVALID_LAB_SCORE);
         }
 
+    }
+
+    /**
+     * Returns a filtered list of persons from personList
+     * who are in the given tutorial group.
+     *
+     * @param personList List of persons to filter from.
+     * @param tutGroup TutGroup to match persons against.
+     * @return List of persons from personList with the matching tutGroup.
+     */
+    public static List<Person> getPersonsInTutorialGroup(List<Person> personList, TutGroup tutGroup) {
+        return personList.stream()
+                .filter(person -> person.getTutGroup().equals(tutGroup))
+                .toList();
     }
 }

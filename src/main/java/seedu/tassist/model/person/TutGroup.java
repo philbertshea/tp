@@ -50,8 +50,8 @@ public class TutGroup {
             return false;
         }
 
-        Name otherTutGroup = (Name) other;
-        return value.equals(otherTutGroup.fullName);
+        TutGroup otherTutGroup = (TutGroup) other;
+        return value.equals(otherTutGroup.value);
     }
 
     @Override
