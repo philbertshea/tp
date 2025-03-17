@@ -17,7 +17,7 @@ import seedu.tassist.commons.util.ToStringBuilder;
 public class Index {
     public static final String MESSAGE_CONSTRAINTS =
             "Index must be a positive integer (non-zero, no leading signs).";
-    private static final String VALIDATION_REGEX = "^[1-9]\\d*$";
+
     private final int zeroBasedIndex;
 
     /**
@@ -26,7 +26,6 @@ public class Index {
      */
     private Index(int zeroBasedIndex) {
         requireNonNull(zeroBasedIndex);
-        checkArgument(isValidIndex(String.valueOf(zeroBasedIndex)), MESSAGE_CONSTRAINTS);
         if (zeroBasedIndex < 0) {
             throw new IndexOutOfBoundsException();
         }
@@ -54,13 +53,6 @@ public class Index {
      */
     public static Index fromOneBased(int oneBasedIndex) {
         return new Index(oneBasedIndex - 1);
-    }
-
-    /**
-     * Returns true if {@code test} is a valid index string matching {@link #VALIDATION_REGEX}.
-     */
-    public static boolean isValidIndex(String test) {
-        return test.matches(VALIDATION_REGEX);
     }
 
     @Override
