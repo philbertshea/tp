@@ -1,6 +1,5 @@
 package seedu.tassist.logic.commands;
 
-import static seedu.tassist.commons.util.AppUtil.checkArgument;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -48,9 +47,6 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS =
             "Everyone in %1$s has No Tutorial for Tutorial Week %2$d.";
 
-    public static final String INVALID_MESSAGE_INDEX_TUT_GROUP_INPUT =
-            "Either Index or Tutorial Group (but not both) should be non-null.";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"
             + " by the index number provided, for a particular week"
@@ -86,18 +82,31 @@ public class MarkAttendanceCommand extends Command {
 
     /**
      * Instantiates the MarkAttendanceCommand instance, with the provided
-     * index, tutGroup, week and attendanceStatus.
+     * index, week and attendanceStatus.
      *
-     * @param index Index of person to mark attendance for. Should be null if tutGroup is not null.
+     * @param index Index of person to mark attendance for.
+     * @param week Week to mark attendance of person for.
+     * @param attendanceStatus New Attendance Status to set the person or tutorial group to.
+     */
+    public MarkAttendanceCommand(Index index, int week, int attendanceStatus) {
+        requireAllNonNull(index, week, attendanceStatus);
+        this.index = index;
+        this.week = week;
+        this.tutGroup = null;
+        this.attendanceStatus = attendanceStatus;
+    }
+
+    /**
+     * Instantiates the MarkAttendanceCommand instance, with the provided
+     * tutGroup, week and attendanceStatus.
+     *
      * @param tutGroup Tutorial group to mark attendance for. Should be null if index is not null.
      * @param week Week to mark attendance of person for.
      * @param attendanceStatus New Attendance Status to set the person or tutorial group to.
      */
-    public MarkAttendanceCommand(Index index, TutGroup tutGroup, int week, int attendanceStatus) {
-        requireAllNonNull(week, attendanceStatus);
-        checkArgument((index != null && tutGroup == null) || (index == null && tutGroup != null),
-                INVALID_MESSAGE_INDEX_TUT_GROUP_INPUT);
-        this.index = index;
+    public MarkAttendanceCommand(TutGroup tutGroup, int week, int attendanceStatus) {
+        requireAllNonNull(tutGroup, week, attendanceStatus);
+        this.index = null;
         this.week = week;
         this.tutGroup = tutGroup;
         this.attendanceStatus = attendanceStatus;

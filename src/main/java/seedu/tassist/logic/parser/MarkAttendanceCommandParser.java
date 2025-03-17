@@ -38,38 +38,21 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         Index index = null;
         TutGroup tutGroup = null;
         int week;
-        boolean hasIndex = false;
-        boolean hasTutGroup = false;
-        boolean isUnattended = false;
-        boolean isOnMc = false;
-        boolean isNoTut = false;
-
-        try {
-            week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
-            hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
-            hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
-            isUnattended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
-            isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
-            isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
-        } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            MarkAttendanceCommand.MESSAGE_USAGE), ive
-            );
-        }
+        boolean hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
+        boolean hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
+        boolean isUnattended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
+        boolean isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
+        boolean isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
 
         boolean hasAtLeastTwoConflictingFlags = (isUnattended && isOnMc)
                 || (isUnattended && isNoTut)
                 || (isOnMc && isNoTut)
-                || (hasIndex && hasTutGroup);
+                || (hasIndex && hasTutGroup)
+                || hasIndex && isNoTut; // Cannot set one student as No Tutorial.
+
         boolean hasNeitherIndexNorTutGroup = !hasIndex && !hasTutGroup;
 
-        // It is not possible to set one individual student as having no tutorial.
-        boolean marksIndividualIndexAsNoTut = hasIndex && isNoTut;
-
-        if (hasAtLeastTwoConflictingFlags
-                || hasNeitherIndexNorTutGroup
-                || marksIndividualIndexAsNoTut) {
+        if (hasAtLeastTwoConflictingFlags || hasNeitherIndexNorTutGroup) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             MarkAttendanceCommand.MESSAGE_USAGE)
@@ -77,6 +60,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         }
 
         try {
+            week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
             if (hasIndex) {
                 index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
             } else {
@@ -89,14 +73,20 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-        if (isUnattended) {
-            return new MarkAttendanceCommand(index, tutGroup, week, Attendance.NOT_ATTENDED);
-        } else if (isOnMc) {
-            return new MarkAttendanceCommand(index, tutGroup, week, Attendance.ON_MC);
+        if (isUnattended && hasIndex) {
+            return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
+        } else if (isUnattended && hasTutGroup) {
+            return new MarkAttendanceCommand(tutGroup, week, Attendance.NOT_ATTENDED);
+        } else if (isOnMc && hasIndex) {
+            return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
+        } else if (isOnMc && hasTutGroup) {
+            return new MarkAttendanceCommand(tutGroup, week, Attendance.ON_MC);
         } else if (isNoTut) {
-            return new MarkAttendanceCommand(index, tutGroup, week, Attendance.NO_TUTORIAL);
+            return new MarkAttendanceCommand(tutGroup, week, Attendance.NO_TUTORIAL);
+        } else if (hasIndex) {
+            return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);
         } else {
-            return new MarkAttendanceCommand(index, tutGroup, week, Attendance.ATTENDED);
+            return new MarkAttendanceCommand(tutGroup, week, Attendance.ATTENDED);
         }
 
     }

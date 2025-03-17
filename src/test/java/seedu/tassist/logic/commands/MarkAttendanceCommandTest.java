@@ -17,6 +17,7 @@ import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TU
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_UNATTENDED_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_UNATTENDED_SUCCESS;
+import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
@@ -84,7 +85,7 @@ public class MarkAttendanceCommandTest {
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withAttendanceList(newAttendanceString).build();
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, null, replacedIndex, Attendance.ATTENDED);
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ATTENDED);
 
         String expectedMessage = String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
                 editedPerson.getName(), editedPerson.getMatNum(), replacedIndex) + "\n";
@@ -112,7 +113,7 @@ public class MarkAttendanceCommandTest {
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withAttendanceList(newAttendanceString).build();
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, null, replacedIndex, Attendance.NOT_ATTENDED);
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.NOT_ATTENDED);
 
         String expectedMessage = String.format(MESSAGE_MARK_UNATTENDED_SUCCESS,
                 editedPerson.getName(), editedPerson.getMatNum(), replacedIndex) + "\n";
@@ -140,7 +141,7 @@ public class MarkAttendanceCommandTest {
         Person editedPerson = new PersonBuilder(firstPerson)
                 .withAttendanceList(newAttendanceString).build();
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, null, replacedIndex, Attendance.ON_MC);
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, replacedIndex, Attendance.ON_MC);
 
         String expectedMessage = String.format(MESSAGE_MARK_MC_SUCCESS,
                 editedPerson.getName(), editedPerson.getMatNum(), replacedIndex) + "\n";
@@ -177,8 +178,7 @@ public class MarkAttendanceCommandTest {
         }
 
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(null, tutGroupToEdit,
-                        replacementIndex + 1, Attendance.NO_TUTORIAL);
+                new MarkAttendanceCommand(tutGroupToEdit, replacementIndex + 1, Attendance.NO_TUTORIAL);
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
@@ -209,8 +209,7 @@ public class MarkAttendanceCommandTest {
         }
 
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(null, tutGroupToEdit,
-                        replacementIndex + 1, Attendance.NOT_ATTENDED);
+                new MarkAttendanceCommand(tutGroupToEdit, replacementIndex + 1, Attendance.NOT_ATTENDED);
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
@@ -241,8 +240,7 @@ public class MarkAttendanceCommandTest {
         }
 
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(null, tutGroupToEdit,
-                        replacementIndex + 1, Attendance.ATTENDED);
+                new MarkAttendanceCommand(tutGroupToEdit, replacementIndex + 1, Attendance.ATTENDED);
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
@@ -273,8 +271,7 @@ public class MarkAttendanceCommandTest {
         }
 
         MarkAttendanceCommand command =
-                new MarkAttendanceCommand(null, tutGroupToEdit,
-                        replacementIndex + 1, Attendance.ON_MC);
+                new MarkAttendanceCommand(tutGroupToEdit, replacementIndex + 1, Attendance.ON_MC);
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
@@ -283,7 +280,7 @@ public class MarkAttendanceCommandTest {
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, null, 1, Attendance.ATTENDED);
+        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
@@ -295,18 +292,18 @@ public class MarkAttendanceCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
-        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, null, 1, Attendance.ATTENDED);
+        MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
         final MarkAttendanceCommand standardCommand =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, null, VALID_WEEK_A, Attendance.ATTENDED);
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
 
         // same values -> return true
         MarkAttendanceCommand commandWithSameValues =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, null, VALID_WEEK_A, Attendance.ATTENDED);
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> return true
@@ -320,31 +317,31 @@ public class MarkAttendanceCommandTest {
 
         // different index -> return false
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
-                INDEX_SECOND_PERSON, null, VALID_WEEK_A, Attendance.ATTENDED)));
+                INDEX_SECOND_PERSON, VALID_WEEK_A, Attendance.ATTENDED)));
 
-        // null index -> return false
-        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
-                null, new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.ATTENDED)));
+        // null index -> throws NullPointerException
+        assertThrows(NullPointerException.class, () ->
+                standardCommand.equals(new MarkAttendanceCommand((Index) null, VALID_WEEK_A, Attendance.ATTENDED)));
 
         // different week -> return false
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
-                INDEX_FIRST_PERSON, null, VALID_WEEK_B, Attendance.ATTENDED)));
+                INDEX_FIRST_PERSON, VALID_WEEK_B, Attendance.ATTENDED)));
 
         // different attendanceStatus -> return false
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
-                INDEX_FIRST_PERSON, null, VALID_WEEK_B, Attendance.NOT_ATTENDED)));
+                INDEX_FIRST_PERSON, VALID_WEEK_B, Attendance.NOT_ATTENDED)));
 
         final MarkAttendanceCommand standardCommandWithTutGroup =
-                new MarkAttendanceCommand(null, new TutGroup(VALID_TUT_GROUP_AMY),
+                new MarkAttendanceCommand(new TutGroup(VALID_TUT_GROUP_AMY),
                         VALID_WEEK_B, Attendance.NO_TUTORIAL);
 
         // different tut group -> return false
-        assertFalse(standardCommand.equals(new MarkAttendanceCommand(null,
+        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
                 new TutGroup(VALID_TUT_GROUP_BOB), VALID_WEEK_B, Attendance.NO_TUTORIAL)));
 
-        // null tut group -> return false
-        assertFalse(standardCommand.equals(new MarkAttendanceCommand(INDEX_FIRST_PERSON,
-                null, VALID_WEEK_B, Attendance.NO_TUTORIAL)));
+        // null tut group -> throws NullPointerException
+        assertThrows(NullPointerException.class, () ->
+                standardCommand.equals(new MarkAttendanceCommand((TutGroup) null, VALID_WEEK_A, Attendance.ATTENDED)));
 
     }
 
