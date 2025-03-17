@@ -1,5 +1,6 @@
 package seedu.tassist.logic.commands;
 
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -47,20 +48,33 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS =
             "Everyone in %1$s has No Tutorial for Tutorial Week %2$d.";
 
+    public static final String INVALID_MESSAGE_INDEX_TUT_GROUP_INPUT =
+            "Either Index or Tutorial Group (but not both) should be non-null.";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"
             + " by the index number provided, for a particular week"
             + " as identified by the week number provided. "
             + "Existing attendance status will be overwritten by the input.\n"
-            + "Mandatory Parameters: -i INDEX (must be a positive integer "
-            + "that is a valid index)"
-            + " -w WEEK NUMBER (must be a positive integer from 1 to 13)\n"
-            + "Optional Parameters: -u (mark as not attended) "
+            + "Conditional Parameters: Either one of the following flags must "
+            + "be provided, but both flags CANNOT be provided together.\n"
+            + "-i INDEX (must be a positive integer that is a valid index)\n"
+            + "-t TUTORIAL GROUP (capital T followed by a positive integer)\n"
+            + "Mandatory Parameters: -w WEEK NUMBER (must be a positive integer "
+            + "from 1 to 13)\n"
+            + "Optional Parameters: -u (mark as not attended)\n"
             + "-mc (mark as on MC)\n"
-            + "Note that either -u OR -mc OR neither can be provided."
+            + "-nt (mark as no tutorial)\n"
+            + "Additional restrictions: 1. Either -u OR -mc OR -nt OR neither can be provided.\n"
+            + "2. -nt CANNOT be provided with -i (cannot mark a single student as no tutorial).\n\n"
             + "Example: " + COMMAND_WORD + " -i 1 -w 3\n"
-            + "This marks student of index 1 as attended in tutorial week 3.";
+            + "This marks student of index 1 as attended in tutorial week 3.\n"
+            + "Example: " + COMMAND_WORD + " -i 3 -w 5 -mc\n"
+            + "This marks student of index 3 as on MC in tutorial week 5.\n"
+            + "Example: " + COMMAND_WORD + " -t T01 -w 2 -u\n"
+            + "This marks all students in tutorial group T01 as not attended in tutorial week 2.\n"
+            + "Example: " + COMMAND_WORD + " -t T01 -w 13 -nt\n"
+            + "This marks all students in tutorial group T01 as no tutorial in tutorial week 13.\n";
 
     private final Index index;
 
@@ -74,14 +88,15 @@ public class MarkAttendanceCommand extends Command {
      * Instantiates the MarkAttendanceCommand instance, with the provided
      * index, tutGroup, week and attendanceStatus.
      *
-     * @param index Index of person to mark attendance for.
-     * @param tutGroup Tutorial group to mark attendance for.
+     * @param index Index of person to mark attendance for. Should be null if tutGroup is not null.
+     * @param tutGroup Tutorial group to mark attendance for. Should be null if index is not null.
      * @param week Week to mark attendance of person for.
      * @param attendanceStatus New Attendance Status to set the person or tutorial group to.
      */
     public MarkAttendanceCommand(Index index, TutGroup tutGroup, int week, int attendanceStatus) {
         requireAllNonNull(week, attendanceStatus);
-        assert((index != null && tutGroup == null) || (index == null && tutGroup != null));
+        checkArgument((index != null && tutGroup == null) || (index == null && tutGroup != null),
+                INVALID_MESSAGE_INDEX_TUT_GROUP_INPUT);
         this.index = index;
         this.week = week;
         this.tutGroup = tutGroup;
@@ -96,8 +111,8 @@ public class MarkAttendanceCommand extends Command {
         StringBuilder successMessage = new StringBuilder();
 
         if (tutGroup != null) {
-             personsToEdit = ParserUtil.getPersonsInTutorialGroup(lastShownList, tutGroup);
-             successMessage.append(generateSuccessMessage(tutGroup)).append("\n-------------\n");
+            personsToEdit = ParserUtil.getPersonsInTutorialGroup(lastShownList, tutGroup);
+            successMessage.append(generateSuccessMessage(tutGroup)).append("\n-------------\n");
         } else {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
@@ -106,7 +121,6 @@ public class MarkAttendanceCommand extends Command {
             Person personToEdit = lastShownList.get(index.getZeroBased());
             personsToEdit.add(personToEdit);
         }
-
 
         for (Person personToEdit : personsToEdit) {
             AttendanceList newAttendanceList =

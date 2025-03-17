@@ -58,15 +58,18 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-
-        boolean hasAtLeastTwoConflictingFlags =
-                (isUnattended && isOnMc)
+        boolean hasAtLeastTwoConflictingFlags = (isUnattended && isOnMc)
                 || (isUnattended && isNoTut)
                 || (isOnMc && isNoTut)
                 || (hasIndex && hasTutGroup);
         boolean hasNeitherIndexNorTutGroup = !hasIndex && !hasTutGroup;
 
-        if (hasAtLeastTwoConflictingFlags || hasNeitherIndexNorTutGroup) {
+        // It is not possible to set one individual student as having no tutorial.
+        boolean marksIndividualIndexAsNoTut = hasIndex && isNoTut;
+
+        if (hasAtLeastTwoConflictingFlags
+                || hasNeitherIndexNorTutGroup
+                || marksIndividualIndexAsNoTut) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             MarkAttendanceCommand.MESSAGE_USAGE)
@@ -86,7 +89,6 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-
         if (isUnattended) {
             return new MarkAttendanceCommand(index, tutGroup, week, Attendance.NOT_ATTENDED);
         } else if (isOnMc) {
@@ -96,7 +98,6 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         } else {
             return new MarkAttendanceCommand(index, tutGroup, week, Attendance.ATTENDED);
         }
-
 
     }
 }
