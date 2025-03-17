@@ -1,6 +1,10 @@
 package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_ON_MC;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_UNATTENDED;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -29,19 +33,24 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_MC_SUCCESS =
             "%1$s (%2$s) on MC for Tutorial Week %3$d.";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Marks the attendance of a student as identified"
-            + " by the index number provided, for a particular week"
-            + " as identified by the week number provided. "
-            + "Existing attendance status will be overwritten by the input.\n"
-            + "Mandatory Parameters: -i INDEX (must be a positive integer "
-            + "that is a valid index)"
-            + " -w WEEK NUMBER (must be a positive integer from 1 to 13)\n"
-            + "Optional Parameters: -u (mark as not attended) "
-            + "-mc (mark as on MC)\n"
-            + "Note that either -u OR -mc OR neither can be provided."
-            + "Example: " + COMMAND_WORD + " -i 1 -w 3\n"
-            + "This marks student of index 1 as attended in tutorial week 3.";
+    public static final String MESSAGE_USAGE = String.format(
+            "Usage: %s %s INDEX %s WEEK_NUMBER [OPTIONS]\n\n"
+                    + "Mark student attendance for a specific week.\n\n"
+                    + "Mandatory:\n"
+                    + "  %-12s INDEX        Student index (positive integer, valid index)\n"
+                    + "  %-12s WEEK_NUMBER  Week number (positive integer, 1-13)\n\n"
+                    + "Options:\n"
+                    + "  %-13s Mark as not attended\n"
+                    + "  %-13s Mark as on MC\n\n"
+                    + "Note:\n"
+                    + "  - Either '%s' OR '%s' OR neither can be provided.\n\n"
+                    + "Example:\n"
+                    + "  %s %s 1 %s 3\n"
+                    + "  This marks the student at index 1 as attended in tutorial week 3.",
+            COMMAND_WORD, PREFIX_INDEX, PREFIX_WEEK, PREFIX_INDEX, PREFIX_WEEK, PREFIX_MARK_UNATTENDED,
+            PREFIX_MARK_ON_MC, PREFIX_MARK_UNATTENDED, PREFIX_MARK_ON_MC, COMMAND_WORD, PREFIX_INDEX,
+            PREFIX_WEEK
+    );
 
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Week: %2$d";
 

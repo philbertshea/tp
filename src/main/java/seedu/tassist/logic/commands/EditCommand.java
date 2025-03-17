@@ -49,25 +49,26 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = "Usage: edit INDEX [OPTIONS]...\n"
-            + "\n"
-            + "Edits the details of a person identified by INDEX in the displayed list.  \n"
-            + "Existing values will be overwritten.\n"
-            + "\n"
-            + "Options:\n"
-            + "  " + PREFIX_NAME + " NAME      Update name  \n"
-            + "  " + PREFIX_PHONE + " PHONE     Update phone number  \n"
-            + "  " + PREFIX_TELE_HANDLE + " HANDLE    Update Telegram handle  \n"
-            + "  " + PREFIX_EMAIL + " EMAIL     Update email  \n"
-            + "  " + PREFIX_MAT_NUM + " MATRIC    Update matriculation number  \n"
-            + "  " + PREFIX_TUT_GROUP + " GROUP     Update tutorial group  \n"
-            + "  " + PREFIX_LAB_GROUP + " GROUP     Update lab group  \n"
-            + "  " + PREFIX_FACULTY + " FACULTY   Update faculty  \n"
-            + "  " + PREFIX_YEAR + " YEAR      Update academic year  \n"
-            + "  " + PREFIX_REMARK + " REMARKS   Update remarks  \n"
-            + "  " + PREFIX_TAG + " TAG       Add/update tags (multiple allowed)  \n"
-            + "\n"
-            + "Example:  \n"
+    public static final String MESSAGE_USAGE = String.format(
+            "Usage: edit INDEX [OPTIONS]...\n\n"
+                    + "Edits the details of a person identified by INDEX in the displayed list.\n"
+                    + "Existing values will be overwritten.\n\n"
+                    + "Options:\n"
+                    + "  %-7s NAME      Update name\n"
+                    + "  %-7s PHONE     Update phone number\n"
+                    + "  %-7s HANDLE    Update Telegram handle\n"
+                    + "  %-7s EMAIL     Update email\n"
+                    + "  %-7s MATRIC    Update matriculation number\n"
+                    + "  %-7s GROUP     Update tutorial group\n"
+                    + "  %-7s GROUP     Update lab group\n"
+                    + "  %-7s FACULTY   Update faculty\n"
+                    + "  %-7s YEAR      Update academic year\n"
+                    + "  %-7s REMARKS   Update remarks\n"
+                    + "  %-7s TAG       Add/update tags (multiple allowed)\n",
+            PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
+            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
+            )
+            + "\nExample:  \n"
             + "  edit 2 "
             + PREFIX_NAME + " John "
             + PREFIX_PHONE + " 98765432 "
