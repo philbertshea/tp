@@ -22,7 +22,8 @@ public class PersonCard extends UiPart<Region> {
      * As a consequence, UI elements' variable names cannot be set to such keywords
      * or an exception will be thrown by JavaFX during runtime.
      *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
+     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">
+     *     The issue on AddressBook level 4</a>
      */
 
     public final Person person;
@@ -62,36 +63,38 @@ public class PersonCard extends UiPart<Region> {
         name.setText(person.getName().fullName);
         matNum.setText("(" + person.getMatNum().value + ")");
 
-        String tutGroup = person.getTutGroup().value;
-        String labGroup = person.getLabGroup().value;
-        if (tutGroup.isEmpty() && !labGroup.isEmpty()) {
-            classGroup.setText(labGroup);
-        } else if (!tutGroup.isEmpty() && labGroup.isEmpty()) {
-            classGroup.setText(tutGroup);
+        // Guaranteed for either tutGroup or labGroup to have a value.
+        assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty())
+                : "Both tutGroup and labGroup cannot be empty simultaneously";
+        if (person.getTutGroup().isEmpty() && !person.getLabGroup().isEmpty()) {
+            classGroup.setText(person.getLabGroup().value);
+        } else if (!person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty()) {
+            classGroup.setText(person.getTutGroup().value);
         } else {
-            classGroup.setText(tutGroup + " | " + labGroup);
+            classGroup.setText(person.getTutGroup().value + " | " + person.getLabGroup().value);
         }
 
-        String phone = person.getPhone().value;
-        String teleHandle = person.getTeleHandle().value;
-        if (phone.isEmpty() && !teleHandle.isEmpty()) {
-            contact.setText(teleHandle);
-        } else if (!phone.isEmpty() && teleHandle.isEmpty()) {
-            contact.setText(phone);
+        // Guaranteed for either phone or telegram Handle to have a value
+        assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty())
+                : "Both phone and teleHandle cannot be empty simultaneously";
+        if (person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
+            contact.setText(person.getTeleHandle().value);
+        } else if (!person.getPhone().isEmpty() && person.getTeleHandle().isEmpty()) {
+            contact.setText(person.getPhone().value);
         } else {
-            contact.setText(phone + "    " + teleHandle);
+            contact.setText(person.getPhone().value + "    " + person.getTeleHandle().value);
         }
 
         email.setText(person.getEmail().value);
 
-        String year = person.getYear().value;
-        String faculty = person.getFaculty().value;
-        if (year.isEmpty() && !faculty.isEmpty()) {
-            facAndYear.setText(faculty);
-        } else if (!year.isEmpty() && faculty.isEmpty()) {
-            facAndYear.setText("Y" + year);
-        } else {
-            facAndYear.setText("Y" + person.getYear().value + "  \u2022  " + person.getFaculty().value);
+        // Not guaranteed for year or faculty to be present
+        if (person.getYear().isEmpty() && !person.getFaculty().isEmpty()) {
+            facAndYear.setText(person.getFaculty().value);
+        } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
+            facAndYear.setText("Y" + person.getYear().value);
+        } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
+            facAndYear.setText("Y" + person.getYear().value + "  \u2022  "
+                    + person.getFaculty().value);
         }
 
         if (!person.getRemark().value.isEmpty()) {

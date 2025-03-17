@@ -25,7 +25,8 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Student: %1$s";
-    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index! You currently have %d records!";
+    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
+            + " You currently have %d records!";
 
     private final Index targetIndex;
 
@@ -54,7 +55,8 @@ public class DeleteCommand extends Command {
 
         model.deletePerson(personToDelete);
 
-        String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete));
+        String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS,
+                Messages.format(personToDelete));
         return new CommandResult(feedback);
     }
 
@@ -69,7 +71,8 @@ public class DeleteCommand extends Command {
     private Person getTargetPerson(Model model) throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList();
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+            throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX,
+                    lastShownList.size()));
         }
         return lastShownList.get(targetIndex.getZeroBased());
 

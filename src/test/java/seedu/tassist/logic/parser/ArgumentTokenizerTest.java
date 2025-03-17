@@ -137,6 +137,18 @@ public class ArgumentTokenizerTest {
     }
 
     @Test
+    public void tokenize_quotedArguments() {
+        String argsString = "SomePreambleString -t \"dashT-Value\" "
+                + "p/ another pSlash Value p/ \"pSlash-Value\"";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
+        assertPreamblePresent(argMultimap, "SomePreambleString");
+        assertArgumentAbsent(argMultimap, hatQ);
+        assertArgumentPresent(argMultimap, dashT, "dashT-Value");
+        assertArgumentPresent(argMultimap, pSlash, "another pSlash Value",
+                "pSlash-Value");
+    }
+
+    @Test
     public void equalsMethod() {
         Prefix aaa = new Prefix("aaa");
 

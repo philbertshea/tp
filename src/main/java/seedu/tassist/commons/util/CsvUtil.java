@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 import seedu.tassist.commons.core.LogsCenter;
 
 /**
- * Converts a Java object instance to CSV
+ * Converts a Java object instance to CSV.
  */
 public class CsvUtil {
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
-    public static <T> void serializeObjectToCsvFile(Path csvFile, List<T> objects) throws IOException {
+    public static <T> void serializeObjectToCsvFile(Path csvFile, List<T> objects)
+            throws IOException {
         FileUtil.writeToFile(csvFile, toCsvString(objects));
     }
 
@@ -46,7 +47,7 @@ public class CsvUtil {
     }
 
     /**
-     * Retrives the name of the fields in the class and formats them into the CSV header
+     * Retrives the name of the fields in the class and formats them into the CSV header.
      * @param clazz The class object to get the header from
      * @return A string representation of the headers
      */
@@ -58,7 +59,7 @@ public class CsvUtil {
     }
 
     /**
-     * Converts a given instance of an object into is CSV data string representation
+     * Converts a given instance of an object into is CSV data string representation.
      * @param obj The T object to be converted into the CSV string
      * @param <T> The generic type to create an instance of
      * @return CSV data representation of the given class instance, in string
@@ -93,7 +94,7 @@ public class CsvUtil {
      * string are escaped by doubling them (`""`).
      * </p>
      * @param value The object to be converted to a CSV-safe string. Can be {@code null}.
-     * @return A properly escaped CSV string. If the input is {@code null}, an empty string is returned.
+     * @return A properly escaped CSV string. Returns an empty string if input is {@code null}.
      */
     private static String escapeCsv(Object value) {
         if (value == null) {
