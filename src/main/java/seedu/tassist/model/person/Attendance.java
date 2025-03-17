@@ -10,13 +10,15 @@ public class Attendance {
     public static final int NOT_ATTENDED = 0;
     public static final int ATTENDED = 1;
     public static final int ON_MC = 2;
-    public static final String CHECK_EMOJI_UNICODE = "\u2705";
-    public static final String CROSS_EMOJI_UNICODE = "\u274C";
-    public static final String SICK_EMOJI_UNICODE = "\uD83C\uDF21";
+    public static final int NO_TUTORIAL = 3;
+    public static final String ATTENDED_TAG = "ATT";
+    public static final String NOT_ATTENDED_TAG = "NO";
+    public static final String ON_MC_TAG = "MC";
+    public static final String NO_TUTORIAL_TAG = "--";
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid week or attendance!\n"
             + "Week must be an integer from 1 to 13 inclusive.\n"
-            + "Attendance must be an integer of value 0, 1, or 2.";
+            + "Attendance must be an integer of value 0, 1, 2 or 3.";
 
     private int attendance;
     private final int week;
@@ -48,7 +50,8 @@ public class Attendance {
     public static boolean isValidAttendance(int attendance) {
         return attendance == ATTENDED
                 || attendance == NOT_ATTENDED
-                || attendance == ON_MC;
+                || attendance == ON_MC
+                || attendance == NO_TUTORIAL;
     }
 
     /**
@@ -68,11 +71,13 @@ public class Attendance {
     public String getTagName() {
         switch (this.attendance) {
         case NOT_ATTENDED:
-            return "W" + this.week + ": " + CROSS_EMOJI_UNICODE;
+            return "W" + this.week + ": " + NOT_ATTENDED_TAG;
         case ATTENDED:
-            return "W" + this.week + ": " + CHECK_EMOJI_UNICODE;
+            return "W" + this.week + ": " + ATTENDED_TAG;
         case ON_MC:
-            return "W" + this.week + ": " + SICK_EMOJI_UNICODE;
+            return "W" + this.week + ": " + ON_MC_TAG;
+        case NO_TUTORIAL:
+            return "W" + this.week + ": " + NO_TUTORIAL_TAG;
         default:
             return "";
         }

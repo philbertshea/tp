@@ -3,6 +3,7 @@ package seedu.tassist.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NO_TUTORIAL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_ON_MC;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_UNATTENDED;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
@@ -29,18 +30,21 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
     public MarkAttendanceCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
-                args, PREFIX_INDEX, PREFIX_WEEK, PREFIX_MARK_UNATTENDED, PREFIX_MARK_ON_MC);
+                args, PREFIX_INDEX, PREFIX_WEEK, PREFIX_MARK_UNATTENDED,
+                PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL);
 
         Index index;
         int week;
         boolean isUnattended = false;
         boolean isOnMc = false;
+        boolean isNoTut = false;
 
         try {
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
             week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
             isUnattended = !argMultimap.getValue(PREFIX_MARK_UNATTENDED).isEmpty();
             isOnMc = !argMultimap.getValue(PREFIX_MARK_ON_MC).isEmpty();
+            isNoTut = !argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isEmpty();
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -48,16 +52,24 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-        if (isUnattended && isOnMc) {
+        boolean hasAtLeastTwoConflictingFlags =
+                (isUnattended && isOnMc)
+                || (isUnattended && isNoTut)
+                || (isOnMc && isNoTut);
+
+        if (hasAtLeastTwoConflictingFlags) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             MarkAttendanceCommand.MESSAGE_USAGE)
             );
         }
+
         if (isUnattended) {
             return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
         } else if (isOnMc) {
             return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
+        } else if (isNoTut) {
+            return new MarkAttendanceCommand(index, week, Attendance.NO_TUTORIAL);
         } else {
             return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);
         }

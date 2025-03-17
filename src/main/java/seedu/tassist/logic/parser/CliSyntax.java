@@ -21,6 +21,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_WEEK = new Prefix("-w");
     public static final Prefix PREFIX_MARK_UNATTENDED = new Prefix("-u");
     public static final Prefix PREFIX_MARK_ON_MC = new Prefix("-mc");
+    public static final Prefix PREFIX_MARK_NO_TUTORIAL = new Prefix("-nt");
     public static final Prefix PREFIX_ATTENDANCE_LIST = new Prefix("-al");
     public static final Prefix PREFIX_LAB_NUMBER = new Prefix("-ln");
     public static final Prefix PREFIX_LAB_SCORE = new Prefix("-sc");

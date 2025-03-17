@@ -29,6 +29,9 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_MC_SUCCESS =
             "%1$s (%2$s) on MC for Tutorial Week %3$d.";
 
+    public static final String MESSAGE_MARK_NO_TUTORIAL_SUCCESS =
+            "%1$s (%2$s) has No Tutorial for Tutorial Week %3$d.";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Marks the attendance of a student as identified"
             + " by the index number provided, for a particular week"
@@ -109,6 +112,9 @@ public class MarkAttendanceCommand extends Command {
             break;
         case Attendance.ON_MC:
             message = MESSAGE_MARK_MC_SUCCESS;
+            break;
+        case Attendance.NO_TUTORIAL:
+            message = MESSAGE_MARK_NO_TUTORIAL_SUCCESS;
             break;
         default:
             message = MESSAGE_USAGE;
