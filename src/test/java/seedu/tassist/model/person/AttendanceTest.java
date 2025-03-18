@@ -36,26 +36,6 @@ public class AttendanceTest {
     }
 
     @Test
-    public void getTagName() {
-        Attendance attendance = new Attendance(3, Attendance.ATTENDED);
-        Attendance attendanceDuplicate = new Attendance(3, Attendance.ATTENDED);
-        Attendance attendanceDiffWeek = new Attendance(5, Attendance.ATTENDED);
-        Attendance attendanceDiffAttendance = new Attendance(3, Attendance.NOT_ATTENDED);
-
-        // tag names for same Attendance object -> equal
-        assertTrue(attendance.getTagName().equals(attendance.getTagName()));
-
-        // tag names for same week and attendance -> equal
-        assertTrue(attendance.getTagName().equals(attendanceDuplicate.getTagName()));
-
-        // tag names for different week -> not equal
-        assertFalse(attendance.getTagName().equals(attendanceDiffWeek.getTagName()));
-
-        // tag names for different attendance -> not equal
-        assertFalse(attendance.getTagName().equals(attendanceDiffAttendance.getTagName()));
-    }
-
-    @Test
     public void equals() {
         Attendance attendance = new Attendance(3, Attendance.ATTENDED);
 

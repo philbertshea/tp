@@ -29,6 +29,13 @@ public class MarkAttendanceCommand extends Command {
 
     public static final String COMMAND_WORD = "att";
 
+    public static final String MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE =
+            "%1$s (%2$s) in Tutorial Group %3$s currently \nhas No Tutorial for Tutorial Week %4$d.\n"
+            + "You must mark the Tutorial Group %3$s as Attended or Not Attended for Week %4$d,\n"
+            + "e.g. using the command: " + COMMAND_WORD + " " + PREFIX_TUT_GROUP + " %3$s "
+            + PREFIX_WEEK + " %4$d , which marks tutorial group as attended,\n"
+            + "before you can mark %1$s individually as Attended, Not Attended or On MC.";
+
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
             "%1$s (%2$s) attended Tutorial Week %3$d.";
 
@@ -142,6 +149,11 @@ public class MarkAttendanceCommand extends Command {
             }
             personsToEdit = new ArrayList<>();
             Person personToEdit = lastShownList.get(index.getZeroBased());
+            if (personToEdit.getAttendanceList().getAttendanceForWeek(this.week) == Attendance.NO_TUTORIAL) {
+                throw new CommandException(String.format(
+                        MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE, personToEdit.getName(), personToEdit.getMatNum(),
+                        personToEdit.getTutGroup(), this.week));
+            }
             personsToEdit.add(personToEdit);
         }
 

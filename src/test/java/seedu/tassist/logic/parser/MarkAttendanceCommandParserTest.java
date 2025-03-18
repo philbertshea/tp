@@ -142,4 +142,5 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_NOT_ATTENDED + " " + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
     }
+
 }
