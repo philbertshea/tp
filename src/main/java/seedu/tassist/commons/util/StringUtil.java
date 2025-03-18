@@ -1,11 +1,11 @@
 package seedu.tassist.commons.util;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.tassist.commons.util.AppUtil.checkArgument;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
+
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Helper functions for handling strings.
@@ -76,12 +76,13 @@ public class StringUtil {
         try {
             int value = Integer.parseInt(s);
             // "+1" is successfully parsed by Integer#parseInt(String)
-            return value > 0 && value < 14 && !s.startsWith("+");
+            return value > 0 && value < 14
+                    && !s.startsWith("+");
         } catch (NumberFormatException nfe) {
             return false;
         }
     }
-
+    
     /**
      * Returns true if {@code text} contains {@code word}, ignoring case.
      */
