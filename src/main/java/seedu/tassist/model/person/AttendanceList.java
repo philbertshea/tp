@@ -16,12 +16,14 @@ public class AttendanceList {
     public static final String MESSAGE_CONSTRAINTS =
             "Week number must be unsigned integer from 1 to 13 inclusive.\n"
             + "Attendance value must be 0, 1 or 2.\n"
-            + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
+            + "0 representing Not Attended, 1 representing Attended, \n"
+            + "2 representing On MC, 3 representing No Tutorial.";
     public static final String ATTENDANCE_STRING_MESSAGE_CONSTRAINTS =
-            "Attendance string must contain exactly 13 digits, each being 0, 1, or 2\n"
+            "Attendance string must contain exactly 13 digits, each being 0, 1, 2 or 3\n"
             + "whereby the ith digit (from the left) represents the attendance for ith week\n"
-            + "0 representing Not Attended, 1 representing Attended, 2 representing On MC.";
-    public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
+            + "0 representing Not Attended, 1 representing Attended, \n"
+            + "2 representing On MC, 3 representing No Tutorial.";
+    public static final String DEFAULT_ATTENDANCE_STRING = "3300000000000";
 
     private ArrayList<Attendance> attendanceList;
 
@@ -39,7 +41,7 @@ public class AttendanceList {
      * @return Boolean representing whether attendanceString is valid.
      */
     public static boolean isValidAttendanceString(String attendanceString) {
-        return attendanceString.matches("^[012]{13}$");
+        return attendanceString.matches("^[0123]{13}$");
     }
 
     /**

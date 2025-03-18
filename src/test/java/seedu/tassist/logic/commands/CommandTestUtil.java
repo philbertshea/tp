@@ -24,6 +24,7 @@ import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.NameContainsKeywordsPredicate;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.testutil.EditPersonDescriptorBuilder;
@@ -53,7 +54,7 @@ public class CommandTestUtil {
     public static final String VALID_YEAR_BOB = "6";
     public static final String VALID_REMARK_AMY = "Like skiing.";
     public static final String VALID_REMARK_BOB = "Favourite pastime: Eating";
-    public static final String VALID_ATTENDANCE_STRING = "0000000000000";
+    public static final String VALID_ATTENDANCE_STRING = AttendanceList.DEFAULT_ATTENDANCE_STRING;
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final int VALID_WEEK_A = 3;
@@ -62,7 +63,7 @@ public class CommandTestUtil {
     public static final int VALID_LAB_SCORE_A = 20;
     public static final int DEFAULT_LAB_SCORE_COUNT = 4;
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
-    public static final String VALID_FILE_NAME = "tassit_data";
+    public static final String VALID_FILE_NAME = "tassist_data";
     public static final String VALID_FILE_EXTENSION_CSV = "csv";
     public static final String VALID_FILE_EXTENSION_JSON = "json";
 

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
+import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -72,9 +73,7 @@ public class DeleteCommandTest {
     public void execute_invalidIndexFilteredList_throwsCommandException() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        // Use the second index as an out-of-bound index for the filtered list.
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // Ensure that outOfBoundIndex is in bounds of the full address book.
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
@@ -84,6 +83,15 @@ public class DeleteCommandTest {
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
 
+    @Test
+    public void execute_emptyAddressBook_throwsCommandException() {
+
+        Model emptyModel = new ModelManager(new AddressBook(), new UserPrefs());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
+
+        assertCommandFailure(deleteCommand, emptyModel,
+                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
+    }
     @Test
     public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_PERSON);

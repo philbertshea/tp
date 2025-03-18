@@ -34,7 +34,7 @@ public class PersonBuilder {
     public static final String DEFAULT_FACULTY = "SoC";
     public static final String DEFAULT_YEAR = "1";
     public static final String DEFAULT_REMARK = "todo";
-    public static final String DEFAULT_ATTENDANCE_STRING = "0000000000000";
+    public static final String DEFAULT_ATTENDANCE_STRING = AttendanceList.DEFAULT_ATTENDANCE_STRING;
 
     public static final String DEFAULT_LAB_SCORES = "-1/25 -1/25 -1/25 -1/25";
 
