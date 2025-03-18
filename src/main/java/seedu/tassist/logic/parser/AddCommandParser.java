@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
+import seedu.tassist.logic.parser.QuotePattern;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
@@ -46,7 +47,7 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     public AddCommand parse(String args) throws ParseException {
         // Ensure an even number of quotes.
-        if (!isValidQuotePattern(args)) {
+        if (!new QuotePattern().test(args)) {
             throw new ParseException(MESSAGE_INVALID_QUOTES);
         }
 
@@ -93,46 +94,6 @@ public class AddCommandParser implements Parser<AddCommand> {
                 tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
 
         return new AddCommand(person);
-    }
-
-    /**
-     * Greedily validates that the arguments string has a correct quote pattern.
-     * There should be an even number of quotes, ensuring they are paired.
-     * Each argument segment between flags should have at most one pair of quotes.
-     *
-     * @param args The command arguments to validate
-     * @return true if the quote pattern is valid, false otherwise
-     */
-    private boolean isValidQuotePattern(String args) {
-        boolean inQuote = false;
-        boolean hasQuoteInSegment = false;
-        int quoteCount = 0;
-
-        for (int i = 0; i < args.length(); i++) {
-            char c = args.charAt(i);
-
-            if (c == '"') {
-                quoteCount++;
-                inQuote = !inQuote;
-
-                // End of quote.
-                if (!inQuote) {
-                    // If a complete quote pair was found in this region, invalid input.
-                    if (hasQuoteInSegment) {
-                        return false;
-                    }
-                    hasQuoteInSegment = true;
-                }
-            } else if (c == ' ' && !inQuote) {
-                // Checks for next flag boundary.
-                if (i + 1 < args.length() && args.charAt(i + 1) == '-') {
-                    hasQuoteInSegment = false;
-                }
-            }
-        }
-
-        // Validate: even number of quotes and no unclosed quotes
-        return (quoteCount % 2 == 0) && !inQuote;
     }
 
     /**
