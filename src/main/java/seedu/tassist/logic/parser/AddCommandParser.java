@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_QUOTES;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -44,6 +45,11 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
+        // Ensure an even number of quotes.
+        if (!isValidQuotePattern(args)) {
+            throw new ParseException(MESSAGE_INVALID_QUOTES);
+        }
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
                         PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
@@ -57,30 +63,76 @@ public class AddCommandParser implements Parser<AddCommand> {
                     AddCommand.MESSAGE_USAGE));
         }
 
+        // todo: change in future to allow for duplicate fields.
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
                 PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
                 PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(""));
         TeleHandle teleHandle = ParserUtil.parseTeleHandle(argMultimap
-                .getValue(PREFIX_TELE_HANDLE).get());
+                .getValue(PREFIX_TELE_HANDLE).orElse(""));
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         MatNum matNum = ParserUtil.parseMatNum(argMultimap.getValue(PREFIX_MAT_NUM).get());
-        TutGroup tutGrp = ParserUtil.parseTutGroup(argMultimap.getValue(PREFIX_TUT_GROUP).get());
-        LabGroup labGrp = ParserUtil.parseLabGroup(argMultimap.getValue(PREFIX_LAB_GROUP).get());
-        Faculty faculty = ParserUtil.parseFaculty(argMultimap.getValue(PREFIX_FACULTY).get());
-        Year year = ParserUtil.parseYear(argMultimap.getValue(PREFIX_YEAR).get());
-        Remark remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get());
+        TutGroup tutGrp = ParserUtil.parseTutGroup(
+                argMultimap.getValue(PREFIX_TUT_GROUP).orElse(""));
+        LabGroup labGrp = ParserUtil.parseLabGroup(
+                argMultimap.getValue(PREFIX_LAB_GROUP).orElse(""));
+        Faculty faculty = ParserUtil.parseFaculty(
+                argMultimap.getValue(PREFIX_FACULTY).orElse(""));
+        Year year = ParserUtil.parseYear(argMultimap.getValue(PREFIX_YEAR).orElse(""));
+        Remark remark = ParserUtil.parseRemark(
+                argMultimap.getValue(PREFIX_REMARK).orElse(""));
+
         AttendanceList attendanceList =
                 AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        // todo zhenjie
-        Person person = new Person(name, phone, teleHandle, email,
-                matNum, tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
+        Person person = new Person(name, phone, teleHandle, email, matNum,
+                tutGrp, labGrp, faculty, year, remark, attendanceList, labScoreList, tagList);
 
         return new AddCommand(person);
+    }
+
+    /**
+     * Greedily validates that the arguments string has a correct quote pattern.
+     * There should be an even number of quotes, ensuring they are paired.
+     * Each argument segment between flags should have at most one pair of quotes.
+     *
+     * @param args The command arguments to validate
+     * @return true if the quote pattern is valid, false otherwise
+     */
+    private boolean isValidQuotePattern(String args) {
+        boolean inQuote = false;
+        boolean hasQuoteInSegment = false;
+        int quoteCount = 0;
+
+        for (int i = 0; i < args.length(); i++) {
+            char c = args.charAt(i);
+
+            if (c == '"') {
+                quoteCount++;
+                inQuote = !inQuote;
+
+                // End of quote.
+                if (!inQuote) {
+                    // If a complete quote pair was found in this region, invalid input.
+                    if (hasQuoteInSegment) {
+                        return false;
+                    }
+                    hasQuoteInSegment = true;
+                }
+            } else if (c == ' ' && !inQuote) {
+                // Checks for next flag boundary.
+                if (i + 1 < args.length() && args.charAt(i + 1) == '-') {
+                    hasQuoteInSegment = false;
+                }
+            }
+        }
+
+        // Validate: even number of quotes and no unclosed quotes
+        return (quoteCount % 2 == 0) && !inQuote;
     }
 
     /**
