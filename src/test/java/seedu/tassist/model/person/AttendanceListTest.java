@@ -7,8 +7,8 @@ import static seedu.tassist.testutil.Assert.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class AttendanceListTest {
-    private final String attendanceString = "2200000000111";
-    private final String attendanceStringDifferent = "2200000002111";
+    private final String attendanceString = "2233000000111";
+    private final String attendanceStringDifferent = "2233000002111";
     private final AttendanceList attendanceList =
             AttendanceList.generateAttendanceList(attendanceString);
     private final AttendanceList attendanceListDuplicate =
@@ -27,14 +27,14 @@ public class AttendanceListTest {
         assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("00000 00000000")); // No Spaces
         assertFalse(AttendanceList.isValidAttendanceString("000a*-0000000")); // Invalid Chars
-        assertFalse(AttendanceList.isValidAttendanceString("0120120120123")); // Not within 0, 1 or 2
+        assertFalse(AttendanceList.isValidAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
 
         // valid attendanceString -> returns true
-        assertTrue(AttendanceList.isValidAttendanceString("0000000000000"));
+        assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
-        assertTrue(AttendanceList.isValidAttendanceString("0120120012012"));
-        assertTrue(AttendanceList.isValidAttendanceString("0012011120011"));
+        assertTrue(AttendanceList.isValidAttendanceString("0120123012012"));
+        assertTrue(AttendanceList.isValidAttendanceString("0012013120011"));
 
     }
 
@@ -79,7 +79,7 @@ public class AttendanceListTest {
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(1, -1));
         assertThrows(IllegalArgumentException.class, () ->
-                attendanceList.setAttendanceForWeek(1, 3));
+                attendanceList.setAttendanceForWeek(1, 4));
 
     }
 

@@ -15,7 +15,7 @@ public class AttendanceTest {
 
     @Test
     public void constructor_invalidAttendance_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new Attendance(10, 3));
+        assertThrows(IllegalArgumentException.class, () -> new Attendance(10, 4));
     }
 
     @Test
