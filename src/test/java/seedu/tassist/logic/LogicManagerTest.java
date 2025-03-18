@@ -66,7 +66,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
-        String deleteCommand = "delete 9";
+        String deleteCommand = "del -i 1000";
         int currentSize = model.getFilteredPersonList().size();
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
         assertCommandException(deleteCommand, expectedMessage, currentSize);
