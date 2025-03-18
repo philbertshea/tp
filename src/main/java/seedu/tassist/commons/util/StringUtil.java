@@ -31,8 +31,7 @@ public class StringUtil {
         checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
         checkArgument(preppedWord.split("\\s+").length == 1, "Word parameter should be a single word");
 
-        String preppedSentence = sentence;
-        String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
+        String[] wordsInPreppedSentence = sentence.split("\\s+");
 
         return Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(preppedWord::equalsIgnoreCase);
@@ -80,8 +79,7 @@ public class StringUtil {
 
         try {
             int value = Integer.parseInt(s);
-            return value > 0 && value < 14
-                    && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+            return value > 0 && value < 14 && !s.startsWith("+");
         } catch (NumberFormatException nfe) {
             return false;
         }
@@ -93,7 +91,7 @@ public class StringUtil {
     public static boolean containsIgnoreCase(String text, String word) {
         requireNonNull(text);
         requireNonNull(word);
-        
+
         return text.toLowerCase().contains(word.toLowerCase());
     }
 }
