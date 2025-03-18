@@ -28,21 +28,16 @@ public class PersonMatchesPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         if (name == null && matNum == null && tutGroup == null && labGroup == null && faculty == null && year == null) {
-            System.out.println("No search criteria provided. Skipping...");
             return false;
         }
-    
         boolean matches = (name == null || StringUtil.containsIgnoreCase(person.getName().fullName, name))
                 && (matNum == null || StringUtil.containsIgnoreCase(person.getMatNum().value, matNum))
                 && (tutGroup == null || StringUtil.containsIgnoreCase(person.getTutGroup().value, tutGroup))
                 && (labGroup == null || StringUtil.containsIgnoreCase(person.getLabGroup().value, labGroup))
                 && (faculty == null || StringUtil.containsIgnoreCase(person.getFaculty().value, faculty))
                 && (year == null || StringUtil.containsIgnoreCase(person.getYear().value, year));
-    
-        System.out.println("Checking " + person.getName().fullName + ": " + matches);
         return matches;
     }
-    
     
     @Override
     public boolean equals(Object other) {
