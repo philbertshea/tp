@@ -38,7 +38,7 @@ public class PersonMatchesPredicate implements Predicate<Person> {
                 && (year == null || StringUtil.containsIgnoreCase(person.getYear().value, year));
         return matches;
     }
-    
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
