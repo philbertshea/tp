@@ -145,7 +145,8 @@ public class MarkAttendanceCommand extends Command {
             successMessage.append(generateSuccessMessage(tutGroup)).append("\n-------------\n");
         } else {
             if (index.getZeroBased() >= lastShownList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+                throw new CommandException(
+                        String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, lastShownList.size()));
             }
             personsToEdit = new ArrayList<>();
             Person personToEdit = lastShownList.get(index.getZeroBased());

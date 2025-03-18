@@ -1,6 +1,9 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_INDEX_DESC;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TUT_GROUP_DESC;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_WEEK_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_WEEK_A;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
@@ -82,6 +85,39 @@ public class MarkAttendanceCommandParserTest {
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
                 new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.ON_MC);
         assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_invalidWeek_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                MarkAttendanceCommand.MESSAGE_USAGE);
+
+        String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + INVALID_WEEK_DESC + " ";
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    @Test
+    public void parse_invalidIndex_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                MarkAttendanceCommand.MESSAGE_USAGE);
+
+        String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + INVALID_INDEX_DESC + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    @Test
+    public void parse_invalidTutGroup_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                MarkAttendanceCommand.MESSAGE_USAGE);
+
+        String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + INVALID_TUT_GROUP_DESC + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        assertParseFailure(parser, userInput, expectedMessage);
     }
 
     @Test
