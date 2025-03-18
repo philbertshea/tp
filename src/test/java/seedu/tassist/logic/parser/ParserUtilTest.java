@@ -28,7 +28,6 @@ import seedu.tassist.model.person.Remark;
 import seedu.tassist.model.person.TeleHandle;
 import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.person.Year;
-import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.tag.Tag;
 
 public class ParserUtilTest {
