@@ -1,11 +1,11 @@
 package seedu.tassist.commons.util;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.AppUtil.checkArgument;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
-import static java.util.Objects.requireNonNull;
-
-import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
 /**
  * Helper functions for handling strings.
@@ -14,12 +14,7 @@ public class StringUtil {
 
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
-     *   Ignores case, but a full word match is required.
-     *   <br>examples:<pre>
-     *       containsWordIgnoreCase("ABc def", "abc") == true
-     *       containsWordIgnoreCase("ABc def", "DEF") == true
-     *       containsWordIgnoreCase("ABc def", "AB") == false //not a full word match
-     *       </pre>
+     * Ignores case, but a full word match is required.
      * @param sentence cannot be null
      * @param word cannot be null, cannot be empty, must be a single word
      */
@@ -48,35 +43,23 @@ public class StringUtil {
     }
 
     /**
-     * Returns true if {@code s} represents a non-zero unsigned integer
-     * e.g. 1, 2, 3, ..., {@code Integer.MAX_VALUE} <br>
-     * Will return false for any other non-null string input
-     * e.g. empty string, "-1", "0", "+1", and " 2 " (untrimmed), "3 0" (contains whitespace), "1 a" (contains letters)
-     * @throws NullPointerException if {@code s} is null.
+     * Returns true if {@code s} represents a non-zero unsigned integer.
      */
     public static boolean isNonZeroUnsignedInteger(String s) {
         requireNonNull(s);
-
         try {
             int value = Integer.parseInt(s);
-            return value > 0 && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+            return value > 0 && !s.startsWith("+");
         } catch (NumberFormatException nfe) {
             return false;
         }
     }
 
     /**
-     * Returns true if {@code s} represents a valid week
-     * e.g. 1, 2, 3, ..., 13 <br>
-     * Will return false for any other non-null string input
-     * e.g. empty string, "-1", "0", "+1", and " 2 " (untrimmed),
-     * "3 0" (contains whitespace), "1 a" (contains letters),
-     * "14" (greater than 13)
-     * @throws NullPointerException if {@code s} is null.
+     * Returns true if {@code s} represents a valid week.
      */
     public static boolean isValidWeek(String s) {
         requireNonNull(s);
-
         try {
             int value = Integer.parseInt(s);
             return value > 0 && value < 14 && !s.startsWith("+");
@@ -91,7 +74,6 @@ public class StringUtil {
     public static boolean containsIgnoreCase(String text, String word) {
         requireNonNull(text);
         requireNonNull(word);
-
         return text.toLowerCase().contains(word.toLowerCase());
     }
 }

@@ -15,6 +15,9 @@ public class PersonMatchesPredicate implements Predicate<Person> {
     private final String faculty;
     private final String year;
 
+    /**
+     * Constructs a PersonMatchesPredicate.
+     */
     public PersonMatchesPredicate(String name, String matNum, String tutGroup, String labGroup, String faculty,
                                   String year) {
         this.name = name;
@@ -30,13 +33,12 @@ public class PersonMatchesPredicate implements Predicate<Person> {
         if (name == null && matNum == null && tutGroup == null && labGroup == null && faculty == null && year == null) {
             return false;
         }
-        boolean matches = (name == null || StringUtil.containsIgnoreCase(person.getName().fullName, name))
+        return (name == null || StringUtil.containsIgnoreCase(person.getName().fullName, name))
                 && (matNum == null || StringUtil.containsIgnoreCase(person.getMatNum().value, matNum))
                 && (tutGroup == null || StringUtil.containsIgnoreCase(person.getTutGroup().value, tutGroup))
                 && (labGroup == null || StringUtil.containsIgnoreCase(person.getLabGroup().value, labGroup))
                 && (faculty == null || StringUtil.containsIgnoreCase(person.getFaculty().value, faculty))
                 && (year == null || StringUtil.containsIgnoreCase(person.getYear().value, year));
-        return matches;
     }
 
     @Override
@@ -48,11 +50,12 @@ public class PersonMatchesPredicate implements Predicate<Person> {
             return false;
         }
         PersonMatchesPredicate otherPredicate = (PersonMatchesPredicate) other;
-        return name.equals(otherPredicate.name)
-                && matNum.equals(otherPredicate.matNum)
-                && tutGroup.equals(otherPredicate.tutGroup)
-                && labGroup.equals(otherPredicate.labGroup)
-                && faculty.equals(otherPredicate.faculty)
-                && year.equals(otherPredicate.year);
+
+        return java.util.Objects.equals(name, otherPredicate.name)
+                && java.util.Objects.equals(matNum, otherPredicate.matNum)
+                && java.util.Objects.equals(tutGroup, otherPredicate.tutGroup)
+                && java.util.Objects.equals(labGroup, otherPredicate.labGroup)
+                && java.util.Objects.equals(faculty, otherPredicate.faculty)
+                && java.util.Objects.equals(year, otherPredicate.year);
     }
 }

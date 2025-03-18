@@ -1,15 +1,15 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-
-import seedu.tassist.logic.Messages;
-import seedu.tassist.logic.commands.exceptions.CommandException;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
+
+import seedu.tassist.logic.Messages;
+import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.PersonMatchesPredicate;
 
@@ -36,6 +36,9 @@ public class SearchCommand extends Command {
 
     private final PersonMatchesPredicate predicate;
 
+    /**
+     * Constructs a SearchCommand.
+     */
     public SearchCommand(PersonMatchesPredicate predicate) {
         requireNonNull(predicate);
         this.predicate = predicate;
@@ -51,8 +54,6 @@ public class SearchCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof SearchCommand // instanceof handles nulls
-                && predicate.equals(((SearchCommand) other).predicate)); // state check
+        return other == this || (other instanceof SearchCommand && predicate.equals(((SearchCommand) other).predicate));
     }
 }

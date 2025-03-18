@@ -1,18 +1,16 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_NUMBER;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 
 import seedu.tassist.logic.commands.SearchCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.PersonMatchesPredicate;
-
-import java.util.Optional;
 
 /**
  * Parses input arguments and creates a new SearchCommand object.
@@ -36,7 +34,6 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         String labGroup = argMultimap.getValue(PREFIX_LAB_GROUP).orElse(null);
         String faculty = argMultimap.getValue(PREFIX_FACULTY).orElse(null);
         String year = argMultimap.getValue(PREFIX_YEAR).orElse(null);
-        String labNumber = argMultimap.getValue(PREFIX_LAB_NUMBER).orElse(null);
 
         PersonMatchesPredicate predicate = new PersonMatchesPredicate(
                 name, matNum, tutGroup, labGroup, faculty, year
