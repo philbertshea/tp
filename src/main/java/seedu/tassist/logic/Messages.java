@@ -60,7 +60,7 @@ public class Messages {
     /**
      * Formats the {@code person} for display to the user.
      */
-    public static String formatClean(Person person) {
+    public static String getFormattedPersonAttributesForDisplay(Person person) {
         final StringBuilder builder = new StringBuilder();
         builder.append(" Name              : ").append(person.getName()).append("\n")
                 .append(" Phone             : ").append(person.getPhone()).append("\n")
