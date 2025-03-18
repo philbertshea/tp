@@ -25,7 +25,8 @@ public class ExportDataCommand extends Command {
             + "Parameters: "
             + PREFIX_FILENAME + "FILE_NAME "
             + PREFIX_EXTENSION + "FILE_EXTENSION\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME + " userdata " + PREFIX_EXTENSION + " csv";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME
+            + " userdata " + PREFIX_EXTENSION + " csv";
 
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
@@ -102,7 +103,8 @@ public class ExportDataCommand extends Command {
     /**
      * Saves the AddressBook to the specified file path and format based on the file extension.
      */
-    private void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath, String extension) throws IOException {
+    private void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath, String extension)
+            throws IOException {
         switch (extension) {
         case "json":
             new JsonAddressBookStorage(filePath).saveAddressBook(addressBook);

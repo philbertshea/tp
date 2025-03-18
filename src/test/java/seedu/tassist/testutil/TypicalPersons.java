@@ -40,7 +40,7 @@ public class TypicalPersons {
             .withEmail("alice@example.com").withPhone("94351253").withTeleHandle("@alice")
             .withMatNum("A0000001X").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("1").withRemark("todo")
-            .withAttendanceList("0011100000000").withLabScores("4.2/25|-|-|-")
+            .withAttendanceList("0000000000000").withLabScores("")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com").withPhone("98765432").withTeleHandle("@ben_mei")
@@ -78,12 +78,12 @@ public class TypicalPersons {
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withEmail("stefan@example.com").withTeleHandle("@hoon")
+            .withEmail("stefan@example.com").withTeleHandle("@hoo0n")
             .withMatNum("A0000010X").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
             .withLabScores("4.25/25|-|-|-").build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withEmail("hans@example.com").withTeleHandle("@id_mu")
+            .withEmail("hans@example.com").withTeleHandle("@id_muu")
             .withMatNum("A0000011W").withTutGroup("T01").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo").withAttendanceList("0000000000000")
             .withLabScores("4.25/25|-|-|-").build();

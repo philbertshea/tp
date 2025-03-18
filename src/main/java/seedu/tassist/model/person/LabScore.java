@@ -28,12 +28,13 @@ public class LabScore {
      * Updates the lab score for this lab.
      * @param labScore the updated lab score.
      */
-    public void updateLabScore(int labScore) throws CommandException {
+    public LabScore updateLabScore(int labScore) throws CommandException {
         if (labScore > maxLabScore) {
             throw new CommandException(
-                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE, labScore, maxLabScore));
+                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE,
+                            labScore, maxLabScore));
         }
-        this.labScore = labScore;
+        return new LabScore(labScore, maxLabScore);
     }
 
     @Override

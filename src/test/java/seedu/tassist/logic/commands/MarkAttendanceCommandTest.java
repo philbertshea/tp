@@ -29,6 +29,10 @@ public class MarkAttendanceCommandTest {
     public String getReplacedIndexAndNewString(
             String newStatus, String existingAttendanceString,
             int firstReplacementIndex, int secondReplacementIndex) {
+        if (firstReplacementIndex == -1 && secondReplacementIndex == -1) {
+            return "0" + existingAttendanceString;
+        }
+
         if (firstReplacementIndex == -1) {
             return secondReplacementIndex
                     + existingAttendanceString.substring(0, secondReplacementIndex)

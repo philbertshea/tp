@@ -161,7 +161,8 @@ public class MainWindow extends UiPart<Stage> {
     private void handleLoad() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load CSV File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser
+                .ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             // TODO: Integrate with logic/storage to load file data.
@@ -176,7 +177,8 @@ public class MainWindow extends UiPart<Stage> {
     private void handleSave() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save CSV File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser
+                .ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(primaryStage);
 
         if (file != null) {
@@ -207,8 +209,10 @@ public class MainWindow extends UiPart<Stage> {
         fileChooser.setInitialDirectory(allowedDirectory);
 
         // Set default file extension options
-        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
-        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV File (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter(
+                "JSON File (*.json)", "*.json");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter(
+                "CSV File (*.csv)", "*.csv");
         fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
 
         // Show save dialog

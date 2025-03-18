@@ -24,17 +24,20 @@ public class ExportDataCommandParser implements Parser<ExportDataCommand> {
      */
     @Override
     public ExportDataCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILENAME, PREFIX_EXTENSION);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILENAME,
+                PREFIX_EXTENSION);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_FILENAME, PREFIX_EXTENSION)
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportDataCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ExportDataCommand.MESSAGE_USAGE));
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_FILENAME, PREFIX_EXTENSION);
 
         String fileName = argMultimap.getValue(PREFIX_FILENAME).orElse("");
-        String extension = argMultimap.getValue(PREFIX_EXTENSION).orElse("").toLowerCase().trim();
+        String extension = argMultimap.getValue(PREFIX_EXTENSION).orElse("")
+                .toLowerCase().trim();
 
         return new ExportDataCommand(fileName, extension);
     }
@@ -43,7 +46,9 @@ public class ExportDataCommandParser implements Parser<ExportDataCommand> {
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
      */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap,
+                                              Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(
+                prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }

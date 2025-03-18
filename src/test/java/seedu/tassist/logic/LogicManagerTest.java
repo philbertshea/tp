@@ -174,7 +174,6 @@ public class LogicManagerTest {
         logic = new LogicManager(model, storage);
 
         // Triggers the saveAddressBook method by executing an add command
-        // todo: zhenjie vet
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + TELE_HANDLE_DESC_AMY + EMAIL_DESC_AMY + MAT_NUM_DESC_AMY
                 + TUT_GROUP_DESC_AMY + LAB_GROUP_DESC_AMY + FACULTY_DESC_AMY

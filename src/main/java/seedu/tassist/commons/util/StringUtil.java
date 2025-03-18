@@ -29,7 +29,8 @@ public class StringUtil {
 
         String preppedWord = word.trim();
         checkArgument(!preppedWord.isEmpty(), "Word parameter cannot be empty");
-        checkArgument(preppedWord.split("\\s+").length == 1, "Word parameter should be a single word");
+        checkArgument(preppedWord.split("\\s+").length == 1,
+                "Word parameter should be a single word");
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
@@ -61,7 +62,8 @@ public class StringUtil {
 
         try {
             int value = Integer.parseInt(s);
-            return value > 0 && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+            // "+1" is successfully parsed by Integer#parseInt(String)
+            return value > 0 && !s.startsWith("+");
         } catch (NumberFormatException nfe) {
             return false;
         }
@@ -81,8 +83,9 @@ public class StringUtil {
 
         try {
             int value = Integer.parseInt(s);
+            // "+1" is successfully parsed by Integer#parseInt(String)
             return value > 0 && value < 14
-                    && !s.startsWith("+"); // "+1" is successfully parsed by Integer#parseInt(String)
+                    && !s.startsWith("+");
         } catch (NumberFormatException nfe) {
             return false;
         }

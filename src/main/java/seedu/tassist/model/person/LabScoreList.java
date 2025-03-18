@@ -1,6 +1,8 @@
 package seedu.tassist.model.person;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -10,8 +12,10 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
  */
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
+    public static final String INVALID_LAB_SAVE = "Lab string is loaded incorrectly";
     private static int labTotal = 4;
-    public static final String LAB_NUMBER_CONSTRAINT = String.format("Lab number must be between 1 and %d", labTotal);
+    public static final String LAB_NUMBER_CONSTRAINT = String.format(
+            "Lab number must be between 1 and %d", labTotal);
 
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
 
@@ -34,23 +38,30 @@ public class LabScoreList {
                 labScoreList.add(new LabScore());
             } else {
                 String[] scoreSplit = labs[i].split("/");
-                labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]), Integer.parseInt(scoreSplit[1])));
+                labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]),
+                        Integer.parseInt(scoreSplit[1])));
             }
         }
+    }
+
+    public LabScoreList(LabScore[] labs) {
+        Collections.addAll(labScoreList, labs);
     }
 
     /**
      * Updates the specified lab with the updated score.
      * @param labNumber The LabScore object to update.
      * @param labScore The updated score for the lab.
-     * @return
+     * @return Updated {@code LabScoreList}
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
         if (labNumber < 1 || labNumber > labTotal) {
-            throw new CommandException(String.format(UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
+            throw new CommandException(String.format(
+                    UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
         }
-        labScoreList.get(labNumber - 1).updateLabScore(labScore);
-        return this;
+        LabScore[] copy = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
+        copy[labNumber - 1] = copy[labNumber - 1].updateLabScore(labScore);
+        return new LabScoreList(copy);
     }
 
     /**

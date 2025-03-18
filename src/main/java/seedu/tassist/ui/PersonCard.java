@@ -22,7 +22,8 @@ public class PersonCard extends UiPart<Region> {
      * As a consequence, UI elements' variable names cannot be set to such keywords
      * or an exception will be thrown by JavaFX during runtime.
      *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
+     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">
+     *     The issue on AddressBook level 4</a>
      */
 
     public final Person person;
@@ -34,21 +35,15 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label phone;
-    @FXML
-    private Label teleHandle;
+    private Label contact;
     @FXML
     private Label email;
     @FXML
     private Label matNum;
     @FXML
-    private Label tutGroup;
+    private Label classGroup;
     @FXML
-    private Label labGroup;
-    @FXML
-    private Label faculty;
-    @FXML
-    private Label year;
+    private Label facAndYear;
     @FXML
     private Label remark;
     @FXML
@@ -62,24 +57,56 @@ public class PersonCard extends UiPart<Region> {
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
     public PersonCard(Person person, int displayedIndex) {
-        // todo:  zhenjie Change UI layout in future
         super(FXML);
         this.person = person;
-        id.setText(displayedIndex + ". ");
+        id.setText(displayedIndex + "");
         name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        teleHandle.setText(person.getTeleHandle().value);
+        matNum.setText("(" + person.getMatNum().value + ")");
+
+        // Guaranteed for either tutGroup or labGroup to have a value.
+        assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty())
+                : "Both tutGroup and labGroup cannot be empty simultaneously";
+        if (person.getTutGroup().isEmpty() && !person.getLabGroup().isEmpty()) {
+            classGroup.setText(person.getLabGroup().value);
+        } else if (!person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty()) {
+            classGroup.setText(person.getTutGroup().value);
+        } else {
+            classGroup.setText(person.getTutGroup().value + " | " + person.getLabGroup().value);
+        }
+
+        // Guaranteed for either phone or telegram Handle to have a value
+        assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty())
+                : "Both phone and teleHandle cannot be empty simultaneously";
+        if (person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
+            contact.setText(person.getTeleHandle().value);
+        } else if (!person.getPhone().isEmpty() && person.getTeleHandle().isEmpty()) {
+            contact.setText(person.getPhone().value);
+        } else {
+            contact.setText(person.getPhone().value + "    " + person.getTeleHandle().value);
+        }
+
         email.setText(person.getEmail().value);
-        matNum.setText(person.getMatNum().value);
-        tutGroup.setText(person.getTutGroup().value);
-        labGroup.setText(person.getLabGroup().value);
-        faculty.setText(person.getFaculty().value);
-        year.setText(person.getYear().value);
-        remark.setText(person.getRemark().value);
+
+        // Not guaranteed for year or faculty to be present
+        if (person.getYear().isEmpty() && !person.getFaculty().isEmpty()) {
+            facAndYear.setText(person.getFaculty().value);
+        } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
+            facAndYear.setText("Y" + person.getYear().value);
+        } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
+            facAndYear.setText("Y" + person.getYear().value + "  \u2022  "
+                    + person.getFaculty().value);
+        }
+
+        if (!person.getRemark().value.isEmpty()) {
+            remark.setText(person.getRemark().value);
+        }
+
         labScores.getChildren().add(new Label("Lab grades:"));
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
         person.getAttendanceList().getAttendanceStream()
                 .forEach(attendance -> {
                     String tagName = attendance.getTagName();

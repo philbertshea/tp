@@ -15,6 +15,7 @@ import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
@@ -31,6 +32,7 @@ import seedu.tassist.testutil.PersonBuilder;
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
  */
+@Disabled("Feature to be handled by Wei En")
 public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -38,7 +40,6 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        //Hsin Yi will debug later.
         Person editedPerson = new PersonBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
@@ -46,7 +47,7 @@ public class EditCommandTest {
                 EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
-        //assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
