@@ -111,6 +111,7 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(attendance -> {
                     String tagName = attendance.getTagName();
                     Label label = new Label(tagName);
+
                     if (tagName.endsWith(Attendance.ATTENDED_TAG)) {
                         label.setStyle("-fx-background-color: #5cb338;");
                     } else if (tagName.endsWith(Attendance.NOT_ATTENDED_TAG)) {

@@ -1,6 +1,12 @@
 package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NOT_ATTENDED;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NO_TUTORIAL;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_ON_MC;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
@@ -47,30 +53,38 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS =
             "Everyone in %1$s has No Tutorial for Tutorial Week %2$d.";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Marks the attendance of a student as identified"
-            + " by the index number provided, for a particular week"
-            + " as identified by the week number provided. "
-            + "Existing attendance status will be overwritten by the input.\n"
-            + "Conditional Parameters: Either one of the following flags must "
-            + "be provided, but both flags CANNOT be provided together.\n"
-            + "-i INDEX (must be a positive integer that is a valid index)\n"
-            + "-t TUTORIAL GROUP (capital T followed by a positive integer)\n"
-            + "Mandatory Parameters: -w WEEK NUMBER (must be a positive integer "
-            + "from 1 to 13)\n"
-            + "Optional Parameters: -u (mark as not attended)\n"
-            + "-mc (mark as on MC)\n"
-            + "-nt (mark as no tutorial)\n"
-            + "Additional restrictions: 1. Either -u OR -mc OR -nt OR neither can be provided.\n"
-            + "2. -nt CANNOT be provided with -i (cannot mark a single student as no tutorial).\n\n"
-            + "Example: " + COMMAND_WORD + " -i 1 -w 3\n"
-            + "This marks student of index 1 as attended in tutorial week 3.\n"
-            + "Example: " + COMMAND_WORD + " -i 3 -w 5 -mc\n"
-            + "This marks student of index 3 as on MC in tutorial week 5.\n"
-            + "Example: " + COMMAND_WORD + " -t T01 -w 2 -u\n"
-            + "This marks all students in tutorial group T01 as not attended in tutorial week 2.\n"
-            + "Example: " + COMMAND_WORD + " -t T01 -w 13 -nt\n"
-            + "This marks all students in tutorial group T01 as no tutorial in tutorial week 13.\n";
+    public static final String MESSAGE_USAGE = String.format(
+            "%s: %s [%s INDEX | %s TUTORIAL_GROUP] %s WEEK_NUMBER [OPTIONS]\n"
+                    + "    Marks the attendance of a student or tutorial group for a specific week.\n"
+                    + "    Existing attendance status will be overwritten by the input.\n\n"
+                    + "    Conditional Parameters: (Either or BUT not both)\n"
+                    + "      %s INDEX           Student index (positive integer, valid index)\n"
+                    + "      %s TUTORIAL_GROUP  Tutorial group (capital 'T' followed by a positive integer)\n\n"
+                    + "    Mandatory Parameters:\n"
+                    + "      %s WEEK_NUMBER     Week number (positive integer, 1-13)\n\n"
+                    + "    Options:\n"
+                    + "      %s                 Mark as not attended\n"
+                    + "      %s                Mark as on MC\n"
+                    + "      %s                Mark as no tutorial\n\n"
+                    + "    Additional Restrictions:\n"
+                    + "      - Only one of -u, -mc, or -nt can be provided, or none.\n"
+                    + "      - The -nt flag cannot be used with -i (cannot mark a single student as no tutorial).\n\n"
+                    + "    Examples:\n"
+                    + "      %s -i 1 -w 3\n"
+                    + "        Marks student at index 1 as attended in tutorial week 3.\n\n"
+                    + "      %s -i 3 -w 5 -mc\n"
+                    + "        Marks student at index 3 as on MC in tutorial week 5.\n\n"
+                    + "      %s -t T01 -w 2 -u\n"
+                    + "        Marks all students in tutorial group T01 as not attended in tutorial week 2.\n\n"
+                    + "      %s -t T01 -w 13 -nt\n"
+                    + "        Marks all students in tutorial group T01 as no tutorial in tutorial week 13.\n\n"
+                    + "    Exit Status:\n"
+                    + "      Returns success unless an invalid index, tutorial group, week number, or option is given.",
+            COMMAND_WORD, COMMAND_WORD, PREFIX_INDEX, PREFIX_TUT_GROUP, PREFIX_WEEK,
+            PREFIX_INDEX, PREFIX_TUT_GROUP,
+            PREFIX_WEEK, PREFIX_MARK_NOT_ATTENDED, PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL,
+            COMMAND_WORD, COMMAND_WORD, COMMAND_WORD, COMMAND_WORD
+    );
 
     private final Index index;
 
