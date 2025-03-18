@@ -86,4 +86,14 @@ public class StringUtil {
             return false;
         }
     }
+
+    /**
+     * Returns true if {@code text} contains {@code word}, ignoring case.
+     */
+    public static boolean containsIgnoreCase(String text, String word) {
+        requireNonNull(text);
+        requireNonNull(word);
+        
+        return text.toLowerCase().contains(word.toLowerCase());
+    }
 }
