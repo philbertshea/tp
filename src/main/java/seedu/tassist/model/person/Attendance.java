@@ -3,6 +3,11 @@ package seedu.tassist.model.person;
 
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
 
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+
 /**
  * Represents the attendance status for a week.
  */
@@ -11,10 +16,9 @@ public class Attendance {
     public static final int ATTENDED = 1;
     public static final int ON_MC = 2;
     public static final int NO_TUTORIAL = 3;
-    public static final String ATTENDED_TAG = "ATT";
-    public static final String NOT_ATTENDED_TAG = "NO";
-    public static final String ON_MC_TAG = "MC";
-    public static final String NO_TUTORIAL_TAG = "--";
+    public static final String ATTENDED_IMAGE_PATH = "images/check_icon.png";
+    public static final String NOT_ATTENDED_IMAGE_PATH = "images/cross_icon.png";
+    public static final String NO_TUTORIAL_IMAGE_PATH = "images/ban_icon.png";
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid week or attendance!\n"
             + "Week must be an integer from 1 to 13 inclusive.\n"
@@ -68,19 +72,38 @@ public class Attendance {
      *
      * @return Tag name to be displayed for the Attendance object.
      */
-    public String getTagName() {
+    public HBox getTagHBox() {
+        ImageView imgView = new ImageView();
+        Label label = new Label("W" + this.week + ":");
+        HBox hBox = new HBox(5);
+        hBox.getStyleClass().add("hbox");
         switch (this.attendance) {
         case NOT_ATTENDED:
-            return "W" + this.week + ": " + NOT_ATTENDED_TAG;
+            imgView = new ImageView(new Image(NOT_ATTENDED_IMAGE_PATH));
+            hBox.setStyle("-fx-background-color: #d70654;");
+            break;
         case ATTENDED:
-            return "W" + this.week + ": " + ATTENDED_TAG;
+            imgView = new ImageView(new Image(ATTENDED_IMAGE_PATH));
+            hBox.setStyle("-fx-background-color: #5cb338;");
+            break;
         case ON_MC:
-            return "W" + this.week + ": " + ON_MC_TAG;
+            // Text works best for Attendance Status ON_MC
+            hBox.setStyle("-fx-background-color: #df6d14;");
+            hBox.getChildren().add(new Label("W" + this.week + ": MC"));
+            return hBox;
         case NO_TUTORIAL:
-            return "W" + this.week + ": " + NO_TUTORIAL_TAG;
+            imgView = new ImageView(new Image(NO_TUTORIAL_IMAGE_PATH));
+            hBox.setStyle("-fx-background-color: #A9A9A9;");
+            break;
         default:
-            return "";
+            break;
         }
+        imgView.setFitHeight(11);
+        imgView.setFitWidth(11);
+        hBox.getChildren().addAll(label, imgView);
+
+        return hBox;
+
     }
 
     @Override

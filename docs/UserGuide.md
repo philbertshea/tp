@@ -150,6 +150,11 @@ Examples:
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
   * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
 
+Images used are courtesy of:
+Check Icon: https://www.iconsdb.com/white-icons/checkmark-icon.html
+Cross Icon: https://www.iconsdb.com/white-icons/x-mark-icon.html
+Ban Icon: https://www.iconsdb.com/white-icons/ban-icon.html
+
 ### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.
