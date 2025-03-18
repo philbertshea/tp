@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
-import seedu.tassist.logic.parser.QuotePattern;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
