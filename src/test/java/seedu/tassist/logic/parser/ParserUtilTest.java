@@ -72,7 +72,6 @@ public class ParserUtilTest {
     private static final String VALID_REMARK = "Likes to walk";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
-    private static final TutGroup VALID_TUT_GROUP = new TutGroup("T01");
 
     @Test
     public void parseIndex_invalidInput_throwsParseException() {
@@ -393,6 +392,6 @@ public class ParserUtilTest {
 
         // None of the Persons in provided list are of the provided tut group -> Returns an empty list.
         assertEquals(new ArrayList<Person>(),
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T100")));
+                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T99")));
     }
 }
