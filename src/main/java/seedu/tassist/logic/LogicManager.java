@@ -17,6 +17,7 @@ import seedu.tassist.logic.parser.AddressBookParser;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.Operations;
 import seedu.tassist.model.ReadOnlyAddressBook;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.storage.Storage;
@@ -51,6 +52,7 @@ public class LogicManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
+        Operations.update(model);
         CommandResult commandResult;
         Command command = addressBookParser.parseCommand(commandText);
         commandResult = command.execute(model);
