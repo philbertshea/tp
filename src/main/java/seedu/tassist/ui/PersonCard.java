@@ -94,7 +94,7 @@ public class PersonCard extends UiPart<Region> {
             facAndYear.setText(person.getFaculty().value);
         } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
             facAndYear.setText("Y" + person.getYear().value);
-        } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
+        } else if (!person.getYear().isEmpty() && !person.getFaculty().isEmpty()) {
             facAndYear.setText("Y" + person.getYear().value + "  \u2022  "
                     + person.getFaculty().value);
         }
