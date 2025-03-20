@@ -50,11 +50,14 @@ public class UpdateLabScoreCommand extends Command {
     public static final String MESSAGE_INVALID_INDEX =
             "This index does not exist. It exceeds the maximum number of contacts";
 
+    private static final int UNUSED_VALUE  = -1;
+
     private final Index index;
     private final int labNumber;
     private final int labScore;
     private final int maxLabScore;
     private final int updateType;
+
     /**
      * Updates the lab score or max lab score for the specified student for the specified lab.
      *
@@ -67,8 +70,8 @@ public class UpdateLabScoreCommand extends Command {
         requireAllNonNull(index, labNumber, labScore);
         this.index = index;
         this.labNumber = labNumber;
-        this.labScore = isMaxScore ? -1 : labScore;
-        this.maxLabScore = isMaxScore ? labScore : -1;
+        this.labScore = isMaxScore ? UNUSED_VALUE : labScore;
+        this.maxLabScore = isMaxScore ? labScore : UNUSED_VALUE;
         this.updateType = isMaxScore ? 1 : 0;
     }
 

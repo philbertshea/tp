@@ -49,7 +49,8 @@ public class UpdateLabScoreCommandTest {
 
     @Test
     public void labNumberOutOfBoundFail() {
-        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON, -1, VALID_LAB_SCORE_A, false);
+        UpdateLabScoreCommand command =
+                new UpdateLabScoreCommand(INDEX_FIRST_PERSON, -1, VALID_LAB_SCORE_A, false);
         String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER,
                 DEFAULT_LAB_SCORE_COUNT);
         assertCommandFailure(command, model, validErrorMessage);
