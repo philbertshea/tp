@@ -10,6 +10,7 @@ import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.tassist.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_ATTENDED_SUCCESS;
+import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_MC_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_NO_TUTORIAL_SUCCESS;
 import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS;
@@ -40,17 +41,14 @@ public class MarkAttendanceCommandTest {
 
     public String getReplacedIndexAndNewString(
             String newStatus, String existingAttendanceString,
-            int firstReplacementIndex, int secondReplacementIndex, int thirdReplacementIndex) {
+            int firstReplacementIndex, int secondReplacementIndex) {
 
         boolean firstReplacementFound = firstReplacementIndex != -1;
         boolean secondReplacementFound = secondReplacementIndex != -1;
-        boolean thirdReplacementFound = thirdReplacementIndex != -1;
-        boolean noReplacementFound = !firstReplacementFound
-                && !secondReplacementFound
-                && !thirdReplacementFound;
+        boolean noReplacementFound = !firstReplacementFound && !secondReplacementFound;
 
         if (noReplacementFound) {
-            return "0" + existingAttendanceString;
+            return "5" + existingAttendanceString;
         }
 
         int replacementIndex = 0;
@@ -58,8 +56,6 @@ public class MarkAttendanceCommandTest {
             replacementIndex = firstReplacementIndex;
         } else if (secondReplacementFound) {
             replacementIndex = secondReplacementIndex;
-        } else if (thirdReplacementFound) {
-            replacementIndex = thirdReplacementIndex;
         }
 
         return replacementIndex
@@ -77,8 +73,7 @@ public class MarkAttendanceCommandTest {
         String replacedIndexAndNewString = getReplacedIndexAndNewString(
                 String.valueOf(Attendance.ATTENDED), existingAttendanceString,
                 existingAttendanceString.indexOf(String.valueOf(Attendance.NOT_ATTENDED)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.NO_TUTORIAL)));
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)));
 
         String newAttendanceString = replacedIndexAndNewString.substring(1);
         int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
@@ -105,8 +100,7 @@ public class MarkAttendanceCommandTest {
         String replacedIndexAndNewString = getReplacedIndexAndNewString(
                 String.valueOf(Attendance.NOT_ATTENDED), existingAttendanceString,
                 existingAttendanceString.indexOf(String.valueOf(Attendance.ATTENDED)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.NO_TUTORIAL)));
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ON_MC)));
 
         String newAttendanceString = replacedIndexAndNewString.substring(1);
         int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
@@ -133,8 +127,7 @@ public class MarkAttendanceCommandTest {
         String replacedIndexAndNewString = getReplacedIndexAndNewString(
                 String.valueOf(Attendance.ON_MC), existingAttendanceString,
                 existingAttendanceString.indexOf(String.valueOf(Attendance.NOT_ATTENDED)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.ATTENDED)),
-                existingAttendanceString.indexOf(String.valueOf(Attendance.NO_TUTORIAL)));
+                existingAttendanceString.indexOf(String.valueOf(Attendance.ATTENDED)));
 
         String newAttendanceString = replacedIndexAndNewString.substring(1);
         int replacedIndex = Integer.parseInt(replacedIndexAndNewString.substring(0, 1)) + 1;
@@ -150,6 +143,30 @@ public class MarkAttendanceCommandTest {
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+    }
+
+
+    @Test
+    public void execute_markIndexGivenNoTutorialUnfilteredList_failure() {
+
+        // First Person uses Default Attendance String, where Tutorial Week 1 and 2 has No Tutorial.
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        int weekToEdit = 1;
+        MarkAttendanceCommand commandSetWeek1Attended =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, weekToEdit, Attendance.ATTENDED);
+        MarkAttendanceCommand commandSetWeek1NotAttended =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, weekToEdit, Attendance.NOT_ATTENDED);
+        MarkAttendanceCommand commandSetWeek1OnMc =
+                new MarkAttendanceCommand(INDEX_FIRST_PERSON, weekToEdit, Attendance.ON_MC);
+
+        String expectedMessage = String.format(MESSAGE_MARK_GIVEN_NO_TUTORIAL_FAILURE,
+                firstPerson.getName(), firstPerson.getMatNum(),
+                firstPerson.getTutGroup(), weekToEdit);
+
+        assertCommandFailure(commandSetWeek1Attended, model, expectedMessage);
+        assertCommandFailure(commandSetWeek1NotAttended, model, expectedMessage);
+        assertCommandFailure(commandSetWeek1OnMc, model, expectedMessage);
 
     }
 
@@ -281,7 +298,8 @@ public class MarkAttendanceCommandTest {
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
-        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, model.getFilteredPersonList().size()));
     }
 
     @Test
@@ -293,8 +311,10 @@ public class MarkAttendanceCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         MarkAttendanceCommand command = new MarkAttendanceCommand(outOfBoundIndex, 1, Attendance.ATTENDED);
-        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, model.getFilteredPersonList().size()));
     }
+
 
     @Test
     public void equals() {

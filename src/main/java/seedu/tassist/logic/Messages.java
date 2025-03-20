@@ -18,7 +18,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
             + "\nA maximum of one quote should be found in between every flag."
             + "\nEvery quote should be paired.";
-    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided"
+    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided "
             + "is invalid. You currently have %d records!";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =

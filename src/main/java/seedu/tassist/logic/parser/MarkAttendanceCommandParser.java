@@ -44,12 +44,9 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         boolean isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
         boolean isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
 
-        boolean hasAtLeastTwoConflictingFlags = (isUnattended && isOnMc)
-                || (isUnattended && isNoTut)
-                || (isOnMc && isNoTut)
-                || (hasIndex && hasTutGroup)
-                || hasIndex && isNoTut; // Cannot set one student as No Tutorial.
-
+        boolean hasAtLeastTwoConflictingFlags = (isUnattended && isOnMc) || (isUnattended && isNoTut)
+                || (isOnMc && isNoTut) || (hasIndex && hasTutGroup)
+                || (hasIndex && isNoTut); // Cannot set Attendance as No Tutorial for Index commands.
         boolean hasNeitherIndexNorTutGroup = !hasIndex && !hasTutGroup;
 
         if (hasAtLeastTwoConflictingFlags || hasNeitherIndexNorTutGroup) {

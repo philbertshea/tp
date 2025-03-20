@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ATTENDANCE_LIST;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
@@ -13,6 +14,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 import static seedu.tassist.testutil.Assert.assertThrows;
 
@@ -100,6 +102,8 @@ public class CommandTestUtil {
     public static final String INVALID_LAB_GROUP_DESC = " " + PREFIX_LAB_GROUP + " D111"; // Start with 'B' or 'b'
     public static final String INVALID_FACULTY_DESC = " " + PREFIX_FACULTY + " @#$S"; // Only '-' and '&' allowed.
     public static final String INVALID_YEAR_DESC = " " + PREFIX_YEAR + " 8"; // Only 1-6 allowed.
+    public static final String INVALID_WEEK_DESC = " " + PREFIX_WEEK + " 14"; // Not within 1 to 13.
+    public static final String INVALID_INDEX_DESC = " " + PREFIX_INDEX + " -10"; // Negative index is not allowed.
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' Not allowed in tags.
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
