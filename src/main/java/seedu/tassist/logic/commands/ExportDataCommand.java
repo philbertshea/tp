@@ -23,8 +23,8 @@ public class ExportDataCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the data in TAssist to a JSON or CSV file.\n"
             + "Parameters: "
-            + PREFIX_FILENAME + "FILE_NAME "
-            + PREFIX_EXTENSION + "FILE_EXTENSION\n"
+            + PREFIX_FILENAME + " FILE_NAME "
+            + PREFIX_EXTENSION + " FILE_EXTENSION\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME
             + " userdata " + PREFIX_EXTENSION + " csv";
 

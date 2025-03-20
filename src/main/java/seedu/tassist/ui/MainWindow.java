@@ -221,7 +221,7 @@ public class MainWindow extends UiPart<Stage> {
             String[] fileData = file.getName().split("\\.");
             try {
                 executeCommand(ExportDataCommand.COMMAND_WORD + " "
-                        + PREFIX_FILENAME + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+                        + PREFIX_FILENAME + " " + fileData[0] + " " + PREFIX_EXTENSION + " " + fileData[1]);
             } catch (CommandException | ParseException e) {
                 logger.info("An error occurred while exporting: " + e.getMessage());
             }
