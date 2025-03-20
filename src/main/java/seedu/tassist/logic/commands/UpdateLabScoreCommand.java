@@ -52,11 +52,16 @@ public class UpdateLabScoreCommand extends Command {
 
     private static final int UNUSED_VALUE = -1;
 
+    /**
+     * Holds all the types of updates this command can handle.
+     */
+    public enum UpdateType { LABSCORE, MAXLABSCORE, BOTH };
+
     private final Index index;
     private final int labNumber;
     private final int labScore;
     private final int maxLabScore;
-    private final int updateType;
+    private final UpdateType updateType;
 
     /**
      * Updates the lab score or max lab score for the specified student for the specified lab.
@@ -72,7 +77,7 @@ public class UpdateLabScoreCommand extends Command {
         this.labNumber = labNumber;
         this.labScore = isMaxScore ? UNUSED_VALUE : labScore;
         this.maxLabScore = isMaxScore ? labScore : UNUSED_VALUE;
-        this.updateType = isMaxScore ? 1 : 0;
+        this.updateType = isMaxScore ? UpdateType.MAXLABSCORE : UpdateType.LABSCORE;
     }
 
     /**
@@ -89,7 +94,7 @@ public class UpdateLabScoreCommand extends Command {
         this.labNumber = labNumber;
         this.labScore = labScore;
         this.maxLabScore = maxLabScore;
-        updateType = 2;
+        updateType = UpdateType.BOTH;
     }
 
 
@@ -104,13 +109,13 @@ public class UpdateLabScoreCommand extends Command {
         Person personToUpdate = lastShownList.get(index.getZeroBased());
         LabScoreList newLabScoreList;
         switch (updateType) {
-        case 0:
+        case LABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
             break;
-        case 1:
+        case MAXLABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore);
             break;
-        case 2:
+        case BOTH:
             newLabScoreList = personToUpdate.getLabScoreList().updateBothLabScore(labNumber, labScore, maxLabScore);
             break;
         default:
