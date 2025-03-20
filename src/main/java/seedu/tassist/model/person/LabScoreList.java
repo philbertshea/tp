@@ -30,6 +30,7 @@ public class LabScoreList {
 
     /**
      * Creates a LabScoreList object using the save file values.
+     *
      * @param labs the array of values to initialize the list with.
      */
     public LabScoreList(String[] labs) {
@@ -44,28 +45,76 @@ public class LabScoreList {
         }
     }
 
+    /**
+     * Creates a LabScoreList object using the save file values.
+     *
+     * @param labs the array of values to initialize the list with.
+     */
     public LabScoreList(LabScore[] labs) {
         Collections.addAll(labScoreList, labs);
     }
 
     /**
      * Updates the specified lab with the updated score.
+     *
      * @param labNumber The LabScore object to update.
      * @param labScore The updated score for the lab.
-     * @return Updated {@code LabScoreList}
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    /**
+     * Updates the specified lab with the updated max score.
+     *
+     * @param labNumber The LabScore object to update.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
+     */
+    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    /**
+     * Updates the specified lab with the updated score and max score.
+     *
+     * @param labNumber The LabScore object to update.
+     * @param labScore The updated score for the lab.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
+     */
+    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    /**
+     * Copies the list of lab scores.
+     *
+     * @param labNumber The LabScore object to update.
+     * @return The copied list of lab scores.
+     * @throws CommandException When lab number is invalid.
+     */
+    public LabScore[] getLabScoresWhenValid(int labNumber) throws CommandException {
         if (labNumber < 1 || labNumber > labTotal) {
             throw new CommandException(String.format(
                     UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
         }
-        LabScore[] copy = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
-        copy[labNumber - 1] = copy[labNumber - 1].updateLabScore(labScore);
-        return new LabScoreList(copy);
+        return Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
     }
 
     /**
      * Checks if the lab number is valid.
+     *
      * @param labNumber The string of the lab number to verify.
      * @return a boolean.
      */
@@ -77,11 +126,12 @@ public class LabScoreList {
             return false;
         }
 
-        return labNo > 0 && labNo < labTotal;
+        return labNo > 0 && labNo <= labTotal;
     }
 
     /**
      * Gets the list of LabScore objects.
+     *
      * @return The list of LabScore objects.
      */
     public ArrayList<LabScore> getLabScores() {
@@ -90,6 +140,7 @@ public class LabScoreList {
 
     /**
      * Checks if the save string is valid.
+     *
      * @param saveString The string to validate if it is correct.
      * @return A boolean showing if the string is valid.
      */
@@ -132,6 +183,7 @@ public class LabScoreList {
 
     /**
      * Loads the lab scores from the save file.
+     *
      * @param saveString The string from the save file.
      * @return LabScoreList object.
      */
@@ -162,7 +214,6 @@ public class LabScoreList {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof LabScoreList)) {
             return false;
         }
