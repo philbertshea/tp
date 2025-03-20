@@ -12,7 +12,6 @@ import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
-import seedu.tassist.logic.Messages;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -29,10 +28,9 @@ public class UpdateLabScoreCommandTest {
 
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
-        String expectedMessage = String.format(String.format("%s %s",
-                String.format(UpdateLabScoreCommand.MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
-                        0, VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A),
-                Messages.format(editedPerson)));
+        String expectedMessage = String.format(UpdateLabScoreCommand.MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
+                0, VALID_LAB_NUMBER_A);
+        System.out.println(expectedMessage);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 

@@ -6,7 +6,6 @@ import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import java.util.List;
 
 import seedu.tassist.commons.core.index.Index;
-import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.LabScoreList;
@@ -20,7 +19,7 @@ public class UpdateLabScoreCommand extends Command {
     public static final String COMMAND_WORD = "lab";
 
     public static final String MESSAGE_UPDATE_LAB_SCORE_SUCCESS =
-            "Update lab score for index %1$d lab %2$d as %3$d/25";
+            "Update lab %2$d for index %1$d";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Update the lab score of a student that is identified by the index"
@@ -130,9 +129,7 @@ public class UpdateLabScoreCommand extends Command {
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format("%s %s",
-                String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getZeroBased(), labNumber, labScore),
-                Messages.format(personToUpdate)));
+        return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getZeroBased(), labNumber));
     }
 
     @Override
