@@ -67,43 +67,8 @@ public class Attendance {
         return week > 0 && week < 14;
     }
 
-    /**
-     * Returns the Tag name of the Attendance object.
-     *
-     * @return Tag name to be displayed for the Attendance object.
-     */
-    public HBox getTagHBox() {
-        ImageView imgView = new ImageView();
-        Label label = new Label("W" + this.week + ":");
-        HBox hBox = new HBox(5);
-        hBox.getStyleClass().add("hbox");
-        switch (this.attendance) {
-        case NOT_ATTENDED:
-            imgView = new ImageView(new Image(NOT_ATTENDED_IMAGE_PATH));
-            hBox.setStyle("-fx-background-color: #d70654;");
-            break;
-        case ATTENDED:
-            imgView = new ImageView(new Image(ATTENDED_IMAGE_PATH));
-            hBox.setStyle("-fx-background-color: #5cb338;");
-            break;
-        case ON_MC:
-            // Text works best for Attendance Status ON_MC
-            hBox.setStyle("-fx-background-color: #df6d14;");
-            hBox.getChildren().add(new Label("W" + this.week + ": MC"));
-            return hBox;
-        case NO_TUTORIAL:
-            imgView = new ImageView(new Image(NO_TUTORIAL_IMAGE_PATH));
-            hBox.setStyle("-fx-background-color: #A9A9A9;");
-            break;
-        default:
-            break;
-        }
-        imgView.setFitHeight(11);
-        imgView.setFitWidth(11);
-        hBox.getChildren().addAll(label, imgView);
-
-        return hBox;
-
+    public String getWeekAsTagPrefix() {
+        return "W" + this.week + ":";
     }
 
     @Override

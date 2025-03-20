@@ -4,9 +4,12 @@ import java.util.Comparator;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
 /**
@@ -107,7 +110,30 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
 
         person.getAttendanceList().getAttendanceStream()
-                .forEach(attendance -> attendances.getChildren().add(attendance.getTagHBox()));
+                .forEach(attendance -> {
+                    String tagPrefix = attendance.getWeekAsTagPrefix();
+                    HBox hBox = new HBox(2);
+                    hBox.getStyleClass().add("hbox");
+                    switch (attendance.getAttendance()) {
+                    case Attendance.ON_MC:
+                        hBox.setStyle("-fx-background-color: #df6d14;");
+                        hBox.getChildren().add(new Label(tagPrefix + " MC"));
+                        break;
+                    case Attendance.ATTENDED:
+                        hBox.setStyle("-fx-background-color: #5cb338;");
+                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.ATTENDED_IMAGE_PATH);
+                        break;
+                    case Attendance.NOT_ATTENDED:
+                        hBox.setStyle("-fx-background-color: #d70654;");
+                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NOT_ATTENDED_IMAGE_PATH);
+                        break;
+                    case Attendance.NO_TUTORIAL:
+                        hBox.setStyle("-fx-background-color: #A9A9A9;");
+                        hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NO_TUTORIAL_IMAGE_PATH);
+                        break;
+                    }
+                    attendances.getChildren().add(hBox);
+                });
 
         final int[] labCounter = {1};
         person.getLabScoreList().getLabScores().forEach(
@@ -120,5 +146,23 @@ public class PersonCard extends UiPart<Region> {
                     labCounter[0]++;
                 }
         );
+    }
+
+    /**
+     * Adds a Label containing the provided labelText, and an ImageView generated
+     * from the provided imagePath, to the hBox provided, and returns the
+     * hBox with the added Label and ImageView.
+     *
+     * @param hBox HBox to add the Label and ImageView to.
+     * @param labelText Text to be shown on the Label.
+     * @param imagePath Path of the Image to be shown in the ImageView.
+     * @return HBox containing the added Label and ImageView.
+     */
+    public HBox addLabelAndImageViewToHBox(HBox hBox, String labelText, String imagePath) {
+        ImageView imageView = new ImageView(new Image(imagePath));
+        imageView.setFitHeight(11);
+        imageView.setFitWidth(11);
+        hBox.getChildren().addAll(new Label(labelText), imageView);
+        return hBox;
     }
 }
