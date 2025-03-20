@@ -8,7 +8,7 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
  */
 public class LabScore {
     private int labScore;
-    private int maxLabScore = 25; //default max score is 25
+    private int maxLabScore = 25; //Default max score is 25.
 
     public LabScore() {
         labScore = -1;
@@ -16,6 +16,7 @@ public class LabScore {
 
     /**
      * Creates a LabScore object.
+     *
      * @param labScore the score to initialize with.
      * @param maxLabScore the max score of the lab to initialize.
      */
@@ -26,6 +27,7 @@ public class LabScore {
 
     /**
      * Updates the lab score for this lab.
+     *
      * @param labScore The updated lab score.
      * @return The updated LabScore object.
      * @throws CommandException If the lab score is invalid.
@@ -43,6 +45,7 @@ public class LabScore {
 
     /**
      * Updates the max lab score for this lab.
+     *
      * @param maxLabScore The updated max lab score.
      * @return The updated LabScore object.
      * @throws CommandException If the lab score is invalid.
@@ -53,7 +56,6 @@ public class LabScore {
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
                             maxLabScore, labScore));
         } else if (maxLabScore < 0) {
-            System.out.println(maxLabScore);
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
         return new LabScore(labScore, maxLabScore);
@@ -61,6 +63,7 @@ public class LabScore {
 
     /**
      * Updates the lab score and max lab score for this lab.
+     *
      * @param labScore The updated lab score.
      * @param maxLabScore The updated max lab score.
      * @return The updated LabScore object.
@@ -92,7 +95,6 @@ public class LabScore {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof LabScore)) {
             return false;
         }

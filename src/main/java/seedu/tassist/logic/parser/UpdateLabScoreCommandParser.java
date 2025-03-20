@@ -19,6 +19,7 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
 
     /**
      * Parses input arguments and create a new UpdateLabScoreCommand object.
+     *
      * @param args the given argument.
      * @return UpdateLabScoreCommand.
      * @throws ParseException If the string is not of the correct format.
@@ -44,17 +45,16 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
                     UpdateLabScoreCommand.MESSAGE_USAGE));
         }
 
+        index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
+        labNumber = ParserUtil.parseLabNumber(argMultimap.getValue(PREFIX_LAB_NUMBER).orElse(""));
+
         try {
-            index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
-            labNumber = ParserUtil.parseLabNumber(argMultimap.getValue(PREFIX_LAB_NUMBER).orElse(""));
             if (isBothScorePresent || isOnlyLabScorePresent) {
                 labScore = ParserUtil.parseLabScore(argMultimap.getValue(PREFIX_LAB_SCORE).orElse(""));
             }
 
             if (isBothScorePresent || isOnlyMaxLabScorePresent) {
-
                 maxLabScore = ParserUtil.parseLabScore(argMultimap.getValue(PREFIX_MAX_LAB_SCORE).orElse(""));
-                System.out.println(maxLabScore);
             }
 
         } catch (IllegalValueException ive) {

@@ -44,7 +44,7 @@ public class UpdateLabScoreCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(outOfBoundIndex,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
-        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(command, model, UpdateLabScoreCommand.MESSAGE_INVALID_INDEX);
     }
 
     @Test

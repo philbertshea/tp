@@ -26,9 +26,10 @@ public class UpdateLabScoreCommand extends Command {
             + ": Update the lab score of a student that is identified by the index"
             + "with the provided lab number and marks. \n"
             + "Mandatory Parameters: -i INDEX (must be positive integer and within valid index range)"
-            + "-ln LAB NUMBER (positive integer between 1 and 4 inclusive)"
-            + " -sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
-            + "Optional Parameters: -msc MAX SCORE (must be positive integer, set max score for the lab). \n"
+            + "-ln LAB NUMBER (positive integer between 1 and 4 inclusive) \n"
+            + "Conditional parameters: You must have at least one of these parameters. \n"
+            + "-sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
+            + "-msc MAX SCORE (must be positive integer, set max score for the lab). \n"
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
             + "This update student of index 1 as lab 1 score as 10/10.";
 
@@ -46,6 +47,9 @@ public class UpdateLabScoreCommand extends Command {
     public static final String MESSAGE_INVALID_NEGATIVE_SCORE =
             "The score cannot be a negative number";
 
+    public static final String MESSAGE_INVALID_INDEX =
+            "This index does not exist. It exceeds the maximum number of contacts";
+
     private final Index index;
     private final int labNumber;
     private final int labScore;
@@ -53,6 +57,7 @@ public class UpdateLabScoreCommand extends Command {
     private final int updateType;
     /**
      * Updates the lab score or max lab score for the specified student for the specified lab.
+     *
      * @param index The student index.
      * @param labNumber The lab for the score to update.
      * @param labScore The new score for the specified lab.
@@ -69,6 +74,7 @@ public class UpdateLabScoreCommand extends Command {
 
     /**
      * Updates both lab score and max lab score for the specified student for the specified lab.
+     *
      * @param index The student index.
      * @param labNumber The lab for the score to update.
      * @param labScore The new score for the specified lab.
@@ -89,7 +95,7 @@ public class UpdateLabScoreCommand extends Command {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(MESSAGE_INVALID_INDEX);
         }
 
         Person personToUpdate = lastShownList.get(index.getZeroBased());
@@ -127,7 +133,6 @@ public class UpdateLabScoreCommand extends Command {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof UpdateLabScoreCommand)) {
             return false;
         }
