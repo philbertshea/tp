@@ -1,12 +1,6 @@
 package seedu.tassist.model.person;
 
-
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
-
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 
 /**
  * Represents the attendance status for a week.
