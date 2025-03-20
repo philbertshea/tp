@@ -41,22 +41,39 @@ public class UpdateLabScoreCommand extends Command {
             "The updated score cannot exceed the maximum score for the lab."
             + "Your input: %1$d. The maximum score for this lab: %2$d.";
 
+    public static final String MESSAGE_INVALID_MAX_SCORE =
+            "The updated max score cannot be lesser than the current score for the lab."
+                    + "Your input: %1$d. The current score for this lab: %2$d.";
+
+    public static final String MESSAGE_INVALID_NEGATIVE_SCORE =
+            "The score cannot be a negative number";
     private final Index index;
     private final int labNumber;
     private final int labScore;
-    private final int maxLabScore = 25; //default 25 max until optional parameter is implemented
-
+    private final int maxLabScore;
+    private final int updateType;
     /**
      * Updates the lab score for the specified student for the specified lab.
      * @param index The student index.
      * @param labNumber The lab for the score to update.
      * @param labScore The new score for the specified lab.
      */
-    public UpdateLabScoreCommand(Index index, int labNumber, int labScore) {
+    public UpdateLabScoreCommand(Index index, int labNumber, int labScore, boolean isMaxScore) {
+        requireAllNonNull(index, labNumber, labScore);
+        this.index = index;
+        this.labNumber = labNumber;
+        this.labScore = isMaxScore? -1 : labScore;
+        this.maxLabScore = isMaxScore? labScore : -1;
+        this.updateType = isMaxScore? 1 : 0;
+    }
+
+    public UpdateLabScoreCommand(Index index, int labNumber, int labScore, int maxLabScore) {
         requireAllNonNull(index, labNumber, labScore);
         this.index = index;
         this.labNumber = labNumber;
         this.labScore = labScore;
+        this.maxLabScore = maxLabScore;
+        updateType = 2;
     }
 
 
@@ -69,7 +86,21 @@ public class UpdateLabScoreCommand extends Command {
         }
 
         Person personToUpdate = lastShownList.get(index.getZeroBased());
-        LabScoreList newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
+        LabScoreList newLabScoreList;
+        switch (updateType) {
+        case 0:
+            newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
+            break;
+        case 1:
+            newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore);
+            break;
+        case 2:
+            newLabScoreList = personToUpdate.getLabScoreList().updateBothLabScore(labNumber, labScore, maxLabScore);
+            break;
+        default:
+            newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
+            break;
+        }
         Person updatedPerson = new Person(personToUpdate.getName(), personToUpdate.getPhone(),
                 personToUpdate.getTeleHandle(), personToUpdate.getEmail(), personToUpdate.getMatNum(),
                 personToUpdate.getTutGroup(), personToUpdate.getLabGroup(), personToUpdate.getFaculty(),

@@ -33,6 +33,31 @@ public class LabScore {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE,
                             labScore, maxLabScore));
+        } else if (labScore < 0) {
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        }
+        return new LabScore(labScore, maxLabScore);
+    }
+
+    public LabScore updateMaxLabScore(int maxLabScore) throws CommandException {
+        if (labScore > maxLabScore && labScore != -1) {
+            throw new CommandException(
+                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
+                            maxLabScore, labScore));
+        } else if (maxLabScore < 0) {
+            System.out.println(maxLabScore);
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        }
+        return new LabScore(labScore, maxLabScore);
+    }
+
+    public LabScore updateBothLabScore(int labScore, int maxLabScore) throws CommandException {
+        if (labScore < 0 || maxLabScore < 0) {
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        } else if (labScore > maxLabScore) {
+            throw new CommandException(
+                    String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
+                            maxLabScore, labScore));
         }
         return new LabScore(labScore, maxLabScore);
     }

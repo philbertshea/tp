@@ -55,13 +55,29 @@ public class LabScoreList {
      * @return Updated {@code LabScoreList}
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
+        LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    public LabScore[] getLabScoresWhenValid(int labNumber) throws CommandException{
         if (labNumber < 1 || labNumber > labTotal) {
             throw new CommandException(String.format(
                     UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));
         }
-        LabScore[] copy = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
-        copy[labNumber - 1] = copy[labNumber - 1].updateLabScore(labScore);
-        return new LabScoreList(copy);
+        return Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
     }
 
     /**

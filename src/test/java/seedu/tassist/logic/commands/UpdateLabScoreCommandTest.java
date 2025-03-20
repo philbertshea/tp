@@ -28,7 +28,7 @@ public class UpdateLabScoreCommandTest {
         Person editedPerson = new PersonBuilder(firstPerson).withLabScores("4.20/25|-|-|-").build();
 
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
-                VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A);
+                VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
         String expectedMessage = String.format(String.format("%s %s",
                 String.format(UpdateLabScoreCommand.MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
                         0, VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A),
@@ -43,13 +43,13 @@ public class UpdateLabScoreCommandTest {
     public void indexOutOfBoundFail() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(outOfBoundIndex,
-                VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A);
+                VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
         assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
 
     @Test
     public void labNumberOutOfBoundFail() {
-        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON, -1, VALID_LAB_SCORE_A);
+        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON, -1, VALID_LAB_SCORE_A, false);
         String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER,
                 DEFAULT_LAB_SCORE_COUNT);
         assertCommandFailure(command, model, validErrorMessage);
@@ -59,9 +59,38 @@ public class UpdateLabScoreCommandTest {
     public void testScoreOutOfBoundFail() {
         int invalidScore = DEFAULT_LAB_MAX_SCORE + 10;
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
-                VALID_LAB_NUMBER_A, invalidScore);
+                VALID_LAB_NUMBER_A, invalidScore, false);
         String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE, invalidScore,
                 DEFAULT_LAB_MAX_SCORE);
         assertCommandFailure(command, model, validErrorMessage);
     }
+
+    @Test
+    public void testNegativeScoreOutOfBoundFail() {
+        int invalidScore = -1;
+        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
+                VALID_LAB_NUMBER_A, invalidScore, false);
+        String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        assertCommandFailure(command, model, validErrorMessage);
+    }
+
+    @Test
+    public void testMaxScoreOutOfBoundFail() {
+        int invalidMaxScore = VALID_LAB_SCORE_A - 10;
+        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
+                VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, invalidMaxScore);
+        String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE, invalidMaxScore,
+                VALID_LAB_SCORE_A);
+        assertCommandFailure(command, model, validErrorMessage);
+    }
+
+    @Test
+    public void testNegativeMaxScoreOutOfBoundFail() {
+        int invalidScore = -1;
+        UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
+                VALID_LAB_NUMBER_A, invalidScore, true);
+        String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        assertCommandFailure(command, model, validErrorMessage);
+    }
+
 }
