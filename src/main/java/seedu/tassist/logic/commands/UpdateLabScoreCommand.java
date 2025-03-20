@@ -50,7 +50,7 @@ public class UpdateLabScoreCommand extends Command {
     public static final String MESSAGE_INVALID_INDEX =
             "This index does not exist. It exceeds the maximum number of contacts";
 
-    private static final int UNUSED_VALUE  = -1;
+    private static final int UNUSED_VALUE = -1;
 
     private final Index index;
     private final int labNumber;
