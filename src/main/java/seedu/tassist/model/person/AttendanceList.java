@@ -41,6 +41,7 @@ public class AttendanceList {
      * @return Boolean representing whether attendanceString is valid.
      */
     public static boolean isValidAttendanceString(String attendanceString) {
+        requireNonNull(attendanceString);
         return attendanceString.matches("^[0123]{13}$");
     }
 

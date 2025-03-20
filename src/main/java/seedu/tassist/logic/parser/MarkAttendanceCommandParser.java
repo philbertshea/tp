@@ -40,11 +40,11 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         int week;
         boolean hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
         boolean hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
-        boolean isUnattended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
+        boolean isNotAttended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
         boolean isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
         boolean isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
 
-        boolean hasAtLeastTwoConflictingFlags = (isUnattended && isOnMc) || (isUnattended && isNoTut)
+        boolean hasAtLeastTwoConflictingFlags = (isNotAttended && isOnMc) || (isNotAttended && isNoTut)
                 || (isOnMc && isNoTut) || (hasIndex && hasTutGroup)
                 || (hasIndex && isNoTut); // Cannot set Attendance as No Tutorial for Index commands.
         boolean hasNeitherIndexNorTutGroup = !hasIndex && !hasTutGroup;
@@ -70,21 +70,24 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             );
         }
 
-        if (isUnattended && hasIndex) {
-            return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
-        } else if (isUnattended && hasTutGroup) {
-            return new MarkAttendanceCommand(tutGroup, week, Attendance.NOT_ATTENDED);
-        } else if (isOnMc && hasIndex) {
-            return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
-        } else if (isOnMc && hasTutGroup) {
-            return new MarkAttendanceCommand(tutGroup, week, Attendance.ON_MC);
-        } else if (isNoTut) {
-            return new MarkAttendanceCommand(tutGroup, week, Attendance.NO_TUTORIAL);
-        } else if (hasIndex) {
-            return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);
+        if (hasIndex) {
+            if (isNotAttended) {
+                return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
+            } else if (isOnMc) {
+                return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
+            } else {
+                return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);
+            }
         } else {
-            return new MarkAttendanceCommand(tutGroup, week, Attendance.ATTENDED);
+            if (isNotAttended) {
+                return new MarkAttendanceCommand(tutGroup, week, Attendance.NOT_ATTENDED);
+            } else if (isOnMc) {
+                return new MarkAttendanceCommand(tutGroup, week, Attendance.ON_MC);
+            } else if (isNoTut) {
+                return new MarkAttendanceCommand(tutGroup, week, Attendance.NO_TUTORIAL);
+            } else {
+                return new MarkAttendanceCommand(tutGroup, week, Attendance.ATTENDED);
+            }
         }
-
     }
 }
