@@ -44,6 +44,10 @@ public class LabScoreList {
         }
     }
 
+    /**
+     * Creates a LabScoreList object using the save file values.
+     * @param labs the array of values to initialize the list with.
+     */
     public LabScoreList(LabScore[] labs) {
         Collections.addAll(labScoreList, labs);
     }
@@ -52,7 +56,8 @@ public class LabScoreList {
      * Updates the specified lab with the updated score.
      * @param labNumber The LabScore object to update.
      * @param labScore The updated score for the lab.
-     * @return Updated {@code LabScoreList}
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
@@ -60,19 +65,40 @@ public class LabScoreList {
         return new LabScoreList(copiedScores);
     }
 
+    /**
+     * Updates the specified lab with the updated max score.
+     * @param labNumber The LabScore object to update.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
+     */
     public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
+    /**
+     * Updates the specified lab with the updated score and max score.
+     * @param labNumber The LabScore object to update.
+     * @param labScore The updated score for the lab.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     * @throws CommandException When lab number is invalid.
+     */
     public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
-    public LabScore[] getLabScoresWhenValid(int labNumber) throws CommandException{
+    /**
+     * Copies the list of lab scores.
+     * @param labNumber The LabScore object to update.
+     * @return The copied list of lab scores.
+     * @throws CommandException When lab number is invalid.
+     */
+    public LabScore[] getLabScoresWhenValid(int labNumber) throws CommandException {
         if (labNumber < 1 || labNumber > labTotal) {
             throw new CommandException(String.format(
                     UpdateLabScoreCommand.MESSAGE_INVALID_LAB_NUMBER, labTotal));

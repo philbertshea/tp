@@ -22,8 +22,6 @@ public class UpdateLabScoreCommand extends Command {
     public static final String MESSAGE_UPDATE_LAB_SCORE_SUCCESS =
             "Update lab score for index %1$d lab %2$d as %3$d/25";
 
-    //note not implementing the max score optional parameter first, depending on time
-    //currently will default to max score as 25
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Update the lab score of a student that is identified by the index"
             + "with the provided lab number and marks. \n"
@@ -47,26 +45,35 @@ public class UpdateLabScoreCommand extends Command {
 
     public static final String MESSAGE_INVALID_NEGATIVE_SCORE =
             "The score cannot be a negative number";
+
     private final Index index;
     private final int labNumber;
     private final int labScore;
     private final int maxLabScore;
     private final int updateType;
     /**
-     * Updates the lab score for the specified student for the specified lab.
+     * Updates the lab score or max lab score for the specified student for the specified lab.
      * @param index The student index.
      * @param labNumber The lab for the score to update.
      * @param labScore The new score for the specified lab.
+     * @param isMaxScore checks if this is updating lab score of max lab score.
      */
     public UpdateLabScoreCommand(Index index, int labNumber, int labScore, boolean isMaxScore) {
         requireAllNonNull(index, labNumber, labScore);
         this.index = index;
         this.labNumber = labNumber;
-        this.labScore = isMaxScore? -1 : labScore;
-        this.maxLabScore = isMaxScore? labScore : -1;
-        this.updateType = isMaxScore? 1 : 0;
+        this.labScore = isMaxScore ? -1 : labScore;
+        this.maxLabScore = isMaxScore ? labScore : -1;
+        this.updateType = isMaxScore ? 1 : 0;
     }
 
+    /**
+     * Updates both lab score and max lab score for the specified student for the specified lab.
+     * @param index The student index.
+     * @param labNumber The lab for the score to update.
+     * @param labScore The new score for the specified lab.
+     * @param maxLabScore The new max lab score for the specified lab.
+     */
     public UpdateLabScoreCommand(Index index, int labNumber, int labScore, int maxLabScore) {
         requireAllNonNull(index, labNumber, labScore);
         this.index = index;

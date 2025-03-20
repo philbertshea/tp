@@ -33,8 +33,8 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
         int labScore = -1;
         int maxLabScore = -1;
 
-        boolean isBothScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent() &&
-                argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
+        boolean isBothScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent()
+                && argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
 
         boolean isOnlyLabScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent();
         boolean isOnlyMaxLabScorePresent = argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
@@ -47,7 +47,7 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
         try {
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
             labNumber = ParserUtil.parseLabNumber(argMultimap.getValue(PREFIX_LAB_NUMBER).orElse(""));
-            if(isBothScorePresent || isOnlyLabScorePresent) {
+            if (isBothScorePresent || isOnlyLabScorePresent) {
                 labScore = ParserUtil.parseLabScore(argMultimap.getValue(PREFIX_LAB_SCORE).orElse(""));
             }
 
