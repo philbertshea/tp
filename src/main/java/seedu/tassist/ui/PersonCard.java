@@ -131,6 +131,8 @@ public class PersonCard extends UiPart<Region> {
                         hBox.setStyle("-fx-background-color: #A9A9A9;");
                         hBox = addLabelAndImageViewToHBox(hBox, tagPrefix, Attendance.NO_TUTORIAL_IMAGE_PATH);
                         break;
+                    default:
+                        break;
                     }
                     attendances.getChildren().add(hBox);
                 });
