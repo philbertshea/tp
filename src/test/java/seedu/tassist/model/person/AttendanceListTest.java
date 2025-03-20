@@ -105,6 +105,12 @@ public class AttendanceListTest {
         // same attendanceString -> returns true
         assertTrue(attendanceList.equals(attendanceListDuplicate));
 
+        // null -> returns false
+        assertTrue(attendanceList.equals(null));
+
+        // different types -> returns false
+        assertTrue(attendanceList.equals(5.0f));
+
         // different attendanceString -> returns false
         assertFalse(attendanceList.equals(attendanceListDifferent));
     }
