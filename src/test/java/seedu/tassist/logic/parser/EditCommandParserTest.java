@@ -92,86 +92,86 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        String userInputBegining = " " + PREFIX_INDEX + " 1";
+        String firstPersonIndex = " " + PREFIX_INDEX + " 1";
         assertParseFailure(parser, " " + PREFIX_INDEX + " -10", Index.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, userInputBegining + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
-        assertParseFailure(parser, userInputBegining + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
+        assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
+        assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
         // invalid tele handle
         assertParseFailure(parser,
-                userInputBegining + INVALID_TELE_HANDLE_DESC, TeleHandle.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_TELE_HANDLE_DESC, TeleHandle.MESSAGE_CONSTRAINTS
         );
-        assertParseFailure(parser, userInputBegining + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
+        assertParseFailure(parser, firstPersonIndex + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
         // invalid mat_num
         assertParseFailure(parser,
-                userInputBegining + INVALID_MAT_NUM_DESC, MatNum.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_MAT_NUM_DESC, MatNum.MESSAGE_CONSTRAINTS
         );
         // invalid tut_group
         assertParseFailure(parser,
-                userInputBegining + INVALID_TUT_GROUP_DESC, TutGroup.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_TUT_GROUP_DESC, TutGroup.MESSAGE_CONSTRAINTS
         );
         // invalid lab_group
         assertParseFailure(parser,
-                userInputBegining + INVALID_LAB_GROUP_DESC, LabGroup.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_LAB_GROUP_DESC, LabGroup.MESSAGE_CONSTRAINTS
         );
         // invalid faculty
         assertParseFailure(parser,
-                userInputBegining + INVALID_FACULTY_DESC, Faculty.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_FACULTY_DESC, Faculty.MESSAGE_CONSTRAINTS
         );
-        assertParseFailure(parser, userInputBegining + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // invalid year
-        assertParseFailure(parser, userInputBegining + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // invalid tag
+        assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // invalid year
+        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // invalid tag
         // assertParseFailure(parser, "1" + INVALID_REMARK_DESC,
         //      Remark.MESSAGE_CONSTRAINTS); // invalid remark (TODO: Zhen Jie to update)
 
         // ================= Dont know if this is correct =================
         // invalid phone followed by valid email
-        assertParseFailure(parser, userInputBegining + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
         // invalid name with valid phone
-        assertParseFailure(parser, userInputBegining + INVALID_NAME_DESC + PHONE_DESC_AMY, Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC + PHONE_DESC_AMY, Name.MESSAGE_CONSTRAINTS);
         // invalid phone with valid email
-        assertParseFailure(parser, userInputBegining + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
         // invalid tele handle with valid matric number
         assertParseFailure(parser,
-                userInputBegining + INVALID_TELE_HANDLE_DESC + MAT_NUM_DESC_AMY, TeleHandle.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_TELE_HANDLE_DESC + MAT_NUM_DESC_AMY, TeleHandle.MESSAGE_CONSTRAINTS
         );
         // invalid email with valid tutorial group
         assertParseFailure(parser,
-                userInputBegining + INVALID_EMAIL_DESC + TUT_GROUP_DESC_AMY, Email.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_EMAIL_DESC + TUT_GROUP_DESC_AMY, Email.MESSAGE_CONSTRAINTS
         );
         // invalid matric number with valid lab group
         assertParseFailure(parser,
-                userInputBegining + INVALID_MAT_NUM_DESC + LAB_GROUP_DESC_AMY, MatNum.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_MAT_NUM_DESC + LAB_GROUP_DESC_AMY, MatNum.MESSAGE_CONSTRAINTS
         );
         // invalid tutorial group with valid faculty
         assertParseFailure(parser,
-                userInputBegining + INVALID_TUT_GROUP_DESC + FACULTY_DESC_AMY, TutGroup.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_TUT_GROUP_DESC + FACULTY_DESC_AMY, TutGroup.MESSAGE_CONSTRAINTS
         );
         // invalid lab group with valid year
         assertParseFailure(parser,
-                userInputBegining + INVALID_LAB_GROUP_DESC + YEAR_DESC_AMY, LabGroup.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_LAB_GROUP_DESC + YEAR_DESC_AMY, LabGroup.MESSAGE_CONSTRAINTS
         );
         // invalid faculty with valid remark
         assertParseFailure(parser,
-                userInputBegining + INVALID_FACULTY_DESC + REMARK_DESC_AMY, Faculty.MESSAGE_CONSTRAINTS
+                firstPersonIndex + INVALID_FACULTY_DESC + REMARK_DESC_AMY, Faculty.MESSAGE_CONSTRAINTS
         );
         // invalid year with valid tag
-        assertParseFailure(parser, userInputBegining + INVALID_YEAR_DESC + TAG_DESC_FRIEND, Year.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC + TAG_DESC_FRIEND, Year.MESSAGE_CONSTRAINTS);
         // invalid tag with valid name
-        assertParseFailure(parser, userInputBegining + INVALID_TAG_DESC + NAME_DESC_AMY, Tag.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC + NAME_DESC_AMY, Tag.MESSAGE_CONSTRAINTS);
 
         // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
         // parsing it together with a valid tag results in error
         assertParseFailure(parser,
-                userInputBegining + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_CONSTRAINTS
+                firstPersonIndex + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_CONSTRAINTS
         );
         assertParseFailure(parser,
-                userInputBegining + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
+                firstPersonIndex + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
         );
         assertParseFailure(parser,
-                userInputBegining + TAG_EMPTY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
+                firstPersonIndex + TAG_EMPTY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
         );
 
         // multiple invalid values, but only the first invalid value is captured
-        assertParseFailure(parser, userInputBegining + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_PHONE_AMY,
+        assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_PHONE_AMY,
                 Name.MESSAGE_CONSTRAINTS);
     }
 
