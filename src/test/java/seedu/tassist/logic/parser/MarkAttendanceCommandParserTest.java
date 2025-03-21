@@ -88,6 +88,16 @@ public class MarkAttendanceCommandParserTest {
     }
 
     @Test
+    public void parse_markNoTutValidTutGroupAndWeek_success() {
+        String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NO_TUTORIAL;
+        MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
+                new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.NO_TUTORIAL);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
     public void parse_invalidWeek_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MarkAttendanceCommand.MESSAGE_USAGE);
@@ -136,7 +146,7 @@ public class MarkAttendanceCommandParserTest {
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased(), expectedMessage);
 
-        // MC and Unattended Flag together
+        // MC and Not Attended Flag together
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
@@ -147,12 +157,6 @@ public class MarkAttendanceCommandParserTest {
     public void parse_conflictingFlags_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 MarkAttendanceCommand.MESSAGE_USAGE);
-
-        // Index, No Tutorial Flag
-        assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
-                + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
 
         // Index, On MC and Not Attended Flag together
         assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
@@ -177,6 +181,18 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_NOT_ATTENDED + " " + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
+
+        // Index, No Tutorial Flag
+        assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " ", expectedMessage);
+
+        // Index, No Tutorial Flag
+        assertParseFailure(parser, MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " "
+                + PREFIX_MARK_NO_TUTORIAL, expectedMessage);
     }
 
 }

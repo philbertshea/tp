@@ -11,7 +11,6 @@ import java.util.Set;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
 import seedu.tassist.logic.parser.exceptions.ParseException;
-import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
@@ -234,20 +233,6 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_WEEK);
         }
         return Integer.parseInt(week);
-    }
-
-    /**
-     * Parses {@code String attendanceString} into an {@code AttendanceList}.
-     *
-     * @throws ParseException if the given {@code week} is invalid.
-     */
-    public static AttendanceList parseAttendanceList(String attendanceString)
-            throws ParseException {
-        requireNonNull(attendanceString);
-        if (!AttendanceList.isValidAttendanceString(attendanceString)) {
-            throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
-        }
-        return AttendanceList.generateAttendanceList(attendanceString);
     }
 
     /**

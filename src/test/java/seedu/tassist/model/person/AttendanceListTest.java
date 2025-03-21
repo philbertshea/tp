@@ -21,6 +21,9 @@ public class AttendanceListTest {
     @Test
     public void isValidAttendanceString() {
 
+        // null -> throws NullPointerException
+        assertThrows(NullPointerException.class, () -> AttendanceList.isValidAttendanceString(null));
+
         // invalid attendanceString -> returns false
         assertFalse(AttendanceList.isValidAttendanceString(""));
         assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
@@ -104,6 +107,12 @@ public class AttendanceListTest {
 
         // same attendanceString -> returns true
         assertTrue(attendanceList.equals(attendanceListDuplicate));
+
+        // null -> returns false
+        assertFalse(attendanceList.equals(null));
+
+        // different types -> returns false
+        assertFalse(attendanceList.equals(5.0f));
 
         // different attendanceString -> returns false
         assertFalse(attendanceList.equals(attendanceListDifferent));

@@ -1,5 +1,6 @@
 package seedu.tassist.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NOT_ATTENDED;
@@ -39,7 +40,7 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_ATTENDED_SUCCESS =
             "%1$s (%2$s) attended Tutorial Week %3$d.";
 
-    public static final String MESSAGE_MARK_UNATTENDED_SUCCESS =
+    public static final String MESSAGE_MARK_NOT_ATTENDED_SUCCESS =
             "%1$s (%2$s) did not attend Tutorial Week %3$d.";
 
     public static final String MESSAGE_MARK_MC_SUCCESS =
@@ -51,7 +52,7 @@ public class MarkAttendanceCommand extends Command {
     public static final String MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS =
             "Everyone in %1$s attended Tutorial Week %2$d.";
 
-    public static final String MESSAGE_MARK_TUT_GROUP_UNATTENDED_SUCCESS =
+    public static final String MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS =
             "Everyone in %1$s did not attend Tutorial Week %2$d.";
 
     public static final String MESSAGE_MARK_TUT_GROUP_MC_SUCCESS =
@@ -186,13 +187,14 @@ public class MarkAttendanceCommand extends Command {
      *         is executed successfully.
      */
     private String generateSuccessMessage(Person personToEdit) {
+        requireNonNull(personToEdit);
         String message = "";
         switch (attendanceStatus) {
         case Attendance.ATTENDED:
             message = MESSAGE_MARK_ATTENDED_SUCCESS;
             break;
         case Attendance.NOT_ATTENDED:
-            message = MESSAGE_MARK_UNATTENDED_SUCCESS;
+            message = MESSAGE_MARK_NOT_ATTENDED_SUCCESS;
             break;
         case Attendance.ON_MC:
             message = MESSAGE_MARK_MC_SUCCESS;
@@ -218,13 +220,14 @@ public class MarkAttendanceCommand extends Command {
      *         is executed successfully.
      */
     private String generateSuccessMessage(TutGroup tutGroupToEdit) {
+        requireNonNull(tutGroupToEdit);
         String message = "";
         switch (attendanceStatus) {
         case Attendance.ATTENDED:
             message = MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS;
             break;
         case Attendance.NOT_ATTENDED:
-            message = MESSAGE_MARK_TUT_GROUP_UNATTENDED_SUCCESS;
+            message = MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS;
             break;
         case Attendance.ON_MC:
             message = MESSAGE_MARK_TUT_GROUP_MC_SUCCESS;
@@ -256,14 +259,10 @@ public class MarkAttendanceCommand extends Command {
             return false;
         }
 
-        if (this.index == null && this.tutGroup == null) {
-            return e.index == null && e.tutGroup == null;
-        } else if (this.index == null) {
-            return e.index == null && this.tutGroup.equals(e.tutGroup);
-        } else if (this.tutGroup == null) {
-            return e.tutGroup == null && this.index.equals(e.index);
+        if (this.index != null) {
+            return this.index.equals(e.index);
         } else {
-            return this.index.equals(e.index) && this.tutGroup.equals(e.tutGroup);
+            return this.tutGroup.equals(e.tutGroup);
         }
     }
 
