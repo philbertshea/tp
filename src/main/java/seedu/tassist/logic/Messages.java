@@ -1,5 +1,7 @@
 package seedu.tassist.logic;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,10 +31,15 @@ public class Messages {
     // For invalid arguments in delete
     public static final String MESSAGE_INVALID_ARGUMENTS =
             "Invalid arguments detected!\nValid arguments are -i <index>.";
+
     /**
-     * Returns an error message indicating the duplicate prefixes.
+     * Returns an error message given a list of duplicate prefixes.
+     *
+     * @param duplicatePrefixes List of duplicate prefixes.
+     * @return Error message for duplicate prefixes.
      */
     public static String getErrorMessageForDuplicatePrefixes(Prefix... duplicatePrefixes) {
+        requireNonNull(duplicatePrefixes);
         assert duplicatePrefixes.length > 0;
 
         Set<String> duplicateFields =
@@ -44,7 +51,8 @@ public class Messages {
     /**
      * Formats the {@code person} for display to the user.
      */
-    public static String format(Person person) {
+    public static String getFormattedPersonAttributes(Person person) {
+        requireNonNull(person);
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append("; Phone: ").append(person.getPhone())
@@ -66,6 +74,7 @@ public class Messages {
      * Formats the {@code person} for display to the user.
      */
     public static String getFormattedPersonAttributesForDisplay(Person person) {
+        requireNonNull(person);
         final StringBuilder builder = new StringBuilder();
         builder.append(" Name              : ").append(person.getName()).append("\n")
                 .append(" Phone             : ")

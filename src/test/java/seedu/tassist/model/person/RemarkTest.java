@@ -72,4 +72,13 @@ public class RemarkTest {
         Remark differentRemark = new Remark("Bye");
         assertFalse(remark.equals(differentRemark));
     }
+
+    @Test
+    public void hashCodeMethod() {
+        String helloStr = "Hello";
+        String byeStr = "Bye";
+        Remark remark = new Remark(helloStr);
+        assertTrue(remark.hashCode() == helloStr.hashCode());
+        assertFalse(remark.hashCode() == byeStr.hashCode());
+    }
 }

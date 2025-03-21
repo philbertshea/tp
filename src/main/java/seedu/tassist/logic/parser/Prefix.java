@@ -2,7 +2,7 @@ package seedu.tassist.logic.parser;
 
 /**
  * A prefix that marks the beginning of an argument in an arguments string.
- * E.g. 't/' in 'add James t/ friend'.
+ * E.g. '-i' in 'att -i 1 -w 5'.
  */
 public class Prefix {
     private final String prefix;

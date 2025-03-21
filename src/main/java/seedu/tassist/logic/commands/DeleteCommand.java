@@ -52,7 +52,7 @@ public class DeleteCommand extends Command {
         Person personToDelete = getTargetPerson(model);
         model.deletePerson(personToDelete);
         String feedback = String.format(MESSAGE_DELETE_PERSON_SUCCESS,
-                Messages.format(personToDelete));
+                Messages.getFormattedPersonAttributes(personToDelete));
         return new CommandResult(feedback);
     }
 
