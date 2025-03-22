@@ -74,7 +74,7 @@ public class LabGroupTest {
         // Different types -> returns false.
         assertFalse(labGroup.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(labGroup.equals(null));
 
         // Different LabGroup -> returns false.

@@ -55,7 +55,7 @@ public class MatNumTest {
         // Different types -> returns false.
         assertFalse(matNum.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(matNum.equals(null));
 
         // Different MatNum -> returns false.
