@@ -354,13 +354,6 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **Extensions**
 
-* 1a. Database is full
-
-  * 1a1. TAssist shows error message about database capacity.
-  * 1a2. TAssist prompts user to either delete existing entries.
-
-  Use case ends.
-
 * 2a. TAssist detects only mandatory arguments provided for a student record within user input.
 
     Use case resumes at step 3.
