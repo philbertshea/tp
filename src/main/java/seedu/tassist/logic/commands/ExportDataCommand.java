@@ -1,13 +1,10 @@
 package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILEAPATH;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Set;
 
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
@@ -20,48 +17,43 @@ import seedu.tassist.storage.JsonAddressBookStorage;
  */
 public class ExportDataCommand extends Command {
     public static final String COMMAND_WORD = "export";
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Exports the data in TAssist to a JSON or CSV file.\n"
-            + "Parameters: "
-            + PREFIX_FILENAME + "FILE_NAME "
-            + PREFIX_EXTENSION + "FILE_EXTENSION\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME
-            + " userdata " + PREFIX_EXTENSION + " csv";
+    public static final String MESSAGE_USAGE = "Usage: " + COMMAND_WORD + " " + PREFIX_FILEAPATH + " FILE_PATH\n\n"
+            + "Export the data in TAssist to a JSON or CSV file.\n\n"
+            + "Options:\n"
+            + "  " + PREFIX_FILEAPATH + " FILE_PATH   Specify the output file path.\n"
+            + "                 Can be either a full file path or a path relative\n"
+            + "                 to the current directory.\n"
+            + "                 The file must have a .csv or .json extension.\n"
+            + "Examples:\n"
+            + "  export " + PREFIX_FILEAPATH + " ./data/userdata.csv";
 
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
     public static final String INVALID_FILENAME_ERROR = "Invalid filename: %s\n"
             + "File name should only contain alphanumeric characters, dashes, or underscores.";
-    private static final Set<String> VALID_EXTENSIONS = Set.of("csv", "json");
 
-    private final String fileName;
-    private final String extension;
+    private final Path filePath;
 
     /**
      * Instantiates the ExportDataCommand instance, with the provided
-     * fileName and extension.
+     * filePath
      *
-     * @param fileName index of person to be marked attendance for.
-     * @param extension week to mark attendance of person for.
+     * @param filePath path of file to be stored.
      */
-    public ExportDataCommand(String fileName, String extension) {
-        requireAllNonNull(fileName, extension);
-
-        this.fileName = fileName;
-        this.extension = extension;
+    public ExportDataCommand(Path filePath) {
+        requireAllNonNull(filePath);
+        this.filePath = filePath;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        validateExtension(extension);
-        validateFileName(fileName);
-
-        Path filePath = Paths.get("data", fileName + "." + extension);
+        String fileName = filePath.getFileName().toString();
+        String extension = fileName.substring(fileName.lastIndexOf(".")).trim();
 
         try {
             saveAddressBook(model.getAddressBook(), filePath, extension);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, fileName + "." + extension));
-        } catch (IOException e) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS, this.filePath));
+        } catch (IOException | IllegalArgumentException e) {
             throw new CommandException("Failed to save file: " + e.getMessage(), e);
         }
     }
@@ -78,38 +70,19 @@ public class ExportDataCommand extends Command {
         }
 
         ExportDataCommand e = (ExportDataCommand) other;
-        return fileName.equals(e.fileName)
-                && extension.equals(e.extension);
-    }
-
-    /**
-     * Validates if the provided extension is supported.
-     */
-    private void validateExtension(String extension) throws CommandException {
-        if (!VALID_EXTENSIONS.contains(extension)) {
-            throw new CommandException(String.format(INVALID_ARGUMENT_EXTENSION, extension));
-        }
-    }
-
-    /**
-     * Validates if the provided filename is allowed.
-     */
-    private void validateFileName(String fileName) throws CommandException {
-        if (!fileName.matches("^[a-zA-Z0-9-_]+$")) { // Simple alphanumeric with dashes/underscores
-            throw new CommandException(String.format(INVALID_FILENAME_ERROR, fileName));
-        }
+        return filePath.equals(e.filePath);
     }
 
     /**
      * Saves the AddressBook to the specified file path and format based on the file extension.
      */
     private void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath, String extension)
-            throws IOException {
+            throws IOException, IllegalArgumentException {
         switch (extension) {
-        case "json":
+        case ".json":
             new JsonAddressBookStorage(filePath).saveAddressBook(addressBook);
             break;
-        case "csv":
+        case ".csv":
             new CsvAddressBookStorage(filePath).saveAddressBook(addressBook);
             break;
         default:

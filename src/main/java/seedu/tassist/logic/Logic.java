@@ -64,4 +64,20 @@ public interface Logic {
      * @throws IOException If an I/O error occurs, such as when writing to the file fails.
      */
     void saveCsv(Path filePath) throws IOException;
+
+    /**
+     * Loads AddressBook data from a JSON file located at {@code filePath}.
+     *
+     * @param filePath The path to the JSON file to be loaded.
+     * @throws IOException If an I/O error occurs, such as when the file does not exist.
+     */
+    void loadJson(Path filePath) throws IOException;
+
+    /**
+     * Saves current AddressBook data to a JSON file at {@code filePath}.
+     *
+     * @param filePath The path where the JSON file should be saved.
+     * @throws IOException If an I/O error occurs, such as when writing to the file fails.
+     */
+    void saveJson(Path filePath) throws IOException;
 }
