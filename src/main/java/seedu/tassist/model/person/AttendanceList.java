@@ -100,6 +100,15 @@ public class AttendanceList {
         return this.attendanceList.stream();
     }
 
+    /**
+     * Checks whether the current instance is the Empty AttendanceList.
+     *
+     * @return Boolean representing whether the current instance is the Empty AttendanceList.
+     */
+    public boolean isEmpty() {
+        return this.equals(EMPTY_ATTENDANCE_LIST);
+    }
+
     @Override
     public String toString() {
         return attendanceList.stream()
