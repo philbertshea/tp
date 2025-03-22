@@ -3,10 +3,12 @@ package seedu.tassist.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
@@ -277,4 +279,53 @@ public class ParserUtil {
                 .filter(person -> person.getTutGroup().equals(tutGroup))
                 .toList();
     }
+
+    public static List<Index> parseMultipleIndexes(String input) throws ParseException {
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+
+        List<Index> indexList = new ArrayList<>();
+        Set<Integer> indexSet = new TreeSet<>();
+
+        try {
+            String[] parts = trimmedInput.split(",");
+            for (String part : parts) {
+                part = part.trim();
+                if (part.contains("-")) {
+                    String[] range = part.split("-");
+                    if (range.length != 2) {
+                        throw new ParseException(MESSAGE_INVALID_INDEX);
+                    }
+
+                    int start = Integer.parseInt(range[0].trim());
+                    int end = Integer.parseInt(range[1].trim());
+                    if (start <= 0 || end <= 0 || start > end) {
+                        throw new ParseException(MESSAGE_INVALID_INDEX);
+                    }
+
+                    for (int i = start; i <= end; i++) {
+                        indexSet.add(i);
+                    }
+                } else {
+                    int value = Integer.parseInt(part);
+                    if (value <= 0) {
+                        throw new ParseException(MESSAGE_INVALID_INDEX);
+                    }
+                    indexSet.add(value);
+                }
+            }
+
+            for (int i : indexSet) {
+                indexList.add(Index.fromOneBased(i));
+            }
+
+        } catch (NumberFormatException e) {
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+        }
+
+        return indexList;
+    }
+
 }
