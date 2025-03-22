@@ -1,7 +1,7 @@
 package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILEAPATH;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,15 +17,15 @@ import seedu.tassist.storage.JsonAddressBookStorage;
  */
 public class ExportDataCommand extends Command {
     public static final String COMMAND_WORD = "export";
-    public static final String MESSAGE_USAGE = "Usage: " + COMMAND_WORD + " " + PREFIX_FILEAPATH + " FILE_PATH\n\n"
+    public static final String MESSAGE_USAGE = "Usage: " + COMMAND_WORD + " " + PREFIX_FILE_PATH + " FILE_PATH\n\n"
             + "Export the data in TAssist to a JSON or CSV file.\n\n"
             + "Options:\n"
-            + "  " + PREFIX_FILEAPATH + " FILE_PATH   Specify the output file path.\n"
+            + "  " + PREFIX_FILE_PATH + " FILE_PATH   Specify the output file path.\n"
             + "                 Can be either a full file path or a path relative\n"
             + "                 to the current directory.\n"
             + "                 The file must have a .csv or .json extension.\n"
             + "Examples:\n"
-            + "  export " + PREFIX_FILEAPATH + " ./data/userdata.csv";
+            + "  export " + PREFIX_FILE_PATH + " ./data/userdata.csv";
 
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";

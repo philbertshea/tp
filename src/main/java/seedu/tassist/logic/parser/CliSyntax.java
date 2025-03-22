@@ -25,5 +25,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_ATTENDANCE_LIST = new Prefix("-al");
     public static final Prefix PREFIX_LAB_NUMBER = new Prefix("-ln");
     public static final Prefix PREFIX_LAB_SCORE = new Prefix("-sc");
-    public static final Prefix PREFIX_FILEAPATH = new Prefix("-f");
+    public static final Prefix PREFIX_FILE_PATH = new Prefix("-f");
 }

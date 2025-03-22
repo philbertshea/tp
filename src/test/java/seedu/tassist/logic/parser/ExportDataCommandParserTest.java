@@ -1,13 +1,17 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_CSV;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_EXTENSION_JSON;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_FILE_NAME;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILEAPATH;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_OUTPUT_FILE;
+import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PARENT_DIRECTORY;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_CSV;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_JSON;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.tassist.logic.parser.ExportDataCommandParser.MESSAGE_INVALID_PARENT_DIR;
+import static seedu.tassist.logic.parser.ExportDataCommandParser.MESSAGE_MISSING_FILE;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,38 +21,41 @@ public class ExportDataCommandParserTest {
     private ExportDataCommandParser parser = new ExportDataCommandParser();
 
     @Test
-    public void parse_validFileNameAndCsvExtention_success() {
-        String userInput = " "
-                + PREFIX_FILEAPATH + " " + VALID_FILE_NAME + " "
-                + PREFIX_EXTENSION + " " + VALID_FILE_EXTENSION_CSV;
+    public void parse_validFilePathCsvExtension_success() {
+        String userInput = " " + PREFIX_FILE_PATH + " " + VALID_EXPORT_FILE_PATH_CSV;
         ExportDataCommand expectedCommand =
-                new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_CSV);
+                new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_CSV));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_validFileNameAndJsonExtention_success() {
-        String userInput = " "
-                + PREFIX_FILEAPATH + " " + VALID_FILE_NAME + " "
-                + PREFIX_EXTENSION + " " + VALID_FILE_EXTENSION_JSON;
+        String userInput = " " + PREFIX_FILE_PATH + " " + VALID_EXPORT_FILE_PATH_JSON;
         ExportDataCommand expectedCommand =
-                new ExportDataCommand(VALID_FILE_NAME, VALID_FILE_EXTENSION_JSON);
+                new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_JSON));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
-    public void parse_missingCompulsoryFields_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportDataCommand.MESSAGE_USAGE);
-        String noFileName = ExportDataCommand.COMMAND_WORD + " " + PREFIX_EXTENSION + VALID_FILE_EXTENSION_CSV;
-        String noFileExtension = ExportDataCommand.COMMAND_WORD + " " + PREFIX_FILEAPATH + VALID_FILE_NAME;
+    public void parse_emptyFilePath_failure() {
+        String userInput = " " + PREFIX_FILE_PATH + " ";
+        String expectedMessage = ExportDataCommandParser.MESSAGE_INVALID_PATH_EMPTY;
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
 
-        // missing all parameters
-        assertParseFailure(parser, ExportDataCommand.COMMAND_WORD, expectedMessage);
+    //TODO: Parent Directory not exist failure
+    @Test
+    public void parse_nonExistentParentDir_failure() {
+        String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_PARENT_DIRECTORY;
+        Path path = Paths.get(INVALID_PARENT_DIRECTORY);
+        String expectedMessage = String.format(MESSAGE_INVALID_PARENT_DIR, path.getParent());
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
 
-        // missing filename
-        assertParseFailure(parser, noFileName , expectedMessage);
-
-        // missing file extension
-        assertParseFailure(parser, noFileExtension , expectedMessage);
+    //TODO: Missing file
+    @Test
+    public void parse_invalidFile_failure() {
+        String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_OUTPUT_FILE;
+        assertParseFailure(parser, userInput, MESSAGE_MISSING_FILE);
     }
 }

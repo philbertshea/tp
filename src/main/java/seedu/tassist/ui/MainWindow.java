@@ -203,39 +203,6 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.show();
     }
 
-
-//    @FXML
-//    private void handleExport() {
-//        FileChooser fileChooser = new FileChooser();
-//        fileChooser.setTitle("Export Data");
-//
-//        // Set the allowed directory
-//        File allowedDirectory = new File("data");
-//        if (!allowedDirectory.exists()) {
-//            allowedDirectory.mkdirs(); // Create the directory if it doesn't exist
-//        }
-//        fileChooser.setInitialDirectory(allowedDirectory);
-//
-//        // Set default file extension options
-//        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter(
-//                "JSON File (*.json)", "*.json");
-//        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter(
-//                "CSV File (*.csv)", "*.csv");
-//        fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
-//
-//        // Show save dialog
-//        File file = fileChooser.showSaveDialog(primaryStage);
-//        if (file != null) {
-//            String[] fileData = file.getName().split("\\.");
-//            try {
-//                executeCommand(ExportDataCommand.COMMAND_WORD + " "
-//                        + PREFIX_FILEAPATH + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
-//            } catch (CommandException | ParseException e) {
-//                logger.info("An error occurred while exporting: " + e.getMessage());
-//            }
-//        }
-//    }
-
     /**
      * Closes the application.
      */

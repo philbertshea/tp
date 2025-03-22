@@ -65,9 +65,10 @@ public class CommandTestUtil {
     public static final int VALID_LAB_SCORE_A = 20;
     public static final int DEFAULT_LAB_SCORE_COUNT = 4;
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
-    public static final String VALID_FILE_NAME = "tassist_data";
-    public static final String VALID_FILE_EXTENSION_CSV = "csv";
-    public static final String VALID_FILE_EXTENSION_JSON = "json";
+    public static final String VALID_EXPORT_FILE_PATH_CSV = "./data/tassist_data.csv";
+    public static final String VALID_EXPORT_FILE_PATH_JSON = "./data/tassist_data.json";
+    public static final String VALID_FILE_EXTENSION = ".json";
+
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + " " + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + " " + VALID_NAME_BOB;
@@ -105,6 +106,9 @@ public class CommandTestUtil {
     public static final String INVALID_WEEK_DESC = " " + PREFIX_WEEK + " 14"; // Not within 1 to 13.
     public static final String INVALID_INDEX_DESC = " " + PREFIX_INDEX + " -10"; // Negative index is not allowed.
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " hubby*"; // '*' Not allowed in tags.
+    public static final String INVALID_FILE_EXTENSION = ".txt";
+    public static final String INVALID_PARENT_DIRECTORY = "./nonexisitantDir/test.csv";
+    public static final String INVALID_OUTPUT_FILE = "./nonexisitantFile";
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
