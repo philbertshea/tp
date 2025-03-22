@@ -24,6 +24,7 @@ public class AttendanceList {
             + "0 representing Not Attended, 1 representing Attended, \n"
             + "2 representing On MC, 3 representing No Tutorial.";
     public static final String DEFAULT_ATTENDANCE_STRING = "3300000000000";
+    public static final AttendanceList EMPTY_ATTENDANCE_LIST = new AttendanceList();
 
     private ArrayList<Attendance> attendanceList;
 

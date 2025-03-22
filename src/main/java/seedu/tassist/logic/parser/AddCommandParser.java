@@ -86,6 +86,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         AttendanceList attendanceList =
                 AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
