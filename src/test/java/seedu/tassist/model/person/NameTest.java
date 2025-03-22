@@ -42,7 +42,7 @@ public class NameTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Name name = new Name("Valid Name");
 
         // Same values -> returns true.

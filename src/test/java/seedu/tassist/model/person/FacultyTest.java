@@ -49,7 +49,7 @@ public class FacultyTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Faculty faculty = new Faculty("3");
 
         // Same object -> returns true.

@@ -94,7 +94,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();

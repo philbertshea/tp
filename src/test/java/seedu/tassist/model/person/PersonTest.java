@@ -58,7 +58,7 @@ public class PersonTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         // Same values -> returns true.
         Person aliceCopy = new PersonBuilder(ALICE).build();
         assertTrue(ALICE.equals(aliceCopy));

@@ -15,7 +15,7 @@ import seedu.tassist.testutil.PersonBuilder;
 public class NameContainsKeywordsPredicateTest {
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 

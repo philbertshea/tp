@@ -59,7 +59,7 @@ public class AttendanceTest {
     }
 
     @Test
-    public void equals() {
+    public void equalsMethod() {
         Attendance attendance = new Attendance(3, Attendance.ATTENDED);
 
         // Same values -> returns true.
