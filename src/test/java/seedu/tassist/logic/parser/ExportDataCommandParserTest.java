@@ -62,8 +62,8 @@ public class ExportDataCommandParserTest {
         assertParseFailure(parser, userInput, MESSAGE_MISSING_FILE);
     }
 
-    @Test
-    public void parse_invalidPath_failure() {
-        String userInput = " " + PREFIX_FILE_PATH + " " +
-    }
+//    @Test
+//    public void parse_invalidPath_failure() {
+//        String userInput = " " + PREFIX_FILE_PATH + " " +
+//    }
 }
