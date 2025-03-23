@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
@@ -393,4 +394,45 @@ public class ParserUtilTest {
         assertEquals(new ArrayList<Person>(),
                 ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T99")));
     }
+
+    @Test
+    public void parseMultipleIndexes_validInputs_success() throws Exception {
+        // Single index
+        assertEquals(List.of(Index.fromOneBased(1)), ParserUtil.parseMultipleIndexes("1"));
+
+        // Comma-separated indexes
+        assertEquals(List.of(Index.fromOneBased(1), Index.fromOneBased(3)),
+                ParserUtil.parseMultipleIndexes("1,3"));
+
+        // Range
+        assertEquals(List.of(Index.fromOneBased(1), Index.fromOneBased(2),
+                        Index.fromOneBased(3)),
+                ParserUtil.parseMultipleIndexes("1-3"));
+
+        // Mixed input
+        assertEquals(List.of(Index.fromOneBased(1), Index.fromOneBased(2),
+                        Index.fromOneBased(3), Index.fromOneBased(5)),
+                ParserUtil.parseMultipleIndexes("1-3,5"));
+
+        // Input with whitespace
+        assertEquals(List.of(Index.fromOneBased(2), Index.fromOneBased(4)),
+                ParserUtil.parseMultipleIndexes(" 2 , 4 "));
+    }
+
+    @Test
+    public void parseMultipleIndexes_invalidRange_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("5-3"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("-1"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("2-"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("a-b"));
+    }
+
+    @Test
+    public void parseMultipleIndexes_invalidInput_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("one,two"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("1,,3"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("1 2 3"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes(""));
+    }
+
 }

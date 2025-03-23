@@ -7,8 +7,13 @@ import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSucces
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
+import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.DeleteCommand;
 
 /**
@@ -20,10 +25,19 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
+        List<Index> expectedIndexes = Arrays.asList(
+                Index.fromOneBased(1),
+                Index.fromOneBased(2),
+                Index.fromOneBased(3),
+                Index.fromOneBased(5),
+                Index.fromOneBased(7)
+        );
+        DeleteCommand expectedCommand = new DeleteCommand(expectedIndexes);
+        assertParseSuccess(parser, " -i 1-3, 5, 7", expectedCommand);
 
-        assertParseSuccess(parser, " -i 1", new DeleteCommand(INDEX_FIRST_PERSON));
+        assertParseSuccess(parser, " -i 1", new DeleteCommand(Collections.singletonList(INDEX_FIRST_PERSON)));
 
-        assertParseSuccess(parser, " -i 2", new DeleteCommand(INDEX_SECOND_PERSON));
+        assertParseSuccess(parser, " -i 2", new DeleteCommand(Collections.singletonList(INDEX_SECOND_PERSON)));
     }
 
     @Test
@@ -77,6 +91,24 @@ public class DeleteCommandParserTest {
     public void parse_exceedIntRange_throwsParseException() {
         // e.g. user typed "-i 2147483648" => integer overflow
         assertParseFailure(parser, "-i 2147483648",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidRange_throwsParseException() {
+        assertParseFailure(parser, "-i 5-2",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidMixedInput_throwsParseException() {
+        assertParseFailure(parser, "-i 2, a-b",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_nonNumericRange_throwsParseException() {
+        assertParseFailure(parser, "-i 1-two",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 }
