@@ -63,6 +63,7 @@ public class CommandTestUtil {
     public static final int VALID_WEEK_B = 5;
     public static final int VALID_LAB_NUMBER_A = 1;
     public static final int VALID_LAB_SCORE_A = 20;
+    public static final int VALID_LAB_SCORE_B = 30;
     public static final int DEFAULT_LAB_SCORE_COUNT = 4;
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
     public static final String VALID_EXPORT_FILE_PATH_CSV = "./data/tassist_data.csv";

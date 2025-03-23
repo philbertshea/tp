@@ -3,6 +3,7 @@ package seedu.tassist.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
@@ -50,7 +51,7 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = String.format(
-            "Usage: edit INDEX [OPTIONS]...\n\n"
+            "Usage: edit %s INDEX [OPTIONS]...\n\n"
                     + "Edits the details of a person identified by INDEX in the displayed list.\n"
                     + "Existing values will be overwritten.\n\n"
                     + "Options:\n"
@@ -65,11 +66,12 @@ public class EditCommand extends Command {
                     + "  %-7s YEAR      Update academic year\n"
                     + "  %-7s REMARKS   Update remarks\n"
                     + "  %-7s TAG       Add/update tags (multiple allowed)\n",
-            PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
+            PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
             PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
             )
             + "\nExample:  \n"
-            + "  edit 2 "
+            + "  edit "
+            + PREFIX_INDEX + " 2 "
             + PREFIX_NAME + " John "
             + PREFIX_PHONE + " 98765432 "
             + PREFIX_TELE_HANDLE + " @johnDoe "

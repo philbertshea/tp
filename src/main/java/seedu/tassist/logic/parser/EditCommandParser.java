@@ -1,9 +1,9 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
@@ -39,7 +39,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args,
-                        PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
+                        PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
                         PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
                         PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
                 );
@@ -47,14 +47,13 @@ public class EditCommandParser implements Parser<EditCommand> {
         Index index;
 
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    EditCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(Index.MESSAGE_CONSTRAINTS, pe);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
+                PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
                 PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
                 PREFIX_YEAR, PREFIX_REMARK
         );

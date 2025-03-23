@@ -78,6 +78,6 @@ public class AttendanceTest {
         assertFalse(attendance.equals(new Attendance(5, Attendance.ATTENDED)));
 
         // different attendance -> returns false
-        assertFalse(attendance.equals(new Attendance(5, Attendance.NOT_ATTENDED)));
+        assertFalse(attendance.equals(new Attendance(3, Attendance.NOT_ATTENDED)));
     }
 }
