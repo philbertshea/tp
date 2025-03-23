@@ -3,7 +3,10 @@ package seedu.tassist.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.ToStringBuilder;
@@ -24,13 +27,13 @@ public class DeleteCommand extends Command {
             + "Parameters: -i <index> [,<index> or <range>...](must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " -i  1-3, 5, 7";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Student: %1$s";
-    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!";
+    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
+            + "\nDeleted Students:\n%s";
     public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
             + " You currently have %d records!";
 
     private final List<Index> targetIndexes;
-    private List<Person> toDelete;
+
 
     /**
      * Constructs a {@code DeleteCommand} to delete the person at the specified {@code targetIndexes}.
@@ -53,23 +56,28 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
         List<Person> toDelete = new ArrayList<>();
+        Set<Index> uniqueSortedIndexes = new TreeSet<>(Comparator.comparingInt(Index::getZeroBased));
+        uniqueSortedIndexes.addAll(targetIndexes);
 
-        // Validate and collect persons to delete
-        for (Index index : targetIndexes) {
+        for (Index index : uniqueSortedIndexes) {
             int zeroBased = index.getZeroBased();
             if (zeroBased >= lastShownList.size()) {
-                throw new CommandException(
-                        String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+                throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
             }
             toDelete.add(lastShownList.get(zeroBased));
         }
 
-        // Perform deletion
         for (Person person : toDelete) {
             model.deletePerson(person);
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS, toDelete.size()));
+        StringBuilder deletedDetails = new StringBuilder();
+        for (Person p : toDelete) {
+            deletedDetails.append(Messages.format(p)).append("\n");
+        }
+
+        return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                toDelete.size(), deletedDetails.toString().trim()));
     }
 
     @Override
@@ -77,5 +85,11 @@ public class DeleteCommand extends Command {
         return other == this
                 || (other instanceof DeleteCommand
                 && targetIndexes.equals(((DeleteCommand) other).targetIndexes));
+    }
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("targetIndexes", targetIndexes)
+                .toString();
     }
 }
