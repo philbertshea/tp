@@ -19,6 +19,8 @@ public class ExportDataCommandParserTest {
 
     private static final String INVALID_OUTPUT_FILE = "./nonexisitantFile";
     private static final String INVALID_PARENT_DIRECTORY = "./nonexisitantDir/test.csv";
+    private static final String INVALID_WINDOWS_FILE_PATH = "";
+    private static final String INVALID_MAC_FILE_PATH = "";
     private ExportDataCommandParser parser = new ExportDataCommandParser();
 
     @Test
@@ -44,7 +46,7 @@ public class ExportDataCommandParserTest {
         assertParseFailure(parser, userInput, expectedMessage);
     }
 
-    //TODO: Parent Directory not exist failure
+    //Parent Directory not exist failure
     @Test
     public void parse_nonExistentParentDir_failure() {
         String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_PARENT_DIRECTORY;
@@ -53,10 +55,15 @@ public class ExportDataCommandParserTest {
         assertParseFailure(parser, userInput, expectedMessage);
     }
 
-    //TODO: Missing file
+    //Tests Missing file
     @Test
     public void parse_invalidFile_failure() {
         String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_OUTPUT_FILE;
         assertParseFailure(parser, userInput, MESSAGE_MISSING_FILE);
+    }
+
+    @Test
+    public void parse_invalidPath_failure() {
+        String userInput = " " + PREFIX_FILE_PATH + " " +
     }
 }
