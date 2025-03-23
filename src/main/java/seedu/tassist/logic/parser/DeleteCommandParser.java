@@ -5,7 +5,6 @@ import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 
-
 import java.util.List;
 
 import seedu.tassist.commons.core.index.Index;
@@ -14,7 +13,7 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**
  * Parses user input to create a {@link DeleteCommand}.
- * Expected format: del -i (1-based integer).
+ * Expected format: del -i [index],[index],[range]...
  */
 public class DeleteCommandParser implements Parser<DeleteCommand> {
 
@@ -47,10 +46,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         try {
             List<Index> targetIndexes = ParserUtil.parseMultipleIndexes(rawIndexes);
-
             return new DeleteCommand(targetIndexes);
-
-        } catch (NumberFormatException e) {
+        } catch (ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), e);
         }
     }
