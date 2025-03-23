@@ -31,7 +31,7 @@ public class ExportDataCommand extends Command {
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
     public static final String INVALID_FILENAME_ERROR = "Invalid filename: %s\n"
             + "File name should only contain alphanumeric characters, dashes, or underscores.";
-
+    public static final String FILE_SAVE_ERROR = "Failed to save file: %s";
     private final Path filePath;
 
     /**
@@ -54,7 +54,7 @@ public class ExportDataCommand extends Command {
             saveAddressBook(model.getAddressBook(), filePath, extension);
             return new CommandResult(String.format(MESSAGE_SUCCESS, this.filePath));
         } catch (IOException | IllegalArgumentException e) {
-            throw new CommandException("Failed to save file: " + e.getMessage(), e);
+            throw new CommandException(String.format(FILE_SAVE_ERROR, e.getMessage()), e);
         }
     }
 
@@ -86,7 +86,7 @@ public class ExportDataCommand extends Command {
             new CsvAddressBookStorage(filePath).saveAddressBook(addressBook);
             break;
         default:
-            throw new IllegalArgumentException("Unsupported file extension: " + extension);
+            throw new IllegalArgumentException(String.format(INVALID_ARGUMENT_EXTENSION, extension));
         }
     }
 }
