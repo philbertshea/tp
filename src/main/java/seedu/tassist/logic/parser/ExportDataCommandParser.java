@@ -22,9 +22,7 @@ public class ExportDataCommandParser implements Parser<ExportDataCommand> {
     public static final String MESSAGE_INVALID_PARENT_DIR = "Parent directory does not exist: %s";
     public static final String MESSAGE_MISSING_FILE = "File path does not end with a file!";
     private static final String MESSAGE_INVALID_PATH = "Invalid path provided!";
-//    public static final String INVALID_FILENAME_ERROR = "Invalid filename: %s\n"
-//            + "File name should only contain alphanumeric characters, dashes, or underscores.";
-
+    
     /**
      * Parses the given {@code String} of arguments in the context of the ExportDataCommand
      * and returns an ExportDataCommand object for execution.
