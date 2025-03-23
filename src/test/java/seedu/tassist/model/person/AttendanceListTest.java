@@ -101,7 +101,7 @@ public class AttendanceListTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         // Same AttendanceList instance -> returns true.
         assertTrue(attendanceList.equals(attendanceList));
 

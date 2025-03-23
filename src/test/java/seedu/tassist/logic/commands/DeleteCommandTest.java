@@ -93,7 +93,7 @@ public class DeleteCommandTest {
                 String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
     }
     @Test
-    public void equalsMethod() {
+    public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_PERSON);
         DeleteCommand deleteSecondCommand = new DeleteCommand(INDEX_SECOND_PERSON);
 

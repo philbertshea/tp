@@ -52,7 +52,7 @@ public class RemarkTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         Remark remark = new Remark("Hello");
 
         // Same object -> returns true.

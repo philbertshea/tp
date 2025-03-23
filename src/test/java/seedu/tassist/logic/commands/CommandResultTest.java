@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class CommandResultTest {
     @Test
-    public void equalsMethod() {
+    public void equals() {
         CommandResult commandResult = new CommandResult("feedback");
 
         // Same values -> returns true.

@@ -50,7 +50,7 @@ public class PhoneTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         Phone phone = new Phone("999");
 
         // Same values -> returns true.

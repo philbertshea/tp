@@ -55,7 +55,7 @@ public class LabGroupTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         LabGroup labGroup = new LabGroup("b3");
         LabGroup sameLabGroupOne = new LabGroup("b03");
         LabGroup sameLabGroupTwo = new LabGroup("B3");

@@ -71,7 +71,7 @@ public class SearchCommandTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         SearchCommand searchAlice = new SearchCommand(
                 new PersonMatchesPredicate("Alice", null, null, null, null, null)
         );

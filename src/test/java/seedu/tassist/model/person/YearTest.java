@@ -53,7 +53,7 @@ public class YearTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         Year year = new Year("3");
 
         // Same object -> returns true.

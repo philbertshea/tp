@@ -55,7 +55,7 @@ public class TutGroupTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         TutGroup tutGroup = new TutGroup("t3");
         TutGroup sameTutGroupOne = new TutGroup("t03");
         TutGroup sameTutGroupTwo = new TutGroup("T3");

@@ -38,7 +38,7 @@ public class MatNumTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         MatNum matNum = new MatNum("A0123456J");
         MatNum sameMaNum = new MatNum("A0123456");
 

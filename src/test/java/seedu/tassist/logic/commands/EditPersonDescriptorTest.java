@@ -25,7 +25,7 @@ import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 public class EditPersonDescriptorTest {
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         // Same values -> returns true.
         EditPersonDescriptor descriptorWithSameValues = new EditPersonDescriptor(DESC_AMY);
         assertTrue(DESC_AMY.equals(descriptorWithSameValues));

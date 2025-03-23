@@ -52,7 +52,7 @@ public class TeleHandleTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         TeleHandle teleHandle = new TeleHandle("@peter");
 
         // Same values -> returns true.

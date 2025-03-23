@@ -328,7 +328,7 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         final MarkAttendanceCommand standardCommand =
                 new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
 

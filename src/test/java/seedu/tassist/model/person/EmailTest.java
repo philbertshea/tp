@@ -67,7 +67,7 @@ public class EmailTest {
     }
 
     @Test
-    public void equalsMethod() {
+    public void equals() {
         Email email = new Email("valid@email");
 
         // Same values -> returns true.
