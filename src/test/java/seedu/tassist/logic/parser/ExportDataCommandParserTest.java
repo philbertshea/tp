@@ -46,18 +46,18 @@ public class ExportDataCommandParserTest {
         assertParseFailure(parser, userInput, expectedMessage);
     }
 
-    //Parent Directory not exist failure
     @Test
     public void parse_nonExistentParentDir_failure() {
+        // Parent Directory not exists -> failure.
         String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_PARENT_DIRECTORY;
         Path path = Paths.get(INVALID_PARENT_DIRECTORY);
         String expectedMessage = String.format(MESSAGE_INVALID_PARENT_DIR, path.getParent());
         assertParseFailure(parser, userInput, expectedMessage);
     }
 
-    //Tests Missing file
     @Test
     public void parse_invalidFile_failure() {
+        // Missing file -> failure.
         String userInput = " " + PREFIX_FILE_PATH + " " + INVALID_OUTPUT_FILE;
         assertParseFailure(parser, userInput, MESSAGE_MISSING_FILE);
     }

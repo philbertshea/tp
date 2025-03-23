@@ -62,7 +62,7 @@ public class FacultyTest {
         // Different types -> returns false.
         assertFalse(faculty.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(faculty.equals(null));
 
         // Different Faculty -> returns false.

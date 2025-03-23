@@ -51,23 +51,23 @@ public class ExportDataCommandTest {
     public void equals() {
         final ExportDataCommand exportDataCommand = new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_CSV));
 
-        // same values -> returns true
+        // Same values -> returns true.
         ExportDataCommand exportDataCommandTester = new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_CSV));
         assertTrue(exportDataCommand.equals(exportDataCommandTester));
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(exportDataCommand.equals(exportDataCommand));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(exportDataCommand.equals(null));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(exportDataCommand.equals(new ClearCommand()));
 
-        // different file names -> false
+        // Different file names -> returns false.
         assertFalse(exportDataCommand.equals(new ExportDataCommand(Paths.get("./data/anotherName.csv"))));
 
-        // different file extensions -> false
+        // Different file extensions -> returns false.
         assertFalse(exportDataCommand.equals(new ExportDataCommand(Paths.get(VALID_EXPORT_FILE_PATH_JSON))));
     }
 }
