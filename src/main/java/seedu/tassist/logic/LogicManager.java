@@ -74,6 +74,7 @@ public class LogicManager implements Logic {
      * @param filePath The path to the CSV file to be loaded.
      * @throws IOException If an error occurs while reading the CSV file.
      */
+    @Override
     public void loadCsv(Path filePath) throws IOException {
         try {
             Optional<ReadOnlyAddressBook> addressBookOptional = storage
@@ -99,6 +100,7 @@ public class LogicManager implements Logic {
      * @param filePath The path to the Json file to be loaded.
      * @throws IOException If an error occurs while reading the CSV file.
      */
+    @Override
     public void loadJson(Path filePath) throws IOException {
         try {
             Optional<ReadOnlyAddressBook> addressBookOptional = storage

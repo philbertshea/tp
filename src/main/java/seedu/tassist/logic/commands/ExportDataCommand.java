@@ -29,8 +29,7 @@ public class ExportDataCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Exported data to file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
-    public static final String INVALID_FILENAME_ERROR = "Invalid filename: %s\n"
-            + "File name should only contain alphanumeric characters, dashes, or underscores.";
+
     public static final String FILE_SAVE_ERROR = "Failed to save file: %s";
     private final Path filePath;
 

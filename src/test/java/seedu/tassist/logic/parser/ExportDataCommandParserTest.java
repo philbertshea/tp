@@ -1,7 +1,5 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_OUTPUT_FILE;
-import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PARENT_DIRECTORY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_CSV;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EXPORT_FILE_PATH_JSON;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
@@ -18,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import seedu.tassist.logic.commands.ExportDataCommand;
 
 public class ExportDataCommandParserTest {
+
+    private static final String INVALID_OUTPUT_FILE = "./nonexisitantFile";
+    private static final String INVALID_PARENT_DIRECTORY = "./nonexisitantDir/test.csv";
     private ExportDataCommandParser parser = new ExportDataCommandParser();
 
     @Test
