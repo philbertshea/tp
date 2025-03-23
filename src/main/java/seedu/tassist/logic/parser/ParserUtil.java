@@ -280,52 +280,109 @@ public class ParserUtil {
                 .toList();
     }
 
+    /**
+     * Parses an input string representing a list of indexes (e.g. "1, 2, 4-6")
+     * into a sorted, de-duplicated list of {@link Index} objects.
+     *
+     * @param input The raw string containing index specifications.
+     * @return A list of {@link Index} parsed from the input, in sorted order and without duplicates.
+     * @throws ParseException If any part of the input is invalid.
+     */
     public static List<Index> parseMultipleIndexes(String input) throws ParseException {
+        requireNonNull(input);
         String trimmedInput = input.trim();
         if (trimmedInput.isEmpty()) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
 
-        List<Index> indexList = new ArrayList<>();
+        Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
+        return convertIntegersToIndexes(indexSet);
+    }
+
+    /**
+     * Parses the input string into a set of unique, sorted integers.
+     * Supports both individual indexes (e.g. "2") and ranges (e.g. "3-5").
+     *
+     * @param input The trimmed input string.
+     * @return A sorted set of unique one-based indexes.
+     * @throws ParseException If the input format is invalid.
+     */
+    private static Set<Integer> parseToSortedUniqueIntegers(String input) throws ParseException {
         Set<Integer> indexSet = new TreeSet<>();
+        String[] parts = input.split(",");
+
+        for (String part : parts) {
+            part = part.trim();
+            if (part.contains("-")) {
+                parseRange(part, indexSet);
+            } else {
+                parseSingleIndex(part, indexSet);
+            }
+        }
+
+        return indexSet;
+    }
+
+    /**
+     * Parses a string representing a range (e.g. "2-4") and adds the integers
+     * to the provided set.
+     *
+     * @param rangeStr The range string (must be in "start-end" format).
+     * @param indexSet The set to populate with parsed integers.
+     * @throws ParseException If the range is invalid or not properly formatted.
+     */
+    private static void parseRange(String rangeStr, Set<Integer> indexSet) throws ParseException {
+        String[] range = rangeStr.split("-");
+        if (range.length != 2) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
 
         try {
-            String[] parts = trimmedInput.split(",");
-            for (String part : parts) {
-                part = part.trim();
-                if (part.contains("-")) {
-                    String[] range = part.split("-");
-                    if (range.length != 2) {
-                        throw new ParseException(MESSAGE_INVALID_INDEX);
-                    }
+            int start = Integer.parseInt(range[0].trim());
+            int end = Integer.parseInt(range[1].trim());
 
-                    int start = Integer.parseInt(range[0].trim());
-                    int end = Integer.parseInt(range[1].trim());
-                    if (start <= 0 || end <= 0 || start > end) {
-                        throw new ParseException(MESSAGE_INVALID_INDEX);
-                    }
-
-                    for (int i = start; i <= end; i++) {
-                        indexSet.add(i);
-                    }
-                } else {
-                    int value = Integer.parseInt(part);
-                    if (value <= 0) {
-                        throw new ParseException(MESSAGE_INVALID_INDEX);
-                    }
-                    indexSet.add(value);
-                }
+            if (start <= 0 || end <= 0 || start > end) {
+                throw new ParseException(MESSAGE_INVALID_INDEX);
             }
 
-            for (int i : indexSet) {
-                indexList.add(Index.fromOneBased(i));
+            for (int i = start; i <= end; i++) {
+                indexSet.add(i);
             }
-
         } catch (NumberFormatException e) {
             throw new ParseException(MESSAGE_INVALID_INDEX, e);
         }
-
-        return indexList;
     }
 
+    /**
+     * Parses a single integer token representing an index (e.g. "3") and adds it to the provided set.
+     *
+     * @param token The string token to parse.
+     * @param indexSet The set to populate with the parsed integer.
+     * @throws ParseException If the token is not a valid positive integer.
+     */
+    private static void parseSingleIndex(String token, Set<Integer> indexSet) throws ParseException {
+        try {
+            int value = Integer.parseInt(token);
+            if (value <= 0) {
+                throw new ParseException(MESSAGE_INVALID_INDEX);
+            }
+            indexSet.add(value);
+        } catch (NumberFormatException e) {
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+        }
+    }
+
+    /**
+     * Converts a set of integers into a list of {@link Index} objects.
+     *
+     * @param intIndexes A set of valid one-based integers.
+     * @return A list of corresponding {@link Index} instances.
+     */
+    private static List<Index> convertIntegersToIndexes(Set<Integer> intIndexes) {
+        List<Index> indexList = new ArrayList<>();
+        for (int i : intIndexes) {
+            indexList.add(Index.fromOneBased(i));
+        }
+        return indexList;
+    }
 }
