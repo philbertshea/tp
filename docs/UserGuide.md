@@ -175,13 +175,20 @@ Examples:
 
 ### Deleting a person : `del`
 
-Deletes the specified person from the address book.
+Deletes the specified person(s) from the address book. 
+Supports single, multiple, and range index inputs.
 
-Format: `del -i INDEX`
+Format: `del -i INDEX[,INDEX or RANGE...]`
 
-* Deletes the person at the specified `INDEX`.
+* Deletes the person at the specified `INDEX(ES)`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+
+Accepts:
+* Single index: 1
+* Multiple indexes: 1,3,5
+* Range of indexes: 2-4
+* Mixed input: 1,3-5,7
 
 Examples:
 * `list` followed by `del -i 2` deletes the 2nd person in the address book.
@@ -240,7 +247,7 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `del -i INDEX[,INDEX or RANGE...]`<br> e.g., `del -i 1,3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
