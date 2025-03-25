@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.ToStringBuilder;
-import seedu.tassist.logic.Messages;
 import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
