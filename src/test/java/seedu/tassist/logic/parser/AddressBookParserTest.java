@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.ClearCommand;
 import seedu.tassist.logic.commands.DeleteCommand;
@@ -52,8 +53,10 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " -i " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+                DeleteCommand.COMMAND_WORD + " -i 1,3-4");
+
+        List<Index> expectedIndexes = ParserUtil.parseMultipleIndexes("1,3-4");
+        assertEquals(new DeleteCommand(expectedIndexes), command);
     }
 
     @Test
