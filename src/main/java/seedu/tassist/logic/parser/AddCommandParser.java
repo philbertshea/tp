@@ -38,7 +38,6 @@ import seedu.tassist.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object.
  */
 public class AddCommandParser implements Parser<AddCommand> {
-
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -63,10 +62,11 @@ public class AddCommandParser implements Parser<AddCommand> {
                     AddCommand.MESSAGE_USAGE));
         }
 
-        // todo: change in future to allow for duplicate fields.
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE,
-                PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
-                PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(PREFIX_NAME, PREFIX_PHONE,
+                PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_TUT_GROUP,
+                PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_PHONE, PREFIX_TELE_HANDLE);
+        argMultimap.verifyOneNonEmptyFor(PREFIX_TUT_GROUP, PREFIX_LAB_GROUP);
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(""));
@@ -84,8 +84,13 @@ public class AddCommandParser implements Parser<AddCommand> {
         Remark remark = ParserUtil.parseRemark(
                 argMultimap.getValue(PREFIX_REMARK).orElse(""));
 
-        AttendanceList attendanceList =
-                AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        AttendanceList attendanceList = AttendanceList.EMPTY_ATTENDANCE_LIST;
+
+        if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()) {
+            attendanceList =
+                    AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING);
+        }
+
         LabScoreList labScoreList = new LabScoreList();
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 

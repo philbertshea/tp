@@ -86,10 +86,10 @@ public class ParserUtilTest {
 
     @Test
     public void parseIndex_validInput_success() throws Exception {
-        // No whitespaces
+        // No whitespaces.
         assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
 
-        // Leading and trailing whitespaces
+        // Leading and trailing whitespaces.
         assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("  1  "));
     }
 
@@ -367,7 +367,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseWeek_validInput_success() throws Exception {
-        // No whitespaces
+        // No whitespaces.
         assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
     }
 

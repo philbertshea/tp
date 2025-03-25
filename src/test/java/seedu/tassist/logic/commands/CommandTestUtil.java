@@ -66,9 +66,8 @@ public class CommandTestUtil {
     public static final int VALID_LAB_SCORE_B = 30;
     public static final int DEFAULT_LAB_SCORE_COUNT = 4;
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
-    public static final String VALID_FILE_NAME = "tassist_data";
-    public static final String VALID_FILE_EXTENSION_CSV = "csv";
-    public static final String VALID_FILE_EXTENSION_JSON = "json";
+    public static final String VALID_EXPORT_FILE_PATH_CSV = "./data/tassist_data.csv";
+    public static final String VALID_EXPORT_FILE_PATH_JSON = "./data/tassist_data.json";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + " " + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + " " + VALID_NAME_BOB;
@@ -161,8 +160,8 @@ public class CommandTestUtil {
      * - the address book, filtered person list and selected person in {@code actualModel} remain unchanged
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
-        // we are unable to defensively copy the model for comparison later, so we can
-        // only do so by copying its components.
+        // We are unable to defensively copy the model for comparison later,
+        // So we can only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
         List<Person> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
 

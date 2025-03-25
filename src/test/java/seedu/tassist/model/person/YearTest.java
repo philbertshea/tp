@@ -66,7 +66,7 @@ public class YearTest {
         // Different types -> returns false.
         assertFalse(year.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(year.equals(null));
 
         // Different Year -> returns false.

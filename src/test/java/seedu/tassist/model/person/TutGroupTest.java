@@ -74,7 +74,7 @@ public class TutGroupTest {
         // Different types -> returns false.
         assertFalse(tutGroup.equals(2.0f));
 
-        // null -> returns false.
+        // Null -> returns false.
         assertFalse(tutGroup.equals(null));
 
         // Different TutGroup -> returns false.
