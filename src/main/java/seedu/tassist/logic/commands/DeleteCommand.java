@@ -80,7 +80,7 @@ public class DeleteCommand extends Command {
     /**
      * Generates a short summary of deleted students.
      */
-    private String getDeletedStudentsSummary(List<Person> students) {
+    public static String getDeletedStudentsSummary(List<Person> students) {
         StringBuilder sb = new StringBuilder();
         for (Person p : students) {
             sb.append(String.format("%s (%s) - %s, %s\n",
