@@ -4,11 +4,12 @@ import javafx.collections.ObservableList;
 import seedu.tassist.model.person.Person;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Snapshot {
     String commandString;
     Operations.CommandType commandType;
-    Person person;
+    ArrayList<Person> people = new ArrayList<>();
 
     //public final ReadOnlyAddressBook addressBook;
 
@@ -17,10 +18,15 @@ public class Snapshot {
         this.commandType = commandType;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPerson(Person... people) {
+        for (Person person : people) {
+            this.people.add(person);
+        }
     }
 
+    public Person getPerson() {
+        return people.get(0);
+    }
 //    public void setAddressBook(ReadOnlyAddressBook addressBook) {
 //        this.addressBook = addressBook;
 //    }

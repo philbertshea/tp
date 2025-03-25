@@ -1,7 +1,11 @@
 package seedu.tassist.model;
 
-import seedu.tassist.logic.Messages;
+import javafx.collections.ObservableList;
+
+import seedu.tassist.logic.commands.UndoCommand;
+import seedu.tassist.logic.commands.RedoCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
+import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.Person;
 
 import java.util.ArrayList;
@@ -13,21 +17,33 @@ public class Operations {
 
 
     public enum CommandType {ADD, EDIT, DELETE, CLEAR, ATTENDANCE, LABSCORE, IGNORED, UNDO, REDO}
-    public static Model model;
+    public static Model model = null;
     private static ArrayList<Snapshot> pastStates = new ArrayList<>();
     private static ArrayList<Snapshot> futureStates = new ArrayList<>();
-    private static Snapshot currentState;
+    private static Snapshot currentState = null;
 
     private static String ERROR_MESSAGE = "You have reached the limit of %s";
+    private static String EMPTY_ERROR_MESSAGE = "There is nothing to %s.";
     public static final String COMMAND_IGNORED = "%1$s was the last command, no changes has occurred";
-    public static void recordCurrentCommand(CommandType commandType) {
-//        System.out.println("entered");
-//        System.out.println(currentState.commandString);
+    private static boolean isRecorded = false;
+    public static void recordCurrentCommand(CommandType commandType) throws ParseException {
+        if(currentState == null || pastStates.isEmpty() && futureStates.isEmpty()) {
+            throw new ParseException(String.format(EMPTY_ERROR_MESSAGE, commandType.toString().toLowerCase()));
+        }
+
         Snapshot snapshot = new Snapshot(currentState.commandString, currentState.commandType);
         //snapshot.setAddressBook(model.getAddressBook());
-        Person person =  model.getAddressBook().getPersonList().get(currentState.getIndex());
-        snapshot.setPerson(person);
+        if (currentState.commandType == CommandType.EDIT || currentState.commandType == CommandType.DELETE ||
+                currentState.commandType == CommandType.LABSCORE || currentState.commandType == CommandType.ATTENDANCE) {
+            Person person =  model.getAddressBook().getPersonList().get(currentState.getIndex());
+            snapshot.setPerson(person);
+        }
 
+        if (currentState.commandType == CommandType.ADD) {
+            snapshot.commandType = CommandType.DELETE;
+            Person person =  model.getAddressBook().getPersonList().get(model.getAddressBook().getPersonList().size() - 1);
+            snapshot.setPerson(person);
+        }
 
         if (commandType == CommandType.UNDO) {
             futureStates.add(snapshot);
@@ -37,36 +53,60 @@ public class Operations {
     }
 
     public static void recordCurrentCommand(String command, CommandType commandType){
-        Snapshot snapshot = new Snapshot(command, commandType);
-        currentState = snapshot;
-        System.out.println("somehow running");
-        System.out.println(currentState);
+        if(model == null) return;
+        currentState = new Snapshot(command, commandType);
+        System.out.println("recording");
+        //System.out.println(model.getAddressBook().getPersonList().get(0).getLabScoreList());
 
-        System.out.println(model.getAddressBook().getPersonList().get(0).getLabScoreList());
+        //get list and command type
         CommandType currentType = currentState.commandType;
+        ObservableList<Person> personList = model.getAddressBook().getPersonList();
         System.out.println(currentType);
-        System.out.println(currentState.getIndex());
-        if (currentState.getIndex() == -1) return;
-        //System.out.println(currentType == CommandType.CLEAR);
+        //temp guard for commands not supported
+        if (currentState.getIndex() != -1) saveIndexCommand(personList);
+//        System.out.println(currentState.getIndex());
+
+
         if (currentType == CommandType.CLEAR) {
             //save person list
-            //currentState.setAddressBook(model.getAddressBook());
-        } else if (currentType == CommandType.EDIT || currentType == CommandType.DELETE ||
-                currentType == CommandType.LABSCORE || currentType == CommandType.ATTENDANCE ||
-                currentType == CommandType.UNDO || currentType == CommandType.REDO) {
-            //save person involved
-            //currentState.setAddressBook(model.getAddressBook());
-            Person person =  model.getAddressBook().getPersonList().get(currentState.getIndex());
-            currentState.setPerson(person);
+            currentState.setPerson(personList.toArray(new Person[0]));
         }
 
-        System.out.println(currentState.person.getLabScoreList());
-
         pastStates.add(currentState);
-        //if current command is not redo/undo, clear the future states
-        //Branching timeline
-        //futureStates.clear();
+
+        //New branch in timeline, clear future states
+        if (!futureStates.isEmpty()) {
+            futureStates.clear();
+        }
+
+        isRecorded = true;
     }
+
+    public static void saveIndexCommand(ObservableList<Person> personList) {
+//        else if (currentType == CommandType.EDIT || currentType == CommandType.DELETE ||
+//                currentType == CommandType.LABSCORE || currentType == CommandType.ATTENDANCE) {
+//
+//        }
+        //save person involved
+        Person editedPerson = personList.get(currentState.getIndex());
+        currentState.setPerson(editedPerson);
+    }
+
+    public static void resetRecording() {
+        isRecorded = false;
+    }
+
+    public static void removeRecording() {
+        System.out.println(pastStates.size());
+        if (!isRecorded) {
+            return;
+        }
+        pastStates.remove(pastStates.size() - 1);
+        System.out.println(pastStates.size());
+        isRecorded = false;
+    }
+
+
 
     public static void update(Model modelUpdate){
         model = modelUpdate;
@@ -79,12 +119,13 @@ public class Operations {
         }
         //Update timeline
         currentState =  pastStates.remove(pastStates.size() - 1);
-        //futureStates.add(currentState);
         System.out.println("before undo");
-        System.out.println(currentState.person.getLabScoreList());
+        //System.out.println(currentState.getPerson().getLabScoreList());
         runCommand(model, currentState);
-        System.out.println(currentState);
-        return currentState.commandType.toString();
+        if (currentState.commandType == CommandType.IGNORED) {
+            return String.format(COMMAND_IGNORED, currentState.commandType.toString());
+        }
+        return String.format(UndoCommand.MESSAGE_UNDO_SUCCESS, currentState.commandType.toString());
     }
 
     public static String redo(Model model) throws CommandException{
@@ -95,15 +136,17 @@ public class Operations {
         //Update timeline
         currentState =  futureStates.remove(futureStates.size() - 1);
         System.out.println("before redo" + futureStates.size());
-        System.out.println(currentState.person.getLabScoreList());
-        //recordCurrentCommand(currentState.commandString, currentState.commandType);
-        //pastStates.add(currentState);
+        System.out.println(currentState.getPerson().getLabScoreList());
+
         runCommand(model, currentState);
-        return currentState.commandType.toString();
+        if (currentState.commandType == CommandType.IGNORED) {
+            return String.format(COMMAND_IGNORED, currentState.commandType.toString());
+        }
+        return String.format(RedoCommand.MESSAGE_REDO_SUCCESS, currentState.commandType.toString());
     }
 
     public static void runCommand(Model model, Snapshot currentState) {
-        System.out.println("param" + currentState.person.getLabScoreList());
+        //System.out.println("param" + currentState.getPerson().getLabScoreList());
         //System.out.println(currentState.addressBook.getPersonList().get(0).getLabScoreList());
         CommandType currentCommand = currentState.commandType;
 
@@ -114,19 +157,21 @@ public class Operations {
             Person personToUpdate = lastShownList.get(currentState.getIndex());
 
             //currentState.extractPerson();
-            Person updatedPerson = currentState.person;
+            Person updatedPerson = currentState.getPerson();
             model.setPerson(personToUpdate, updatedPerson);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         } else if (currentCommand == CommandType.DELETE) {
             //for delete, add back the person
+            System.out.println("delete");
             ArrayList<Person> addAll = new ArrayList<>();
-            addAll.add(currentState.person);
-            for (int i = currentState.getIndex() + 1; i < model.getFilteredPersonList().size(); i++) {
-                addAll.add(model.getFilteredPersonList().get(i));
-            }
+            addAll.add(currentState.getPerson());
+//            for (int i = currentState.getIndex() + 1; i < model.getFilteredPersonList().size(); i++) {
+//                addAll.add(model.getFilteredPersonList().get(i));
+//            }
             model.getFilteredPersonList().setAll(addAll);
         } else if (currentCommand == CommandType.ADD) {
             //for add, delete the newly added person
+            System.out.println(model.getFilteredPersonList().toString());
             Person personToDelete = model.getFilteredPersonList().get(model.getFilteredPersonList().size() - 1);
             model.deletePerson(personToDelete);
         } else if (currentCommand == CommandType.CLEAR) {
@@ -135,8 +180,7 @@ public class Operations {
         } else {
             //for ignored, show the message string
         }
-        System.out.println("finish undo");
+        System.out.println("finish");
         System.out.println(model.getAddressBook().getPersonList().get(0).getLabScoreList());
-        //recordCurrentCommand(currentState.commandString, currentState.commandType);
     }
 }
