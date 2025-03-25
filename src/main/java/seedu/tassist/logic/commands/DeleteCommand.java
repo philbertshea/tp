@@ -71,7 +71,7 @@ public class DeleteCommand extends Command {
             model.deletePerson(person);
         }
 
-         String deletedStudentsSummary = getDeletedStudentsSummary(toDelete);
+        String deletedStudentsSummary = getDeletedStudentsSummary(toDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
                 toDelete.size(), deletedStudentsSummary));
 
