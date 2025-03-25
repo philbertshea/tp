@@ -28,7 +28,7 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " -i  1-3, 5, 7";
 
     public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
-            + "\nDeleted Students:\n%s";
+            + "\nDeleted Student(s):\n%s";
     public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
             + " You currently have %d records!";
 
@@ -71,13 +71,25 @@ public class DeleteCommand extends Command {
             model.deletePerson(person);
         }
 
-        StringBuilder deletedDetails = new StringBuilder();
-        for (Person p : toDelete) {
-            deletedDetails.append(Messages.format(p)).append("\n");
-        }
-
+         String deletedStudentsSummary = getDeletedStudentsSummary(toDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
-                toDelete.size(), deletedDetails.toString().trim()));
+                toDelete.size(), deletedStudentsSummary));
+
+    }
+
+    /**
+     * Generates a short summary of deleted students.
+     */
+    private String getDeletedStudentsSummary(List<Person> students) {
+        StringBuilder sb = new StringBuilder();
+        for (Person p : students) {
+            sb.append(String.format("%s (%s) - %s, %s\n",
+                    p.getName().fullName,
+                    p.getMatNum().value,
+                    p.getTutGroup().value,
+                    p.getLabGroup().value));
+        }
+        return sb.toString().trim();
     }
 
     @Override
