@@ -10,7 +10,6 @@ import java.util.TreeSet;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.ToStringBuilder;
-import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.Person;
