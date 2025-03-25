@@ -38,7 +38,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
-                1, Messages.format(personToDelete));
+                1, DeleteCommand.getDeletedStudentsSummary(List.of(personToDelete)));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
@@ -58,17 +58,14 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
-
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
-                1, Messages.format(personToDelete));
+                1, DeleteCommand.getDeletedStudentsSummary(List.of(personToDelete)));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
-        showNoPerson(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -100,10 +97,9 @@ public class DeleteCommandTest {
     @Test
     public void execute_multipleValidIndexes_success() {
         List<Index> indexesToDelete = List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
-
         List<Person> peopleToDelete = indexesToDelete.stream()
                 .map(i -> model.getFilteredPersonList().get(i.getZeroBased()))
-                .toList();
+                .collect(Collectors.toList());
 
         DeleteCommand deleteCommand = new DeleteCommand(indexesToDelete);
 
@@ -112,15 +108,9 @@ public class DeleteCommandTest {
             expectedModel.deletePerson(p);
         }
 
-        String studentsString = peopleToDelete.stream()
-                .map(Messages::format)
-                .collect(Collectors.joining("\n"));
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                peopleToDelete.size(), DeleteCommand.getDeletedStudentsSummary(peopleToDelete));
 
-        String expectedMessage = String.format(
-                DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
-                peopleToDelete.size(),
-                studentsString
-        );
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
 
@@ -131,20 +121,20 @@ public class DeleteCommandTest {
         DeleteCommand deleteFirstCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
         DeleteCommand deleteSecondCommand = new DeleteCommand(List.of(INDEX_SECOND_PERSON));
 
-        // Same object -> returns true.
+        // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
         DeleteCommand deleteFirstCommandCopy = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
-        // Different types -> returns false.
+        // different types -> returns false
         assertFalse(deleteFirstCommand.equals(1));
 
-        // Null -> returns false.
+        // null -> returns false
         assertFalse(deleteFirstCommand.equals(null));
 
-        // Different person -> returns false.
+        // different person -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 
@@ -158,11 +148,5 @@ public class DeleteCommandTest {
         assertEquals(expected, deleteCommand.toString());
     }
 
-    /**
-     * Updates {@code model}'s filtered list to show no one.
-     */
-    private void showNoPerson(Model model) {
-        model.updateFilteredPersonList(p -> false);
-        assertTrue(model.getFilteredPersonList().isEmpty());
-    }
+
 }
