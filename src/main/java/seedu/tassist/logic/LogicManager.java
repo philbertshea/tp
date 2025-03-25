@@ -60,9 +60,11 @@ public class LogicManager implements Logic {
         try {
             storage.saveAddressBook(model.getAddressBook());
         } catch (AccessDeniedException e) {
-            throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+            throw new CommandException(String.format(
+                    FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
-            throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+            throw new CommandException(String.format(
+                    FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
 
         return commandResult;
@@ -74,9 +76,11 @@ public class LogicManager implements Logic {
      * @param filePath The path to the CSV file to be loaded.
      * @throws IOException If an error occurs while reading the CSV file.
      */
+    @Override
     public void loadCsv(Path filePath) throws IOException {
         try {
-            Optional<ReadOnlyAddressBook> addressBookOptional = storage.readAddressBookFromCsv(filePath);
+            Optional<ReadOnlyAddressBook> addressBookOptional = storage
+                    .readAddressBookFromCsv(filePath);
             if (addressBookOptional.isPresent()) {
                 model.setAddressBook(new AddressBook(addressBookOptional.get()));
             } else {
@@ -90,6 +94,32 @@ public class LogicManager implements Logic {
     @Override
     public void saveCsv(Path filePath) throws IOException {
         storage.saveAddressBookToCsv(model.getAddressBook(), filePath);
+    }
+
+    /**
+     * Loads an AddressBook from a Json file and updates the model.
+     *
+     * @param filePath The path to the Json file to be loaded.
+     * @throws IOException If an error occurs while reading the CSV file.
+     */
+    @Override
+    public void loadJson(Path filePath) throws IOException {
+        try {
+            Optional<ReadOnlyAddressBook> addressBookOptional = storage
+                    .readAddressBookFromCsv(filePath);
+            if (addressBookOptional.isPresent()) {
+                model.setAddressBook(new AddressBook(addressBookOptional.get()));
+            } else {
+                model.setAddressBook(new AddressBook());
+            }
+        } catch (DataLoadingException e) {
+            throw new IOException("Failed to load CSV data from: " + filePath, e);
+        }
+    }
+
+    @Override
+    public void saveJson(Path filePath) throws IOException {
+        storage.saveAddressBook(model.getAddressBook(), filePath);
     }
 
 

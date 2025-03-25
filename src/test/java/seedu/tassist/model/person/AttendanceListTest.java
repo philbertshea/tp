@@ -7,8 +7,8 @@ import static seedu.tassist.testutil.Assert.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class AttendanceListTest {
-    private final String attendanceString = "2200000000111";
-    private final String attendanceStringDifferent = "2200000002111";
+    private final String attendanceString = "2233000000111";
+    private final String attendanceStringDifferent = "2233000002111";
     private final AttendanceList attendanceList =
             AttendanceList.generateAttendanceList(attendanceString);
     private final AttendanceList attendanceListDuplicate =
@@ -21,20 +21,23 @@ public class AttendanceListTest {
     @Test
     public void isValidAttendanceString() {
 
-        // invalid attendanceString -> returns false
+        // Null -> throws NullPointerException
+        assertThrows(NullPointerException.class, () -> AttendanceList.isValidAttendanceString(null));
+
+        // Invalid attendanceString -> returns false.
         assertFalse(AttendanceList.isValidAttendanceString(""));
         assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("00000 00000000")); // No Spaces
         assertFalse(AttendanceList.isValidAttendanceString("000a*-0000000")); // Invalid Chars
-        assertFalse(AttendanceList.isValidAttendanceString("0120120120123")); // Not within 0, 1 or 2
+        assertFalse(AttendanceList.isValidAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
 
-        // valid attendanceString -> returns true
-        assertTrue(AttendanceList.isValidAttendanceString("0000000000000"));
+        // Valid attendanceString -> returns true.
+        assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
-        assertTrue(AttendanceList.isValidAttendanceString("0120120012012"));
-        assertTrue(AttendanceList.isValidAttendanceString("0012011120011"));
+        assertTrue(AttendanceList.isValidAttendanceString("0120123012012"));
+        assertTrue(AttendanceList.isValidAttendanceString("0012013120011"));
 
     }
 
@@ -50,7 +53,7 @@ public class AttendanceListTest {
 
     @Test
     public void getAttendanceForWeek() {
-        // invalid week -> throws IllegalArgumentException
+        // Invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-10000000));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-1));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(0));
@@ -58,7 +61,7 @@ public class AttendanceListTest {
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(15));
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(10000000));
 
-        // valid week -> returns the correct attendance value
+        // Valid week -> returns the correct attendance value
         for (int i = 1; i <= 13; i++) {
             assertTrue(attendanceList.getAttendanceForWeek(i)
                     == Integer.parseInt(attendanceString.substring(i - 1, i)));
@@ -69,17 +72,17 @@ public class AttendanceListTest {
     @Test
     public void setAttendanceForWeek_invalidWeekOrAttendance_throwsIllegalArgumentException() {
 
-        // invalid week -> throws IllegalArgumentException
+        // Invalid week -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(0, Attendance.ATTENDED));
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(14, Attendance.ATTENDED));
 
-        // invalid attendance -> throws IllegalArgumentException
+        // Invalid attendance -> throws IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(1, -1));
         assertThrows(IllegalArgumentException.class, () ->
-                attendanceList.setAttendanceForWeek(1, 3));
+                attendanceList.setAttendanceForWeek(1, 4));
 
     }
 
@@ -98,14 +101,29 @@ public class AttendanceListTest {
     }
 
     @Test
+    public void isEmpty() {
+        // Empty AttendanceList -> returns true.
+        assertTrue(AttendanceList.EMPTY_ATTENDANCE_LIST.isEmpty());
+
+        // Non-empty AttendanceList -> returns false.
+        assertFalse(attendanceList.isEmpty());
+    }
+
+    @Test
     public void equals() {
-        // same AttendanceList instance -> returns true
+        // Same AttendanceList instance -> returns true.
         assertTrue(attendanceList.equals(attendanceList));
 
-        // same attendanceString -> returns true
+        // Same attendanceString -> returns true.
         assertTrue(attendanceList.equals(attendanceListDuplicate));
 
-        // different attendanceString -> returns false
+        // Null -> returns false.
+        assertFalse(attendanceList.equals(null));
+
+        // Different types -> returns false.
+        assertFalse(attendanceList.equals(5.0f));
+
+        // Different attendanceString -> returns false.
         assertFalse(attendanceList.equals(attendanceListDifferent));
     }
 }

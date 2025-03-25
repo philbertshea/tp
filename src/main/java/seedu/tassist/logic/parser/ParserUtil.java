@@ -1,21 +1,23 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.util.StringUtil;
 import seedu.tassist.logic.parser.exceptions.ParseException;
-import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Email;
 import seedu.tassist.model.person.Faculty;
 import seedu.tassist.model.person.LabGroup;
 import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.MatNum;
 import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
 import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.Remark;
 import seedu.tassist.model.person.TeleHandle;
@@ -29,11 +31,12 @@ import seedu.tassist.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_WEEK = "Week is not an unsigned integer from 1 to 13.";
+    public static final String MESSAGE_INVALID_WEEK =
+            "Week is not an unsigned integer from 1 to 13.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
@@ -186,6 +189,9 @@ public class ParserUtil {
      */
     public static Remark parseRemark(String remark) throws ParseException {
         requireNonNull(remark);
+        if (!Remark.isValidRemark(remark)) {
+            throw new ParseException(Remark.MESSAGE_CONSTRAINTS);
+        }
         return new Remark(remark);
     }
 
@@ -230,19 +236,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code String attendanceString} into an {@code AttendanceList}.
-     *
-     * @throws ParseException if the given {@code week} is invalid.
-     */
-    public static AttendanceList parseAttendanceList(String attendanceString) throws ParseException {
-        requireNonNull(attendanceString);
-        if (!AttendanceList.isValidAttendanceString(attendanceString)) {
-            throw new ParseException(AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
-        }
-        return AttendanceList.generateAttendanceList(attendanceString);
-    }
-
-    /**
      * Parses {@code String labNumber} into an {@code int}.
      *
      * @throws ParseException if the given {@code labNumber} is invalid.
@@ -268,5 +261,20 @@ public class ParserUtil {
             throw new ParseException(LabScoreList.INVALID_LAB_SCORE);
         }
 
+    }
+
+    /**
+     * Returns a filtered list of persons from personList
+     * who are in the given tutorial group.
+     *
+     * @param personList List of persons to filter from.
+     * @param tutGroup TutGroup to match persons against.
+     * @return List of persons from personList with the matching tutGroup.
+     */
+    public static List<Person> getPersonsInTutorialGroup(List<Person> personList, TutGroup tutGroup) {
+        requireAllNonNull(personList, tutGroup);
+        return personList.stream()
+                .filter(person -> person.getTutGroup().equals(tutGroup))
+                .toList();
     }
 }

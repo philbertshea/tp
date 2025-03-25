@@ -37,7 +37,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
    * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -tut T01` : Adds a contact named `John Doe` to TAssist.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `del -i 3` : Deletes the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
 
@@ -122,6 +122,39 @@ Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
+### Marks attendance: `att`
+
+Marks the attendance of an individual student, or a tutorial group.
+
+Format: `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
+
+* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL GROUP`
+  * Not accepted: NEITHER or BOTH FLAGS TOGETHER
+* Mandatory parameter: `-w WEEK`
+  * Not accepted: MISSING week flag
+* Optional parameters: EITHER ONE OF `-mc`, `-u`, OR `-nt`
+  * Not accepted: TWO OR MORE OF THE ABOVE FLAGS
+* Additional restriction: `-nt` CANNOT be together with `-i`.
+
+Assuming the above restrictions are satisfied,
+* Marks the attendance of a student (if `-i INDEX` is provided)
+  OR all students in a tutorial group (if `-t TUTORIAL GROUP` is provided).
+* The new attendance status is ATTENDED by default. However:
+  * If `-mc` is provided, new attendance status is ON MC.
+  * If `-u` is provided, new attendance status is NOT ATTENDED.
+  * If `-nt` is provided, new attendance status is NO TUTORIAL.
+
+Examples:
+* `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
+* `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
+* `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
+  * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
+
+Images used are courtesy of:
+Check Icon: https://www.iconsdb.com/white-icons/checkmark-icon.html
+Cross Icon: https://www.iconsdb.com/white-icons/x-mark-icon.html
+Ban Icon: https://www.iconsdb.com/white-icons/ban-icon.html
+
 ### Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords.
@@ -140,19 +173,19 @@ Examples:
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a person : `delete`
+### Deleting a person : `del`
 
 Deletes the specified person from the address book.
 
-Format: `delete INDEX`
+Format: `del -i INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `list` followed by `del -i 2` deletes the 2nd person in the address book.
+* `find Betsy` followed by `del -i 1` deletes the 1st person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
@@ -209,6 +242,7 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
 **Help**   | `help`

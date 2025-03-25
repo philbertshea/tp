@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
+import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
@@ -72,9 +73,7 @@ public class DeleteCommandTest {
     public void execute_invalidIndexFilteredList_throwsCommandException() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        // Use the second index as an out-of-bound index for the filtered list.
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // Ensure that outOfBoundIndex is in bounds of the full address book.
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
@@ -85,24 +84,33 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_emptyAddressBook_throwsCommandException() {
+
+        Model emptyModel = new ModelManager(new AddressBook(), new UserPrefs());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
+
+        assertCommandFailure(deleteCommand, emptyModel,
+                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
+    }
+    @Test
     public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_PERSON);
         DeleteCommand deleteSecondCommand = new DeleteCommand(INDEX_SECOND_PERSON);
 
-        // same object -> returns true
+        // Same object -> returns true.
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
-        // same values -> returns true
+        // Same values -> returns true.
         DeleteCommand deleteFirstCommandCopy = new DeleteCommand(INDEX_FIRST_PERSON);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
-        // different types -> returns false
+        // Different types -> returns false.
         assertFalse(deleteFirstCommand.equals(1));
 
-        // null -> returns false
+        // Null -> returns false.
         assertFalse(deleteFirstCommand.equals(null));
 
-        // different person -> returns false
+        // Different person -> returns false.
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 
