@@ -1,9 +1,11 @@
 package seedu.tassist.logic.parser;
 
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_ARGUMENTS;
+
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
+
+import java.util.List;
 
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.DeleteCommand;
@@ -11,7 +13,7 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
 
 /**
  * Parses user input to create a {@link DeleteCommand}.
- * Expected format: del -i (1-based integer).
+ * Expected format: del -i [index],[index],[range]...
  */
 public class DeleteCommandParser implements Parser<DeleteCommand> {
 
@@ -36,27 +38,19 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
-        String rawIndex = argMultimap.getValue(PREFIX_INDEX).orElse("").trim();
-        if (rawIndex.isEmpty()) {
+        String rawIndexes = argMultimap.getValue(PREFIX_INDEX).orElse("").trim();
+        if (rawIndexes.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
         }
-        String[] tokens = rawIndex.split("\\s+");
-        if (tokens.length > 1) {
-            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
-        }
-        String indexStr = tokens[0];
-        if (!indexStr.matches("\\d+")) {
-            // non-numeric => "invalid arguments!"
-            throw new ParseException(String.format(MESSAGE_INVALID_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
-        }
+
 
         try {
-            int value = Integer.parseInt(indexStr);
-            Index index = Index.fromOneBased(value);
-            return new DeleteCommand(index);
-
-        } catch (NumberFormatException e) {
+            List<Index> targetIndexes = ParserUtil.parseMultipleIndexes(rawIndexes);
+            return new DeleteCommand(targetIndexes);
+        } catch (ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), e);
         }
     }
+
+
 }
