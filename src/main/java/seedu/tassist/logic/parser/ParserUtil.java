@@ -301,12 +301,34 @@ public class ParserUtil {
         return convertIntegersToIndexes(indexSet);
     }
 
+    /**
+     * Parses an input string representing a list of TutGroups ("T01,T02", "T02-T05")
+     * and returns a sorted, de-duplicated list of {@link TutGroup} objects.
+     *
+     * @param input Input string provided.
+     * @return List of TutGroups parsed from the list.
+     * @throws ParseException If the input is invalid.
+     */
     public static List<TutGroup> parseMultipleTutGroups(String input) throws ParseException {
         requireNonNull(input);
-        String trimmedInput = input.trim().replaceAll("T0", "").replace("T", "");
-        Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
+        }
 
-        return convertIntegersToTutGroups(indexSet);
+        Set<TutGroup> tutGroupSet = new TreeSet<>();
+        String[] parts = input.split(",");
+
+        for (String part : parts) {
+            part = part.trim();
+            if (part.contains("-")) {
+                parseTutGroupRange(part, tutGroupSet);
+            } else {
+                tutGroupSet.add(parseTutGroup(part));
+            }
+        }
+
+        return tutGroupSet.stream().toList();
     }
 
     /**
@@ -334,31 +356,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses the input string into a set of unique, sorted integers.
-     * Supports both individual indexes (e.g. "2") and ranges (e.g. "3-5").
-     *
-     * @param input The trimmed input string.
-     * @return A sorted set of unique one-based indexes.
-     * @throws ParseException If the input format is invalid.
-     */
-    private static Set<TutGroup> parseToSortedUniqueTutorialGroups(String input) throws ParseException {
-        Set<TutGroup> tutGroupSet = new TreeSet<>();
-        String[] parts = input.split(",");
-
-        for (String part : parts) {
-            part = part.trim();
-            if (part.contains("-")) {
-                parseTutGroupRange(part, tutGroupSet);
-            } else {
-                tutGroupSet.add(parseTutGroup(part));
-            }
-        }
-
-        return tutGroupSet;
-    }
-
-
-    /**
      * Parses a string representing a range of TutGroups (e.g. "T02-T04")
      * and adds the tutGroups to the provided set.
      *
@@ -367,6 +364,7 @@ public class ParserUtil {
      * @throws ParseException If range provided is invalid.
      */
     private static void parseTutGroupRange(String rangeStr, Set<TutGroup> tutGroupSet) throws ParseException {
+        requireAllNonNull(rangeStr, tutGroupSet);
         String[] range = rangeStr.split("-");
         if (range.length != 2) {
             throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
@@ -378,13 +376,12 @@ public class ParserUtil {
 
         try {
             int start = Integer.parseInt(range[0].trim().substring(1));
-            int end = Integer.parseInt(range[0].trim().substring(1));
+            int end = Integer.parseInt(range[1].trim().substring(1));
             if (start > end) {
                 throw new ParseException(MESSAGE_INVALID_DASH_ORDER);
             }
             for (int i = start; i <= end; i++) {
-                String tutGroupStr = i < 10 ? "T0" + i : "T" + i;
-                tutGroupSet.add(new TutGroup(tutGroupStr));
+                tutGroupSet.add(TutGroup.createTutGroupFromGroupNumber(i));
             }
         } catch (NumberFormatException e) {
             throw new ParseException(MESSAGE_INVALID_INDEX, e);
@@ -452,19 +449,5 @@ public class ParserUtil {
             indexList.add(Index.fromOneBased(i));
         }
         return indexList;
-    }
-
-    /**
-     * Converts a set of integers into a list of {@link TutGroup} objects.
-     *
-     * @param intIndexes A set of valid one-based integers.
-     * @return A list of corresponding {@link TutGroup} instances.
-     */
-    private static List<TutGroup> convertIntegersToTutGroups(Set<Integer> intIndexes) {
-        List<TutGroup> tutGroupList = new ArrayList<>();
-        for (int i : intIndexes) {
-            tutGroupList.add(i < 10 ? new TutGroup("T0" + i) : new TutGroup("T" + i));
-        }
-        return tutGroupList;
     }
 }

@@ -268,8 +268,8 @@ public class MarkAttendanceCommand extends Command {
             message = MESSAGE_USAGE;
         }
 
-        String tutGroupString = tutGroupsToEdit.stream().reduce("",
-                (acc, tg) -> acc + tg.toString() + ", ", (x, y) -> x + y);
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) -> acc + tg.toString() + ", ", (x, y) -> x + y);
         return String.format(message, tutGroupString.substring(0, tutGroupString.length() - 2), this.week);
     }
 
