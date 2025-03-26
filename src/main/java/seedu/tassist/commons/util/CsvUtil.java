@@ -2,12 +2,28 @@ package seedu.tassist.commons.util;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import seedu.tassist.commons.core.LogsCenter;
+import seedu.tassist.model.person.AttendanceList;
+import seedu.tassist.model.person.Email;
+import seedu.tassist.model.person.Faculty;
+import seedu.tassist.model.person.LabGroup;
+import seedu.tassist.model.person.LabScoreList;
+import seedu.tassist.model.person.MatNum;
+import seedu.tassist.model.person.Name;
+import seedu.tassist.model.person.Person;
+import seedu.tassist.model.person.Phone;
+import seedu.tassist.model.person.Remark;
+import seedu.tassist.model.person.TeleHandle;
+import seedu.tassist.model.person.TutGroup;
+import seedu.tassist.model.person.Year;
+import seedu.tassist.model.tag.Tag;
 
 /**
  * Converts a Java object instance to CSV
@@ -17,6 +33,62 @@ public class CsvUtil {
 
     public static <T> void serializeObjectToCsvFile(Path csvFile, List<T> objects) throws IOException {
         FileUtil.writeToFile(csvFile, toCsvString(objects));
+    }
+
+    /**
+     * Reads a CSV file from the given file path and converts each row into a {@code Person} object.
+     * Assumes the first row is the header, and each subsequent row contains person data in a fixed order.
+     *
+     * @param filePath The path to the CSV file.
+     * @return A list of {@code Person} objects parsed from the CSV file.
+     * @throws IOException If an I/O error occurs reading the file.
+     */
+    public static List<Person> deserializeCsvToPersonList(Path filePath) throws IOException {
+        List<String> lines = Files.readAllLines(filePath);
+        List<Person> personList = new ArrayList<>();
+
+        if (lines.isEmpty()) {
+            return personList;
+        }
+
+        String header = lines.get(0);
+        int expectedFields = 13;
+
+        for (int i = 1; i < lines.size(); i++) {
+            String[] parts = lines.get(i).split(",", -1);
+            if (parts.length < expectedFields) {
+                continue;
+            }
+
+            Name name = new Name(parts[0]);
+            Phone phone = new Phone(parts[1]);
+            TeleHandle teleHandle = new TeleHandle(parts[2]);
+            Email email = new Email(parts[3]);
+            MatNum matNum = new MatNum(parts[4]);
+            TutGroup tutGroup = new TutGroup(parts[5]);
+            LabGroup labGroup = new LabGroup(parts[6]);
+            Faculty faculty = new Faculty(parts[7]);
+            Year year = new Year(parts[8]);
+            Remark remark = new Remark(parts[9]);
+            AttendanceList attendanceList = AttendanceList.generateAttendanceList(parts[10]);
+            LabScoreList labScoreList = LabScoreList.loadLabScores(parts[11]);
+
+            List<Tag> tags = new ArrayList<>();
+            String tagString = parts[12].trim();
+            if (!tagString.isEmpty() && tagString.startsWith("[[") && tagString.endsWith("]]")) {
+                String content = tagString.substring(2, tagString.length() - 2);
+                String[] tagItems = content.split("\\],\\[");
+                for (String t : tagItems) {
+                    tags.add(new Tag(t.trim()));
+                }
+            }
+
+            personList.add(new Person(name, phone, teleHandle, email,
+                    matNum, tutGroup, labGroup, faculty, year, remark,
+                    attendanceList, labScoreList, new java.util.HashSet<>(tags)));
+        }
+
+        return personList;
     }
 
     /**
