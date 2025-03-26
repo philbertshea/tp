@@ -11,10 +11,10 @@ import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.AMY;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
@@ -22,7 +22,6 @@ import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.ClearCommand;
 import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.EditCommand;
-import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.tassist.logic.commands.ExitCommand;
 import seedu.tassist.logic.commands.FindCommand;
 import seedu.tassist.logic.commands.HelpCommand;
@@ -31,7 +30,6 @@ import seedu.tassist.logic.commands.MarkAttendanceCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.NameContainsKeywordsPredicate;
 import seedu.tassist.model.person.Person;
-import seedu.tassist.model.tag.Tag;
 import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 import seedu.tassist.testutil.PersonBuilder;
 import seedu.tassist.testutil.PersonUtil;
@@ -61,16 +59,16 @@ public class AddressBookParserTest {
         List<Index> expectedIndexes = ParserUtil.parseMultipleIndexes("1,3-4");
         assertEquals(new DeleteCommand(expectedIndexes), command);
     }
-
-//    @Test
-//    public void parseCommand_edit() throws Exception {
-//        Person person = new PersonBuilder(AMY).build();
-//        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-//        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-//                + PREFIX_INDEX + " "
-//                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
-//        assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
-//    }
+    @Disabled
+    @Test
+    public void parseCommand_edit() throws Exception {
+        Person person = new PersonBuilder(AMY).build();
+        EditCommand.EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+        assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+    }
 
     @Test
     public void parseCommand_exit() throws Exception {

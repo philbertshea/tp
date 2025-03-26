@@ -10,7 +10,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_LAB_GROUP_DES
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_MAT_NUM_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TELE_HANDLE_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TUT_GROUP_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_YEAR_DESC;
@@ -34,8 +33,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_AMY;
@@ -65,7 +62,6 @@ import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.TeleHandle;
 import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.person.Year;
-import seedu.tassist.model.tag.Tag;
 import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {

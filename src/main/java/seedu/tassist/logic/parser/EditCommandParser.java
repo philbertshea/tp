@@ -13,8 +13,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 
-import java.util.HashSet;
-
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.commands.EditCommand;
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;

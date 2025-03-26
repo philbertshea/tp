@@ -12,7 +12,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_BOB;
