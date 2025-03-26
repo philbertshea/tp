@@ -1,15 +1,20 @@
 package seedu.tassist.model;
 
-import javafx.collections.ObservableList;
+import seedu.tassist.commons.core.index.Index;
+import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.Person;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
+
+import static seedu.tassist.logic.parser.ParserUtil.parseMultipleIndexes;
 
 public class Snapshot {
     String commandString;
     Operations.CommandType commandType;
     ArrayList<Person> people = new ArrayList<>();
+
+    Integer index = null;
 
     //public final ReadOnlyAddressBook addressBook;
 
@@ -25,7 +30,14 @@ public class Snapshot {
     }
 
     public Person getPerson() {
+        if (people.isEmpty()) {
+            return null;
+        }
         return people.get(0);
+    }
+
+    public ArrayList<Person> getPeople() {
+        return people;
     }
 //    public void setAddressBook(ReadOnlyAddressBook addressBook) {
 //        this.addressBook = addressBook;
@@ -40,6 +52,11 @@ public class Snapshot {
 //    }
 
     public int getIndex(){
+        if (index != null) {
+            return index;
+        }
+        System.out.println(commandString);
+
         int start = commandString.indexOf("-i");
 
         //not found
@@ -47,8 +64,18 @@ public class Snapshot {
 
         //found
         String commandIndex = commandString.substring(start + 3);
-        start = commandIndex.indexOf(" ");
-        commandIndex = commandIndex.substring(0, start);
-        return Integer.parseInt(commandIndex) - 1;
+        List<Index> allIndex = null;
+        try {
+            allIndex = parseMultipleIndexes(commandIndex);
+        } catch (ParseException e) {
+            return -1;
+        }
+        index = allIndex.get(0).getZeroBased();
+        return allIndex.get(0).getZeroBased();
+//        start = commandIndex.indexOf(" ");
+//        if (start != -1) {
+//            commandIndex = commandIndex.substring(0, start);
+//        }
+        //return Integer.parseInt(commandIndex) - 1;
     }
 }

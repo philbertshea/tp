@@ -77,7 +77,7 @@ public class AddressBookParser {
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Clear Command", Operations.CommandType.IGNORED);
+            Operations.recordCurrentCommand("Clear Command", Operations.CommandType.CLEAR);
             return new ClearCommand();
 
         case FindCommand.COMMAND_WORD:

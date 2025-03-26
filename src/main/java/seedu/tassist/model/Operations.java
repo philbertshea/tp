@@ -33,16 +33,20 @@ public class Operations {
 
         Snapshot snapshot = new Snapshot(currentState.commandString, currentState.commandType);
         //snapshot.setAddressBook(model.getAddressBook());
-        if (currentState.commandType == CommandType.EDIT || currentState.commandType == CommandType.DELETE ||
+        if (currentState.commandType == CommandType.EDIT ||
                 currentState.commandType == CommandType.LABSCORE || currentState.commandType == CommandType.ATTENDANCE) {
             Person person =  model.getAddressBook().getPersonList().get(currentState.getIndex());
             snapshot.setPerson(person);
         }
 
         if (currentState.commandType == CommandType.ADD) {
-            snapshot.commandType = CommandType.DELETE;
             Person person =  model.getAddressBook().getPersonList().get(model.getAddressBook().getPersonList().size() - 1);
             snapshot.setPerson(person);
+        } else if (currentState.commandType == CommandType.DELETE){
+            snapshot.people = currentState.people;
+            snapshot.index = model.getAddressBook().getPersonList().size() - 1;
+        } else if (currentState.commandType == CommandType.CLEAR){
+            snapshot.people = currentState.people;
         }
 
         if (commandType == CommandType.UNDO) {
@@ -65,6 +69,7 @@ public class Operations {
         //temp guard for commands not supported
         if (currentState.getIndex() != -1) saveIndexCommand(personList);
 //        System.out.println(currentState.getIndex());
+        //System.out.println(currentState.getPerson().toString());
 
 
         if (currentType == CommandType.CLEAR) {
@@ -83,12 +88,12 @@ public class Operations {
     }
 
     public static void saveIndexCommand(ObservableList<Person> personList) {
-//        else if (currentType == CommandType.EDIT || currentType == CommandType.DELETE ||
-//                currentType == CommandType.LABSCORE || currentType == CommandType.ATTENDANCE) {
-//
-//        }
+        if (personList.isEmpty()) return;
+
         //save person involved
+        System.out.println(personList.size());
         Person editedPerson = personList.get(currentState.getIndex());
+        System.out.println(editedPerson.getName());
         currentState.setPerson(editedPerson);
     }
 
@@ -120,6 +125,7 @@ public class Operations {
         //Update timeline
         currentState =  pastStates.remove(pastStates.size() - 1);
         System.out.println("before undo");
+        System.out.println(currentState.people.size());
         //System.out.println(currentState.getPerson().getLabScoreList());
         runCommand(model, currentState);
         if (currentState.commandType == CommandType.IGNORED) {
@@ -135,12 +141,22 @@ public class Operations {
         }
         //Update timeline
         currentState =  futureStates.remove(futureStates.size() - 1);
-        System.out.println("before redo" + futureStates.size());
-        System.out.println(currentState.getPerson().getLabScoreList());
+        //System.out.println("before redo" + futureStates.size());
+        //System.out.println(currentState.getPerson().getLabScoreList());
 
+        if (currentState.commandType == CommandType.ADD) {
+            currentState.commandType = CommandType.DELETE;
+        }else if (currentState.commandType == CommandType.DELETE) {
+            currentState.commandType = CommandType.ADD;
+        }
         runCommand(model, currentState);
         if (currentState.commandType == CommandType.IGNORED) {
             return String.format(COMMAND_IGNORED, currentState.commandType.toString());
+        }
+        if (currentState.commandType == CommandType.ADD) {
+            currentState.commandType = CommandType.DELETE;
+        }else if (currentState.commandType == CommandType.DELETE) {
+            currentState.commandType = CommandType.ADD;
         }
         return String.format(RedoCommand.MESSAGE_REDO_SUCCESS, currentState.commandType.toString());
     }
@@ -149,7 +165,7 @@ public class Operations {
         //System.out.println("param" + currentState.getPerson().getLabScoreList());
         //System.out.println(currentState.addressBook.getPersonList().get(0).getLabScoreList());
         CommandType currentCommand = currentState.commandType;
-
+        System.out.println("affect" + currentCommand);
         if (currentCommand == CommandType.EDIT || currentCommand == CommandType.ATTENDANCE ||
                 currentCommand == CommandType.LABSCORE) {
             //for edit, attendance, labscore == set back the previous person
@@ -163,12 +179,18 @@ public class Operations {
         } else if (currentCommand == CommandType.DELETE) {
             //for delete, add back the person
             System.out.println("delete");
-            ArrayList<Person> addAll = new ArrayList<>();
-            addAll.add(currentState.getPerson());
+            ArrayList<Person> addAll = currentState.getPeople();
+
 //            for (int i = currentState.getIndex() + 1; i < model.getFilteredPersonList().size(); i++) {
 //                addAll.add(model.getFilteredPersonList().get(i));
 //            }
-            model.getFilteredPersonList().setAll(addAll);
+
+            for (Person person : addAll) {
+                System.out.println(person.getName());
+                model.addPerson(person);
+            }
+
+
         } else if (currentCommand == CommandType.ADD) {
             //for add, delete the newly added person
             System.out.println(model.getFilteredPersonList().toString());
@@ -176,11 +198,27 @@ public class Operations {
             model.deletePerson(personToDelete);
         } else if (currentCommand == CommandType.CLEAR) {
             //for clear, add everything back
-            //model.setAddressBook(currentState.addressBook);
+            if (model.getFilteredPersonList().isEmpty()) {
+                ArrayList<Person> addAll = currentState.getPeople();
+
+//            for (int i = currentState.getIndex() + 1; i < model.getFilteredPersonList().size(); i++) {
+//                addAll.add(model.getFilteredPersonList().get(i));
+//            }
+
+                for (Person person : addAll) {
+                    System.out.println(person.getName());
+                    model.addPerson(person);
+                }
+            } else {
+                //model.setAddressBook(currentState.addressBook);
+                model.setAddressBook(new AddressBook());
+            }
+
+
         } else {
             //for ignored, show the message string
         }
         System.out.println("finish");
-        System.out.println(model.getAddressBook().getPersonList().get(0).getLabScoreList());
+        //System.out.println(model.getAddressBook().getPersonList().get(0).getLabScoreList());
     }
 }
