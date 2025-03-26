@@ -4,7 +4,9 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.Operations;
 
-
+/**
+ * Undoes the previous command.
+ */
 public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
