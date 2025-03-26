@@ -20,6 +20,7 @@ import seedu.tassist.logic.commands.HelpCommand;
 import seedu.tassist.logic.commands.ListCommand;
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
 import seedu.tassist.logic.commands.SearchCommand;
+import seedu.tassist.logic.commands.TagCommand;
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
@@ -95,6 +96,9 @@ public class AddressBookParser {
 
         case ExportDataCommand.COMMAND_WORD:
             return new ExportDataCommandParser().parse(arguments);
+
+        case TagCommand.COMMAND_WORD:
+            return new TagCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
