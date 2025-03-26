@@ -35,6 +35,7 @@ public class PersonBuilder {
     public static final String DEFAULT_YEAR = "1";
     public static final String DEFAULT_REMARK = "todo";
     public static final String DEFAULT_ATTENDANCE_STRING = AttendanceList.DEFAULT_ATTENDANCE_STRING;
+    public static final String DEFAULT_TAG = "testTag";
 
     public static final String DEFAULT_LAB_SCORES = "-1/25 -1/25 -1/25 -1/25";
 

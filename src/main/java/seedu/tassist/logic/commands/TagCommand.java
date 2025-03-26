@@ -52,7 +52,7 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_DEL_NO_MORE_ITEMS = "There are no more items to delete!";
     public static final String MESSAGE_INVALID_ACTION = "Action passed to Tag Command is invalid!";
-    public static final String MESSAGE_TAG_SUCCESS = "Successfully performed %s action: \n%s";
+    public static final String MESSAGE_TAG_SUCCESS = "Successfully %s tag(s): \n%s";
 
     private final Index index;
     private final ActionType action;
@@ -91,7 +91,9 @@ public class TagCommand extends Command {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(String.format(
+                    Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX,
+                    lastShownList.size()));
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());

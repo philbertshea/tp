@@ -9,7 +9,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_REMARK;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
@@ -64,10 +63,9 @@ public class EditCommand extends Command {
                     + "  %-7s GROUP     Update lab group\n"
                     + "  %-7s FACULTY   Update faculty\n"
                     + "  %-7s YEAR      Update academic year\n"
-                    + "  %-7s REMARKS   Update remarks\n"
-                    + "  %-7s TAG       Add/update tags (multiple allowed)\n",
+                    + "  %-7s REMARKS   Update remarks\n",
             PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
-            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
+            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK
             )
             + "\nExample:  \n"
             + "  edit "
@@ -82,9 +80,7 @@ public class EditCommand extends Command {
             + PREFIX_LAB_GROUP + " B02 "
             + PREFIX_FACULTY + " SOC "
             + PREFIX_YEAR + " 3 "
-            + PREFIX_REMARK + " \"TA candidate\" "
-            + PREFIX_TAG + " friends "
-            + PREFIX_TAG + " debt";
+            + PREFIX_REMARK + " \"TA candidate\" ";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: \n%1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -114,7 +110,9 @@ public class EditCommand extends Command {
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(String.format(
+                    Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX,
+                    lastShownList.size()));
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());

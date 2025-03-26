@@ -118,7 +118,6 @@ public class EditCommandParserTest {
                 firstPersonIndex + INVALID_FACULTY_DESC, Faculty.MESSAGE_CONSTRAINTS
         );
         assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // Invalid year
-        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // Invalid tag
         // assertParseFailure(parser, "1" + INVALID_REMARK_DESC,
         //      Remark.MESSAGE_CONSTRAINTS); // Invalid remark (TODO: Zhen Jie to update)
 
@@ -153,22 +152,6 @@ public class EditCommandParserTest {
         assertParseFailure(parser,
                 firstPersonIndex + INVALID_FACULTY_DESC + REMARK_DESC_AMY, Faculty.MESSAGE_CONSTRAINTS
         );
-        // Invalid year with valid tag.
-        assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC + TAG_DESC_FRIEND, Year.MESSAGE_CONSTRAINTS);
-        // Invalid tag with valid name.
-        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC + NAME_DESC_AMY, Tag.MESSAGE_CONSTRAINTS);
-
-        // While parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
-        // parsing it together with a valid tag results in error.
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_CONSTRAINTS
-        );
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
-        );
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_EMPTY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
-        );
 
         // Multiple invalid values, but only the first invalid value is captured.
         assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_PHONE_AMY,
@@ -181,8 +164,8 @@ public class EditCommandParserTest {
         String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased()
                 + TELE_HANDLE_DESC_AMY + YEAR_DESC_AMY + REMARK_DESC_AMY
                 + FACULTY_DESC_AMY + LAB_GROUP_DESC_AMY + MAT_NUM_DESC_BOB
-                + TUT_GROUP_DESC_AMY + PHONE_DESC_BOB + TAG_DESC_HUSBAND
-                + EMAIL_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
+                + TUT_GROUP_DESC_AMY + PHONE_DESC_BOB
+                + EMAIL_DESC_AMY + NAME_DESC_AMY;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withFaculty(VALID_FACULTY_AMY)
@@ -193,8 +176,7 @@ public class EditCommandParserTest {
                 .withYear(VALID_YEAR_AMY)
                 .withLabGroup(VALID_LAB_GROUP_AMY)
                 .withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -236,8 +218,6 @@ public class EditCommandParserTest {
                 new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build());
         assertSingleFieldEdit(targetIndex, REMARK_DESC_AMY,
                 new EditPersonDescriptorBuilder().withRemark(VALID_REMARK_AMY).build());
-        assertSingleFieldEdit(targetIndex, TAG_DESC_FRIEND,
-                new EditPersonDescriptorBuilder().withTags(VALID_TAG_FRIEND).build());
     }
 
     /**
@@ -279,16 +259,5 @@ public class EditCommandParserTest {
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
-    }
-
-    @Test
-    public void parse_resetTags_success() {
-        Index targetIndex = INDEX_THIRD_PERSON;
-        String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + TAG_EMPTY;
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-
-        assertParseSuccess(parser, userInput, expectedCommand);
     }
 }
