@@ -372,27 +372,27 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void getPersonsInTutorialGroup_nullPersonList_throwsNullPointerException() {
+    public void getPersonsInTutorialGroups_nullPersonList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                ParserUtil.getPersonsInTutorialGroup(null, new TutGroup("T01")));
+                ParserUtil.getPersonsInTutorialGroups(null, List.of(new TutGroup("T01"))));
     }
 
     @Test
-    public void getPersonsInTutorialGroup_nullTutGroup_throwsNullPointerException() {
+    public void getPersonsInTutorialGroup_nullTutGroups_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), null));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), null));
     }
 
     @Test
-    public void getPersonsInTutorialGroup_validListAndTutorialGroup_success() {
+    public void getPersonsInTutorialGroup_validListAndTutorialGroups_success() {
         // All Persons in provided list are of the provided tut group -> Returns the same list.
         List<Person> expectedListReturned = getTypicalPersons();
         assertEquals(expectedListReturned,
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T01")));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T01"))));
 
         // None of the Persons in provided list are of the provided tut group -> Returns an empty list.
         assertEquals(new ArrayList<Person>(),
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T99")));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T99"))));
     }
 
     @Test

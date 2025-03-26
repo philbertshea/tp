@@ -39,7 +39,7 @@
       <FlowPane fx:id="labScores" />
     </VBox>
 
-    <!-- Right column with just the index label -->
+    <!-- Right column with just the indexList label -->
     <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
       <padding>
         <Insets top="5" right="5" bottom="5" left="5" />

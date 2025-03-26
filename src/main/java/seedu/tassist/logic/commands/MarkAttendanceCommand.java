@@ -97,9 +97,9 @@ public class MarkAttendanceCommand extends Command {
             COMMAND_WORD, COMMAND_WORD, COMMAND_WORD, COMMAND_WORD
     );
 
-    private final Index index;
+    private final List<Index> indexList;
 
-    private final TutGroup tutGroup;
+    private final List<TutGroup> tutGroupList;
 
     private final int week;
 
@@ -109,31 +109,31 @@ public class MarkAttendanceCommand extends Command {
      * Instantiates the MarkAttendanceCommand instance, with the provided
      * index, week and attendanceStatus.
      *
-     * @param index Index of person to mark attendance for.
+     * @param indexList List of Indexes of person to mark attendance for.
      * @param week Week to mark attendance of person for.
      * @param attendanceStatus New Attendance Status to set the person or tutorial group to.
      */
-    public MarkAttendanceCommand(Index index, int week, int attendanceStatus) {
-        requireAllNonNull(index, week, attendanceStatus);
-        this.index = index;
+    public MarkAttendanceCommand(List<Index> indexList, int week, int attendanceStatus) {
+        requireAllNonNull(indexList, week, attendanceStatus);
+        this.indexList = indexList;
         this.week = week;
-        this.tutGroup = null;
+        this.tutGroupList = null;
         this.attendanceStatus = attendanceStatus;
     }
 
     /**
      * Instantiates the MarkAttendanceCommand instance, with the provided
-     * tutGroup, week and attendanceStatus.
+     * tutGroupList, week and attendanceStatus.
      *
-     * @param tutGroup Tutorial group to mark attendance for. Should be null if index is not null.
+     * @param tutGroupList List of Tutorial groups to mark attendance for. Should be null if index is not null.
      * @param week Week to mark attendance of person for.
      * @param attendanceStatus New Attendance Status to set the person or tutorial group to.
      */
-    public MarkAttendanceCommand(TutGroup tutGroup, int week, int attendanceStatus) {
-        requireAllNonNull(tutGroup, week, attendanceStatus);
-        this.index = null;
+    public MarkAttendanceCommand(int week, int attendanceStatus, List<TutGroup> tutGroupList) {
+        requireAllNonNull(tutGroupList, week, attendanceStatus);
+        this.indexList = null;
         this.week = week;
-        this.tutGroup = tutGroup;
+        this.tutGroupList = tutGroupList;
         this.attendanceStatus = attendanceStatus;
     }
 
@@ -169,18 +169,23 @@ public class MarkAttendanceCommand extends Command {
         List<Person> personsToEdit;
         StringBuilder successMessage = new StringBuilder();
 
-        if (tutGroup != null) {
-            personsToEdit = ParserUtil.getPersonsInTutorialGroup(lastShownList, tutGroup);
-            successMessage.append(generateSuccessMessage(tutGroup)).append("\n-------------\n");
+        if (tutGroupList != null) {
+            personsToEdit = ParserUtil.getPersonsInTutorialGroups(lastShownList, tutGroupList);
+            successMessage.append(generateSuccessMessage(tutGroupList)).append("\n-------------\n");
         } else {
-            if (index.getZeroBased() >= lastShownList.size()) {
+            boolean allIndexesValid = indexList.stream()
+                    .map(index -> index.getZeroBased() < lastShownList.size())
+                    .reduce(true, (a, b) -> a && b);
+            if (!allIndexesValid) {
                 throw new CommandException(
                         String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, lastShownList.size()));
             }
             personsToEdit = new ArrayList<>();
-            Person personToEdit = lastShownList.get(index.getZeroBased());
-            checkIfIndexFlagCommandValid(personToEdit, this.week);
-            personsToEdit.add(personToEdit);
+            for (Index index : indexList) {
+                Person personToEdit = lastShownList.get(index.getZeroBased());
+                checkIfIndexFlagCommandValid(personToEdit, this.week);
+                personsToEdit.add(personToEdit);
+            }
         }
 
         for (Person personToEdit : personsToEdit) {
@@ -243,8 +248,8 @@ public class MarkAttendanceCommand extends Command {
      * @return String with the Success Message once MarkAttendanceCommand
      *         is executed successfully.
      */
-    private String generateSuccessMessage(TutGroup tutGroupToEdit) {
-        requireNonNull(tutGroupToEdit);
+    private String generateSuccessMessage(List<TutGroup> tutGroupsToEdit) {
+        requireNonNull(tutGroupsToEdit);
         String message = "";
         switch (attendanceStatus) {
         case Attendance.ATTENDED:
@@ -263,9 +268,9 @@ public class MarkAttendanceCommand extends Command {
             message = MESSAGE_USAGE;
         }
 
-        return String.format(message,
-                tutGroupToEdit.toString(),
-                this.week);
+        String tutGroupString = tutGroupsToEdit.stream().reduce("",
+                (acc, tg) -> acc + tg.toString() + ", ", (x, y) -> x + y);
+        return String.format(message, tutGroupString.substring(0, tutGroupString.length() - 2), this.week);
     }
 
     @Override
@@ -283,10 +288,10 @@ public class MarkAttendanceCommand extends Command {
             return false;
         }
 
-        if (this.index != null) {
-            return this.index.equals(e.index);
+        if (this.indexList != null) {
+            return this.indexList.equals(e.indexList);
         } else {
-            return this.tutGroup.equals(e.tutGroup);
+            return this.tutGroupList.equals(e.tutGroupList);
         }
     }
 
