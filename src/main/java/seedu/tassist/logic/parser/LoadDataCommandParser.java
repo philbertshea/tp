@@ -2,7 +2,7 @@ package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 
 import java.util.stream.Stream;
 
@@ -24,16 +24,16 @@ public class LoadDataCommandParser implements Parser<LoadDataCommand> {
      */
     @Override
     public LoadDataCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILENAME, PREFIX_EXTENSION);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FILE_PATH, PREFIX_EXTENSION);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_FILENAME, PREFIX_EXTENSION)
+        if (!arePrefixesPresent(argMultimap, PREFIX_FILE_PATH, PREFIX_EXTENSION)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoadDataCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_FILENAME, PREFIX_EXTENSION);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_FILE_PATH, PREFIX_EXTENSION);
 
-        String fileName = argMultimap.getValue(PREFIX_FILENAME).orElse("");
+        String fileName = argMultimap.getValue(PREFIX_FILE_PATH).orElse("");
         String extension = argMultimap.getValue(PREFIX_EXTENSION).orElse("").toLowerCase().trim();
 
         return new LoadDataCommand(fileName, extension);

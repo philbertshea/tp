@@ -140,25 +140,16 @@ public class JsonAdaptedPerson {
         final Year modelYear = validateAndCreate(year, Year.class,
                 Year::isValidYear, Year.MESSAGE_CONSTRAINTS, Year::new);
 
-        final Remark modelRemark = validateAndCreate(remark, Remark.class, Remark::new);
+        final Remark modelRemark = validateAndCreate(remark, Remark.class,
+                Remark::isValidRemark, Remark.MESSAGE_CONSTRAINTS, Remark::new);
 
-        final AttendanceList modelAttendanceList = (attendances == null || attendances.isEmpty())
-                ? AttendanceList.generateAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
-                : validateAndCreate(attendances, AttendanceList.class,
-                        AttendanceList::isValidAttendanceString,
-                        AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
+        final AttendanceList modelAttendanceList = validateAndCreate(attendances,
+                AttendanceList.class, AttendanceList::isValidAttendanceString,
+                AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
 
-        final LabScoreList modelLabScoreList = (labScores == null || labScores.isEmpty())
-                ? new LabScoreList()
-                : validateAndCreate(labScores, LabScoreList.class,
-                        LabScoreList::isValidSaveString,
-                        LabScoreList.INVALID_LAB_SCORE, LabScoreList::loadLabScores);
-        // final AttendanceList modelAttendanceList = validateAndCreate(attendances,
-        //         AttendanceList.class, AttendanceList::isValidAttendanceString,
-        //         AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
-        // final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
-        //         LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SAVE,
-        //         LabScoreList::loadLabScores);
+        final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
+                LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SAVE,
+                LabScoreList::loadLabScores);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName, modelPhone, modelTeleHandle, modelEmail,

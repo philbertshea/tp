@@ -1,7 +1,7 @@
 package seedu.tassist.ui;
 
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -20,7 +20,6 @@ import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.logic.Logic;
 import seedu.tassist.logic.commands.CommandResult;
 import seedu.tassist.logic.commands.ExportDataCommand;
-import seedu.tassist.logic.commands.LoadDataCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
@@ -182,7 +181,7 @@ public class MainWindow extends UiPart<Stage> {
             String[] fileData = file.getName().split("\\.");
             try {
                 executeCommand(ExportDataCommand.COMMAND_WORD + " "
-                        + PREFIX_FILENAME + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+                        + PREFIX_FILE_PATH + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
             } catch (CommandException | ParseException e) {
                 logger.info("An error occurred while exporting: " + e.getMessage());
             }
@@ -232,8 +231,8 @@ public class MainWindow extends UiPart<Stage> {
                 return;
             }
             try {
-                executeCommand(LoadDataCommand.COMMAND_WORD + " "
-                        + PREFIX_FILENAME + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+                executeCommand("load " + PREFIX_FILE_PATH + " " + fileData[0] + " "
+                        + PREFIX_EXTENSION + " " + fileData[1]);
             } catch (CommandException | ParseException e) {
                 logger.info("An error occurred while loading: " + e.getMessage());
             }

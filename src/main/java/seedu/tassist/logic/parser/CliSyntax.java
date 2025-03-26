@@ -27,4 +27,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_LAB_SCORE = new Prefix("-sc");
     public static final Prefix PREFIX_FILE_PATH = new Prefix("-f");
     public static final Prefix PREFIX_MAX_LAB_SCORE = new Prefix("-msc");
+    public static final Prefix PREFIX_EXTENSION = new Prefix("-ext");
 }

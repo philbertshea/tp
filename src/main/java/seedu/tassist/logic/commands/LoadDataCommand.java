@@ -2,7 +2,7 @@ package seedu.tassist.logic.commands;
 
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILENAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,9 +24,9 @@ public class LoadDataCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Loads the data from a JSON or CSV file into TAssist.\n"
             + "Parameters: "
-            + PREFIX_FILENAME + "FILE_NAME "
+            + PREFIX_FILE_PATH + "FILE_NAME "
             + PREFIX_EXTENSION + "FILE_EXTENSION\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_FILENAME + "userdata " + PREFIX_EXTENSION + " csv";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FILE_PATH + "userdata " + PREFIX_EXTENSION + " csv";
 
     public static final String MESSAGE_SUCCESS = "Loaded data from file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
