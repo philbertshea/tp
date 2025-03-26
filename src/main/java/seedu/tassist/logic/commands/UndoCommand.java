@@ -15,7 +15,6 @@ public class UndoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        System.out.println("running here ");
         String response = Operations.undo(model);
 
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, response));
@@ -28,7 +27,7 @@ public class UndoCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof UpdateLabScoreCommand)) {
+        if (!(other instanceof UndoCommand)) {
             return false;
         }
 

@@ -159,14 +159,14 @@ public class Operations {
      * @throws CommandException If there is no command to undo.
      */
     public static String undo(Model model) throws CommandException {
-        CommandType currentCommandType = currentState.getCommandType();
-        if (currentCommandType == CommandType.IGNORED) {
-            return String.format(COMMAND_IGNORED, currentCommandType);
-        }
-
         if (pastStates.isEmpty()) {
             futureStates.remove(futureStates.size() - 1);
             throw new CommandException(String.format(ERROR_MESSAGE, "undo"));
+        }
+
+        CommandType currentCommandType = currentState.getCommandType();
+        if (currentCommandType == CommandType.IGNORED) {
+            return String.format(COMMAND_IGNORED, currentCommandType);
         }
 
         //Update timeline
@@ -183,14 +183,14 @@ public class Operations {
      * @throws CommandException If there is nothing to redo.
      */
     public static String redo(Model model) throws CommandException {
-        CommandType currentCommandType = currentState.getCommandType();
-        if (currentCommandType == CommandType.IGNORED) {
-            return String.format(COMMAND_IGNORED, currentCommandType);
-        }
-
         if (futureStates.isEmpty()) {
             pastStates.remove(pastStates.size() - 1);
             throw new CommandException(String.format(ERROR_MESSAGE, "redo"));
+        }
+
+        CommandType currentCommandType = currentState.getCommandType();
+        if (currentCommandType == CommandType.IGNORED) {
+            return String.format(COMMAND_IGNORED, currentCommandType);
         }
 
         //Update timeline

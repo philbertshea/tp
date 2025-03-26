@@ -27,7 +27,7 @@ public class RedoCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof UpdateLabScoreCommand)) {
+        if (!(other instanceof RedoCommand)) {
             return false;
         }
 

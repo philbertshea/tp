@@ -145,4 +145,22 @@ public class Snapshot {
         index = allIndex.get(0).getZeroBased();
         return index;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof Snapshot)) {
+            return false;
+        }
+
+        Snapshot o = (Snapshot) other;
+        return this.commandType.equals(o.commandType)
+                && this.commandString.equals(o.commandString)
+                && this.people.equals(o.people)
+                && ((this.index == null && o.index == null)
+                || this.index.equals(o.index));
+    }
 }
