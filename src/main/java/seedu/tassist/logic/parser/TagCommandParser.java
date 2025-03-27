@@ -47,9 +47,13 @@ public class TagCommandParser implements Parser<TagCommand> {
                         PREFIX_INDEX, PREFIX_TAG
                 );
 
+        if (!anyPrefixesPresent(argMultimap, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ACTION_TYPE, MESSAGE_USAGE));
+        }
+
         if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
         Index index;
@@ -61,11 +65,6 @@ public class TagCommandParser implements Parser<TagCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG);
-
-        if (!anyPrefixesPresent(argMultimap, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_ACTION_TYPE, MESSAGE_USAGE));
-        }
-
         if (!anyPrefixesPresent(argMultimap, PREFIX_TAG)) {
             throw new ParseException(String.format(MESSAGE_MISSING_TAG, MESSAGE_USAGE));
         }
