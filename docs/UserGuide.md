@@ -91,6 +91,12 @@ Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULA
 
 <box type="tip" seamless>
 
+**Tip:** Matriculation numbers follows a checksum rule!
+See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
+</box>
+
+<box type="tip" seamless>
+
 **Tip:** A person can have any number of tags (including 0).
 Tags must be a single word consisting of alphanumeric characters only.
 </box>
