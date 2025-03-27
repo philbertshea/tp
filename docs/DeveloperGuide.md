@@ -197,7 +197,7 @@ Step 4. The user now decides that adding the person was a mistake, and decides t
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at indexList 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
+**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
 than attempting to perform the undo.
 
 </box>
@@ -220,7 +220,7 @@ The `redo` command does the opposite — it calls `Model#redoAddressBook()`,
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at indexList `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
 
 </box>
 
@@ -420,7 +420,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   Use case resumes at step 2.
 
 * 1c. User provides at least one argument that is invalid, or in incorrect format.
-  For instance, user provides an indexList that is out of range.
+  For instance, user provides an index that is out of range.
 
     * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
 
@@ -465,7 +465,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   Use case resumes at step 2.
 
 * 1c. User provides at least one argument that is invalid, or in incorrect format.
-  For instance, user provides an indexList or week number that is out of range.
+  For instance, user provides an index or week number that is out of range.
 
     * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
 
@@ -517,7 +517,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   Use case resumes at step 2.
 
 * 1c. User provides at least one argument that is invalid, or in incorrect format.
-  For instance, user provides an indexList that is out of range, or an invalid lab session name.
+  For instance, user provides an index that is out of range, or an invalid lab session name.
 
     * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
 

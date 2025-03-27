@@ -4,8 +4,8 @@
 
 <header sticky>
   <navbar type="dark">
-    <a slot="brand" href="{{baseUrl}}/indexList.html" title="Home" class="navbar-brand">TAssist</a>
-    <li><a href="{{baseUrl}}/indexList.html" class="nav-link">Home</a></li>
+    <a slot="brand" href="{{baseUrl}}/index.html" title="Home" class="navbar-brand">TAssist</a>
+    <li><a href="{{baseUrl}}/index.html" class="nav-link">Home</a></li>
     <li><a href="{{baseUrl}}/UserGuide.html" class="nav-link">User Guide</a></li>
     <li><a href="{{baseUrl}}/DeveloperGuide.html" class="nav-link">Developer Guide</a></li>
     <li><a href="{{baseUrl}}/AboutUs.html" class="nav-link">About Us</a></li>
@@ -26,7 +26,7 @@
     </div>
     <div class="nav-component slim-scroll">
       <site-nav>
-* [Home]({{ baseUrl }}/indexList.html)
+* [Home]({{ baseUrl }}/index.html)
 * [User Guide]({{ baseUrl }}/UserGuide.html) :expanded:
   * [Quick Start]({{ baseUrl }}/UserGuide.html#quick-start)
   * [Features]({{ baseUrl }}/UserGuide.html#features)
