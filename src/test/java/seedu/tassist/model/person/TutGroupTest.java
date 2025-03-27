@@ -82,4 +82,33 @@ public class TutGroupTest {
         assertFalse(tutGroup.equals(differentTutGroup));
     }
 
+    @Test
+    public void createTutGroupFromGroupNumber_invalidInput_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> TutGroup.createTutGroupFromGroupNumber(-10000));
+        assertThrows(IllegalArgumentException.class, () -> TutGroup.createTutGroupFromGroupNumber(-1));
+        assertThrows(IllegalArgumentException.class, () -> TutGroup.createTutGroupFromGroupNumber(100));
+        assertThrows(IllegalArgumentException.class, () -> TutGroup.createTutGroupFromGroupNumber(10000));
+    }
+
+    @Test
+    public void createTutGroupFromGroupNumber_validInput_success() {
+        // One-Digit Number.
+        TutGroup expectedTutGroup = new TutGroup("T05");
+        assertTrue(TutGroup.createTutGroupFromGroupNumber(5).equals(expectedTutGroup));
+
+        // Two-Digit Number.
+        expectedTutGroup = new TutGroup("T15");
+        assertTrue(TutGroup.createTutGroupFromGroupNumber(15).equals(expectedTutGroup));
+    }
+
+    @Test
+    public void compareTo() {
+        TutGroup tutGroupOne = new TutGroup("T01");
+        TutGroup tutGroupOneDuplicate = new TutGroup("T01");
+        TutGroup tutGroupFive = new TutGroup("T05");
+        assertTrue(tutGroupOne.compareTo(tutGroupFive) < 0);
+        assertTrue(tutGroupFive.compareTo(tutGroupOne) > 0);
+        assertTrue(tutGroupOne.compareTo(tutGroupOneDuplicate) == 0);
+        assertTrue(tutGroupOneDuplicate.compareTo(tutGroupOne) == 0);
+    }
 }

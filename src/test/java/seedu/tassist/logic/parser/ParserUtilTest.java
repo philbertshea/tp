@@ -372,27 +372,27 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void getPersonsInTutorialGroup_nullPersonList_throwsNullPointerException() {
+    public void getPersonsInTutorialGroups_nullPersonList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                ParserUtil.getPersonsInTutorialGroup(null, new TutGroup("T01")));
+                ParserUtil.getPersonsInTutorialGroups(null, List.of(new TutGroup("T01"))));
     }
 
     @Test
-    public void getPersonsInTutorialGroup_nullTutGroup_throwsNullPointerException() {
+    public void getPersonsInTutorialGroup_nullTutGroups_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), null));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), null));
     }
 
     @Test
-    public void getPersonsInTutorialGroup_validListAndTutorialGroup_success() {
+    public void getPersonsInTutorialGroup_validListAndTutorialGroups_success() {
         // All Persons in provided list are of the provided tut group -> Returns the same list.
         List<Person> expectedListReturned = getTypicalPersons();
         assertEquals(expectedListReturned,
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T01")));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T01"))));
 
         // None of the Persons in provided list are of the provided tut group -> Returns an empty list.
         assertEquals(new ArrayList<Person>(),
-                ParserUtil.getPersonsInTutorialGroup(getTypicalPersons(), new TutGroup("T99")));
+                ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T99"))));
     }
 
     @Test
@@ -433,6 +433,46 @@ public class ParserUtilTest {
         assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("1,,3"));
         assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes("1 2 3"));
         assertThrows(ParseException.class, () -> ParserUtil.parseMultipleIndexes(""));
+    }
+
+    @Test
+    public void parseMultipleTutGroups_nullInput_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseMultipleTutGroups(null));
+    }
+
+    @Test
+    public void parseMultipleTutGroups_invalidInput_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("")); // Empty String.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("01")); // Invalid TutGroup.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("TT02")); // Invalid TutGroup.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("T01,T02,03")); // One Invalid.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("T01-02")); // One Invalid.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("T05-T01")); // Invalid Order.
+        assertThrows(ParseException.class, () -> ParserUtil.parseMultipleTutGroups("T01,T02-01")); // Invalid Order.
+    }
+
+    @Test
+    public void parseMultipleTutGroups_validInput_success() throws Exception {
+        // Single TutGroup.
+        assertTrue(ParserUtil.parseMultipleTutGroups("T01").equals(List.of(new TutGroup("T01"))));
+
+        // Comma-separated list of TutGroups.
+        assertTrue(ParserUtil.parseMultipleTutGroups("T01,T02,T03").equals(
+                List.of(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"))));
+
+        // Dash range of TutGroups.
+        assertTrue(ParserUtil.parseMultipleTutGroups("T01-T03").equals(
+                List.of(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"))));
+
+        // Mix of Comma and Dash.
+        assertTrue(ParserUtil.parseMultipleTutGroups("T01-T03,T05,T10").equals(
+                List.of(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"),
+                        new TutGroup("T05"), new TutGroup("T10"))));
+
+        // Duplicates
+        assertTrue(ParserUtil.parseMultipleTutGroups("T01-T03,T01,T03").equals(
+                List.of(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"))));
+
     }
 
 }
