@@ -37,17 +37,28 @@ public class AttendanceList {
     }
 
     /**
-     * Checks if attendanceString has 13 digits, each digit being 0, 1, or 2.
+     * Checks if attendanceString has 13 digits, each digit being 0, 1, 2 or 3.
      * @param attendanceString Attendance String to check.
      * @return Boolean representing whether attendanceString is valid.
      */
-    public static boolean isValidAttendanceString(String attendanceString) {
+    public static boolean isValidNonEmptyAttendanceString(String attendanceString) {
         requireNonNull(attendanceString);
         return attendanceString.matches("^[0123]{13}$");
     }
 
     /**
-     * Generates AttendanceList based on attendanceString.
+     * Checks if attendanceString is a valid non-empty string,
+     * or attendanceString is empty.
+     * @param attendanceString Attendance String to check.
+     * @return Boolean representing whether attendanceString is valid.
+     */
+    public static boolean isValidAttendanceString(String attendanceString) {
+        requireNonNull(attendanceString);
+        return attendanceString.isEmpty() || isValidNonEmptyAttendanceString(attendanceString);
+    }
+
+    /**
+     * Generates AttendanceList based on a valid attendanceString.
      * @param attendanceString Attendance String to generate AttendanceList from.
      * @return AttendanceList generated.
      */
@@ -55,6 +66,11 @@ public class AttendanceList {
         requireNonNull(attendanceString);
         checkArgument(isValidAttendanceString(attendanceString),
                 ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
+
+        if (attendanceString.isEmpty()) {
+            return EMPTY_ATTENDANCE_LIST;
+        }
+
         AttendanceList attendanceList = new AttendanceList();
         for (int i = 0; i < 13; i++) {
             attendanceList.attendanceList.add(

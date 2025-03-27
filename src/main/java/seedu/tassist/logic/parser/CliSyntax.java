@@ -30,4 +30,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_ADD_TAG = new Prefix("-a");
     public static final Prefix PREFIX_EDIT_TAG = new Prefix("-m");
     public static final Prefix PREFIX_DELETE_TAG = new Prefix("-d");
+    public static final Prefix PREFIX_EXTENSION = new Prefix("-ext");
 }
