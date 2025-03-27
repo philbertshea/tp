@@ -144,4 +144,13 @@ public class EditPersonDescriptorBuilder {
     public EditPersonDescriptor build() {
         return descriptor;
     }
+
+    /**
+     * Sets the {@code Tag} to null To make it suitable for testing with the {@code EditCommandParser}
+     * that we are building.
+     */
+    public EditPersonDescriptor buildNullTag() {
+        descriptor.setTags(null);
+        return descriptor;
+    }
 }
