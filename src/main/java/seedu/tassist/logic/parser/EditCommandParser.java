@@ -10,7 +10,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_REMARK;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;

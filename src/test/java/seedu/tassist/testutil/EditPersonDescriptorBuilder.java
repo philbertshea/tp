@@ -145,6 +145,9 @@ public class EditPersonDescriptorBuilder {
         return descriptor;
     }
 
+    /**
+     * Builds null tags for the EditCommand.
+     */
     public EditPersonDescriptor buildNullTag() {
         descriptor.setTags(null);
         return descriptor;

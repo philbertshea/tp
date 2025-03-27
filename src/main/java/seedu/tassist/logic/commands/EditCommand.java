@@ -134,7 +134,8 @@ public class EditCommand extends Command {
             return new CommandResult(String.format(MESSAGE_EDIT_SINGLE_PERSON_SUCCESS,
                     Messages.getFormattedPersonAttributesForDisplay(updatedPeople.get(0))));
         } else {
-            return new CommandResult(String.format(MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS, getEditedStudentsSummary(updatedPeople)));
+            return new CommandResult(String.format(MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS,
+                    getEditedStudentsSummary(updatedPeople)));
         }
     }
 
