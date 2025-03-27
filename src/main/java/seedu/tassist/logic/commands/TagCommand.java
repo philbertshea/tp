@@ -99,15 +99,25 @@ public class TagCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         EditCommand.EditPersonDescriptor editPersonDescriptor = new EditCommand.EditPersonDescriptor();
         Set<Tag> editedTags = new HashSet<>(personToEdit.getTags());
+        boolean res;
         if (action == ActionType.ADD) {
-            editedTags.addAll(tags);
+            res = editedTags.addAll(tags);
+            if (!res) {
+                throw new CommandException("The tags you want to add have already been already added!");
+            }
         } else if (action == ActionType.DEL) {
             if (editedTags.isEmpty()) {
                 throw new CommandException(MESSAGE_DEL_NO_MORE_ITEMS);
             }
-            editedTags.removeAll(tags);
+            res = editedTags.removeAll(tags);
+            if (!res) {
+                throw new CommandException("The tags you want to delete dont exist");
+            }
         } else if (action == ActionType.EDIT) {
-            editedTags.remove(oldTag);
+            res = editedTags.remove(oldTag);
+            if (!res) {
+                throw new CommandException("The tag you want to edit cannot be found!");
+            }
             editedTags.add(newTag);
         } else {
             throw new CommandException(MESSAGE_INVALID_ACTION);
