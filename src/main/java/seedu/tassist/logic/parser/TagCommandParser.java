@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.tassist.commons.core.index.Index;
-import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.TagCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.tag.Tag;

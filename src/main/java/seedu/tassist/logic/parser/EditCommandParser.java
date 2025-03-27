@@ -15,7 +15,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 
 import seedu.tassist.commons.core.index.Index;
-import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.EditCommand;
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.tassist.logic.parser.exceptions.ParseException;
