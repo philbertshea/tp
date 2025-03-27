@@ -144,4 +144,9 @@ public class EditPersonDescriptorBuilder {
     public EditPersonDescriptor build() {
         return descriptor;
     }
+
+    public EditPersonDescriptor buildNullTag() {
+        descriptor.setTags(null);
+        return descriptor;
+    }
 }

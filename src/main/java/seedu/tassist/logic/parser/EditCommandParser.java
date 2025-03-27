@@ -38,7 +38,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
                         PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
-                        PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
+                        PREFIX_YEAR, PREFIX_REMARK
                 );
 
         String rawIndexes = argMultimap.getValue(PREFIX_INDEX).orElse("");
@@ -95,10 +95,6 @@ public class EditCommandParser implements Parser<EditCommand> {
             if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
                 editPersonDescriptor.setRemark(ParserUtil.parseRemark(
                         argMultimap.getValue(PREFIX_REMARK).get()));
-            }
-
-            if (!editPersonDescriptor.isAnyFieldEdited()) {
-                throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
             }
         }
 

@@ -95,7 +95,7 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * Creates an EditCommand to edit a {@code Person} at the specific {@code index}.
+     * Creates an EditCommand to edit a {@code Person} at the specific {@code indexList}.
      *
      * @param indexList of the people in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
@@ -127,7 +127,13 @@ public class EditCommand extends Command {
             model.setPerson(personToEdit, editedPerson);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         }
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, "YAY!"));
+        if (indexList.size() == 1) {
+            List<Person> updatedList = model.getFilteredPersonList();
+            return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
+                    Messages.getFormattedPersonAttributesForDisplay(updatedList.get(indexList.get(0).getZeroBased()))));
+        } else {
+            return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, "TODO update batchEdit"));
+        }
     }
 
     /**
