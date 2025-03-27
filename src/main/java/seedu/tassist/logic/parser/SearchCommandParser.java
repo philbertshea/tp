@@ -1,12 +1,19 @@
 package seedu.tassist.logic.parser;
 
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_NUMBER;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
+
+import java.util.Arrays;
+import java.util.List;
 
 import seedu.tassist.logic.commands.SearchCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
@@ -16,28 +23,44 @@ import seedu.tassist.model.person.PersonMatchesPredicate;
  * Parses input arguments and creates a new SearchCommand object.
  */
 public class SearchCommandParser implements Parser<SearchCommand> {
-
-    /**
-     * Parses the given {@code String} of arguments in the context of the SearchCommand
-     * and returns a SearchCommand object for execution.
-     *
-     * @throws ParseException if the user input does not conform to the expected format
-     */
+    @Override
     public SearchCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_MAT_NUM, PREFIX_TUT_GROUP,
-                        PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_LAB_NUMBER);
+                ArgumentTokenizer.tokenize(args,
+                        PREFIX_NAME, PREFIX_MAT_NUM, PREFIX_PHONE, PREFIX_TELE_HANDLE,
+                        PREFIX_EMAIL, PREFIX_TAG, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
+                        PREFIX_FACULTY, PREFIX_YEAR);
 
-        String name = argMultimap.getValue(PREFIX_NAME).orElse(null);
+        String nameStr = argMultimap.getValue(PREFIX_NAME).orElse(null);
+        List<String> nameKeywords = (nameStr != null)
+                ? Arrays.asList(nameStr.trim().split("\\s+"))
+                : null;
+
         String matNum = argMultimap.getValue(PREFIX_MAT_NUM).orElse(null);
+        String phone = argMultimap.getValue(PREFIX_PHONE).orElse(null);
+        String teleHandle = argMultimap.getValue(PREFIX_TELE_HANDLE).orElse(null);
+        String email = argMultimap.getValue(PREFIX_EMAIL).orElse(null);
+        String tag = argMultimap.getValue(PREFIX_TAG).orElse(null);
         String tutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).orElse(null);
         String labGroup = argMultimap.getValue(PREFIX_LAB_GROUP).orElse(null);
         String faculty = argMultimap.getValue(PREFIX_FACULTY).orElse(null);
         String year = argMultimap.getValue(PREFIX_YEAR).orElse(null);
 
+        if (nameKeywords == null
+                && matNum == null
+                && phone == null
+                && teleHandle == null
+                && email == null
+                && tag == null
+                && tutGroup == null
+                && labGroup == null
+                && faculty == null
+                && year == null) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
+        }
+
         PersonMatchesPredicate predicate = new PersonMatchesPredicate(
-                name, matNum, tutGroup, labGroup, faculty, year
-        );
+                nameKeywords, matNum, phone, teleHandle, email, tag, tutGroup, labGroup, faculty, year);
 
         return new SearchCommand(predicate);
     }

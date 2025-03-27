@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.AddCommandParser.anyPrefixesPresent;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
@@ -40,9 +41,12 @@ public class EditCommandParser implements Parser<EditCommand> {
                         PREFIX_YEAR, PREFIX_REMARK
                 );
 
+        if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
         String rawIndexes = argMultimap.getValue(PREFIX_INDEX).orElse("");
         List<Index> targetIndexes;
-
         try {
             targetIndexes = ParserUtil.parseMultipleIndexes(rawIndexes);
         } catch (ParseException pe) {
@@ -112,6 +116,11 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_YEAR).isPresent()) {
             editPersonDescriptor.setYear(ParserUtil.parseYear(
                     argMultimap.getValue(PREFIX_YEAR).get()));
+        }
+
+        if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
+            editPersonDescriptor.setRemark(ParserUtil.parseRemark(
+                    argMultimap.getValue(PREFIX_REMARK).get()));
         }
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {

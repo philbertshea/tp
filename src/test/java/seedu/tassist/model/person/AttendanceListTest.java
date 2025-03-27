@@ -19,13 +19,35 @@ public class AttendanceListTest {
     // No Constructor tests as the constructor is private.
 
     @Test
+    public void isValidNonEmptyAttendanceString() {
+
+        // Null -> throws NullPointerException
+        assertThrows(NullPointerException.class, () -> AttendanceList.isValidNonEmptyAttendanceString(null));
+
+        // Invalid attendanceString -> returns false.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("")); // Empty String
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000")); // Invalid Length
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000000000000000")); // Invalid Length
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000 00000000")); // No Spaces
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000a*-0000000")); // Invalid Chars
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
+
+        // Valid attendanceString -> returns true.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("1111111111111"));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("2222222222222"));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0120123012012"));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0012013120011"));
+
+    }
+
+    @Test
     public void isValidAttendanceString() {
 
         // Null -> throws NullPointerException
         assertThrows(NullPointerException.class, () -> AttendanceList.isValidAttendanceString(null));
 
         // Invalid attendanceString -> returns false.
-        assertFalse(AttendanceList.isValidAttendanceString(""));
         assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
         assertFalse(AttendanceList.isValidAttendanceString("00000 00000000")); // No Spaces
@@ -33,6 +55,7 @@ public class AttendanceListTest {
         assertFalse(AttendanceList.isValidAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
 
         // Valid attendanceString -> returns true.
+        assertTrue(AttendanceList.isValidAttendanceString(""));
         assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
         assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
         assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
@@ -41,14 +64,29 @@ public class AttendanceListTest {
 
     }
 
-    public void generateAttendanceList_null_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () ->
+    @Test
+    public void generateAttendanceList_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
                 AttendanceList.generateAttendanceList(null));
     }
 
+    @Test
     public void generateAttendanceList_invalidAttendanceString_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () ->
                 AttendanceList.generateAttendanceList("00000"));
+    }
+
+    @Test
+    public void generateAttendanceList_validAttendanceString_success() {
+        // Empty AttendanceString -> Return EMPTY_ATTENDANCE_LIST.
+        assertTrue(AttendanceList.generateAttendanceList("")
+                .equals(AttendanceList.EMPTY_ATTENDANCE_LIST));
+
+        // Non-Empty AttendanceString -> Return correct attendance list.
+        String testAttendanceString = "0010230210112";
+        String expectedStringValue = testAttendanceString;
+        assertTrue(AttendanceList.generateAttendanceList(testAttendanceString).toString()
+                .equals(expectedStringValue));
     }
 
     @Test

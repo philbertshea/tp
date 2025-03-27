@@ -16,6 +16,8 @@ import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
@@ -31,7 +33,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
         MarkAttendanceCommand expectedCommand =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ATTENDED);
+                new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ATTENDED);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -42,7 +44,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_NOT_ATTENDED;
         MarkAttendanceCommand expectedCommand =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.NOT_ATTENDED);
+                new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.NOT_ATTENDED);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -53,7 +55,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " "
                 + PREFIX_MARK_ON_MC;
         MarkAttendanceCommand expectedCommand =
-                new MarkAttendanceCommand(INDEX_FIRST_PERSON, VALID_WEEK_A, Attendance.ON_MC);
+                new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ON_MC);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -63,7 +65,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.ATTENDED);
+                VALID_WEEK_A, Attendance.ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -73,7 +75,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.NOT_ATTENDED);
+                VALID_WEEK_A, Attendance.NOT_ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -83,7 +85,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.ON_MC);
+                VALID_WEEK_A, Attendance.ON_MC, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -93,7 +95,7 @@ public class MarkAttendanceCommandParserTest {
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NO_TUTORIAL;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                new TutGroup(VALID_TUT_GROUP_AMY), VALID_WEEK_A, Attendance.NO_TUTORIAL);
+                VALID_WEEK_A, Attendance.NO_TUTORIAL, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 

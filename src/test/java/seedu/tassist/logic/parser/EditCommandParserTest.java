@@ -74,7 +74,8 @@ public class EditCommandParserTest {
     public void parse_missingParts_failure() {
         // TODO: Might need to check all this again
         // No index specified.
-        assertParseFailure(parser, PREFIX_PHONE + " " + VALID_PHONE_AMY, Index.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, PREFIX_PHONE + " " + VALID_PHONE_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
 
         // No field specified
         assertParseFailure(parser, " " + PREFIX_INDEX + " 1", EditCommand.MESSAGE_NOT_EDITED);
@@ -169,9 +170,14 @@ public class EditCommandParserTest {
                 .withYear(VALID_YEAR_AMY)
                 .withLabGroup(VALID_LAB_GROUP_AMY)
                 .withName(VALID_NAME_AMY)
+<<<<<<< HEAD
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
                 .build();
         EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
+=======
+                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).build();
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+>>>>>>> master
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }

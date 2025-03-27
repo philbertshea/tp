@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -11,7 +12,9 @@ import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.exceptions.DataLoadingException;
 import seedu.tassist.commons.util.CsvUtil;
 import seedu.tassist.commons.util.FileUtil;
+import seedu.tassist.model.AddressBook;
 import seedu.tassist.model.ReadOnlyAddressBook;
+import seedu.tassist.model.person.Person;
 
 /**
  * A class to save the AddressBook data as a CSV file on the hard disk.
@@ -44,8 +47,7 @@ public class CsvAddressBookStorage implements AddressBookStorage {
      */
     @Override
     public Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
-        // TODO: Future implementation goes here:
-        return Optional.empty();
+        return readAddressBook(filePath);
     }
 
     /**
@@ -56,10 +58,20 @@ public class CsvAddressBookStorage implements AddressBookStorage {
      * @throws DataLoadingException if loading the data from storage fails.
      */
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath)
-            throws DataLoadingException {
-        // TODO: Future implementation goes here:
-        return Optional.empty();
+    public Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
+        requireNonNull(filePath);
+        logger.info("Reading AddressBook from CSV file: " + filePath);
+
+        try {
+            List<Person> persons = CsvUtil.deserializeCsvToPersonList(filePath);
+            AddressBook addressBook = new AddressBook();
+            for (Person p : persons) {
+                addressBook.addPerson(p);
+            }
+            return Optional.of(addressBook);
+        } catch (Exception e) {
+            throw new DataLoadingException(e);
+        }
     }
 
     /**

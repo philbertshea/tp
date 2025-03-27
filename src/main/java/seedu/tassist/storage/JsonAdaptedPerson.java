@@ -30,7 +30,7 @@ import seedu.tassist.model.tag.Tag;
 /**
  * Jackson-friendly version of {@link Person}.
  */
-class JsonAdaptedPerson {
+public class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
@@ -53,17 +53,17 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("teleHande") String teleHandle,
-            @JsonProperty("email") String email,
-            @JsonProperty("matNum") String matNum,
-            @JsonProperty("tutGroup") String tutGroup,
-            @JsonProperty("labGroup") String labGroup,
-            @JsonProperty("faculty") String faculty,
-            @JsonProperty("year") String year,
-            @JsonProperty("remark") String remark,
-            @JsonProperty("attendances") String attendances,
-            @JsonProperty("labScores") String labScores,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+                              @JsonProperty("teleHandle") String teleHandle,
+                              @JsonProperty("email") String email,
+                              @JsonProperty("matNum") String matNum,
+                              @JsonProperty("tutGroup") String tutGroup,
+                              @JsonProperty("labGroup") String labGroup,
+                              @JsonProperty("faculty") String faculty,
+                              @JsonProperty("year") String year,
+                              @JsonProperty("remark") String remark,
+                              @JsonProperty("attendances") String attendances,
+                              @JsonProperty("labScores") String labScores,
+                              @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.teleHandle = teleHandle;
@@ -105,7 +105,7 @@ class JsonAdaptedPerson {
     /**
      * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
      *
-     * @throws IllegalValueException if there were any data constraints violations in the adapted person.
+     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
@@ -146,6 +146,7 @@ class JsonAdaptedPerson {
         final AttendanceList modelAttendanceList = validateAndCreate(attendances,
                 AttendanceList.class, AttendanceList::isValidAttendanceString,
                 AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
+
         final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
                 LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SAVE,
                 LabScoreList::loadLabScores);
@@ -170,14 +171,6 @@ class JsonAdaptedPerson {
         }
     }
 
-    /**
-     * Validates if the value satisfies the constraints defined by the validator.
-     *
-     * @param value                     {@code String} value to validate.
-     * @param validator                 {@code Predicate} testing if the value satisfies constraints.
-     * @param errorMessage              The error message to use if validation fails.
-     * @throws IllegalValueException    If the value fails validation.
-     */
     private void validateConstraints(String value,
             Predicate<String> validator, String errorMessage) throws IllegalValueException {
         if (!validator.test(value)) {
@@ -185,41 +178,17 @@ class JsonAdaptedPerson {
         }
     }
 
-    /**
-     * Validates if the value is not null, then creates a model object.
-     *
-     * @param value                     {@code String} value to validate.
-     * @param objClass                  {@code Class} of the model object.
-     * @param constructor               {@code Function} converting the {@code value} to the model object.
-     * @return                          The created model object.
-     * @throws IllegalValueException    If the value fails validation.
-     */
     private <T> T validateAndCreate(String value, Class<T> objClass,
             Function<String, T> constructor) throws IllegalValueException {
         validateNull(value, objClass);
         return constructor.apply(value);
     }
 
-    /**
-     * Validates if the value is not null and satisfies any constraints, then creates a model object.
-     * Null must be checked for first to prevent null pointers.
-     *
-     * @param value                     {@code String} value to validate.
-     * @param objClass                  {@code Class} of the model object.
-     * @param validator                 {@code Predicate} testing if the value satisfies constraints.
-     * @param errorMessage              The error message to use if validation fails.
-     * @param constructor               {@code Function} converting the {@code value} to the model object.
-     * @return                          The created model object.
-     * @throws IllegalValueException    If the value fails validation.
-     */
     private <T> T validateAndCreate(String value, Class<T> objClass,
             Predicate<String> validator, String errorMessage,
             Function<String, T> constructor) throws IllegalValueException {
-
         validateNull(value, objClass);
         validateConstraints(value, validator, errorMessage);
-
         return constructor.apply(value);
     }
-
 }

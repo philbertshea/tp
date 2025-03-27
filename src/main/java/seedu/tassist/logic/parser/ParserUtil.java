@@ -35,6 +35,8 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INVALID_WEEK =
             "Week is not an unsigned integer from 1 to 13.";
+    public static final String MESSAGE_INVALID_DASH_ORDER = "When using dash for Bulk TutGroups, "
+            + "ensure they are in ascending order. E.g. T01-T05, not T05-T01.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
@@ -225,6 +227,18 @@ public class ParserUtil {
     }
 
     /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
+     */
+    public static List<Tag> parseTagsList(Collection<String> tags) throws ParseException {
+        requireNonNull(tags);
+        final List<Tag> tagSet = new ArrayList<>();
+        for (String tagName : tags) {
+            tagSet.add(parseTag(tagName));
+        }
+        return tagSet;
+    }
+
+    /**
      * Parses {@code String week} into an {@code int}.
      *
      * @throws ParseException if the given {@code week} is invalid.
@@ -270,13 +284,13 @@ public class ParserUtil {
      * who are in the given tutorial group.
      *
      * @param personList List of persons to filter from.
-     * @param tutGroup TutGroup to match persons against.
+     * @param tutGroupList List of TutGroups to match persons against.
      * @return List of persons from personList with the matching tutGroup.
      */
-    public static List<Person> getPersonsInTutorialGroup(List<Person> personList, TutGroup tutGroup) {
-        requireAllNonNull(personList, tutGroup);
+    public static List<Person> getPersonsInTutorialGroups(List<Person> personList, List<TutGroup> tutGroupList) {
+        requireAllNonNull(personList, tutGroupList);
         return personList.stream()
-                .filter(person -> person.getTutGroup().equals(tutGroup))
+                .filter(person -> tutGroupList.contains(person.getTutGroup()))
                 .toList();
     }
 
@@ -297,6 +311,36 @@ public class ParserUtil {
 
         Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
         return convertIntegersToIndexes(indexSet);
+    }
+
+    /**
+     * Parses an input string representing a list of TutGroups ("T01,T02", "T02-T05")
+     * and returns a sorted, de-duplicated list of {@link TutGroup} objects.
+     *
+     * @param input Input string provided.
+     * @return List of TutGroups parsed from the list.
+     * @throws ParseException If the input is invalid.
+     */
+    public static List<TutGroup> parseMultipleTutGroups(String input) throws ParseException {
+        requireNonNull(input);
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
+        }
+
+        Set<TutGroup> tutGroupSet = new TreeSet<>();
+        String[] parts = input.split(",");
+
+        for (String part : parts) {
+            part = part.trim();
+            if (part.contains("-")) {
+                parseTutGroupRange(part, tutGroupSet);
+            } else {
+                tutGroupSet.add(parseTutGroup(part));
+            }
+        }
+
+        return tutGroupSet.stream().toList();
     }
 
     /**
@@ -321,6 +365,39 @@ public class ParserUtil {
         }
 
         return indexSet;
+    }
+
+    /**
+     * Parses a string representing a range of TutGroups (e.g. "T02-T04")
+     * and adds the tutGroups to the provided set.
+     *
+     * @param rangeStr Range String to be parsed.
+     * @param tutGroupSet The Set to populate with TutGroups.
+     * @throws ParseException If range provided is invalid.
+     */
+    private static void parseTutGroupRange(String rangeStr, Set<TutGroup> tutGroupSet) throws ParseException {
+        requireAllNonNull(rangeStr, tutGroupSet);
+        String[] range = rangeStr.split("-");
+        if (range.length != 2) {
+            throw new ParseException(TutGroup.MESSAGE_CONSTRAINTS);
+        }
+
+        // Check if tutGroups are of valid format.
+        parseTutGroup(range[0].trim());
+        parseTutGroup(range[1].trim());
+
+        try {
+            int start = Integer.parseInt(range[0].trim().substring(1));
+            int end = Integer.parseInt(range[1].trim().substring(1));
+            if (start > end) {
+                throw new ParseException(MESSAGE_INVALID_DASH_ORDER);
+            }
+            for (int i = start; i <= end; i++) {
+                tutGroupSet.add(TutGroup.createTutGroupFromGroupNumber(i));
+            }
+        } catch (NumberFormatException e) {
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+        }
     }
 
     /**
