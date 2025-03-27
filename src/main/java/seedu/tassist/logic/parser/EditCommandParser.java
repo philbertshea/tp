@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
@@ -14,6 +15,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 
 import seedu.tassist.commons.core.index.Index;
+import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.EditCommand;
 import seedu.tassist.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.tassist.logic.parser.exceptions.ParseException;
@@ -36,6 +38,11 @@ public class EditCommandParser implements Parser<EditCommand> {
                         PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
                         PREFIX_YEAR, PREFIX_REMARK
                 );
+
+        if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
 
         Index index;
 

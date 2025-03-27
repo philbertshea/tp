@@ -1,5 +1,6 @@
 package seedu.tassist.logic.parser;
 
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.commands.TagCommand.MESSAGE_USAGE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_ADD_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_DELETE_TAG;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.tassist.commons.core.index.Index;
+import seedu.tassist.logic.commands.DeleteCommand;
 import seedu.tassist.logic.commands.TagCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.tag.Tag;
@@ -45,6 +47,11 @@ public class TagCommandParser implements Parser<TagCommand> {
                         PREFIX_ADD_TAG, PREFIX_EDIT_TAG, PREFIX_DELETE_TAG,
                         PREFIX_INDEX, PREFIX_TAG
                 );
+
+        if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
 
         Index index;
 
