@@ -91,6 +91,20 @@ Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULA
 
 <box type="tip" seamless>
 
+**Tip:** Matriculation numbers follows a checksum rule!
+See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
+
+Want to manually calculate the checksum?
+1. Sum up only the **last 6 numbers** within the matriculation number.
+1. Divide this sum by 13 and take the remainder.
+1. Use the remainder as an index (0-based!) to select a character from the sequence `YXWURNMLJHEADB`.
+- `A0000000Y` has a sum of `0` and thus ends with `Y`.
+- `A4000049Y` has a sum of `13` and thus also ends with `Y`.
+- `A0000001X` has a sum of `1` and thus ends with `X`.
+</box>
+
+<box type="tip" seamless>
+
 **Tip:** A person can have any number of tags (including 0).
 Tags must be a single word consisting of alphanumeric characters only.
 </box>

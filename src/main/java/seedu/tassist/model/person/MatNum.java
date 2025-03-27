@@ -12,8 +12,9 @@ public class MatNum {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid matriculation number!"
             + "\nMatriculation numbers should start with 'A' and contain 7 digits minimally."
-            + "\nThe last character of the matriculation number will"
-            + "be automatically generated if not provided.";
+            + "\nThe last character follows a checksum rule.\n"
+            + "If you are unsure about the checksum character, enter the first 8 characters \n"
+            + " and the system will complete it for you!";
 
     public static final String VALIDATION_REGEX = "^[Aa]\\d{7}[A-Za-z]?$";
 
