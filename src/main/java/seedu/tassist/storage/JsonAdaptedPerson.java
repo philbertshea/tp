@@ -157,6 +157,13 @@ public class JsonAdaptedPerson {
                 modelAttendanceList, modelLabScoreList, modelTags);
     }
 
+    /**
+     * Validates if the value is not null.
+     *
+     * @param value     {@code String} value to validate.
+     * @param objClass  {@code Class} of the model object.
+     * @throws IllegalValueException    If the value fails validation.
+     */
     private <T> void validateNull(String value, Class<T> objClass) throws IllegalValueException {
         if (value == null) {
             throw new IllegalValueException(
