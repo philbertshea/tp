@@ -30,7 +30,6 @@ import seedu.tassist.model.person.TutGroup;
  * Marks the attendance of a student within an existing week.
  */
 public class MarkAttendanceCommand extends Command {
-    private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     public static final String COMMAND_WORD = "att";
 
@@ -100,6 +99,8 @@ public class MarkAttendanceCommand extends Command {
             PREFIX_WEEK, PREFIX_MARK_NOT_ATTENDED, PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL,
             COMMAND_WORD, COMMAND_WORD, COMMAND_WORD, COMMAND_WORD
     );
+
+    private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final List<Index> indexList;
 
