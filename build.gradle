@@ -22,7 +22,12 @@ checkstyle {
 
 test {
     useJUnitPlatform()
+    jvmArgs '-ea'
     finalizedBy jacocoTestReport
+}
+
+run {
+    jvmArgs '-ea'
 }
 
 task coverage(type: JacocoReport) {
