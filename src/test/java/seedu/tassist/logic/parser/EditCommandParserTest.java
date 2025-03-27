@@ -20,8 +20,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
-import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
-import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.TELE_HANDLE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.TUT_GROUP_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
@@ -65,8 +63,6 @@ import seedu.tassist.model.person.Year;
 import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {
-
-    private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -243,8 +239,8 @@ public class EditCommandParserTest {
 
         // Multiple valid fields repeated.
         userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + PHONE_DESC_AMY + EMAIL_DESC_AMY
-                + TAG_DESC_FRIEND + PHONE_DESC_AMY + EMAIL_DESC_AMY + TAG_DESC_FRIEND
-                + PHONE_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND;
+                + PHONE_DESC_AMY + EMAIL_DESC_AMY
+                + PHONE_DESC_BOB + EMAIL_DESC_BOB;
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
