@@ -1,12 +1,13 @@
 package seedu.tassist.logic.parser;
 
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.tassist.commons.core.LogsCenter;
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.tassist.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import seedu.tassist.logic.commands.AddCommand;
 import seedu.tassist.logic.commands.ClearCommand;
 import seedu.tassist.logic.commands.Command;
