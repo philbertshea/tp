@@ -44,6 +44,8 @@ import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
@@ -168,8 +170,9 @@ public class EditCommandParserTest {
                 .withYear(VALID_YEAR_AMY)
                 .withLabGroup(VALID_LAB_GROUP_AMY)
                 .withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
+                .build();
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -181,7 +184,7 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_AMY).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -217,7 +220,7 @@ public class EditCommandParserTest {
      */
     private void assertSingleFieldEdit(Index targetIndex, String userInputSuffix, EditPersonDescriptor descriptor) {
         String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + userInputSuffix;
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
