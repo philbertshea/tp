@@ -15,6 +15,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -86,7 +87,8 @@ public class EditCommand extends Command {
             + PREFIX_TAG + " friends "
             + PREFIX_TAG + " debt";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: \n%1$s";
+    public static final String MESSAGE_EDIT_SINGLE_PERSON_SUCCESS = "Edited Person: \n%1$s";
+    public static final String MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS = "Summary of edited people: \n%1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book.";
@@ -112,6 +114,7 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> updatedPeople = new ArrayList<>();
         for (Index index : indexList) {
             if (index.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
@@ -123,17 +126,34 @@ public class EditCommand extends Command {
             if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
-
+            updatedPeople.add(editedPerson);
             model.setPerson(personToEdit, editedPerson);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         }
         if (indexList.size() == 1) {
-            List<Person> updatedList = model.getFilteredPersonList();
-            return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
-                    Messages.getFormattedPersonAttributesForDisplay(updatedList.get(indexList.get(0).getZeroBased()))));
+            return new CommandResult(String.format(MESSAGE_EDIT_SINGLE_PERSON_SUCCESS,
+                    Messages.getFormattedPersonAttributesForDisplay(updatedPeople.get(0))));
         } else {
-            return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, "TODO update batchEdit"));
+            return new CommandResult(String.format(MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS, getEditedStudentsSummary(updatedPeople)));
         }
+    }
+
+    /**
+     * Generates a short summary of deleted students.
+     */
+    public static String getEditedStudentsSummary(List<Person> students) {
+        StringBuilder sb = new StringBuilder();
+        for (Person p : students) {
+            sb.append(String.format("%s (%s) - Year: %s, Faculty: %s, Tutorial Grp: %s, Lab Grp: %s\n",
+                    p.getName().fullName,
+                    p.getMatNum().value,
+                    p.getYear().value,
+                    p.getFaculty().value,
+                    p.getTutGroup().value,
+                    p.getLabGroup().value)
+            );
+        }
+        return sb.toString().trim();
     }
 
     /**
