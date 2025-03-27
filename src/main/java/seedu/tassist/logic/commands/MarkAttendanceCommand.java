@@ -12,12 +12,15 @@ import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.logic.parser.ParserUtil;
 import seedu.tassist.model.Model;
+import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.AttendanceList;
 import seedu.tassist.model.person.Person;
@@ -97,6 +100,8 @@ public class MarkAttendanceCommand extends Command {
             COMMAND_WORD, COMMAND_WORD, COMMAND_WORD, COMMAND_WORD
     );
 
+    private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+
     private final List<Index> indexList;
 
     private final List<TutGroup> tutGroupList;
@@ -151,10 +156,12 @@ public class MarkAttendanceCommand extends Command {
         // regardless of the initial attendance status of students within it.
 
         if (personToCheck.getAttendanceList() == AttendanceList.EMPTY_ATTENDANCE_LIST) {
+            logger.info("Invalid Command: Person has No TutGroup hence Empty AttendanceList.");
             // Cannot mark attendance if AttendanceList is Empty.
             throw new CommandException(String.format(
                     MESSAGE_MARK_GIVEN_NO_TUT_GROUP_FAILURE, personToCheck.getName(), personToCheck.getMatNum()));
         } else if (personToCheck.getAttendanceList().getAttendanceForWeek(week) == Attendance.NO_TUTORIAL) {
+            logger.info("Invalid Command: Individual currently has No Tutorial.");
             // Cannot mark attendance if attendance status is currently No Tutorial.
             throw new CommandException(String.format(
                     MESSAGE_MARK_WHEN_NO_TUTORIAL_FAILURE, personToCheck.getName(), personToCheck.getMatNum(),
@@ -170,6 +177,7 @@ public class MarkAttendanceCommand extends Command {
         StringBuilder successMessage = new StringBuilder();
 
         if (tutGroupList != null) {
+
             personsToEdit = ParserUtil.getPersonsInTutorialGroups(lastShownList, tutGroupList);
             successMessage.append(generateSuccessMessage(tutGroupList)).append("\n-------------\n");
         } else {
