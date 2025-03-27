@@ -8,8 +8,8 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EDIT_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Stream;
 
 import seedu.tassist.commons.core.index.Index;
@@ -34,7 +34,7 @@ public class TagCommandParser implements Parser<TagCommand> {
     }
 
     /**
-     * Parses {@code userInput} into a command and returns it.
+     * Parses {@code args} into a command and returns it.
      *
      * @param args
      * @throws ParseException if {@code userInput} does not conform the expected format
@@ -70,28 +70,18 @@ public class TagCommandParser implements Parser<TagCommand> {
             throw new ParseException(String.format(MESSAGE_MISSING_TAG, MESSAGE_USAGE));
         }
 
-        Set<Tag> tagList = new LinkedHashSet<>(ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG)));
+        List<Tag> tagList = ParserUtil.parseTagsList(argMultimap.getAllValues(PREFIX_TAG));
 
         if (arePrefixesPresent(argMultimap, PREFIX_ADD_TAG)) {
-            return new TagCommand(index, ActionType.ADD, tagList, null, null);
+            return new TagCommand(index, ActionType.ADD, new HashSet<>(tagList), null, null);
         } else if (arePrefixesPresent(argMultimap, PREFIX_DELETE_TAG)) {
-            return new TagCommand(index, ActionType.DEL, tagList, null, null);
+            return new TagCommand(index, ActionType.DEL, new HashSet<>(tagList), null, null);
         } else if (arePrefixesPresent(argMultimap, PREFIX_EDIT_TAG)) {
             if (tagList.size() != 2) {
                 throw new ParseException(String.format(MESSAGE_MISSING_OLD_NEW_TAG, MESSAGE_USAGE));
             }
-            int idx = 0;
-            Tag oldTag = new Tag("new");
-            Tag newTag = new Tag("new");
-            for (Tag t: tagList) {
-                if (idx == 0) {
-                    oldTag = t;
-                } else {
-                    newTag = t;
-                }
-                idx++;
-            }
-            return new TagCommand(index, ActionType.EDIT, null, oldTag, newTag);
+
+            return new TagCommand(index, ActionType.EDIT, null, tagList.get(0), tagList.get(1));
         } else {
             throw new ParseException("You have given an invalid tag command!");
         }

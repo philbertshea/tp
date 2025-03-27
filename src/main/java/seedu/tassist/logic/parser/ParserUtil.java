@@ -227,6 +227,18 @@ public class ParserUtil {
     }
 
     /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
+     */
+    public static List<Tag> parseTagsList(Collection<String> tags) throws ParseException {
+        requireNonNull(tags);
+        final List<Tag> tagSet = new ArrayList<>();
+        for (String tagName : tags) {
+            tagSet.add(parseTag(tagName));
+        }
+        return tagSet;
+    }
+
+    /**
      * Parses {@code String week} into an {@code int}.
      *
      * @throws ParseException if the given {@code week} is invalid.

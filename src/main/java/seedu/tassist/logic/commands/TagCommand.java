@@ -114,11 +114,14 @@ public class TagCommand extends Command {
                 throw new CommandException("The tags you want to delete dont exist");
             }
         } else if (action == ActionType.EDIT) {
+            res = editedTags.add(newTag);
+            if (!res) {
+                throw new CommandException("The tag's new value you want to add already exists!");
+            }
             res = editedTags.remove(oldTag);
             if (!res) {
                 throw new CommandException("The tag you want to edit cannot be found!");
             }
-            editedTags.add(newTag);
         } else {
             throw new CommandException(MESSAGE_INVALID_ACTION);
         }
