@@ -1,7 +1,9 @@
 package seedu.tassist.ui;
 
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -17,6 +19,7 @@ import seedu.tassist.commons.core.GuiSettings;
 import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.logic.Logic;
 import seedu.tassist.logic.commands.CommandResult;
+import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.logic.parser.exceptions.ParseException;
 
@@ -150,57 +153,39 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
-    /**
-     * Handles the action for loading a file.
-     */
-    @FXML
-    private void handleLoad() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load CSV File");
-        fileChooser.getExtensionFilters().add(new FileChooser
-                .ExtensionFilter("CSV Files", "*.csv"));
-        File file = fileChooser.showOpenDialog(primaryStage);
-        if (file != null) {
-            // TODO: Integrate with logic/storage to load file data.
-            logger.info("Load file: " + file.getAbsolutePath());
-        }
+    void show() {
+        primaryStage.show();
     }
 
-    /**
-     * Handles the action for saving a file.
-     */
+
     @FXML
     private void handleExport() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Export Data As...");
+        fileChooser.setTitle("Export Data");
+
+        // Set the allowed directory
+        File allowedDirectory = new File("data");
+        if (!allowedDirectory.exists()) {
+            allowedDirectory.mkdirs(); // Create the directory if it doesn't exist
+        }
+        fileChooser.setInitialDirectory(allowedDirectory);
 
         // Set default file extension options
-        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter(
-                "JSON File (*.json)", "*.json");
-        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter(
-                "CSV File (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV File (*.csv)", "*.csv");
         fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
 
+        // Show save dialog
         File file = fileChooser.showSaveDialog(primaryStage);
-
         if (file != null) {
             String[] fileData = file.getName().split("\\.");
             try {
-                if (fileData[1].equals("csv")) {
-                    logic.saveCsv(file.toPath());
-                    logger.info("CSV data successfully saved to: " + file.getAbsolutePath());
-                } else if (fileData[1].equals("json")) {
-                    logic.saveJson(file.toPath());
-                    logger.info("JSON data successfully saved to: " + file.getAbsolutePath());
-                }
-            } catch (IOException e) {
+                executeCommand(ExportDataCommand.COMMAND_WORD + " "
+                        + PREFIX_FILE_PATH + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+            } catch (CommandException | ParseException e) {
                 logger.info("An error occurred while exporting: " + e.getMessage());
             }
         }
-    }
-
-    void show() {
-        primaryStage.show();
     }
 
     /**
@@ -217,6 +202,41 @@ public class MainWindow extends UiPart<Stage> {
 
     public PersonListPanel getPersonListPanel() {
         return personListPanel;
+    }
+
+    @FXML
+    private void handleLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Data");
+
+        // Set the allowed directory
+        File allowedDirectory = new File("data");
+        if (!allowedDirectory.exists()) {
+            allowedDirectory.mkdirs(); // Create the directory if it doesn't exist
+        }
+        fileChooser.setInitialDirectory(allowedDirectory);
+
+        // Set default file extension options
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV File (*.csv)", "*.csv");
+        fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
+
+        // Show open dialog
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            String[] fileData = file.getName().split("\\.");
+            if (fileData.length < 2) {
+                logger.info("Invalid file selected.");
+                resultDisplay.setFeedbackToUser("Invalid file selected. Please choose a .json or .csv file.");
+                return;
+            }
+            try {
+                executeCommand("load " + PREFIX_FILE_PATH + " " + fileData[0] + " "
+                        + PREFIX_EXTENSION + " " + fileData[1]);
+            } catch (CommandException | ParseException e) {
+                logger.info("An error occurred while loading: " + e.getMessage());
+            }
+        }
     }
 
     /**

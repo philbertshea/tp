@@ -17,6 +17,7 @@ import seedu.tassist.logic.commands.ExitCommand;
 import seedu.tassist.logic.commands.ExportDataCommand;
 import seedu.tassist.logic.commands.HelpCommand;
 import seedu.tassist.logic.commands.ListCommand;
+import seedu.tassist.logic.commands.LoadDataCommand;
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
 import seedu.tassist.logic.commands.RedoCommand;
 import seedu.tassist.logic.commands.SearchCommand;
@@ -104,6 +105,9 @@ public class AddressBookParser {
         case ExportDataCommand.COMMAND_WORD:
             Operations.recordCurrentCommand("Export Command", Operations.CommandType.IGNORED);
             return new ExportDataCommandParser().parse(arguments);
+
+        case LoadDataCommand.COMMAND_WORD:
+            return new LoadDataCommandParser().parse(arguments);
 
         case UndoCommand.COMMAND_WORD:
             Operations.recordCurrentCommand(Operations.CommandType.UNDO);

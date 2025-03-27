@@ -68,6 +68,10 @@ public class CommandTestUtil {
     public static final int DEFAULT_LAB_MAX_SCORE = 25;
     public static final String VALID_EXPORT_FILE_PATH_CSV = "./data/tassist_data.csv";
     public static final String VALID_EXPORT_FILE_PATH_JSON = "./data/tassist_data.json";
+    public static final String VALID_FILE_NAME = "userdata";
+    public static final String VALID_FILE_EXTENSION_CSV = "csv";
+    public static final String VALID_FILE_EXTENSION_JSON = "json";
+
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + " " + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + " " + VALID_NAME_BOB;
