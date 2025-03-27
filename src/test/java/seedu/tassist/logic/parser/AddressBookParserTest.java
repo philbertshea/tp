@@ -8,13 +8,11 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.tassist.testutil.TypicalPersons.AMY;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import seedu.tassist.commons.core.index.Index;
@@ -59,11 +57,11 @@ public class AddressBookParserTest {
         List<Index> expectedIndexes = ParserUtil.parseMultipleIndexes("1,3-4");
         assertEquals(new DeleteCommand(expectedIndexes), command);
     }
-    @Disabled
+
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder(AMY).build();
-        EditCommand.EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+        Person person = new PersonBuilder().build();
+        EditCommand.EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).buildNullTag();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
