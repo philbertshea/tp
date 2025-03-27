@@ -8,7 +8,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  * Optional field.
  * Guarantees: immutable; is valid as declared in {@link #isValidTutGroup(String)}
  */
-public class TutGroup {
+public class TutGroup implements Comparable<TutGroup> {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
             + "\nTutorial group should either start with a 'T' or 't'"
@@ -46,6 +46,22 @@ public class TutGroup {
         return test.matches(VALIDATION_REGEX) || test.isEmpty();
     }
 
+    /**
+     * Creates and returns a {@link TutGroup} instance
+     * given an integer tutGroupNumber, if valid (i.e. between 1 and 99 inclusive).
+     *
+     * @param tutGroupNumber Number representing the tutorial group.
+     * @return TutGroup created given tutGroupNumber.
+     */
+    public static TutGroup createTutGroupFromGroupNumber(int tutGroupNumber) {
+        checkArgument(tutGroupNumber > 0 && tutGroupNumber < 100, MESSAGE_CONSTRAINTS);
+        if (tutGroupNumber < 10) {
+            return new TutGroup("T0" + tutGroupNumber);
+        } else {
+            return new TutGroup("T" + tutGroupNumber);
+        }
+    }
+
     @Override
     public String toString() {
         return value;
@@ -71,4 +87,10 @@ public class TutGroup {
         return value.hashCode();
     }
 
+    @Override
+    public int compareTo(TutGroup o) {
+        int thisGroupNumber = Integer.parseInt(this.value.substring(1));
+        int oGroupNumber = Integer.parseInt(o.value.substring(1));
+        return thisGroupNumber - oGroupNumber;
+    }
 }
