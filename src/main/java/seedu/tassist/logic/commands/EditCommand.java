@@ -54,34 +54,38 @@ public class EditCommand extends Command {
             "Usage: edit %s INDEX [OPTIONS]...\n\n"
                     + "Edits the details of a person identified by INDEX in the displayed list.\n"
                     + "Existing values will be overwritten.\n\n"
+                    + "Index:\n"
+                    + "  <number>          Single index (e.g., 1)\n"
+                    + "  <range>           Multiple indices (e.g., 1-3, 5, 7)\n\n"
                     + "Options:\n"
-                    + "  %-7s NAME      Update name\n"
-                    + "  %-7s PHONE     Update phone number\n"
-                    + "  %-7s HANDLE    Update Telegram handle\n"
-                    + "  %-7s EMAIL     Update email\n"
-                    + "  %-7s MATRIC    Update matriculation number\n"
+                    + "  %-7s NAME      Update name (single index only)\n"
+                    + "  %-7s PHONE     Update phone number (single index only)\n"
+                    + "  %-7s HANDLE    Update telegram handle (single index only)\n"
+                    + "  %-7s EMAIL     Update email (single index only)\n"
+                    + "  %-7s MATRIC    Update matriculation number (single index only)\n"
                     + "  %-7s GROUP     Update tutorial group\n"
                     + "  %-7s GROUP     Update lab group\n"
                     + "  %-7s FACULTY   Update faculty\n"
                     + "  %-7s YEAR      Update academic year\n"
-                    + "  %-7s REMARKS   Update remarks\n",
+                    + "  %-7s REMARKS   Update remarks (single index only)\n",
             PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
             PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK
             )
             + "\nExample:  \n"
+            + "  # Update some fields for a single person\n"
             + "  edit "
-            + PREFIX_INDEX + " 2 "
-            + PREFIX_NAME + " John "
-            + PREFIX_PHONE + " 98765432 "
-            + PREFIX_TELE_HANDLE + " @johnDoe "
-            + PREFIX_EMAIL + " john@example.com "
-            + PREFIX_MAT_NUM + " A0123456J \\\n"
-            + "\t" // New Tab
-            + PREFIX_TUT_GROUP + " T01 "
-            + PREFIX_LAB_GROUP + " B02 "
+            + PREFIX_INDEX + " 2 " + PREFIX_NAME + " John "
+            + PREFIX_TELE_HANDLE + " @johnDoe " + PREFIX_EMAIL + " john@example.com "
+            + PREFIX_MAT_NUM + " A0123456J \\\n" + "\t" + PREFIX_TUT_GROUP + " T01 "
+            + PREFIX_LAB_GROUP + " B02 " + PREFIX_FACULTY + " SOC "
+            + PREFIX_REMARK + " \"TA candidate\"\n\n"
+            + "  # Update tutorial group, lab group, faculty, and year for multiple people\n"
+            + "  edit "
+            + PREFIX_INDEX + "1-3,5"
+            + PREFIX_TUT_GROUP + " T02 "
+            + PREFIX_LAB_GROUP + " B03 "
             + PREFIX_FACULTY + " SOC "
-            + PREFIX_YEAR + " 3 "
-            + PREFIX_REMARK + " \"TA candidate\" ";
+            + PREFIX_YEAR + " 2";
 
     public static final String MESSAGE_EDIT_SINGLE_PERSON_SUCCESS = "Edited Person: \n%1$s";
     public static final String MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS = "Summary of edited people: \n%1$s";
