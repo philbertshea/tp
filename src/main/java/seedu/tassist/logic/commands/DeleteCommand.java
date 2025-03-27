@@ -1,6 +1,7 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,11 +21,17 @@ import seedu.tassist.model.person.Person;
 public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "del";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + " -i <index>: Deletes the student identified by the index number (1-based)\n"
-            + "Parameters: -i <index> [,<index> or <range>...](must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " -i  1-3, 5, 7";
+    public static final String MESSAGE_USAGE =
+            "Usage: " + COMMAND_WORD + " " + PREFIX_INDEX + " -i INDEX\n\n"
+            + "Deletes the student(s) identified by the given index or range.\n\n"
+            + "Index: (must be positive integers)\n"
+            + "  Single index - 1\n"
+            + "  Multiple indices - 1, 3, 5\n"
+            + "  Range - 1-3, 5-7\n\n"
+            + "Example:\n"
+            + "  delete -i 2\n"
+            + "  delete -i 1,3,5\n"
+            + "  delete -i 1-3,5,7\n";
 
     public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
             + "\nDeleted Student(s):\n%s";

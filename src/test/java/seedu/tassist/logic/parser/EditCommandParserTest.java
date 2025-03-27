@@ -170,14 +170,9 @@ public class EditCommandParserTest {
                 .withYear(VALID_YEAR_AMY)
                 .withLabGroup(VALID_LAB_GROUP_AMY)
                 .withName(VALID_NAME_AMY)
-<<<<<<< HEAD
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
                 .build();
         EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
-=======
-                .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
->>>>>>> master
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
