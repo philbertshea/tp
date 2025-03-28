@@ -119,8 +119,6 @@ public class EditCommandParserTest {
         );
         assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // Invalid year
         assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // Invalid tag
-        // assertParseFailure(parser, "1" + INVALID_REMARK_DESC,
-        //      Remark.MESSAGE_CONSTRAINTS); // Invalid remark (TODO: Zhen Jie to update)
 
         // ================= Dont know if this is correct =================
         // Invalid phone followed by valid email.
