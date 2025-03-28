@@ -10,7 +10,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
  */
 public class Faculty {
 
-    public static final String VALIDATION_REGEX =  "^(?=.*\\p{L})[^\"]*$";
+    public static final String VALIDATION_REGEX = "^(?=.*\\p{L})[^\"]*$";
     public static final String MESSAGE_CONSTRAINTS = "Invalid faculty!"
             + "\nFaculty must contain at least one letter."
             + "\nFaculty cannot contain double quotation marks (\")."

@@ -15,7 +15,7 @@ public class Name {
      * otherwise " " (a blank string) becomes a valid input.
      */
 
-    public static final String VALIDATION_REGEX =  "^(?=.*\\p{L})[^\"]*$";
+    public static final String VALIDATION_REGEX = "^(?=.*\\p{L})[^\"]*$";
     public static final String MESSAGE_CONSTRAINTS = "Invalid name!"
             + "\nNames must contain at least one letter."
             + "\nNames cannot contain double quotation marks (\")."
