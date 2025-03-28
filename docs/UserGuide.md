@@ -107,6 +107,7 @@ Want to manually calculate the checksum?
 
 **Tip:** A person can have any number of tags (including 0).
 Tags must be a single word consisting of alphanumeric characters only.
+Tags must also be at most 60 characters.
 </box>
 
 Examples:
