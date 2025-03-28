@@ -302,7 +302,7 @@ public class ParserUtil {
      * @param personList List of Persons to check Tutorial Groups of.
      * @param tutGroupList List of Tutorial Groups to be checked.
      * @return String containing the Tutorial Groups that are in the provided
-     * {@code tutGroupList}, but not a Tutorial Group of any person in personList.
+     *         {@code tutGroupList}, but not a Tutorial Group of any person in personList.
      */
     public static String getInvalidTutGroupsAsString(List<Person> personList, List<TutGroup> tutGroupList) {
         requireAllNonNull(personList, tutGroupList);
