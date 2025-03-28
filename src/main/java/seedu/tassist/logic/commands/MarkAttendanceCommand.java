@@ -40,6 +40,11 @@ public class MarkAttendanceCommand extends Command {
             + PREFIX_WEEK + " %4$d , which marks tutorial group as attended,\n"
             + "before you can mark %1$s individually as Attended, Not Attended or On MC.";
 
+    public static final String MESSAGE_INVALID_TUT_GROUPS_FAILURE =
+            "%1$s are invalid Tutorial Groups.\n"
+            + "You cannot mark attendance for these Tutorial Groups.\n"
+            + "Please do not include these Tutorial Groups when marking attendance.\n";
+
     public static final String MESSAGE_MARK_GIVEN_NO_TUT_GROUP_FAILURE =
             "%1$s (%2$s) has No Tutorial Group, so Attendance cannot be marked.\n";
 
@@ -184,7 +189,10 @@ public class MarkAttendanceCommand extends Command {
         StringBuilder successMessage = new StringBuilder();
 
         if (tutGroupList != null) {
-
+            String invalidTutGroupsString = ParserUtil.getInvalidTutGroupsAsString(lastShownList, tutGroupList);
+            if (!invalidTutGroupsString.isEmpty()) {
+                throw new CommandException(String.format(MESSAGE_INVALID_TUT_GROUPS_FAILURE, invalidTutGroupsString));
+            }
             personsToEdit = ParserUtil.getPersonsInTutorialGroups(lastShownList, tutGroupList);
             successMessage.append(generateSuccessMessage(tutGroupList)).append("\n-------------\n");
         } else {
