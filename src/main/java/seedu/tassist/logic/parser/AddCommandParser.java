@@ -114,7 +114,7 @@ public class AddCommandParser implements Parser<AddCommand> {
      * Returns true if either of the prefixes contains an {@code Optional} value in the given
      * {@Code ArgumentMultimap}.
      */
-    private static boolean anyPrefixesPresent(ArgumentMultimap argumentMultimap,
+    public static boolean anyPrefixesPresent(ArgumentMultimap argumentMultimap,
             Prefix... prefixes) {
         return Stream.of(prefixes).anyMatch(
                 prefix -> argumentMultimap.getValue(prefix).isPresent());

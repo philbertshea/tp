@@ -9,6 +9,8 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_ON_MC;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 
+import java.util.List;
+
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.exceptions.IllegalValueException;
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
@@ -35,8 +37,8 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
                 args, PREFIX_INDEX, PREFIX_TUT_GROUP, PREFIX_WEEK,
                 PREFIX_MARK_NOT_ATTENDED, PREFIX_MARK_ON_MC, PREFIX_MARK_NO_TUTORIAL);
 
-        Index index = null;
-        TutGroup tutGroup = null;
+        List<Index> indexList = null;
+        List<TutGroup> tutGroupList = null;
         int week;
         boolean hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
         boolean hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
@@ -59,9 +61,9 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         try {
             week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
             if (hasIndex) {
-                index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
+                indexList = ParserUtil.parseMultipleIndexes(argMultimap.getValue(PREFIX_INDEX).orElse(""));
             } else {
-                tutGroup = ParserUtil.parseTutGroup(argMultimap.getValue(PREFIX_TUT_GROUP).orElse(""));
+                tutGroupList = ParserUtil.parseMultipleTutGroups(argMultimap.getValue(PREFIX_TUT_GROUP).orElse(""));
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(
@@ -72,21 +74,21 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
 
         if (hasIndex) {
             if (isNotAttended) {
-                return new MarkAttendanceCommand(index, week, Attendance.NOT_ATTENDED);
+                return new MarkAttendanceCommand(indexList, week, Attendance.NOT_ATTENDED);
             } else if (isOnMc) {
-                return new MarkAttendanceCommand(index, week, Attendance.ON_MC);
+                return new MarkAttendanceCommand(indexList, week, Attendance.ON_MC);
             } else {
-                return new MarkAttendanceCommand(index, week, Attendance.ATTENDED);
+                return new MarkAttendanceCommand(indexList, week, Attendance.ATTENDED);
             }
         } else {
             if (isNotAttended) {
-                return new MarkAttendanceCommand(tutGroup, week, Attendance.NOT_ATTENDED);
+                return new MarkAttendanceCommand(week, Attendance.NOT_ATTENDED, tutGroupList);
             } else if (isOnMc) {
-                return new MarkAttendanceCommand(tutGroup, week, Attendance.ON_MC);
+                return new MarkAttendanceCommand(week, Attendance.ON_MC, tutGroupList);
             } else if (isNoTut) {
-                return new MarkAttendanceCommand(tutGroup, week, Attendance.NO_TUTORIAL);
+                return new MarkAttendanceCommand(week, Attendance.NO_TUTORIAL, tutGroupList);
             } else {
-                return new MarkAttendanceCommand(tutGroup, week, Attendance.ATTENDED);
+                return new MarkAttendanceCommand(week, Attendance.ATTENDED, tutGroupList);
             }
         }
     }

@@ -10,7 +10,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_LAB_GROUP_DES
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_MAT_NUM_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TELE_HANDLE_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TUT_GROUP_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_YEAR_DESC;
@@ -21,8 +20,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
-import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
-import static seedu.tassist.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.TELE_HANDLE_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.TUT_GROUP_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
@@ -34,8 +31,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_AMY;
@@ -43,12 +38,13 @@ import static seedu.tassist.logic.commands.CommandTestUtil.YEAR_DESC_AMY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -65,12 +61,9 @@ import seedu.tassist.model.person.Phone;
 import seedu.tassist.model.person.TeleHandle;
 import seedu.tassist.model.person.TutGroup;
 import seedu.tassist.model.person.Year;
-import seedu.tassist.model.tag.Tag;
 import seedu.tassist.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {
-
-    private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -81,7 +74,8 @@ public class EditCommandParserTest {
     public void parse_missingParts_failure() {
         // TODO: Might need to check all this again
         // No index specified.
-        assertParseFailure(parser, PREFIX_PHONE + " " + VALID_PHONE_AMY, Index.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, PREFIX_PHONE + " " + VALID_PHONE_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
 
         // No field specified
         assertParseFailure(parser, " " + PREFIX_INDEX + " 1", EditCommand.MESSAGE_NOT_EDITED);
@@ -118,7 +112,8 @@ public class EditCommandParserTest {
                 firstPersonIndex + INVALID_FACULTY_DESC, Faculty.MESSAGE_CONSTRAINTS
         );
         assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // Invalid year
-        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC, Tag.MESSAGE_CONSTRAINTS); // Invalid tag
+        // assertParseFailure(parser, "1" + INVALID_REMARK_DESC,
+        //      Remark.MESSAGE_CONSTRAINTS); // Invalid remark (TODO: Zhen Jie to update)
 
         // ================= Dont know if this is correct =================
         // Invalid phone followed by valid email.
@@ -151,22 +146,6 @@ public class EditCommandParserTest {
         assertParseFailure(parser,
                 firstPersonIndex + INVALID_FACULTY_DESC + REMARK_DESC_AMY, Faculty.MESSAGE_CONSTRAINTS
         );
-        // Invalid year with valid tag.
-        assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC + TAG_DESC_FRIEND, Year.MESSAGE_CONSTRAINTS);
-        // Invalid tag with valid name.
-        assertParseFailure(parser, firstPersonIndex + INVALID_TAG_DESC + NAME_DESC_AMY, Tag.MESSAGE_CONSTRAINTS);
-
-        // While parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
-        // parsing it together with a valid tag results in error.
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_CONSTRAINTS
-        );
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
-        );
-        assertParseFailure(parser,
-                firstPersonIndex + TAG_EMPTY + TAG_DESC_FRIEND + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS
-        );
 
         // Multiple invalid values, but only the first invalid value is captured.
         assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_PHONE_AMY,
@@ -179,8 +158,8 @@ public class EditCommandParserTest {
         String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased()
                 + TELE_HANDLE_DESC_AMY + YEAR_DESC_AMY + REMARK_DESC_AMY
                 + FACULTY_DESC_AMY + LAB_GROUP_DESC_AMY + MAT_NUM_DESC_BOB
-                + TUT_GROUP_DESC_AMY + PHONE_DESC_BOB + TAG_DESC_HUSBAND
-                + EMAIL_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
+                + TUT_GROUP_DESC_AMY + PHONE_DESC_BOB
+                + EMAIL_DESC_AMY + NAME_DESC_AMY;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withFaculty(VALID_FACULTY_AMY)
@@ -192,8 +171,8 @@ public class EditCommandParserTest {
                 .withLabGroup(VALID_LAB_GROUP_AMY)
                 .withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+                .build();
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -205,7 +184,7 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_AMY).build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -234,8 +213,6 @@ public class EditCommandParserTest {
                 new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build());
         assertSingleFieldEdit(targetIndex, REMARK_DESC_AMY,
                 new EditPersonDescriptorBuilder().withRemark(VALID_REMARK_AMY).build());
-        assertSingleFieldEdit(targetIndex, TAG_DESC_FRIEND,
-                new EditPersonDescriptorBuilder().withTags(VALID_TAG_FRIEND).build());
     }
 
     /**
@@ -243,7 +220,7 @@ public class EditCommandParserTest {
      */
     private void assertSingleFieldEdit(Index targetIndex, String userInputSuffix, EditPersonDescriptor descriptor) {
         String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + userInputSuffix;
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditCommand(List.of(targetIndex), descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -265,8 +242,8 @@ public class EditCommandParserTest {
 
         // Multiple valid fields repeated.
         userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + PHONE_DESC_AMY + EMAIL_DESC_AMY
-                + TAG_DESC_FRIEND + PHONE_DESC_AMY + EMAIL_DESC_AMY + TAG_DESC_FRIEND
-                + PHONE_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND;
+                + PHONE_DESC_AMY + EMAIL_DESC_AMY
+                + PHONE_DESC_BOB + EMAIL_DESC_BOB;
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
@@ -277,16 +254,5 @@ public class EditCommandParserTest {
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
-    }
-
-    @Test
-    public void parse_resetTags_success() {
-        Index targetIndex = INDEX_THIRD_PERSON;
-        String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + TAG_EMPTY;
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();
-        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
-
-        assertParseSuccess(parser, userInput, expectedCommand);
     }
 }

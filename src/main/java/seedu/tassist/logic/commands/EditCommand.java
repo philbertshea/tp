@@ -9,12 +9,12 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAT_NUM;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_REMARK;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -54,57 +54,59 @@ public class EditCommand extends Command {
             "Usage: edit %s INDEX [OPTIONS]...\n\n"
                     + "Edits the details of a person identified by INDEX in the displayed list.\n"
                     + "Existing values will be overwritten.\n\n"
+                    + "Index:\n"
+                    + "  <number>          Single index (e.g., 1)\n"
+                    + "  <range>           Multiple indices (e.g., 1-3, 5, 7)\n\n"
                     + "Options:\n"
-                    + "  %-7s NAME      Update name\n"
-                    + "  %-7s PHONE     Update phone number\n"
-                    + "  %-7s HANDLE    Update Telegram handle\n"
-                    + "  %-7s EMAIL     Update email\n"
-                    + "  %-7s MATRIC    Update matriculation number\n"
+                    + "  %-7s NAME      Update name (single index only)\n"
+                    + "  %-7s PHONE     Update phone number (single index only)\n"
+                    + "  %-7s HANDLE    Update telegram handle (single index only)\n"
+                    + "  %-7s EMAIL     Update email (single index only)\n"
+                    + "  %-7s MATRIC    Update matriculation number (single index only)\n"
                     + "  %-7s GROUP     Update tutorial group\n"
                     + "  %-7s GROUP     Update lab group\n"
                     + "  %-7s FACULTY   Update faculty\n"
                     + "  %-7s YEAR      Update academic year\n"
-                    + "  %-7s REMARKS   Update remarks\n"
-                    + "  %-7s TAG       Add/update tags (multiple allowed)\n",
+                    + "  %-7s REMARKS   Update remarks (single index only)\n",
             PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL, PREFIX_MAT_NUM,
-            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG
+            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_REMARK
             )
             + "\nExample:  \n"
+            + "  # Update some fields for a single person\n"
             + "  edit "
-            + PREFIX_INDEX + " 2 "
-            + PREFIX_NAME + " John "
-            + PREFIX_PHONE + " 98765432 "
-            + PREFIX_TELE_HANDLE + " @johnDoe "
-            + PREFIX_EMAIL + " john@example.com "
-            + PREFIX_MAT_NUM + " A0123456J \\\n"
-            + "\t" // New Tab
-            + PREFIX_TUT_GROUP + " T01 "
-            + PREFIX_LAB_GROUP + " B02 "
+            + PREFIX_INDEX + " 2 " + PREFIX_NAME + " John "
+            + PREFIX_TELE_HANDLE + " @johnDoe " + PREFIX_EMAIL + " john@example.com "
+            + PREFIX_MAT_NUM + " A0123456J \\\n" + "\t" + PREFIX_TUT_GROUP + " T01 "
+            + PREFIX_LAB_GROUP + " B02 " + PREFIX_FACULTY + " SOC "
+            + PREFIX_REMARK + " \"TA candidate\"\n\n"
+            + "  # Update tutorial group, lab group, faculty, and year for multiple people\n"
+            + "  edit "
+            + PREFIX_INDEX + "1-3,5"
+            + PREFIX_TUT_GROUP + " T02 "
+            + PREFIX_LAB_GROUP + " B03 "
             + PREFIX_FACULTY + " SOC "
-            + PREFIX_YEAR + " 3 "
-            + PREFIX_REMARK + " \"TA candidate\" "
-            + PREFIX_TAG + " friends "
-            + PREFIX_TAG + " debt";
+            + PREFIX_YEAR + " 2";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: \n%1$s";
+    public static final String MESSAGE_EDIT_SINGLE_PERSON_SUCCESS = "Edited Person: \n%1$s";
+    public static final String MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS = "Summary of edited people: \n%1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book.";
 
-    private final Index index;
+    private final List<Index> indexList;
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * Creates an EditCommand to edit a {@code Person} at the specific {@code index}.
+     * Creates an EditCommand to edit a {@code Person} at the specific {@code indexList}.
      *
-     * @param index of the person in the filtered person list to edit
+     * @param indexList of the people in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
-        requireNonNull(index);
+    public EditCommand(List<Index> indexList, EditPersonDescriptor editPersonDescriptor) {
+        requireNonNull(indexList);
         requireNonNull(editPersonDescriptor);
 
-        this.index = index;
+        this.indexList = indexList;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
@@ -112,29 +114,56 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> updatedPeople = new ArrayList<>();
+        for (Index index : indexList) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(String.format(
+                        Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX,
+                        lastShownList.size()));
+            }
+            Person personToEdit = lastShownList.get(index.getZeroBased());
+            Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            }
+            updatedPeople.add(editedPerson);
+            model.setPerson(personToEdit, editedPerson);
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
         }
-
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
-
-        if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        if (indexList.size() == 1) {
+            return new CommandResult(String.format(MESSAGE_EDIT_SINGLE_PERSON_SUCCESS,
+                    Messages.getFormattedPersonAttributesForDisplay(updatedPeople.get(0))));
+        } else {
+            return new CommandResult(String.format(MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS,
+                    getEditedStudentsSummary(updatedPeople)));
         }
+    }
 
-        model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.getFormattedPersonAttributesForDisplay(editedPerson)));
+    /**
+     * Generates a short summary of deleted students.
+     */
+    public static String getEditedStudentsSummary(List<Person> students) {
+        StringBuilder sb = new StringBuilder();
+        for (Person p : students) {
+            sb.append(String.format("%s (%s) - Year: %s, Faculty: %s, Tutorial Grp: %s, Lab Grp: %s\n",
+                    p.getName().fullName,
+                    p.getMatNum().value,
+                    p.getYear().value,
+                    p.getFaculty().value,
+                    p.getTutGroup().value,
+                    p.getLabGroup().value)
+            );
+        }
+        return sb.toString().trim();
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit,
+    public static Person createEditedPerson(Person personToEdit,
                 EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
@@ -181,14 +210,14 @@ public class EditCommand extends Command {
         }
 
         EditCommand otherEditCommand = (EditCommand) other;
-        return index.equals(otherEditCommand.index)
+        return indexList.equals(otherEditCommand.indexList)
                 && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("index", index)
+                .add("indexList", indexList)
                 .add("editPersonDescriptor", editPersonDescriptor)
                 .toString();
     }

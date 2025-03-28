@@ -12,7 +12,6 @@ import static seedu.tassist.logic.commands.CommandTestUtil.VALID_MAT_NUM_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
-import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TELE_HANDLE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_BOB;
@@ -80,10 +79,6 @@ public class EditPersonDescriptorTest {
 
         // Different remark -> returns false.
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withRemark(VALID_REMARK_BOB).build();
-        assertFalse(DESC_AMY.equals(editedAmy));
-
-        // Different tags -> returns false.
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(DESC_AMY.equals(editedAmy));
     }
 

@@ -73,7 +73,7 @@ public class PersonCard extends UiPart<Region> {
             classGroup.setText(person.getTutGroup().value + " | " + person.getLabGroup().value);
         }
 
-        // Guaranteed for either phone or telegram Handle to have a value
+        // Guaranteed for either phone or telegram Handle to have a value.
         assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty())
                 : "Both phone and teleHandle cannot be empty simultaneously";
         if (person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
@@ -86,7 +86,7 @@ public class PersonCard extends UiPart<Region> {
 
         email.setText(person.getEmail().value);
 
-        // Not guaranteed for year or faculty to be present
+        // Not guaranteed for year or faculty to be present.
         if (person.getYear().isEmpty() && !person.getFaculty().isEmpty()) {
             facAndYear.setText(person.getFaculty().value);
         } else if (!person.getYear().isEmpty() && person.getFaculty().isEmpty()) {
@@ -104,6 +104,9 @@ public class PersonCard extends UiPart<Region> {
             remark.setManaged(false);
         }
 
+        Label tutorialAttendanceLabel = new Label("Tutorial att:");
+        tutorialAttendanceLabel.setStyle("-fx-font-size: 11pt;");
+        attendances.getChildren().add(tutorialAttendanceLabel);
         labScores.getChildren().add(new Label("Lab grades:"));
 
         person.getTags().stream()
