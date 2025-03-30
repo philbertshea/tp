@@ -1,7 +1,6 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 
 import java.util.ArrayList;
 import java.util.Comparator;
