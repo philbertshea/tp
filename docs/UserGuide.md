@@ -110,6 +110,11 @@ Tags must be a single word consisting of alphanumeric characters only.
 Tags must also be at most 60 characters.
 </box>
 
+<box type="tip" seamless>
+
+**Tip:** Only the **matriculation number** of a record makes them unique!
+</box>
+
 Examples:
 * `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 * `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
