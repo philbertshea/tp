@@ -45,8 +45,8 @@ public class AddCommand extends Command {
                     + "  %-7s       Academic year\n"
                     + "  %-7s       Remarks\n"
                     + "  %-7s       Tag (can be specified multiple times) \n\n"
-                    + "Example: %s %s John Doe %s johnd@example.com %s A0123456J %s 98765432"
-                    + "%s @johnDoe %s T01 %s B02 %s School of Computing %s 3 %s TA candidate"
+                    + "Example: %s %s John Doe %s johnd@example.com %s A0123456J %s 98765432 "
+                    + "%s @johnDoe %s T01 %s B02 %s School of Computing %s 3 %s TA candidate "
                     + "%s friends %s owesMoney",
                     COMMAND_WORD, PREFIX_NAME, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_PHONE,
                     PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
@@ -58,7 +58,7 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON =
-            "This person already exists in the address book (same matriculation number)";
+            "This person already exists in the address book (same matriculation number)!";
 
     private final Person toAdd;
 
