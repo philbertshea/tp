@@ -122,6 +122,37 @@ public class EditCommand extends Command {
                         lastShownList.size()));
             }
             Person personToEdit = lastShownList.get(index.getZeroBased());
+            // To prevent optional items from getting deleted
+            if (!editPersonDescriptor.getTeleHandle().isEmpty()) {
+                boolean isTeleAvailable = personToEdit.getPhone().isEmpty()
+                        && editPersonDescriptor.getTeleHandle().get().value.isBlank();
+                if (isTeleAvailable) {
+                    throw new CommandException("You cannot remove the Telegram handle!");
+                }
+            }
+            if (!editPersonDescriptor.getPhone().isEmpty()) {
+                boolean isPhoneAvailable = personToEdit.getTeleHandle().isEmpty()
+                        && editPersonDescriptor.getPhone().get().value.isBlank();
+                if (isPhoneAvailable) {
+                    throw new CommandException("You cannot remove the Phone handle!");
+                }
+            }
+
+            if (!editPersonDescriptor.getTutGroup().isEmpty()) {
+                boolean isTutGrpAvailable = personToEdit.getLabGroup().isEmpty()
+                        && editPersonDescriptor.getTutGroup().get().value.isBlank();
+                if (isTutGrpAvailable) {
+                    throw new CommandException("You cannot remove the Tutorial Group!");
+                }
+            }
+            if (!editPersonDescriptor.getLabGroup().isEmpty()) {
+                boolean isLabGrpAvailable = personToEdit.getTutGroup().isEmpty()
+                        && editPersonDescriptor.getLabGroup().get().value.isBlank();
+                if (isLabGrpAvailable) {
+                    throw new CommandException("You cannot remove the Phone handle!");
+                }
+            }
+
             Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
             if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
@@ -142,7 +173,7 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Generates a short summary of deleted students.
+     * Generates a short summary of bulk edited students.
      */
     public static String getEditedStudentsSummary(List<Person> students) {
         StringBuilder sb = new StringBuilder();

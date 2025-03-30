@@ -2,6 +2,7 @@ package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_QUOTES;
 import static seedu.tassist.logic.parser.AddCommandParser.anyPrefixesPresent;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
@@ -34,6 +35,12 @@ public class EditCommandParser implements Parser<EditCommand> {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
+
+        // Ensure an even number of quotes.
+        if (!new QuotePattern().test(args)) {
+            throw new ParseException(MESSAGE_INVALID_QUOTES);
+        }
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args,
                         PREFIX_INDEX, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
@@ -59,21 +66,20 @@ public class EditCommandParser implements Parser<EditCommand> {
         ) {
             throw new ParseException(
                     "You can only edit the tutorial group, lab group,"
-                            + " faculty and year when doing a batch edit!");
+                            + " faculty or year when doing a batch edit!");
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(
+        argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(
                 PREFIX_INDEX,
                 PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
                 PREFIX_YEAR
         );
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         if (targetIndexes.size() == 1) {
-            argMultimap.verifyNoDuplicatePrefixesFor(
+            argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(
                     PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
                     PREFIX_MAT_NUM, PREFIX_REMARK
             );
-
             if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
                 editPersonDescriptor.setName(ParserUtil.parseName(
                         argMultimap.getValue(PREFIX_NAME).get()));
@@ -100,7 +106,6 @@ public class EditCommandParser implements Parser<EditCommand> {
                         argMultimap.getValue(PREFIX_REMARK).get()));
             }
         }
-
         if (argMultimap.getValue(PREFIX_TUT_GROUP).isPresent()) {
             editPersonDescriptor.setTutGroup(ParserUtil.parseTutGroup(
                     argMultimap.getValue(PREFIX_TUT_GROUP).get()));
