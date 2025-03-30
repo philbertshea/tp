@@ -1,11 +1,14 @@
 package seedu.tassist.logic;
 
+import java.util.Comparator;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.tassist.logic.parser.Prefix;
 import seedu.tassist.model.person.Person;
+import seedu.tassist.model.tag.Tag;
 
 /**
  * Container for user visible messages.
@@ -121,7 +124,10 @@ public class Messages {
                 .append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
                 .append("\n")
                 .append(" Tags              : ");
-        person.getTags().forEach(builder::append);
+
+        // Display the sorting of tags
+        person.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName)).forEach(builder::append);
         return builder.toString();
     }
 
