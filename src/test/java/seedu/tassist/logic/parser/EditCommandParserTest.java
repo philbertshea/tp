@@ -41,6 +41,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.logic.parser.EditCommandParser.MESSAGE_INVALID_BATCH_FIELDS;
+import static seedu.tassist.logic.parser.EditCommandParser.MESSAGE_POSSIBLE_INDEX_CAUSES;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
@@ -96,8 +97,11 @@ public class EditCommandParserTest {
     @Test
     public void parse_invalidValue_failure() {
         String firstPersonIndex = " " + PREFIX_INDEX + " 1";
-        assertParseFailure(parser, " " + PREFIX_INDEX, Index.MESSAGE_CONSTRAINTS); // Empty index
-        assertParseFailure(parser, " " + PREFIX_INDEX + " -10", Index.MESSAGE_CONSTRAINTS);
+        // Empty index
+        assertParseFailure(parser, " " + PREFIX_INDEX,
+                Index.MESSAGE_CONSTRAINTS + "\n" + MESSAGE_POSSIBLE_INDEX_CAUSES);
+        assertParseFailure(parser, " " + PREFIX_INDEX + " -10",
+                Index.MESSAGE_CONSTRAINTS + "\n" + MESSAGE_POSSIBLE_INDEX_CAUSES);
         assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // Invalid name
         assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // Invalid phone
         // Invalid tele handle.
