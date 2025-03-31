@@ -1,14 +1,23 @@
 package seedu.tassist.model.person;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
+
 
 /**
  * Holds the score and max score for a lab.
  */
 public class LabScore {
+    //Default max score is 25.
+    private static ArrayList<Integer> maxLabScores = new ArrayList<Integer>(List.of(25, 25, 25, 25));
+
     private int labScore;
-    private int maxLabScore = 25; //Default max score is 25.
+
+    private int labNo;
+
 
     public LabScore() {
         labScore = -1;
@@ -18,12 +27,26 @@ public class LabScore {
      * Creates a LabScore object.
      *
      * @param labScore the score to initialize with.
-     * @param maxLabScore the max score of the lab to initialize.
+     * @param labNo the lab number that this score is pointing to.
      */
-    public LabScore(int labScore, int maxLabScore) {
+    public LabScore(int labScore, int labNo) {
         this.labScore = labScore;
-        this.maxLabScore = maxLabScore;
+        this.labNo = labNo;
     }
+
+    /**
+     * Creates a LabScore object from save file
+     *
+     * @param labScore the score to initialize with.
+     * @param maxLabScore the max lab score to update.
+     * @param labNo the lab number that this score is pointing to.
+     */
+    public LabScore(int labScore, int maxLabScore, int labNo) {
+        this.labScore = labScore;
+        this.labNo = labNo;
+        maxLabScores.set(labNo, maxLabScore);
+    }
+
 
     /**
      * Updates the lab score for this lab.
@@ -32,15 +55,15 @@ public class LabScore {
      * @return The updated LabScore object.
      * @throws CommandException If the lab score is invalid.
      */
-    public LabScore updateLabScore(int labScore) throws CommandException {
-        if (labScore > maxLabScore) {
+    public LabScore updateLabScore(int labScore, int labNo) throws CommandException {
+        if (labScore > maxLabScores.get(labNo)) {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE,
-                            labScore, maxLabScore));
+                            labScore, maxLabScores.get(labNo)));
         } else if (labScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
-        return new LabScore(labScore, maxLabScore);
+        return new LabScore(labScore, labNo);
     }
 
     /**
@@ -50,7 +73,7 @@ public class LabScore {
      * @return The updated LabScore object.
      * @throws CommandException If the lab score is invalid.
      */
-    public LabScore updateMaxLabScore(int maxLabScore) throws CommandException {
+    public LabScore updateMaxLabScore(int maxLabScore, int labNo) throws CommandException {
         if (labScore > maxLabScore && labScore != -1) {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
@@ -58,7 +81,8 @@ public class LabScore {
         } else if (maxLabScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
-        return new LabScore(labScore, maxLabScore);
+        maxLabScores.set(labNo, maxLabScore);
+        return new LabScore(labScore, labNo);
     }
 
     /**
@@ -69,7 +93,7 @@ public class LabScore {
      * @return The updated LabScore object.
      * @throws CommandException If the lab score or max lab score is invalid.
      */
-    public LabScore updateBothLabScore(int labScore, int maxLabScore) throws CommandException {
+    public LabScore updateBothLabScore(int labScore, int maxLabScore, int labNo) throws CommandException {
         if (labScore < 0 || maxLabScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         } else if (labScore > maxLabScore) {
@@ -77,7 +101,8 @@ public class LabScore {
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
                             maxLabScore, labScore));
         }
-        return new LabScore(labScore, maxLabScore);
+        updateMaxLabScore(maxLabScore, labNo);
+        return updateLabScore(labScore, labNo);
     }
 
     @Override
@@ -86,7 +111,7 @@ public class LabScore {
             return "-";
         }
 
-        return String.format("%d/%d", labScore, maxLabScore);
+        return String.format("%d/%d", labScore, maxLabScores.get(labNo));
     }
 
     @Override
@@ -101,6 +126,6 @@ public class LabScore {
 
         LabScore o = (LabScore) other;
         return this.labScore == o.labScore
-                && this.maxLabScore == o.maxLabScore;
+                && this.labNo == o.labNo;
     }
 }

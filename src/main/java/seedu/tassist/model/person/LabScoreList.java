@@ -40,7 +40,7 @@ public class LabScoreList {
             } else {
                 String[] scoreSplit = labs[i].split("/");
                 labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]),
-                        Integer.parseInt(scoreSplit[1])));
+                        Integer.parseInt(scoreSplit[1]), i));
             }
         }
     }
@@ -64,7 +64,7 @@ public class LabScoreList {
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore, labNumber - 1);
         return new LabScoreList(copiedScores);
     }
 
@@ -78,7 +78,7 @@ public class LabScoreList {
      */
     public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
+        copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore, labNumber - 1);
         return new LabScoreList(copiedScores);
     }
 
@@ -93,7 +93,8 @@ public class LabScoreList {
      */
     public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
+        copiedScores[labNumber - 1] =
+                copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore, labNumber - 1);
         return new LabScoreList(copiedScores);
     }
 

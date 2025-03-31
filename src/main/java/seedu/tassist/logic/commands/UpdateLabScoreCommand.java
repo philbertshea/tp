@@ -129,7 +129,7 @@ public class UpdateLabScoreCommand extends Command {
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getZeroBased(), labNumber));
+        return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getOneBased(), labNumber));
     }
 
     @Override
