@@ -1,10 +1,13 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_MULTIPLE_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,11 +36,6 @@ public class DeleteCommand extends Command {
                     + "  del -i 1-3,5,7   (Deletes multiple persons)\n"
 
     );
-
-    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
-            + "\nDeleted Student(s):\n%s";
-    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
-            + " You currently have %d records!";
 
     private final List<Index> targetIndexes;
 
@@ -90,11 +88,13 @@ public class DeleteCommand extends Command {
     public static String getDeletedStudentsSummary(List<Person> students) {
         StringBuilder sb = new StringBuilder();
         for (Person p : students) {
+            String tutGroup = p.getTutGroup().isEmpty() ? "-" : p.getTutGroup().value;
+            String labGroup = p.getLabGroup().isEmpty() ? "-" : p.getLabGroup().value;
             sb.append(String.format("%s (%s) - %s, %s\n",
                     p.getName().fullName,
                     p.getMatNum().value,
-                    p.getTutGroup().value,
-                    p.getLabGroup().value));
+                    tutGroup,
+                    labGroup));
         }
         return sb.toString().trim();
     }

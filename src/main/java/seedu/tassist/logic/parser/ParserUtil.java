@@ -2,6 +2,8 @@ package seedu.tassist.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +34,8 @@ import seedu.tassist.model.tag.Tag;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+
+
     public static final String MESSAGE_INVALID_WEEK =
             "Week is not an unsigned integer from 1 to 13.";
     public static final String MESSAGE_INVALID_DASH_ORDER = "When using dash for Bulk TutGroups, "
@@ -443,10 +446,12 @@ public class ParserUtil {
             int start = Integer.parseInt(range[0].trim());
             int end = Integer.parseInt(range[1].trim());
 
-            if (start <= 0 || end <= 0 || start > end) {
-                throw new ParseException(MESSAGE_INVALID_INDEX);
+            if (start <= 0 || end <= 0) {
+                throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
             }
-
+            if (start > end) {
+                throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
+            }
             for (int i = start; i <= end; i++) {
                 indexSet.add(i);
             }
