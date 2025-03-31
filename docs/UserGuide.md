@@ -230,12 +230,6 @@ Assuming the restrictions are satisfied,
        * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
        his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
 
-Examples:
-* `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
-* `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
-* `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
-  * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
-
 * **Tip**: You can now mark the attendance of multiple persons and tutorial groups as valid.
   However, do note that if you are using the `-i` flag, to mark attendance of persons by index,
   the restrictions aforementioned apply to EVERY person listed.
@@ -246,6 +240,13 @@ Examples:
         * `att -i 1-10 -w 3` gives you an error because persons 3, 4, 5 do not fulfill the restrictions.
         * You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
 
+
+Examples:
+* `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
+* `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
+* `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
+    * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
+* `att -i 1-5 -w 3` marks the persons of indexes 1 to 5 (inclusive) of week 3 as Attended
 
 ### Locating persons by name: `find`
 
