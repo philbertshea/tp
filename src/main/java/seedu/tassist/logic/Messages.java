@@ -116,11 +116,8 @@ public class Messages {
                 .append(" Year              : ")
                 .append(person.getYear().value.isEmpty() ? "-" : person.getYear())
                 .append("\n")
-                .append(" Attendance List   : ").append(person.getAttendanceList()).append("\n")
                 .append(" Remarks           : ")
-                .append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
-                .append("\n")
-                .append(" Tags              : ");
+                .append(person.getRemark().value.isEmpty() ? "-" : person.getRemark());
         person.getTags().forEach(builder::append);
         return builder.toString();
     }

@@ -185,10 +185,11 @@ public class EditCommand extends Command {
             sb.append(String.format("%s (%s) - Year: %s, Faculty: %s, Tutorial Grp: %s, Lab Grp: %s\n",
                     p.getName().fullName,
                     p.getMatNum().value,
-                    p.getYear().value,
-                    p.getFaculty().value,
-                    p.getTutGroup().value,
-                    p.getLabGroup().value)
+                    p.getYear().value.isBlank() ? "-" : p.getYear().value,
+                    p.getFaculty().value.isBlank() ? "-" : p.getFaculty().value,
+                    p.getTutGroup().value.isBlank() ? "-" : p.getTutGroup().value,
+                    p.getLabGroup().value.isBlank() ? "-" : p.getLabGroup().value
+                    )
             );
         }
         return sb.toString().trim();
