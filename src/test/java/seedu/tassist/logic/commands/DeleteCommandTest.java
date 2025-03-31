@@ -3,6 +3,8 @@ package seedu.tassist.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_MULTIPLE_SUCCESS;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.tassist.logic.commands.CommandTestUtil.showPersonAtIndex;
@@ -36,7 +38,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
+        String expectedMessage = String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
                 1, DeleteCommand.getDeletedStudentsSummary(List.of(personToDelete)));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -51,7 +53,7 @@ public class DeleteCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(currentSize + 1);
         DeleteCommand deleteCommand = new DeleteCommand(List.of(outOfBoundIndex));
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        String expectedMessage = String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
 
@@ -60,7 +62,7 @@ public class DeleteCommandTest {
         Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
+        String expectedMessage = String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
                 1, DeleteCommand.getDeletedStudentsSummary(List.of(personToDelete)));
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -79,7 +81,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(List.of(outOfBoundIndex));
 
         int currentSize = model.getFilteredPersonList().size();
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        String expectedMessage = String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
 
@@ -90,7 +92,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
         assertCommandFailure(deleteCommand, emptyModel,
-                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
+                String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
     }
 
     @Test
@@ -107,7 +109,7 @@ public class DeleteCommandTest {
             expectedModel.deletePerson(p);
         }
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS,
+        String expectedMessage = String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
                 peopleToDelete.size(), DeleteCommand.getDeletedStudentsSummary(peopleToDelete));
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);

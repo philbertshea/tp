@@ -34,8 +34,6 @@ import seedu.tassist.model.tag.Tag;
  */
 public class ParserUtil {
 
-
-
     public static final String MESSAGE_INVALID_WEEK =
             "Week is not an unsigned integer from 1 to 13.";
     public static final String MESSAGE_INVALID_DASH_ORDER = "When using dash for Bulk TutGroups, "

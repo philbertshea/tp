@@ -1,6 +1,7 @@
 package seedu.tassist.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.tassist.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.FACULTY_DESC_AMY;
@@ -68,7 +69,7 @@ public class LogicManagerTest {
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "del -i 1000";
         int currentSize = model.getFilteredPersonList().size();
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        String expectedMessage = String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
         assertCommandException(deleteCommand, expectedMessage, currentSize);
     }
 
