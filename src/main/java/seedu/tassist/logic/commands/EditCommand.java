@@ -92,6 +92,10 @@ public class EditCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book.";
+    public static final String MESSAGE_TELEHANDLE_REQUIRED = "You cannot remove the Telegram handle!";
+    public static final String MESSAGE_PHONE_REQUIRED = "You cannot remove the Phone Number!";
+    public static final String MESSAGE_LAB_GROUP_REQUIRED = "You cannot remove the Lab Group!";
+    public static final String MESSAGE_TUT_GROUP_REQUIRED = "You cannot remove the Tutorial Group!";
 
     private final List<Index> indexList;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -127,14 +131,14 @@ public class EditCommand extends Command {
                 boolean isTeleAvailable = personToEdit.getPhone().isEmpty()
                         && editPersonDescriptor.getTeleHandle().get().value.isBlank();
                 if (isTeleAvailable) {
-                    throw new CommandException("You cannot remove the Telegram handle!");
+                    throw new CommandException(MESSAGE_TELEHANDLE_REQUIRED);
                 }
             }
             if (!editPersonDescriptor.getPhone().isEmpty()) {
                 boolean isPhoneAvailable = personToEdit.getTeleHandle().isEmpty()
                         && editPersonDescriptor.getPhone().get().value.isBlank();
                 if (isPhoneAvailable) {
-                    throw new CommandException("You cannot remove the Phone Number!");
+                    throw new CommandException(MESSAGE_PHONE_REQUIRED);
                 }
             }
 
@@ -142,14 +146,14 @@ public class EditCommand extends Command {
                 boolean isTutGrpAvailable = personToEdit.getLabGroup().isEmpty()
                         && editPersonDescriptor.getTutGroup().get().value.isBlank();
                 if (isTutGrpAvailable) {
-                    throw new CommandException("You cannot remove the Tutorial Group!");
+                    throw new CommandException(MESSAGE_TUT_GROUP_REQUIRED);
                 }
             }
             if (!editPersonDescriptor.getLabGroup().isEmpty()) {
                 boolean isLabGrpAvailable = personToEdit.getTutGroup().isEmpty()
                         && editPersonDescriptor.getLabGroup().get().value.isBlank();
                 if (isLabGrpAvailable) {
-                    throw new CommandException("You cannot remove the Lab Group!");
+                    throw new CommandException(MESSAGE_LAB_GROUP_REQUIRED);
                 }
             }
 

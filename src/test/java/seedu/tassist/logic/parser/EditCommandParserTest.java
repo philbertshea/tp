@@ -82,6 +82,7 @@ public class EditCommandParserTest {
     );
 
     // ========== Test for Single person edit ==========
+
     @Test
     public void parse_missingParts_failure() {
         // No index specified.
@@ -90,14 +91,12 @@ public class EditCommandParserTest {
 
         // No field specified
         assertParseFailure(parser, " " + PREFIX_INDEX + " 1", EditCommand.MESSAGE_NOT_EDITED);
-
-        // No index and no field specified
-        assertParseFailure(parser, " " + PREFIX_INDEX, Index.MESSAGE_CONSTRAINTS);
     }
 
     @Test
     public void parse_invalidValue_failure() {
         String firstPersonIndex = " " + PREFIX_INDEX + " 1";
+        assertParseFailure(parser, " " + PREFIX_INDEX, Index.MESSAGE_CONSTRAINTS); // Empty index
         assertParseFailure(parser, " " + PREFIX_INDEX + " -10", Index.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, firstPersonIndex + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // Invalid name
         assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // Invalid phone
@@ -123,10 +122,8 @@ public class EditCommandParserTest {
                 firstPersonIndex + INVALID_FACULTY_DESC, Faculty.MESSAGE_CONSTRAINTS
         );
         assertParseFailure(parser, firstPersonIndex + INVALID_YEAR_DESC, Year.MESSAGE_CONSTRAINTS); // Invalid year
-        // assertParseFailure(parser, "1" + INVALID_REMARK_DESC,
-        //      Remark.MESSAGE_CONSTRAINTS); // Invalid remark (TODO: Zhen Jie to update)
 
-        // ================= Dont know if this is correct =================
+        // ================= Invalid Followed by valid =================
         // Invalid phone followed by valid email.
         assertParseFailure(parser, firstPersonIndex + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
         // Invalid name with valid phone.
