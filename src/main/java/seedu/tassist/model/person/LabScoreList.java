@@ -3,6 +3,7 @@ package seedu.tassist.model.person;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -13,6 +14,10 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
     public static final String INVALID_LAB_SAVE = "Lab string is loaded incorrectly";
+
+    public static final String INVALID_LAB_MAX_SCORE =
+            "Person %d has score higher than the max lab score (%d) that you wish to set.";
+
     private static int labTotal = 4;
     public static final String LAB_NUMBER_CONSTRAINT = String.format(
             "Lab number must be between 1 and %d", labTotal);
@@ -76,7 +81,9 @@ public class LabScoreList {
      * @return Updated {@code LabScoreList}.
      * @throws CommandException When lab number is invalid.
      */
-    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
+    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts)
+            throws CommandException {
+        validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore, labNumber - 1);
         return new LabScoreList(copiedScores);
@@ -91,12 +98,32 @@ public class LabScoreList {
      * @return Updated {@code LabScoreList}.
      * @throws CommandException When lab number is invalid.
      */
-    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
+    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore, List<Person> allContacts)
+            throws CommandException {
+        validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] =
                 copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore, labNumber - 1);
         return new LabScoreList(copiedScores);
     }
+
+    private void validMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts) throws CommandException {
+        if (maxLabScore < 0) {
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        }
+        for (int i = 0; i < allContacts.size(); i++) {
+            LabScoreList checkList = allContacts.get(i).getLabScoreList();
+            if (checkList == this) {
+                continue;
+            }
+
+            boolean validMaxScore = checkList.labScoreList.get(labNumber - 1).testValidMaxScore(maxLabScore);
+            if (!validMaxScore) {
+                throw new CommandException(String.format(INVALID_LAB_MAX_SCORE, i + 1, maxLabScore));
+            }
+        }
+    }
+
 
     /**
      * Copies the list of lab scores.

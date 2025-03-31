@@ -105,6 +105,10 @@ public class LabScore {
         return updateLabScore(labScore, labNo);
     }
 
+    public boolean testValidMaxScore(int maxScore) {
+        return maxScore >= labScore;
+    }
+
     @Override
     public String toString() {
         if (labScore == -1) {

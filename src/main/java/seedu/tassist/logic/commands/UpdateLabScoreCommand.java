@@ -30,7 +30,8 @@ public class UpdateLabScoreCommand extends Command {
             + "-sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
             + "-msc MAX SCORE (must be positive integer, set max score for the lab). \n"
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
-            + "This update student of index 1 as lab 1 score as 10/10.";
+            + "This update student of index 1 as lab 1 score as 10/10. \n"
+            + "Note: The default max score set for all labs is 25";
 
     public static final String MESSAGE_INVALID_LAB_NUMBER = "This lab does not exist."
                     + "There are only %1$d labs";
@@ -112,10 +113,14 @@ public class UpdateLabScoreCommand extends Command {
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
             break;
         case MAXLABSCORE:
-            newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore);
+            newLabScoreList = personToUpdate.getLabScoreList()
+                    .updateMaxLabScore(labNumber, maxLabScore, lastShownList);
+            refresh(model);
             break;
         case BOTH:
-            newLabScoreList = personToUpdate.getLabScoreList().updateBothLabScore(labNumber, labScore, maxLabScore);
+            newLabScoreList = personToUpdate.getLabScoreList()
+                    .updateBothLabScore(labNumber, labScore, maxLabScore, lastShownList);
+            refresh(model);
             break;
         default:
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
@@ -130,6 +135,27 @@ public class UpdateLabScoreCommand extends Command {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getOneBased(), labNumber));
+    }
+
+    /**
+     * Refreshes the whole list of people.
+     *
+     * @param model The model of the current application.
+     */
+    public void refresh(Model model) {
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        for (int i = 0; i < lastShownList.size(); i++) {
+            Person personToUpdate = lastShownList.get(i);
+            LabScoreList newLabScoreList = personToUpdate.getLabScoreList();
+            Person updatedPerson = new Person(personToUpdate.getName(), personToUpdate.getPhone(),
+                personToUpdate.getTeleHandle(), personToUpdate.getEmail(), personToUpdate.getMatNum(),
+                personToUpdate.getTutGroup(), personToUpdate.getLabGroup(), personToUpdate.getFaculty(),
+                personToUpdate.getYear(), personToUpdate.getRemark(), personToUpdate.getAttendanceList(),
+                newLabScoreList, personToUpdate.getTags());
+            model.setPerson(personToUpdate, updatedPerson);
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        }
     }
 
     @Override
