@@ -134,7 +134,7 @@ public class EditCommand extends Command {
                 boolean isPhoneAvailable = personToEdit.getTeleHandle().isEmpty()
                         && editPersonDescriptor.getPhone().get().value.isBlank();
                 if (isPhoneAvailable) {
-                    throw new CommandException("You cannot remove the Phone handle!");
+                    throw new CommandException("You cannot remove the Phone Number!");
                 }
             }
 
@@ -149,7 +149,7 @@ public class EditCommand extends Command {
                 boolean isLabGrpAvailable = personToEdit.getTutGroup().isEmpty()
                         && editPersonDescriptor.getLabGroup().get().value.isBlank();
                 if (isLabGrpAvailable) {
-                    throw new CommandException("You cannot remove the Phone handle!");
+                    throw new CommandException("You cannot remove the Lab Group!");
                 }
             }
 

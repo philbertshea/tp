@@ -28,6 +28,8 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
  */
 public class EditCommandParser implements Parser<EditCommand> {
 
+    public static final String MESSAGE_INVALID_BATCH_FIELDS = "You can only edit the tutorial group, lab group,"
+            + " faculty or year when doing a batch edit!";
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
      * and returns an EditCommand object for execution.
@@ -64,9 +66,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
                 PREFIX_MAT_NUM, PREFIX_REMARK)
         ) {
-            throw new ParseException(
-                    "You can only edit the tutorial group, lab group,"
-                            + " faculty or year when doing a batch edit!");
+            throw new ParseException(MESSAGE_INVALID_BATCH_FIELDS);
         }
 
         argMultimap.verifyNoDuplicatePrefixesAndWarnQuotesFor(

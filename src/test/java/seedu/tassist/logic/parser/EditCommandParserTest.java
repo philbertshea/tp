@@ -40,10 +40,12 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.tassist.logic.parser.EditCommandParser.MESSAGE_INVALID_BATCH_FIELDS;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -68,11 +70,20 @@ public class EditCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
 
+    private static final String MULTIPLE_INDEX = " " + PREFIX_INDEX + " 1-3, 4, 5";
     private EditCommandParser parser = new EditCommandParser();
 
+    private final List<Index> expectedMultipleIndex = Arrays.asList(
+            Index.fromOneBased(1),
+            Index.fromOneBased(2),
+            Index.fromOneBased(3),
+            Index.fromOneBased(4),
+            Index.fromOneBased(5)
+    );
+
+    // ========== Test for Single person edit ==========
     @Test
     public void parse_missingParts_failure() {
-        // TODO: Might need to check all this again
         // No index specified.
         assertParseFailure(parser, PREFIX_PHONE + " " + VALID_PHONE_AMY,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
@@ -233,12 +244,12 @@ public class EditCommandParserTest {
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + INVALID_PHONE_DESC + PHONE_DESC_BOB;
 
-        assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+        assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Invalid followed by valid
         userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + PHONE_DESC_BOB + INVALID_PHONE_DESC;
 
-        assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+        assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE));
 
         // Multiple valid fields repeated.
         userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + PHONE_DESC_AMY + EMAIL_DESC_AMY
@@ -246,13 +257,74 @@ public class EditCommandParserTest {
                 + PHONE_DESC_BOB + EMAIL_DESC_BOB;
 
         assertParseFailure(parser, userInput,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE, PREFIX_EMAIL));
 
         // Multiple invalid values.
         userInput = " " + PREFIX_INDEX + " " + targetIndex.getOneBased() + INVALID_PHONE_DESC + INVALID_EMAIL_DESC
                 + INVALID_PHONE_DESC + INVALID_EMAIL_DESC;
 
         assertParseFailure(parser, userInput,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE, PREFIX_EMAIL));
+                Messages.getErrorMessageForDuplicatePrefixesWithQuotes(PREFIX_PHONE, PREFIX_EMAIL));
+    }
+
+    // ========== Tests for batch edit ==========
+
+    @Test
+    public void parse_multipleIndex_success() {
+        assertParseSuccess(parser, " " + PREFIX_INDEX + " 1-3, 4, 5" + YEAR_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build()));
+        assertParseSuccess(parser, " " + PREFIX_INDEX + " 1, 2, 3, 4, 5" + YEAR_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build()));
+        assertParseSuccess(parser, " " + PREFIX_INDEX + " 1-3, 4-5" + YEAR_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build()));
+    }
+
+    @Test
+    public void parse_multipleIndexWithSingleValidFields_success() {
+        assertParseSuccess(parser, MULTIPLE_INDEX + YEAR_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build()));
+        assertParseSuccess(parser, MULTIPLE_INDEX + FACULTY_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withFaculty(VALID_FACULTY_AMY).build()));
+        assertParseSuccess(parser, MULTIPLE_INDEX + LAB_GROUP_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withLabGroup(VALID_LAB_GROUP_AMY).build()));
+        assertParseSuccess(parser, MULTIPLE_INDEX + TUT_GROUP_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder().withTutGroup(VALID_TUT_GROUP_AMY).build()));
+    }
+
+    @Test
+    public void parse_multipleIndexWithMultipleFields_success() {
+        assertParseSuccess(parser,
+                MULTIPLE_INDEX
+                        + YEAR_DESC_AMY + FACULTY_DESC_AMY + LAB_GROUP_DESC_AMY + TUT_GROUP_DESC_AMY,
+                new EditCommand(expectedMultipleIndex,
+                        new EditPersonDescriptorBuilder()
+                                .withYear(VALID_YEAR_AMY)
+                                .withFaculty(VALID_FACULTY_AMY)
+                                .withLabGroup(VALID_LAB_GROUP_AMY)
+                                .withTutGroup(VALID_TUT_GROUP_AMY)
+                                .build()));
+    }
+
+    @Test
+    public void parse_multipleIndexWithInvalidFields_failure() {
+        // Name
+        assertParseFailure(parser, MULTIPLE_INDEX + NAME_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
+        // Phone
+        assertParseFailure(parser, MULTIPLE_INDEX + PHONE_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
+        // Tele Handle
+        assertParseFailure(parser, MULTIPLE_INDEX + TELE_HANDLE_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
+        // Email
+        assertParseFailure(parser, MULTIPLE_INDEX + EMAIL_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
+        // Matriculation Num
+        assertParseFailure(parser, MULTIPLE_INDEX + MAT_NUM_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
+        // Remark
+        assertParseFailure(parser, MULTIPLE_INDEX + REMARK_DESC_AMY, MESSAGE_INVALID_BATCH_FIELDS);
     }
 }
