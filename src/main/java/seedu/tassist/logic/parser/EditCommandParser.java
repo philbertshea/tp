@@ -50,7 +50,12 @@ public class EditCommandParser implements Parser<EditCommand> {
                         PREFIX_YEAR, PREFIX_REMARK
                 );
 
-        if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
+        // Checks if the index has been defined + if there are any fields the users wants to edit
+        if (!argMultimap.getValue(PREFIX_INDEX).isPresent()
+                || !anyPrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
+                PREFIX_MAT_NUM, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
+                PREFIX_YEAR, PREFIX_REMARK)
+        ) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
