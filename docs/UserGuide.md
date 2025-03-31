@@ -60,10 +60,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
   e.g `(-p PHONE_NUMBER -tg TELEGRAM_HANDLE)` means either `-p PHONE_NUMBER` or `-tg TELEGRAM_HANDLE` or both `-p PHONE_NUMBER -tg TELEGRAM HANDLE` are accepted.
 
 * Items in square brackets are optional.<br>
-  e.g `-n NAME [-tag TAG]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
+  e.g `-n NAME [-tag ]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[-tag TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-p PHONE_NUMBER -n NAME` is also acceptable.
@@ -115,6 +114,16 @@ Tags must also be at most 60 characters.
 **Tip:** Only the **matriculation number** of a record makes them unique!
 </box>
 
+<box type="tip" seamless>
+
+**Note:** 
+* If `TUTORIAL_GROUP` is provided as an input when adding a person, then the person is assigned 
+the Default Attendance List (represented by the string `3300000000000`, which means No Tutorial for
+Weeks 1 and 2, Not Attended for Weeks 3 to 13). 
+* If no `TUTORIAL_GROUP` is provided as input when adding a person, then the person is assigned
+an Empty Attendance List.
+</box>
+
 Examples:
 * `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 * `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
@@ -129,46 +138,113 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit INDEX [-n NAME] [-p PHONE] [-e EMAIL] [-a ADDRESS]`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* The behaviour of the edit command depends on the field being edited:
+  * For mandatory fields of a person: `-n NAME`, `-e EMAIL`, `-m MATRICULATION_NUMBER`, a valid input value must be provided.
+to replace the current value. 
+    * E.g. `edit -i 1 -n Alex` is valid, editing the name of person of index 1 to Alex.
+    * `edit -i 1 -n 123!#$` is invalid, because 123!#$ is not a valid name.
+    * `edit -i 1 -n` is invalid, because a person must have a name, which is a mandatory field.
+  * There are two sets of conditional fields: Set 1: `-p PHONE_NUMBER -tg TELEGRAM_HANDLE` and 
+  * Set 2: `-t TUTORIAL_GROUP -b LAB_GROUP`.
+These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVERY SET must have a valid input.
+    * Providing a valid input value for either or both fields will always be supported as a valid edit.
+    * The validity of the edit command depends on whether the person fulfills these conditions after the edit:
+      * After the edit, the person has AT LEAST a valid `PHONE_NUMBER` OR a valid `TELEGRAM_HANDLE`.
+      * After the edit, the person has AT LEAST a valid `TUTORIAL_GROUP` OR a valid `LAB_GROUP`.
+    * E.g. if the person of index 1 currently has a valid `PHONE_NUMBER` but no valid `TELEGRAM_HANDLE`:
+      * `edit -i 1 -p 90001234` is valid, because he will still have a valid phone number after the edit.
+      * `edit -i 1 -t @telehandle123` is valid, because he will have BOTH a valid phone number 
+      AND a valid teleHandle after the edit.
+      * `edit -i 1 -p` is INVALID, because the proposed edit would make the person have NEITHER a valid phone number,
+      NOR a valid teleHandle after the edit.
+  * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input, or empty input.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+*  `edit 2 -n Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
+
+<box type="tip" seamless>
+
+**Note:**
+* The behaviour of editing a `TUTORIAL_GROUP` on the person's AttendanceList depends on his original and updated
+status (whether he had a tutorial group before the edit, and will have one after the edit).
+  * Case 1: A person originally has a valid `TUTORIAL_GROUP` (and hence a valid AttendanceList),
+    * Case 1.1: An edit command is given to edit his `TUTORIAL_GROUP` to another valid `TUTORIAL_GROUP`. 
+    Then the person's AttendanceList is carried over (No change to the AttendanceList).
+    * Case 1.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
+    Provided the aforementioned restrictions on the conditional parameters are fulfilled (i.e. the person has a valid `LAB_GROUP`),
+    then the person's AttendanceList is cleared and replaced with the Empty AttendanceList.
+  * Case 2: A person originally has NO valid `TUTORIAL_GROUP` (and hence an empty AttendanceList),
+      * Case 2.1: An edit command is given to edit his `TUTORIAL_GROUP` to a valid `TUTORIAL_GROUP`.
+        Then the person's AttendanceList is set to the Default AttendanceList 
+        (represented by the string `3300000000000`, which means No Tutorial for
+        Weeks 1 and 2, Not Attended for Weeks 3 to 13).
+      * Case 2.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
+      Then the person's AttendanceList remains as an Empty AttendanceList.
+</box>
 
 ### Marks attendance: `att`
 
 Marks the attendance of an individual student, or a tutorial group.
+**Tip**: With the new release, you can now mark the attendance of multiple students or tutorial groups.
 
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 
 * Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`
-  * Not accepted: NEITHER or BOTH FLAGS TOGETHER
+  * Not accepted: NEITHER of the flags provided, or BOTH flags provided together.
 * Mandatory parameter: `-w WEEK`
   * Not accepted: MISSING week flag
 * Optional parameters: EITHER ONE OF `-mc`, `-u`, OR `-nt`
-  * Not accepted: TWO OR MORE OF THE ABOVE FLAGS
-* Additional restriction: `-nt` CANNOT be together with `-i`.
+  * Not accepted: TWO or more of the above flags.
 
-Assuming the above restrictions are satisfied,
+Assuming the restrictions are satisfied,
 * Marks the attendance of a student (if `-i INDEX` is provided)
   OR all students in a tutorial group (if `-t TUTORIAL_GROUP` is provided).
 * The new attendance status is ATTENDED by default. However:
-  * If `-mc` is provided, new attendance status is ON MC.
-  * If `-u` is provided, new attendance status is NOT ATTENDED.
-  * If `-nt` is provided, new attendance status is NO TUTORIAL.
+    * If `-mc` is provided, new attendance status is ON MC.
+    * If `-u` is provided, new attendance status is NOT ATTENDED.
+    * If `-nt` is provided, new attendance status is NO TUTORIAL.
+
+* **Note**: Additional restrictions apply on the marking attendance command.
+  * Commands using the `-i` flag have additional restrictions.
+    1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
+    as having No Tutorial.
+       * If Alex of index 1 didn't attend Week 5 tutorial, mark him as Not Attended (or Unattended) using `att -i -w 5 -u`.
+       * If Alex's tutorial group T01 falls on a public holiday, such that the Week 5 tutorial gets cancelled,
+       mark the whole tutorial group as No Tutorial. Use the command `att -t T01 -w 5 -nt`.
+    2. If the person specified by the `INDEX` has No Tutorial in the given week, the command is invalid. 
+    This means you cannot mark an individual to any attendance status, if he currently has No Tutorial.
+       * Assume Alex of tutorial group T01 originally had their tutorial cancelled due to the public holiday.
+       Now, the profs announce a make-up tutorial for T01 that everyone must attend (like normal tutorials).
+           * First, mark the whole tutorial group as Not Attended, using `att -t T01 -w 5 -u`.
+           * On the day of the makeup tutorial, you find that Alex (index 1) attended.
+           * Then, mark Alex as having attended the tutorial, `att -i 1 -w 5`.
+    3. If the person has an Empty AttendanceList, any command on the person will be invalid.
+       * Alex of index 1 has no `TUTORIAL_GROUP` (e.g. he is not in your tutorial group).
+       Then it doesn't make sense to mark his attendance for any week.
+       * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
+       his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
 
 Examples:
 * `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
 * `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
   * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
+
+* **Tip**: You can now mark the attendance of multiple persons and tutorial groups as valid.
+  However, do note that if you are using the `-i` flag, to mark attendance of persons by index,
+  the restrictions aforementioned apply to EVERY person listed.
+    * For example, you want to mark persons of index 1 to 10 (inclusive) as attended for week 3.
+        * You realise that person 3 has no tutorial group, and persons 4,5 are in tutorial group T03,
+          and group T03's tutorial has been cancelled due to the clashing holiday. They are currently
+          marked as No Tutorial for week 3, which is appropriate given their tutorial is cancelled.
+        * `att -i 1-10 -w 3` gives you an error because persons 3, 4, 5 do not fulfill the restrictions.
+        * You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
 
 
 ### Locating persons by name: `find`
@@ -222,7 +298,7 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+AddressBook data are saved automatically as a JSON file `[JAR file location]/data/ddressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
@@ -258,7 +334,7 @@ Action     | Format, Examples
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Clear**  | `clear`
 **Delete** | `del -i INDEX`<br> e.g., `del -i 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit INDEX [-n NAME] [-p PHONE_NUMBER] [-e EMAIL] `<br> e.g.,`edit 2 -n James Lee -e jameslee@example.com`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
