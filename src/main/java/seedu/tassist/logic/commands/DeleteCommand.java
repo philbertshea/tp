@@ -1,13 +1,12 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_DELETE_MULTIPLE_SUCCESS;
+import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 

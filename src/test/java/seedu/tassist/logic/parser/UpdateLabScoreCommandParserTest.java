@@ -1,6 +1,7 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_NUMBER_A;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_SCORE_A;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_LAB_SCORE_B;
@@ -10,7 +11,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_SCORE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MAX_LAB_SCORE;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.jupiter.api.Test;

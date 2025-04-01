@@ -3,7 +3,6 @@ package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 
 import java.util.List;

@@ -30,18 +30,16 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
-    public static final String MESSAGE_INVALID_INDEX = "Invalid index. " +
-            "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_INDEX = "Invalid index. "
+            + "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_MISSING_ARGUMENTS =
             "Missing arguments!\nRequires -i <index>.";
-    public static final String MESSAGE_INVALID_ARGUMENTS =
-            "Invalid arguments detected!\nValid arguments are -i <index>.";
     public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
             + "\nDeleted Student(s):\n%s";
     public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
             + " You currently have %d records!";
-    public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range! " +
-            "Ensure that start <= end and all values are positive integers.";
+    public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range! "
+            + "Ensure that start <= end and all values are positive integers.";
     /**
      * Returns an error message indicating the duplicate prefixes.
      */
