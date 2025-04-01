@@ -1,5 +1,8 @@
 package seedu.tassist.model.person;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
 
@@ -7,17 +10,31 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
  * Holds the score and max score for a lab.
  */
 public class LabScore {
+    private static ArrayList<Integer> allMaxScores = new ArrayList<>(List.of(25, 25, 25, 25));
     private int labScore;
     private int maxLabScore = 25; //Default max score is 25.
 
+    /**
+     * Creates default LabScore object.
+     */
     public LabScore() {
         labScore = -1;
     }
 
     /**
-     * Creates a LabScore object.
+     * Creates default LabScore object with standardized lab score.
      *
-     * @param labScore the score to initialize with.
+     * @param labNumber
+     */
+    public LabScore(int labNumber) {
+        labScore = -1;
+        maxLabScore = allMaxScores.get(labNumber);
+    }
+
+    /**
+     * Creates a LabScore object with the provided parameters.
+     *
+     * @param labScore the score to initialize with.s
      * @param maxLabScore the max score of the lab to initialize.
      */
     public LabScore(int labScore, int maxLabScore) {
@@ -59,6 +76,19 @@ public class LabScore {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
         return new LabScore(labScore, maxLabScore);
+    }
+
+    /**
+     * Updates the standardized max lab score for the updated lab.
+     * This function is only called when it has just successfully updated
+     * the maxLabScore for one LabScore object.
+     *
+     * @param labNumber The lab that the maxLabScore is associated with.
+     * @param maxLabScore The updated maxLabScore.
+     */
+    public static void updateMaxLabScore(int labNumber, int maxLabScore) {
+        assert maxLabScore >= 0;
+        allMaxScores.set(labNumber, maxLabScore);
     }
 
     /**
@@ -104,7 +134,7 @@ public class LabScore {
     @Override
     public String toString() {
         if (labScore == -1) {
-            return "-";
+            return String.format("-/%d", maxLabScore);
         }
 
         return String.format("%d/%d", labScore, maxLabScore);

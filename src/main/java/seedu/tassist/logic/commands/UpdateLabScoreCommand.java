@@ -37,8 +37,8 @@ public class UpdateLabScoreCommand extends Command {
             + "-sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
             + "-msc MAX SCORE (must be positive integer, set max score for the lab). \n"
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
-            + "This update student of index 1 as lab 1 score as 10/10. \n"
-            + "Note: There default max score for all labs is 25.";
+            + "This update student of index 1 as lab 1 score as 10/10.\n"
+            + "Note: There default max score for all labs is 25.\n";
 
     public static final String MESSAGE_INVALID_LAB_NUMBER = "This lab does not exist."
             + "There are only %1$d labs";
@@ -86,6 +86,7 @@ public class UpdateLabScoreCommand extends Command {
         this.maxLabScore = isMaxScore ? labScore : UNUSED_VALUE;
         this.updateType = isMaxScore ? UpdateType.MAXLABSCORE : UpdateType.LABSCORE;
     }
+
 
     /**
      * Updates both lab score and max lab score for the specified student for the specified lab.

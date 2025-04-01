@@ -11,7 +11,7 @@
     "year" :  "3",
     "remark" : "todo",
     "attendances" : "3300000000000",
-    "labScores" : "4.-|-|-|-",
+    "labScores" : "4.-/25|-/25|-/25|-/25",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
@@ -25,6 +25,6 @@
     "year" :  "3",
     "remark" : "todo",
     "attendances" : "3300000000000",
-    "labScores" : "4.-|-|-|-"
+    "labScores" : "4.-/25|-/25|-/25|-/25"
   } ]
 }

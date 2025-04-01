@@ -17,6 +17,9 @@ import seedu.tassist.logic.parser.exceptions.ParseException;
  */
 public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand> {
 
+    private static final Index DEFAULT_INDEX = Index.fromOneBased(1);
+
+
     /**
      * Parses input arguments and create a new UpdateLabScoreCommand object.
      *
@@ -37,29 +40,32 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
         int labScore = -1;
         int maxLabScore = -1;
 
-        boolean isBothScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent()
-                && argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
 
-        boolean isOnlyLabScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent();
-        boolean isOnlyMaxLabScorePresent = argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
+        boolean isLabScorePresent = argMultimap.getValue(PREFIX_LAB_SCORE).isPresent();
+        boolean isMaxLabScorePresent = argMultimap.getValue(PREFIX_MAX_LAB_SCORE).isPresent();
+        boolean isBothScorePresent = isLabScorePresent && isMaxLabScorePresent;
 
-        if (!isOnlyLabScorePresent && !isOnlyMaxLabScorePresent) {
+        if (!isLabScorePresent && !isMaxLabScorePresent) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     UpdateLabScoreCommand.MESSAGE_USAGE));
         }
 
-        index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
+        if (isLabScorePresent) {
+            index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
+        } else {
+            index = DEFAULT_INDEX;
+        }
+
         labNumber = ParserUtil.parseLabNumber(argMultimap.getValue(PREFIX_LAB_NUMBER).orElse(""));
 
+
         try {
-            if (isBothScorePresent || isOnlyLabScorePresent) {
+            if (isLabScorePresent) {
                 labScore = ParserUtil.parseLabScore(argMultimap.getValue(PREFIX_LAB_SCORE).orElse(""));
             }
-
-            if (isBothScorePresent || isOnlyMaxLabScorePresent) {
+            if (isMaxLabScorePresent) {
                 maxLabScore = ParserUtil.parseLabScore(argMultimap.getValue(PREFIX_MAX_LAB_SCORE).orElse(""));
             }
-
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     UpdateLabScoreCommand.MESSAGE_USAGE), ive);
@@ -67,10 +73,10 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
 
         if (isBothScorePresent) {
             return new UpdateLabScoreCommand(index, labNumber, labScore, maxLabScore);
-        } else if (isOnlyLabScorePresent) {
-            return new UpdateLabScoreCommand(index, labNumber, labScore, isOnlyMaxLabScorePresent);
+        } else if (isLabScorePresent) {
+            return new UpdateLabScoreCommand(index, labNumber, labScore, isMaxLabScorePresent);
         }
 
-        return new UpdateLabScoreCommand(index, labNumber, maxLabScore, isOnlyMaxLabScorePresent);
+        return new UpdateLabScoreCommand(index, labNumber, maxLabScore, isMaxLabScorePresent);
     }
 }

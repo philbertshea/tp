@@ -25,7 +25,7 @@ public class UpdateLabScoreCommandTest {
     @Test
     public void successCase() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(firstPerson).withLabScores("4.20/25|-|-|-").build();
+        Person editedPerson = new PersonBuilder(firstPerson).withLabScores("4.20/25|-/25|-/25|-/25").build();
 
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);

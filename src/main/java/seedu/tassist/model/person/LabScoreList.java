@@ -27,7 +27,7 @@ public class LabScoreList {
      */
     public LabScoreList() {
         for (int i = 0; i < labTotal; i++) {
-            labScoreList.add(new LabScore());
+            labScoreList.add(new LabScore(i));
         }
     }
 
@@ -38,13 +38,11 @@ public class LabScoreList {
      */
     public LabScoreList(String[] labs) {
         for (int i = 0; i < labs.length; i++) {
-            if (labs[i].equals("-")) {
-                labScoreList.add(new LabScore());
-            } else {
-                String[] scoreSplit = labs[i].split("/");
-                labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]),
-                        Integer.parseInt(scoreSplit[1])));
-            }
+            String[] scoreSplit = labs[i].split("/");
+            Integer labScore = scoreSplit[0].equals("-") ? -1 : Integer.parseInt(scoreSplit[0]);
+            Integer maxLabScore = Integer.parseInt(scoreSplit[1]);
+            labScoreList.add(new LabScore(labScore, maxLabScore));
+            LabScore.updateMaxLabScore(i, maxLabScore);
         }
     }
 
@@ -84,6 +82,7 @@ public class LabScoreList {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
+        LabScore.updateMaxLabScore(labNumber, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -101,6 +100,7 @@ public class LabScoreList {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
+        LabScore.updateMaxLabScore(labNumber, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -198,16 +198,15 @@ public class LabScoreList {
         }
 
         for (int i = 0; i < total; i++) {
-            if (labs[i].equals("-")) {
-                continue;
-            }
             String[] scoreSplit = labs[i].split("/");
             if (scoreSplit.length != 2) {
                 return false;
             }
 
             try {
-                Integer.parseInt(scoreSplit[0]);
+                if (!scoreSplit[0].equals("-")) {
+                    Integer.parseInt(scoreSplit[0]);
+                }
                 Integer.parseInt(scoreSplit[1]);
             } catch (NumberFormatException e) {
                 return false;
