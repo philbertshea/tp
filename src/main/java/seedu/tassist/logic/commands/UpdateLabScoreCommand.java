@@ -19,7 +19,14 @@ public class UpdateLabScoreCommand extends Command {
     public static final String COMMAND_WORD = "lab";
 
     public static final String MESSAGE_UPDATE_LAB_SCORE_SUCCESS =
-            "Update lab %2$d for index %1$d";
+            "Update lab %1$d score for student %2$d as %3$s";
+
+    public static final String MESSAGE_UPDATE_LAB_MAX_SCORE_SUCCESS =
+            "Update lab %1$d max score to be %2$d";
+
+    public static final String MESSAGE_UPDATE_BOTH_SCORES_SUCCESS =
+            "Update lab %1$d max score to be %2$d and lab %1$d score for student %3$d as %4$s";
+
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Update the lab score of a student that is identified by the index"
@@ -107,21 +114,27 @@ public class UpdateLabScoreCommand extends Command {
 
         Person personToUpdate = lastShownList.get(index.getZeroBased());
         LabScoreList newLabScoreList;
+        String successMessage;
         switch (updateType) {
         case LABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
             updatePerson(model, personToUpdate, newLabScoreList);
+            successMessage = String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, labNumber, index.getOneBased(),
+                    newLabScoreList.getLabScores().get(labNumber - 1).toString());
             break;
         case MAXLABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore, lastShownList);
             updatePerson(model, personToUpdate, newLabScoreList);
             refresh(model);
+            successMessage = String.format(MESSAGE_UPDATE_LAB_MAX_SCORE_SUCCESS, labNumber, maxLabScore);
             break;
         case BOTH:
             newLabScoreList = personToUpdate.getLabScoreList()
                     .updateBothLabScore(labNumber, labScore, maxLabScore, lastShownList);
             updatePerson(model, personToUpdate, newLabScoreList);
             refresh(model);
+            successMessage = String.format(MESSAGE_UPDATE_BOTH_SCORES_SUCCESS, labNumber, maxLabScore,
+                    index.getOneBased(), newLabScoreList.getLabScores().get(labNumber - 1).toString());
             break;
         default:
             throw new CommandException("Error");
@@ -129,7 +142,7 @@ public class UpdateLabScoreCommand extends Command {
 
 
 
-        return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getOneBased(), labNumber));
+        return new CommandResult(successMessage);
     }
 
     /**

@@ -29,6 +29,9 @@ public class UpdateLabScoreCommandParser implements Parser<UpdateLabScoreCommand
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_INDEX, PREFIX_LAB_NUMBER, PREFIX_LAB_SCORE, PREFIX_MAX_LAB_SCORE);
 
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX, PREFIX_LAB_NUMBER,
+                PREFIX_LAB_SCORE, PREFIX_MAX_LAB_SCORE);
+
         Index index;
         int labNumber;
         int labScore = -1;

@@ -30,7 +30,8 @@ public class UpdateLabScoreCommandTest {
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
         String expectedMessage = String.format(UpdateLabScoreCommand.MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
-                INDEX_FIRST_PERSON.getOneBased(), VALID_LAB_NUMBER_A);
+                VALID_LAB_NUMBER_A, INDEX_FIRST_PERSON.getOneBased(),
+                editedPerson.getLabScoreList().getLabScores().get(VALID_LAB_NUMBER_A - 1).toString());
         System.out.println(expectedMessage);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
