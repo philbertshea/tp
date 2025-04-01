@@ -125,22 +125,83 @@ Shows a list of all persons in the address book.
 
 Format: `list`
 
-### Editing a person : `edit`
+### Editing a student : `edit`
 
-Edits an existing person in the address book.
+There are 2 possible ways to edit the students in the list.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+#### 1. Edit a single student
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+Edits an existing student in the address book.
+
+Format: `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]​`
+
+* Edits the student at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* If the student only has a phone number (with no telegram handle), you will not be able to remove it. (vice versa)
+  * This is the same for tutorial group and lab group
+* To remove a value, just type the flag: `-p` removes the phone number.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit -i 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+*  `edit -i 2 -n Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
+
+#### 2. Edit multiple students (Batch edit)
+
+Edits several existing student in the address book in one go.
+
+Format: `edit -i INDEX_RANGE [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY]`
+* Edits the student at the specified `INDEX_RANGE`. The index **must be a positive integer** 1, 2, 3, …​
+* At least one of the optional fields must be provided. (Only the 4 stated here can be edited. Any other fields will not be accepted.)
+* Existing values will be updated to the input values.
+
+Examples:
+* `edit -i 1-3 -y 2` Edits the year of study for the 1st to 3rd students to be 2
+* `edit -i 1, 4, 5 -y 2 -f SOC` Edits the year of study for the 1st, 4th and 5th students to be 2 and faculty to be SOC
+
+### Tagging a student: `tag`
+
+There are 3 ways to tag a student.
+
+#### 1. Adding tags
+
+Adds tag(s) to a student.
+
+Format: `tag -a -i INDEX [-tag TAG_NAME]...`
+
+* Adds tags to the student at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* You need to add at least 1 tag. The tag will be added on top of the current tags the student has.
+* The `TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
+* This is purely for adding. To edit and delete tags, look at [Edit Tags](#2-editing-a-tag) and [Delete Tags](#3-deleting-tags)
+
+Examples:
+* `tag -a -i 1 -tag lateStudent` Adds a tag to the 1st student with the label `lateStudent`
+* `tag -a -i 1 -tag NeedHelp -tag AbleToCompete` Adds a tag to the 1st student with the labels `NeedHelp` and `AbleToCompete`
+  * The resultant tags will be sorted alphabetically.
+
+#### 2. Editing a tag
+
+Edits a current tag.
+
+Format: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`
+
+* Edits the tag `OLD_TAG_NAME` and replaces the tags value with `NEW_TAG_NAME` of the student at the specified INDEX. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* You can only edit 1 tag at a time. The OLD_TAG_NAME must exist for you to edit and replace its value.
+* The `OLD_TAG_NAME` and `NEW_TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
+
+Examples:
+* `tag -m -i 1 -tag lastStudent -tag earlyStudent` Replaces the value of the `lateStudent` tag, of the 1st student, with `earlyStudent` 
+* `tag -m -i 1 -tag NeedHelp -tag CanSurvive` Replaces the value of the `NeedHelp` tag, of the 1st student, with `CanSurvive`
+
+#### 3. Deleting tags
+
+Removes tag(s) from a student.
+
+Format `tag -d -i INDEX [-tag TAG_NAME]...`
+
+* Deletes the specified tags from the student at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* You must specify at least 1 tag when using this command. `TAG_NAME` is case sensitive and will only delete exact matches.
+* The `TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
 ### Marks attendance: `att`
 
@@ -209,6 +270,25 @@ Examples:
 Clears all entries from the address book.
 
 Format: `clear`
+
+### Export Data : `export`
+
+Exports all the student data as CSV or JSON file.
+There are 2 ways to export data
+
+#### 1. Using the CLI:
+
+Format: `export -f FILE_PATH`
+
+* Exports the data to the `FILE_PATH` specified in this command.
+* The `FILE_PATH` can either be relative to the current application OR be a full file path.
+* The FILE_PATH must end either in a `<filename>.csv` or `<filename>.json`
+
+#### 2. Using the UI:
+
+1. On the toolbar, go to Files > Export Data...
+2. Select the file type (either JSON or CSV)
+3. Select where you want to save your file at
 
 ### Exiting the program : `exit`
 
