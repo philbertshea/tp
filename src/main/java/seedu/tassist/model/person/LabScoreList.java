@@ -17,11 +17,9 @@ public class LabScoreList {
 
     public static final String INVALID_LAB_MAX_SCORE =
             "Person %d has score higher than the max lab score (%d) that you wish to set.";
-
     private static int labTotal = 4;
     public static final String LAB_NUMBER_CONSTRAINT = String.format(
             "Lab number must be between 1 and %d", labTotal);
-
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
 
     /**
@@ -45,7 +43,7 @@ public class LabScoreList {
             } else {
                 String[] scoreSplit = labs[i].split("/");
                 labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]),
-                        Integer.parseInt(scoreSplit[1]), i));
+                        Integer.parseInt(scoreSplit[1])));
             }
         }
     }
@@ -69,7 +67,7 @@ public class LabScoreList {
      */
     public LabScoreList updateLabScore(int labNumber, int labScore) throws CommandException {
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore, labNumber - 1);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateLabScore(labScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -85,7 +83,7 @@ public class LabScoreList {
             throws CommandException {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore, labNumber - 1);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -102,28 +100,22 @@ public class LabScoreList {
             throws CommandException {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
-        copiedScores[labNumber - 1] =
-                copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore, labNumber - 1);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
-    private void validMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts) throws CommandException {
-        if (maxLabScore < 0) {
-            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
-        }
-        for (int i = 0; i < allContacts.size(); i++) {
-            LabScoreList checkList = allContacts.get(i).getLabScoreList();
-            if (checkList == this) {
-                continue;
-            }
-
-            boolean validMaxScore = checkList.labScoreList.get(labNumber - 1).testValidMaxScore(maxLabScore);
-            if (!validMaxScore) {
-                throw new CommandException(String.format(INVALID_LAB_MAX_SCORE, i + 1, maxLabScore));
-            }
-        }
+    /**
+     * Refreshes the max lab score for all the labs involved.
+     *
+     * @param labNumber The LabScore object to update.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     */
+    public LabScoreList refreshLabScore(int labNumber, int maxLabScore) {
+        LabScore[] copiedScores = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].refreshMaxScore(maxLabScore);
+        return new LabScoreList(copiedScores);
     }
-
 
     /**
      * Copies the list of lab scores.
@@ -155,6 +147,23 @@ public class LabScoreList {
         }
 
         return labNo > 0 && labNo <= labTotal;
+    }
+
+    private void validMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts) throws CommandException {
+        if (maxLabScore < 0) {
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        }
+        for (int i = 0; i < allContacts.size(); i++) {
+            LabScoreList checkList = allContacts.get(i).getLabScoreList();
+            if (checkList == this) {
+                continue;
+            }
+
+            boolean validMaxScore = checkList.labScoreList.get(labNumber - 1).testValidMaxScore(maxLabScore);
+            if (!validMaxScore) {
+                throw new CommandException(String.format(INVALID_LAB_MAX_SCORE, i + 1, maxLabScore));
+            }
+        }
     }
 
     /**
