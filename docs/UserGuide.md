@@ -22,28 +22,36 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for TAssist.
+3. Copy the file to the folder you want to use as the _home folder_ for TAssist.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
 
    * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -t T01` : Adds a contact named `John Doe` to TAssist.
 
+   * `edit -i 1 -p 91234567 -e johndoe@example.com` : Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+   
+   * `tag -a -i 1 -tag lateStudent` : Adds a tag to the 1st student with the label `lateStudent`
+   
    * `del -i 3` : Deletes the 3rd contact shown in the current list.
+   
+   * `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
 
    * `clear` : Deletes all contacts.
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+6. Tired of using the user guide to understand how to use? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
+
+7. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -203,6 +211,10 @@ Format `tag -d -i INDEX [-tag TAG_NAME]...`
 * You must specify at least 1 tag when using this command. `TAG_NAME` is case sensitive and will only delete exact matches.
 * The `TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
+Examples:
+* `tag -d -i 1 -tag earlyStudent` Deletes the tag `earlyStudent` from student 1
+* `tag -d -i 1 -tag tag1 -tag tag2` Deletes the tags `tag1` and `tag2` from student 1
+
 ### Marks attendance: `att`
 
 Marks the attendance of an individual student, or a tutorial group.
@@ -284,6 +296,10 @@ Format: `export -f FILE_PATH`
 * The `FILE_PATH` can either be relative to the current application OR be a full file path.
 * The FILE_PATH must end either in a `<filename>.csv` or `<filename>.json`
 
+Examples:
+* `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
+* `export -f /Users/user_name/Desktop/data.json` Exports the current data as a JSON file into the Desktop under data.json
+
 #### 2. Using the UI:
 
 1. On the toolbar, go to Files > Export Data...
@@ -338,8 +354,10 @@ Action     | Format, Examples
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Clear**  | `clear`
 **Delete** | `del -i INDEX`<br> e.g., `del -i 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]`<br> e.g.,`edit -i 2 -n James Lee -e jameslee@example.com`
+**Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
+**Export** | `export -f FILE_PATH`<br> e.g., `export -f ./data/test.csv`
 **Help**   | `help`
