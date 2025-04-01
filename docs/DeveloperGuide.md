@@ -663,13 +663,13 @@ testers are expected to do more *exploratory* testing.
       Expected: First person in the list is deleted. Confirmation message is shown with their details.
 
    1. Test case: `del -i 0`<br>
-      Expected: Invalid index. Error message shown: “Index is not a non-zero positive integer.” No deletion occurs.
+      Expected: Error message shown: “Invalid index. Index is not a non-zero positive integer.” No deletion occurs.
 
    1. Test case: `del -i -1`<br>
-   Expected: Error message shown: “Index is not a non-zero positive integer.” No deletion occurs.
+   Expected: Error message shown: “Invalid index. Index is not a non-zero positive integer.” No deletion occurs.
 
    1. Test case: `del -i 999` (where 999 > number of students shown)<br>
-   Expected: Error message shown: “The index provided is invalid.” No deletion occurs.
+   Expected: Error message shown:  “Invalid index! You currently have 3 records!” No deletion occurs.
 
    1. Test case: `del -i 1-3` (range input)<br>
    Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
@@ -681,22 +681,22 @@ testers are expected to do more *exploratory* testing.
    Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
    
    1. Test case: `del -i 3-1`<br>
-   Expected: Error message shown: “Invalid index range: start cannot be greater than end.”
+   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers.”
 
    1. Test case: `del -i 1 -i 2`<br>
-   Expected: Error message shown: “Multiple -i flags are not allowed.”
+   Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
 
    1. Test case: `del`<br>
-   Expected: Error message: “Missing required index parameter.”
+   Expected: Error message: “Invalid command format!”. Delete usage message displayed.
 
-   1. Test case: `del -i`<br>
-   Expected: Error message: “Missing index value after -i.”
+   1. Test case: `del -i `<br>
+   Expected: Error message: “Missing arguments! Requires -i <index>..”
 
    1. Test case: `del -i one`<br>
-   Expected: Error message: “Invalid index format: must be a number.”
+   Expected: Error message: "Invalid index. Index is not a non-zero unsigned integer."
 
    1. Test case: `del -i 1a`<br>
-   Expected: Error message: “Invalid index format: must be a number.”
+   Expected: Error message: "Invalid index. Index is not a non-zero unsigned integer."
 
 
 
