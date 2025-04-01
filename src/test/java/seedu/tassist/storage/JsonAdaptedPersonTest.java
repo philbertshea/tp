@@ -280,7 +280,7 @@ public class JsonAdaptedPersonTest {
                         VALID_EMAIL, VALID_MAT_NUM, VALID_TUT_GROUP, VALID_LAB_GROUP,
                         VALID_FACULTY, VALID_YEAR, VALID_REMARK,
                         INVALID_ATTENDANCE_STRING, VALID_LAB_SCORES_STRING , VALID_TAGS);
-        String expectedMessage = AttendanceList.MESSAGE_CONSTRAINTS;
+        String expectedMessage = AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

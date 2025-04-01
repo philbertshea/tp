@@ -16,51 +16,122 @@ public class AttendanceListTest {
     private final AttendanceList attendanceListDifferent =
             AttendanceList.generateAttendanceList(attendanceStringDifferent);
 
+    private final TutGroup emptyTutGroup = new TutGroup("");
+    private final TutGroup validTutGroupOne = new TutGroup("T01");
+    private final TutGroup validTutGroupTwo = new TutGroup("t99");
+
+
     // No Constructor tests as the constructor is private.
 
     @Test
-    public void isValidNonEmptyAttendanceString() {
-
-        // Null -> throws NullPointerException
+    public void isValidNonEmptyAttendanceString_nullInputString_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> AttendanceList.isValidNonEmptyAttendanceString(null));
-
-        // Invalid attendanceString -> returns false.
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("")); // Empty String
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000")); // Invalid Length
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000000000000000")); // Invalid Length
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000 00000000")); // No Spaces
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000a*-0000000")); // Invalid Chars
-        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
-
-        // Valid attendanceString -> returns true.
-        assertTrue(AttendanceList.isValidNonEmptyAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
-        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("1111111111111"));
-        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("2222222222222"));
-        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0120123012012"));
-        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0012013120011"));
-
     }
 
     @Test
-    public void isValidAttendanceString() {
+    public void isValidNonEmptyAttendanceString_invalidInputString_returnsFalse() {
+        // EP: Empty String.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString(""));
 
-        // Null -> throws NullPointerException
-        assertThrows(NullPointerException.class, () -> AttendanceList.isValidAttendanceString(null));
+        // EP: String of Invalid Length (too short).
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("0")); // Boundary value: length 1.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000")); // Boundary value: length 5.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000000000000")); // Boundary value: length 12.
 
+        // EP: String of Invalid Length (too long).
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("00000000000000")); // Boundary value: length 14.
+        // Boundary value: length 30.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("000000000000000000000000000000"));
+
+        // EP: String of Valid Length (13) but Invalid Values
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("             ")); // All spaces.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("A000000000000")); // Invalid Chars: Alphabet.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("0?00000000000")); // Invalid Chars: Symbols.
+        assertFalse(AttendanceList.isValidNonEmptyAttendanceString("0040000000000")); // Invalid Digits out of 0,1,2,3.
+    }
+
+
+    @Test
+    public void isValidNonEmptyAttendanceString_validInputString_returnsTrue() {
+        // EP: String of Length 13, all zeros/ones/twos/threes.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0000000000000")); // All zeros.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("1111111111111")); // All ones.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("2222222222222")); // All twos.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("3333333333333")); // All threes.
+
+        // EP: String of Length 13, mix of valid digits zeros/ones/twos/threes.
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0120123012012"));
+        assertTrue(AttendanceList.isValidNonEmptyAttendanceString("0012013120011"));
+    }
+
+    @Test
+    public void isValidAttendanceStringGivenTutGroup_nullStringInput_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                AttendanceList.isValidAttendanceStringGivenTutGroup(null, validTutGroupOne));
+    }
+
+    @Test
+    public void isValidAttendanceStringGivenTutGroup_nullTutGroupInput_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                AttendanceList.isValidAttendanceStringGivenTutGroup(attendanceString, null));
+    }
+
+    @Test
+    public void isValidAttendanceStringGivenTutGroup_invalidStringInput_returnsFalse() {
+        // EP: String of Invalid Length (too short).
+        // Boundary value: length 1.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup("0", validTutGroupOne));
+        // Boundary value: length 5.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup("00000", validTutGroupOne));
+        // Boundary value: length 12.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "000000000000", validTutGroupOne));
+
+        // EP: String of Invalid Length (too long).
+        // Boundary value: length 14.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "00000000000000", validTutGroupOne));
+        // Boundary value: length 30.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "000000000000000000000000000000", validTutGroupOne));
+
+        // EP: String of Valid Length (13) but Invalid Values
+        // All spaces.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "             ", validTutGroupOne));
+        // Invalid Chars: Alphabet.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "A000000000000", validTutGroupOne));
+        // Invalid Chars: Symbols.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "0?00000000000", validTutGroupOne));
+        // Invalid Digits out of 0,1,2,3.
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "0040000000000", validTutGroupOne));
+    }
+
+    @Test
+    public void isValidAttendanceStringGivenTutGroup() {
         // Invalid attendanceString -> returns false.
-        assertFalse(AttendanceList.isValidAttendanceString("00000")); // Invalid Length
-        assertFalse(AttendanceList.isValidAttendanceString("000000000000000")); // Invalid Length
-        assertFalse(AttendanceList.isValidAttendanceString("00000 00000000")); // No Spaces
-        assertFalse(AttendanceList.isValidAttendanceString("000a*-0000000")); // Invalid Chars
-        assertFalse(AttendanceList.isValidAttendanceString("0120120120124")); // Not within 0, 1, 2 or 3
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "00000", validTutGroupOne)); // Invalid Length
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "000000000000000", validTutGroupOne)); // Invalid Length
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "00000 00000000", validTutGroupOne)); // No Spaces
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "000a*-0000000", validTutGroupOne)); // Invalid Chars
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                "0120120120124", validTutGroupOne)); // Not within 0, 1, 2 or 3
 
         // Valid attendanceString -> returns true.
-        assertTrue(AttendanceList.isValidAttendanceString(""));
-        assertTrue(AttendanceList.isValidAttendanceString(AttendanceList.DEFAULT_ATTENDANCE_STRING));
-        assertTrue(AttendanceList.isValidAttendanceString("1111111111111"));
-        assertTrue(AttendanceList.isValidAttendanceString("2222222222222"));
-        assertTrue(AttendanceList.isValidAttendanceString("0120123012012"));
-        assertTrue(AttendanceList.isValidAttendanceString("0012013120011"));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                AttendanceList.DEFAULT_ATTENDANCE_STRING, validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup("1111111111111", validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup("2222222222222", validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup("0120123012012", validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup("0012013120011", validTutGroupOne));
 
     }
 
