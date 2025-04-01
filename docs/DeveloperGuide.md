@@ -659,16 +659,46 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `del -i 1`<br>
+      Expected: First person in the list is deleted. Confirmation message is shown with their details.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `del -i 0`<br>
+      Expected: Invalid index. Error message shown: “Index is not a non-zero positive integer.” No deletion occurs.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   1. Test case: `del -i -1`<br>
+   Expected: Error message shown: “Index is not a non-zero positive integer.” No deletion occurs.
 
-1. _{ more test cases …​ }_
+   1. Test case: `del -i 999` (where 999 > number of students shown)<br>
+   Expected: Error message shown: “The index provided is invalid.” No deletion occurs.
+
+   1. Test case: `del -i 1-3` (range input)<br>
+   Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
+
+   1. Test case: `del -i 2,4` (comma-separated input)<br>
+   Expected: Persons at index 2 and 4 are deleted. Confirmation message shows both.
+
+   1. Test case: `del -i 3, 6-7, 9` (mixed comma and range input)<br>
+   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
+   
+   1. Test case: `del -i 3-1`<br>
+   Expected: Error message shown: “Invalid index range: start cannot be greater than end.”
+
+   1. Test case: `del -i 1 -i 2`<br>
+   Expected: Error message shown: “Multiple -i flags are not allowed.”
+
+   1. Test case: `del`<br>
+   Expected: Error message: “Missing required index parameter.”
+
+   1. Test case: `del -i`<br>
+   Expected: Error message: “Missing index value after -i.”
+
+   1. Test case: `del -i one`<br>
+   Expected: Error message: “Invalid index format: must be a number.”
+
+   1. Test case: `del -i 1a`<br>
+   Expected: Error message: “Invalid index format: must be a number.”
+
+
 
 ### Saving data
 
