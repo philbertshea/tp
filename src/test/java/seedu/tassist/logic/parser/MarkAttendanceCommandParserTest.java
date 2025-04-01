@@ -14,6 +14,8 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
+import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_WEEK;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.List;
@@ -102,7 +104,8 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidWeek_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                MESSAGE_INVALID_WEEK + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
@@ -113,7 +116,8 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidIndex_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                MESSAGE_INVALID_INDEX + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + INVALID_INDEX_DESC + " "
@@ -124,7 +128,8 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidTutGroup_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                TutGroup.MESSAGE_CONSTRAINTS + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + INVALID_TUT_GROUP_DESC + " "

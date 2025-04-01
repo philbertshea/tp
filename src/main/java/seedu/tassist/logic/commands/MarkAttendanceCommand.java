@@ -80,7 +80,7 @@ public class MarkAttendanceCommand extends Command {
                     + "      %s INDEX           Student index (positive integer, valid index)\n"
                     + "      %s TUTORIAL_GROUP  Tutorial group ('T' or 't', followed by a positive integer)\n\n"
                     + "    Mandatory Parameters:\n"
-                    + "      %s WEEK_NUMBER     Week number (positive integer, 1-13)\n\n"
+                    + "      %s WEEK_NUMBER     Week number (positive integer, 1-13 inclusive)\n\n"
                     + "    Options:\n"
                     + "      %s                Mark as not attended\n"
                     + "      %s                Mark as on MC\n"

@@ -10,9 +10,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 
 import java.util.List;
-import java.util.logging.Logger;
 
-import seedu.tassist.commons.core.LogsCenter;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.commons.exceptions.IllegalValueException;
 import seedu.tassist.logic.commands.MarkAttendanceCommand;
@@ -73,8 +71,8 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            ive.getMessage() + "\n" + MarkAttendanceCommand.MESSAGE_USAGE), ive
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ive.getMessage()
+                            + " Or, check for invalid flags.\n" + MarkAttendanceCommand.MESSAGE_USAGE), ive
             );
         }
 
