@@ -31,10 +31,11 @@ public class SearchCommandParser implements Parser<SearchCommand> {
                         PREFIX_EMAIL, PREFIX_TAG, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
                         PREFIX_FACULTY, PREFIX_YEAR);
 
-        String nameStr = argMultimap.getValue(PREFIX_NAME).orElse(null);
-        List<String> nameKeywords = (nameStr != null)
-                ? Arrays.asList(nameStr.trim().split("\\s+"))
-                : null;
+        List<String> nameKeywords = null;
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            String trimmedName = argMultimap.getValue(PREFIX_NAME).get().trim();
+            nameKeywords = trimmedName.isEmpty() ? List.of() : Arrays.asList(trimmedName.split("\\s+"));
+        }
 
         String matNum = argMultimap.getValue(PREFIX_MAT_NUM).orElse(null);
         String phone = argMultimap.getValue(PREFIX_PHONE).orElse(null);
