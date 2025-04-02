@@ -34,8 +34,13 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX);
         if (!argMultimap.getValue(PREFIX_INDEX).isPresent()
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            if (userInput.trim().isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+            } else {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            }
         }
 
         String rawIndexes = argMultimap.getValue(PREFIX_INDEX).orElse("").trim();

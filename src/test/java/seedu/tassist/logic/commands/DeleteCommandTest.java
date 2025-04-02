@@ -3,11 +3,11 @@ package seedu.tassist.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_MULTIPLE_SUCCESS;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_PERSON_INVALID_INDEX;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.tassist.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.tassist.logic.commands.DeleteCommand.MESSAGE_DELETE_MULTIPLE_SUCCESS;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
@@ -53,7 +53,7 @@ public class DeleteCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(currentSize + 1);
         DeleteCommand deleteCommand = new DeleteCommand(List.of(outOfBoundIndex));
 
-        String expectedMessage = String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        String expectedMessage = String.format(MESSAGE_PERSON_INVALID_INDEX, currentSize);
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
 
@@ -81,7 +81,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(List.of(outOfBoundIndex));
 
         int currentSize = model.getFilteredPersonList().size();
-        String expectedMessage = String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, currentSize);
+        String expectedMessage = String.format(MESSAGE_PERSON_INVALID_INDEX, currentSize);
         assertCommandFailure(deleteCommand, model, expectedMessage);
     }
 
@@ -92,7 +92,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(List.of(INDEX_FIRST_PERSON));
 
         assertCommandFailure(deleteCommand, emptyModel,
-                String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, 0));
+                String.format(MESSAGE_PERSON_INVALID_INDEX, 0));
     }
 
     @Test

@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_INDEX_RANGE_VALUE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -332,7 +334,7 @@ public class ParserUtil {
         requireNonNull(input);
         String trimmedInput = input.trim();
         if (trimmedInput.isEmpty()) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+            throw new ParseException(MESSAGE_MISSING_ARGUMENTS);
         }
 
         Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
@@ -437,15 +439,21 @@ public class ParserUtil {
     private static void parseRange(String rangeStr, Set<Integer> indexSet) throws ParseException {
         String[] range = rangeStr.split("-");
         if (range.length != 2) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+            throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
         }
 
+        String startStr = range[0].trim();
+        String endStr = range[1].trim();
+
+        if (startStr.isEmpty() || endStr.isEmpty()) {
+            throw new ParseException(MESSAGE_MISSING_INDEX_RANGE_VALUE);
+        }
         try {
             int start = Integer.parseInt(range[0].trim());
             int end = Integer.parseInt(range[1].trim());
 
             if (start <= 0 || end <= 0) {
-                throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
+                throw new ParseException(MESSAGE_INVALID_INDEX);
             }
             if (start > end) {
                 throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
@@ -454,7 +462,7 @@ public class ParserUtil {
                 indexSet.add(i);
             }
         } catch (NumberFormatException e) {
-            throw new ParseException(MESSAGE_INVALID_INDEX, e);
+            throw new ParseException(MESSAGE_INVALID_INDEX_RANGE, e);
         }
     }
 

@@ -14,7 +14,7 @@ import seedu.tassist.model.person.Person;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "This command is not recognised."
-            + "Please try again.";
+            + " Please try again.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
             + "\nA maximum of one quote should be found in between every flag."
@@ -33,13 +33,14 @@ public class Messages {
     public static final String MESSAGE_INVALID_INDEX = "Invalid index. "
             + "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_MISSING_ARGUMENTS =
-            "Missing arguments!\nRequires -i <index>.";
-    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
-            + "\nDeleted Student(s):\n%s";
-    public static final String MESSAGE_DELETE_PERSON_INVALID_INDEX = "Invalid index!"
+            "Missing arguments!\nRequires -i <index>.\n%1$s";
+    public static final String MESSAGE_PERSON_INVALID_INDEX = "Invalid index (out of range)!"
             + " You currently have %d records!";
-    public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range! "
-            + "Ensure that start <= end and all values are positive integers.";
+    public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range!"
+            + "\nEnsure that start <= end and all values are positive integers."
+            + "\nExpected format: start-end (e.g., 2-4).";
+    public static final String MESSAGE_MISSING_INDEX_RANGE_VALUE = "Missing start or end value in range.";
+
     /**
      * Returns an error message indicating the duplicate prefixes.
      */

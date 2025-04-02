@@ -1,8 +1,7 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_MULTIPLE_SUCCESS;
-import static seedu.tassist.logic.Messages.MESSAGE_DELETE_PERSON_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_PERSON_INVALID_INDEX;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,7 +34,8 @@ public class DeleteCommand extends Command {
                     + "  del -i 1-3,5,7   (Deletes multiple persons)\n"
 
     );
-
+    public static final String MESSAGE_DELETE_MULTIPLE_SUCCESS = "Deleted %d persons successfully!"
+            + "\nDeleted Student(s):\n%s";
     private final List<Index> targetIndexes;
 
 
@@ -66,7 +66,7 @@ public class DeleteCommand extends Command {
         for (Index index : uniqueSortedIndexes) {
             int zeroBased = index.getZeroBased();
             if (zeroBased >= lastShownList.size()) {
-                throw new CommandException(String.format(MESSAGE_DELETE_PERSON_INVALID_INDEX, lastShownList.size()));
+                throw new CommandException(String.format(MESSAGE_PERSON_INVALID_INDEX, lastShownList.size()));
             }
             toDelete.add(lastShownList.get(zeroBased));
         }
