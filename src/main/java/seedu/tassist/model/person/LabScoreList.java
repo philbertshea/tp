@@ -183,6 +183,8 @@ public class LabScoreList {
      */
     public static boolean isValidSaveString(String saveString) {
         int total;
+
+        //get total labs
         int split = saveString.indexOf(".");
         try {
             if (split == -1) {
@@ -192,26 +194,39 @@ public class LabScoreList {
         } catch (NumberFormatException e) {
             return false;
         }
+
         String[] labs = saveString.substring(split + 1).split("\\Q|\\E");
         if (labs.length != total) {
             return false;
         }
 
+        //validate individual lab string
         for (int i = 0; i < total; i++) {
-            String[] scoreSplit = labs[i].split("/");
-            if (scoreSplit.length != 2) {
-                return false;
-            }
+            isValidLabSaveString(labs[i]);
+        }
 
-            try {
-                if (!scoreSplit[0].equals("-")) {
-                    Integer.parseInt(scoreSplit[0]);
-                }
-                Integer.parseInt(scoreSplit[1]);
-            } catch (NumberFormatException e) {
-                return false;
-            }
+        return true;
+    }
 
+    /**
+     * Checks if the lab save string is valid.
+     *
+     * @param labString The string to validate if it is correct.
+     * @return A boolean showing if the string is valid.
+     */
+    private static boolean isValidLabSaveString(String labString) {
+        String[] scoreSplit = labString.split("/");
+        if (scoreSplit.length != 2) {
+            return false;
+        }
+
+        try {
+            if (!scoreSplit[0].equals("-")) {
+                Integer.parseInt(scoreSplit[0]);
+            }
+            Integer.parseInt(scoreSplit[1]);
+        } catch (NumberFormatException e) {
+            return false;
         }
 
         return true;

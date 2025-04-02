@@ -116,6 +116,7 @@ public class UpdateLabScoreCommand extends Command {
         Person personToUpdate = lastShownList.get(index.getZeroBased());
         LabScoreList newLabScoreList;
         String successMessage;
+
         switch (updateType) {
         case LABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
@@ -141,8 +142,6 @@ public class UpdateLabScoreCommand extends Command {
             throw new CommandException("Error");
         }
 
-
-
         return new CommandResult(successMessage);
     }
 
@@ -161,7 +160,6 @@ public class UpdateLabScoreCommand extends Command {
             LabScoreList newLabScoreList = personToUpdate.getLabScoreList().refreshLabScore(labNumber, maxLabScore);
             updatePerson(model, personToUpdate, newLabScoreList);
         }
-
     }
 
     /**
