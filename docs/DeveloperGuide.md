@@ -681,16 +681,16 @@ testers are expected to do more *exploratory* testing.
    Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
    
    1. Test case: `del -i 3-1`<br>
-   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers.”
+   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
 
    1. Test case: `del -i 1 -i 2`<br>
    Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
 
    1. Test case: `del`<br>
-   Expected: Error message: “Invalid command format!”. Delete usage message displayed.
+   Expected: Error message: “Missing arguments! Requires -i <index>.”. Delete usage message displayed.
 
    1. Test case: `del -i `<br>
-   Expected: Error message: “Missing arguments! Requires -i <index>..”
+   Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
 
    1. Test case: `del -i one`<br>
    Expected: Error message: "Invalid index. Index is not a non-zero unsigned integer."
