@@ -68,7 +68,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
   e.g `(-p PHONE_NUMBER -tg TELEGRAM_HANDLE)` means either `-p PHONE_NUMBER` or `-tg TELEGRAM_HANDLE` or both `-p PHONE_NUMBER -tg TELEGRAM HANDLE` are accepted.
 
 * Items in square brackets are optional.<br>
-  e.g `-n NAME [-tag ]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
+  e.g `-n NAME [-tag TAG]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
 
@@ -126,10 +126,9 @@ Tags must also be at most 60 characters.
 
 **Note:** 
 * If `TUTORIAL_GROUP` is provided as an input when adding a person, then the person is assigned 
-the Default Attendance List (represented by the string `3300000000000`, which means No Tutorial for
-Weeks 1 and 2, Not Attended for Weeks 3 to 13). 
+the Default Attendance List (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13). 
 * If no `TUTORIAL_GROUP` is provided as input when adding a person, then the person is assigned
-an Empty Attendance List.
+a Blank Attendance List.
 </box>
 
 Examples:
@@ -198,21 +197,20 @@ Examples:
 <box type="tip" seamless>
 
 **Note:**
-* The behaviour of editing a `TUTORIAL_GROUP` on the person's AttendanceList depends on his original and updated
+* The behaviour of editing a `TUTORIAL_GROUP` on the person's Attendance List depends on his original and updated
   status (whether he had a tutorial group before the edit, and will have one after the edit).
-    * Case 1: A person originally has a valid `TUTORIAL_GROUP` (and hence a valid AttendanceList),
+    * Case 1: A person originally has a valid `TUTORIAL_GROUP` (and hence a valid Attendance List),
         * Case 1.1: An edit command is given to edit his `TUTORIAL_GROUP` to another valid `TUTORIAL_GROUP`.
-          Then the person's AttendanceList is carried over (No change to the AttendanceList).
+          Then the person's Attendance List is carried over (No change to the Attendance List).
         * Case 1.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
           Provided the aforementioned restrictions on the conditional parameters are fulfilled (i.e. the person has a valid `LAB_GROUP`),
-          then the person's AttendanceList is cleared and replaced with the Empty AttendanceList.
-    * Case 2: A person originally has NO valid `TUTORIAL_GROUP` (and hence an empty AttendanceList),
+          then the person's Attendance List is cleared and replaced with the Blank Attendance List.
+    * Case 2: A person originally has NO valid `TUTORIAL_GROUP` (and hence an empty Attendance List),
         * Case 2.1: An edit command is given to edit his `TUTORIAL_GROUP` to a valid `TUTORIAL_GROUP`.
-          Then the person's AttendanceList is set to the Default AttendanceList
-          (represented by the string `3300000000000`, which means No Tutorial for
-          Weeks 1 and 2, Not Attended for Weeks 3 to 13).
+          Then the person's Attendance List is set to the Default Attendance List
+          (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13).
         * Case 2.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
-          Then the person's AttendanceList remains as an Empty AttendanceList.
+          Then the person's Attendance List remains as a Blank Attendance List.
 </box>
 
 ### Tagging a student: `tag`
@@ -266,7 +264,10 @@ Examples:
 ### Marks attendance: `att`
 
 Marks the attendance of an individual student, or a tutorial group.
+
+<box type="tip" seamless>
 **Tip**: With the new release, you can now mark the attendance of multiple students or tutorial groups.
+</box>
 
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 
@@ -299,13 +300,13 @@ Assuming the restrictions are satisfied,
            * First, mark the whole tutorial group as Not Attended, using `att -t T01 -w 5 -u`.
            * On the day of the makeup tutorial, you find that Alex (index 1) attended.
            * Then, mark Alex as having attended the tutorial, `att -i 1 -w 5`.
-    3. If the person has an Empty AttendanceList, any command on the person will be invalid.
+    3. If the person has a Blank Attendance List, any command on the person will be invalid.
        * Alex of index 1 has no `TUTORIAL_GROUP` (e.g. he is not in your tutorial group).
        Then it doesn't make sense to mark his attendance for any week.
        * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
        his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
 
-* **Tip**: You can now mark the attendance of multiple persons and tutorial groups as valid.
+* **Note**: You can now mark the attendance of multiple persons and tutorial groups as valid.
   However, do note that if you are using the `-i` flag, to mark attendance of persons by index,
   the restrictions aforementioned apply to EVERY person listed.
     * For example, you want to mark persons of index 1 to 10 (inclusive) as attended for week 3.
@@ -397,7 +398,7 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/ddressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
