@@ -350,7 +350,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 1. User requests to exit TAssist.
 2. TAssist saves current data.
-3. TAssist exits
+3. TAssist exits.
 
     Use case ends.
 
