@@ -22,6 +22,7 @@ import seedu.tassist.logic.commands.MarkAttendanceCommand;
 import seedu.tassist.logic.commands.RedoCommand;
 import seedu.tassist.logic.commands.SearchCommand;
 import seedu.tassist.logic.commands.TagCommand;
+import seedu.tassist.logic.commands.ToggleCommand;
 import seedu.tassist.logic.commands.UndoCommand;
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
@@ -91,6 +92,10 @@ public class AddressBookParser {
         case HelpCommand.COMMAND_WORD:
             Operations.recordCurrentCommand("Help Command", Operations.CommandType.IGNORED);
             return new HelpCommand();
+
+        case ToggleCommand.COMMAND_WORD:
+            Operations.recordCurrentCommand("Toggle Command", Operations.CommandType.IGNORED);
+            return new ToggleCommand();
 
         case MarkAttendanceCommand.COMMAND_WORD:
             Operations.recordCurrentCommand(userInput, Operations.CommandType.ATTENDANCE);

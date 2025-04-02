@@ -51,6 +51,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
 1. Tired of using the user guide to understand how to use? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
 
+1. Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
+   ![UiToggle](images/UiToggle.png)
+
 1. To show more details about a particular contact, click on the contact itself!<br>
    ![UiExtend](images/UiExtend.png)
 
@@ -94,6 +97,16 @@ Shows a message explaning how to access the help page.
 
 Format: `help`
 
+### Toggling view : `toggle`
+
+Toggles the student record view to be more compact.
+The following particulars of a student will be hidden if compact view is enabled where applicable: `PHONE_NUMBER`, `TELEGRAM_HANDLE`, `EMAIL`, `MATRICULATION_NUMBER`, `YEAR` and `FACULTY`.
+
+<box type="tip" seamless>
+
+**Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
+  </box>
+
 
 ### Adding a person: `add`
 
@@ -117,14 +130,14 @@ Want to manually calculate the checksum?
 
 <box type="tip" seamless>
 
-**Tip:** A person can have any number of tags (including 0).
-Tags must be a single word consisting of alphanumeric characters only.
-Tags must also be at most 60 characters.
+**Tip:** Only the **matriculation number** of a record makes them unique!
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** Only the **matriculation number** of a record makes them unique!
+**Tip:** A person can have any number of tags (including 0).
+Tags must be a single word consisting of alphanumeric characters only.
+Tags also have a limit of 60 characters.
 </box>
 
 Examples:
