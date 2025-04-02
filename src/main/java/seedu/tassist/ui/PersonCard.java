@@ -3,13 +3,18 @@ package seedu.tassist.ui;
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import seedu.tassist.model.person.Attendance;
 import seedu.tassist.model.person.Person;
 
@@ -40,7 +45,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label contact;
+    private TextFlow contact;
     @FXML
     private Label email;
     @FXML
@@ -63,7 +68,7 @@ public class PersonCard extends UiPart<Region> {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + "");
-        nameAndMatNum.setText(person.getName().fullName + "\t" + "(" + person.getMatNum().value + ")");
+        nameAndMatNum.setText(person.getName().fullName + "    " + "(" + person.getMatNum().value + ")");
 
         // Guaranteed for either tutGroup or labGroup to have a value.
         assert !(person.getTutGroup().isEmpty() && person.getLabGroup().isEmpty())
@@ -76,15 +81,30 @@ public class PersonCard extends UiPart<Region> {
             classGroup.setText(person.getTutGroup().value + " | " + person.getLabGroup().value);
         }
 
+        // Create separate clickable parts
+        Text phoneText = new Text(person.getPhone().value);
+        phoneText.setCursor(Cursor.HAND);
+        phoneText.setStyle("-fx-fill: white; -fx-underline: true;");
+        phoneText.setOnMouseClicked(event -> copyToClipboard(phoneText.getText()));
+
+        Text separator = new Text("    "); // Space separator
+
+        Text telegramText = new Text(person.getTeleHandle().value);
+        telegramText.setCursor(Cursor.HAND);
+        telegramText.setStyle("-fx-fill: white; -fx-underline: true;");
+        telegramText.setOnMouseClicked(event -> copyToClipboard(telegramText.getText()));
+
         // Guaranteed for either phone or telegram Handle to have a value.
+        contact.getChildren().clear();
         assert !(person.getPhone().isEmpty() && person.getTeleHandle().isEmpty())
                 : "Both phone and teleHandle cannot be empty simultaneously";
-        if (person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
-            contact.setText(person.getTeleHandle().value);
-        } else if (!person.getPhone().isEmpty() && person.getTeleHandle().isEmpty()) {
-            contact.setText(person.getPhone().value);
-        } else {
-            contact.setText(person.getPhone().value + "    " + person.getTeleHandle().value);
+        contact.getChildren().clear();
+        if (!person.getPhone().isEmpty() && !person.getTeleHandle().isEmpty()) {
+            contact.getChildren().addAll(phoneText, separator, telegramText);
+        } else if (!person.getPhone().isEmpty()) {
+            contact.getChildren().add(phoneText);
+        } else if (!person.getTeleHandle().isEmpty()) {
+            contact.getChildren().add(telegramText);
         }
 
         email.setText(person.getEmail().value);
@@ -101,7 +121,7 @@ public class PersonCard extends UiPart<Region> {
 
 
         if (!person.getRemark().value.isEmpty()) {
-            remark.setText(person.getRemark().value);
+            remark.setText("Remarks: " + person.getRemark().value);
         } else {
             remark.setVisible(false);
             remark.setManaged(false);
@@ -200,5 +220,13 @@ public class PersonCard extends UiPart<Region> {
         }
 
         cardPane.requestLayout();
+    }
+
+    // Helper function to copy text
+    private void copyToClipboard(String text) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(text);
+        clipboard.setContent(content);
     }
 }
