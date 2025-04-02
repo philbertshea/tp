@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 
 public class AttendanceListTest {
     private final String nonEmptyValidAttendanceString = "2233000000111";
-    private final String attendanceStringDifferent = "2233000002111";
+    private final String validAttendanceStringDifferent = "2233000002111";
     private final AttendanceList attendanceList =
             AttendanceList.generateAttendanceList(nonEmptyValidAttendanceString);
     private final AttendanceList attendanceListDuplicate =
             AttendanceList.generateAttendanceList(nonEmptyValidAttendanceString);
     private final AttendanceList attendanceListDifferent =
-            AttendanceList.generateAttendanceList(attendanceStringDifferent);
+            AttendanceList.generateAttendanceList(validAttendanceStringDifferent);
 
     private final TutGroup emptyTutGroup = new TutGroup("");
     private final TutGroup validTutGroupOne = new TutGroup("T01");
@@ -161,10 +161,14 @@ public class AttendanceListTest {
         // EP: Empty TutGroup and Non-Empty, valid AttendanceString -> Returns false.
         assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
                 nonEmptyValidAttendanceString, emptyTutGroup));
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                validAttendanceStringDifferent, emptyTutGroup));
 
         // EP: Non-Empty TutGroup and Non-Empty, valid AttendanceString -> Returns true.
         assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup(
                 nonEmptyValidAttendanceString, validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                validAttendanceStringDifferent, validTutGroupOne));
 
         // EP: Non-Empty TutGroup, and Empty AttendanceString -> Returns false.
         assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup("", validTutGroupOne));
@@ -179,62 +183,137 @@ public class AttendanceListTest {
 
     @Test
     public void generateAttendanceList_invalidAttendanceString_throwsIllegalArgumentException() {
+        // EP: String of Invalid Length (too short).
+        // Boundary value: length 1.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("0"));
+        // Other value: length 5.
         assertThrows(IllegalArgumentException.class, () ->
                 AttendanceList.generateAttendanceList("00000"));
+        // Boundary value: length 12.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("000000000000"));
+
+        // EP: String of Invalid Length (too long).
+        // Boundary value: length 14.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("00000000000000"));
+        // Other value: length 30.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("000000000000000000000000000000"));
+
+        // EP: String of Valid Length (13) but Invalid Values
+        // All spaces.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("             "));
+        // Invalid Chars: Alphabet.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("A000000000000"));
+        // Invalid Chars: Symbols.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("0?00000000000"));
+        // Invalid Digits that are not within 0,1,2,3.
+        assertThrows(IllegalArgumentException.class, () ->
+                AttendanceList.generateAttendanceList("0040000000000"));
     }
 
     @Test
     public void generateAttendanceList_validAttendanceString_success() {
-        // Empty AttendanceString -> Return EMPTY_ATTENDANCE_LIST.
+        // Empty AttendanceString -> Return empty attendance list.
         assertTrue(AttendanceList.generateAttendanceList("")
                 .equals(AttendanceList.EMPTY_ATTENDANCE_LIST));
 
         // Non-Empty AttendanceString -> Return correct attendance list.
-        String testAttendanceString = "0010230210112";
-        String expectedStringValue = testAttendanceString;
-        assertTrue(AttendanceList.generateAttendanceList(testAttendanceString).toString()
-                .equals(expectedStringValue));
+        assertTrue(AttendanceList.generateAttendanceList(nonEmptyValidAttendanceString).toString()
+                .equals(nonEmptyValidAttendanceString));
+        assertTrue(AttendanceList.generateAttendanceList(validAttendanceStringDifferent).toString()
+                .equals(validAttendanceStringDifferent));
     }
 
     @Test
-    public void getAttendanceForWeek() {
-        // Invalid week -> throws IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-10000000));
-        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-1));
+    public void getAttendanceForWeek_invalidWeek_throwsIllegalArgumentException() {
+        // EP: Week number is too small.
+        // Boundary value: Minimum integer value.
+        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(Integer.MIN_VALUE));
+        // Other value: Negative 100.
+        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(-100));
+        // Boundary value: Zero.
         assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(0));
-        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(14));
-        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(15));
-        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(10000000));
 
-        // Valid week -> returns the correct attendance value
+        // EP: Week number is too large.
+        // Boundary value: Positive 14.
+        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(14));
+        // Other value: Positive 100.
+        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(100));
+        // Boundary value: Maximum integer value.
+        assertThrows(IllegalArgumentException.class, () -> attendanceList.getAttendanceForWeek(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void getAttendanceForWeek_validWeek_returnsAttendanceForWeek() {
+        // Valid week from 1 to 13 inclusive -> returns the correct attendance value.
         for (int i = 1; i <= 13; i++) {
             assertTrue(attendanceList.getAttendanceForWeek(i)
                     == Integer.parseInt(nonEmptyValidAttendanceString.substring(i - 1, i)));
         }
-
     }
 
     @Test
-    public void setAttendanceForWeek_invalidWeekOrAttendance_throwsIllegalArgumentException() {
-
-        // Invalid week -> throws IllegalArgumentException
+    public void setAttendanceForWeek_invalidWeek_throwsIllegalArgumentException() {
+        // EP: Week number is too small.
+        // Boundary value: Minimum integer value.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(Integer.MIN_VALUE, Attendance.ATTENDED));
+        // Other value: Negative 100.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(-100, Attendance.ATTENDED));
+        // Boundary value: Zero.
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(0, Attendance.ATTENDED));
+
+        // EP: Week number is too large.
+        // Boundary value: Positive 14.
         assertThrows(IllegalArgumentException.class, () ->
                 attendanceList.setAttendanceForWeek(14, Attendance.ATTENDED));
-
-        // Invalid attendance -> throws IllegalArgumentException
+        // Other value: Positive 100.
         assertThrows(IllegalArgumentException.class, () ->
-                attendanceList.setAttendanceForWeek(1, -1));
+                attendanceList.setAttendanceForWeek(100, Attendance.ATTENDED));
+        // Boundary value: Maximum integer value.
         assertThrows(IllegalArgumentException.class, () ->
-                attendanceList.setAttendanceForWeek(1, 4));
+                attendanceList.setAttendanceForWeek(Integer.MAX_VALUE, Attendance.ATTENDED));
+    }
 
+    @Test
+    public void setAttendanceForWeek_invalidAttendance_throwsIllegalArgumentException() {
+        // EP: Attendance status value is too small.
+        // Boundary value: Minimum integer value.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, Integer.MIN_VALUE));
+        // Other value: Negative 100.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, -100));
+        // Boundary value: Negative 1.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, -1));
+
+        // EP: Attendance status value is too large.
+        // Boundary value: Positive 4.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, 4));
+        // Other value: Positive 100.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, 100));
+        // Boundary value: Maximum integer value.
+        assertThrows(IllegalArgumentException.class, () ->
+                attendanceList.setAttendanceForWeek(5, Integer.MAX_VALUE));
     }
 
     @Test
     public void setAttendanceForWeek_validWeekAndAttendance_success() {
         AttendanceList newAttendanceList = attendanceList.setAttendanceForWeek(10, Attendance.ON_MC);
         assertTrue(newAttendanceList.equals(attendanceListDifferent));
+        newAttendanceList = newAttendanceList.setAttendanceForWeek(10, Attendance.NOT_ATTENDED);
+        assertTrue(newAttendanceList.equals(attendanceList));
     }
 
     @Test
@@ -243,15 +322,28 @@ public class AttendanceListTest {
                 .reduce("", (acc, xs) -> acc + xs.toString(), (acc1, acc2) ->
                         acc1 + acc2)
                 .equals(nonEmptyValidAttendanceString));
+
+        assertTrue(attendanceListDuplicate.getAttendanceStream()
+                .reduce("", (acc, xs) -> acc + xs.toString(), (acc1, acc2) ->
+                        acc1 + acc2)
+                .equals(nonEmptyValidAttendanceString));
+
+        assertTrue(attendanceListDifferent.getAttendanceStream()
+                .reduce("", (acc, xs) -> acc + xs.toString(), (acc1, acc2) ->
+                        acc1 + acc2)
+                .equals(validAttendanceStringDifferent));
     }
 
     @Test
-    public void isEmpty() {
-        // Empty AttendanceList -> returns true.
+    public void isEmpty_emptyList_returnsTrue() {
         assertTrue(AttendanceList.EMPTY_ATTENDANCE_LIST.isEmpty());
+    }
 
-        // Non-empty AttendanceList -> returns false.
+    @Test
+    public void isEmpty_nonEmptyList_returnsFalse() {
         assertFalse(attendanceList.isEmpty());
+        assertFalse(attendanceListDuplicate.isEmpty());
+        assertFalse(attendanceListDifferent.isEmpty());
     }
 
     @Test
