@@ -243,6 +243,22 @@ Examples:
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
   * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
 
+### Updating lab scores: `lab`
+Updates the lab score for the specified student, or update the maximum score for the specified lab.
+
+Format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]`
+
+3 ways of using this command
+1. Update lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE`. 
+   * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE]`.
+2. Update maximum lab score: Updates the lab `LAB_NUMBER` maximum score to be `NEW_SCORE`.
+   * Command format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -msc [NEW_SCORE]`. 
+   * Note that the `-i` flag is optional here as it will be ignored.
+3. Update both lab score and max lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE_1` 
+   and at the same time update lab `LAB_NUMBER` maximum score to be `NEW_SCORE_2`.
+   * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE_1] -msc [NEW_SCORE_2]`.
+
+Note that for all cases, it the flags does not need to be in this specific order.
 
 ### Locating persons by name: `find`
 
