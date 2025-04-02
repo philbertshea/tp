@@ -115,42 +115,42 @@ public class AttendanceListTest {
     public void isValidAttendanceStringGivenTutGroup_invalidTutGroupInput_throwsIllegalArgumentException() {
         // EP: Not starting with T or t.
         // Starts with alphabet that is not t or T.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("A23")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("A23")));
         // Starts with symbol.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("!23")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("!23")));
         // Starts with digit.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("123")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("123")));
 
         // EP: Invalid second and third characters.
         // Second character is an alphabet.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("Ta0")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("Ta0")));
         // Second character is a symbol.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T!0")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T!0")));
         // Third character is an alphabet.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T0a")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T0a")));
         // Third character is a symbol.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T0!")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T0!")));
 
 
         // EP: Invalid length.
         // Positive length but too short.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T")));
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T0")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T0")));
 
         // Positive length but too long.
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T010")));
-        assertThrows(IllegalArgumentException.class, () ->
-                AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, new TutGroup("T0001")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T010")));
+        assertThrows(IllegalArgumentException.class, () -> AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, new TutGroup("T0001")));
     }
 
     @Test
@@ -159,10 +159,12 @@ public class AttendanceListTest {
         assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup("", emptyTutGroup));
 
         // EP: Empty TutGroup and Non-Empty, valid AttendanceString -> Returns false.
-        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, emptyTutGroup));
+        assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, emptyTutGroup));
 
         // EP: Non-Empty TutGroup and Non-Empty, valid AttendanceString -> Returns true.
-        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup(nonEmptyValidAttendanceString, validTutGroupOne));
+        assertTrue(AttendanceList.isValidAttendanceStringGivenTutGroup(
+                nonEmptyValidAttendanceString, validTutGroupOne));
 
         // EP: Non-Empty TutGroup, and Empty AttendanceString -> Returns false.
         assertFalse(AttendanceList.isValidAttendanceStringGivenTutGroup("", validTutGroupOne));
