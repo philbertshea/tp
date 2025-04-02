@@ -76,12 +76,12 @@ public class EditCommand extends Command {
             + "  edit "
             + PREFIX_INDEX + " 2 " + PREFIX_NAME + " John "
             + PREFIX_TELE_HANDLE + " @johnDoe " + PREFIX_EMAIL + " john@example.com "
-            + PREFIX_MAT_NUM + " A0123456J \\\n" + "\t" + PREFIX_TUT_GROUP + " T01 "
+            + PREFIX_MAT_NUM + " A0123456J \n" + "\t" + PREFIX_TUT_GROUP + " T01 "
             + PREFIX_LAB_GROUP + " B02 " + PREFIX_FACULTY + " SOC "
             + PREFIX_REMARK + " \"TA candidate\"\n\n"
             + "  # Update tutorial group, lab group, faculty, and year for multiple people\n"
             + "  edit "
-            + PREFIX_INDEX + "1-3,5"
+            + PREFIX_INDEX + " 1-3,5 "
             + PREFIX_TUT_GROUP + " T02 "
             + PREFIX_LAB_GROUP + " B03 "
             + PREFIX_FACULTY + " SOC "
@@ -92,6 +92,10 @@ public class EditCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "This person already exists in the address book.";
+    public static final String MESSAGE_TELEHANDLE_REQUIRED = "You cannot remove the Telegram handle!";
+    public static final String MESSAGE_PHONE_REQUIRED = "You cannot remove the Phone Number!";
+    public static final String MESSAGE_LAB_GROUP_REQUIRED = "You cannot remove the Lab Group!";
+    public static final String MESSAGE_TUT_GROUP_REQUIRED = "You cannot remove the Tutorial Group!";
 
     private final List<Index> indexList;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -122,6 +126,37 @@ public class EditCommand extends Command {
                         lastShownList.size()));
             }
             Person personToEdit = lastShownList.get(index.getZeroBased());
+            // To prevent optional items from getting deleted
+            if (!editPersonDescriptor.getTeleHandle().isEmpty()) {
+                boolean isTeleAvailable = personToEdit.getPhone().isEmpty()
+                        && editPersonDescriptor.getTeleHandle().get().value.isBlank();
+                if (isTeleAvailable) {
+                    throw new CommandException(MESSAGE_TELEHANDLE_REQUIRED);
+                }
+            }
+            if (!editPersonDescriptor.getPhone().isEmpty()) {
+                boolean isPhoneAvailable = personToEdit.getTeleHandle().isEmpty()
+                        && editPersonDescriptor.getPhone().get().value.isBlank();
+                if (isPhoneAvailable) {
+                    throw new CommandException(MESSAGE_PHONE_REQUIRED);
+                }
+            }
+
+            if (!editPersonDescriptor.getTutGroup().isEmpty()) {
+                boolean isTutGrpAvailable = personToEdit.getLabGroup().isEmpty()
+                        && editPersonDescriptor.getTutGroup().get().value.isBlank();
+                if (isTutGrpAvailable) {
+                    throw new CommandException(MESSAGE_TUT_GROUP_REQUIRED);
+                }
+            }
+            if (!editPersonDescriptor.getLabGroup().isEmpty()) {
+                boolean isLabGrpAvailable = personToEdit.getTutGroup().isEmpty()
+                        && editPersonDescriptor.getLabGroup().get().value.isBlank();
+                if (isLabGrpAvailable) {
+                    throw new CommandException(MESSAGE_LAB_GROUP_REQUIRED);
+                }
+            }
+
             Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
             if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
@@ -142,7 +177,7 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Generates a short summary of deleted students.
+     * Generates a short summary of bulk edited students.
      */
     public static String getEditedStudentsSummary(List<Person> students) {
         StringBuilder sb = new StringBuilder();
@@ -150,10 +185,11 @@ public class EditCommand extends Command {
             sb.append(String.format("%s (%s) - Year: %s, Faculty: %s, Tutorial Grp: %s, Lab Grp: %s\n",
                     p.getName().fullName,
                     p.getMatNum().value,
-                    p.getYear().value,
-                    p.getFaculty().value,
-                    p.getTutGroup().value,
-                    p.getLabGroup().value)
+                    p.getYear().value.isBlank() ? "-" : p.getYear().value,
+                    p.getFaculty().value.isBlank() ? "-" : p.getFaculty().value,
+                    p.getTutGroup().value.isBlank() ? "-" : p.getTutGroup().value,
+                    p.getLabGroup().value.isBlank() ? "-" : p.getLabGroup().value
+                    )
             );
         }
         return sb.toString().trim();

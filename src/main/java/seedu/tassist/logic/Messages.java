@@ -1,6 +1,5 @@
 package seedu.tassist.logic;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -117,15 +116,8 @@ public class Messages {
                 .append(" Year              : ")
                 .append(person.getYear().value.isEmpty() ? "-" : person.getYear())
                 .append("\n")
-                .append(" Attendance List   : ").append(person.getAttendanceList()).append("\n")
                 .append(" Remarks           : ")
-                .append(person.getRemark().value.isEmpty() ? "-" : person.getRemark())
-                .append("\n")
-                .append(" Tags              : ");
-
-        // Display the sorting of tags
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName)).forEach(builder::append);
+                .append(person.getRemark().value.isEmpty() ? "-" : person.getRemark());
         return builder.toString();
     }
 
