@@ -666,10 +666,10 @@ testers are expected to do more *exploratory* testing.
       Expected: Error message shown: “Invalid index. Index is not a non-zero positive integer.” No deletion occurs.
 
    1. Test case: `del -i -1`<br>
-   Expected: Error message shown: “Invalid index.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
+   Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
 
    1. Test case: `del -i 999` (where 999 > number of students shown)<br>
-   Expected: Error message shown:  “Invalid index (out of range)! You currently have 3 records!” No deletion occurs.
+   Expected: Error message shown:  “Invalid index (out of range)! You currently have <numeber> records!” No deletion occurs.
 
    1. Test case: `del -i 1-3` (range input)<br>
    Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
@@ -693,10 +693,10 @@ testers are expected to do more *exploratory* testing.
    Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
 
    1. Test case: `del -i one`<br>
-   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed with no spaces."
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
 
    1. Test case: `del -i 1a`<br>
-   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed with no spaces."
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
 
    1. Test case: `del -i 1,,,2`<br>
    Expected: Error message: "Invalid index format! Please input each index separated by a comma. Expected format: index, index,... (e.g., 2,4)"
