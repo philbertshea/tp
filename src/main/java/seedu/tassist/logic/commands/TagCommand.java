@@ -10,10 +10,13 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javafx.scene.control.Label;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -133,7 +136,25 @@ public class TagCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_TAG_SUCCESS,
-                action, Messages.getFormattedPersonAttributesForDisplay(editedPerson)));
+                action, getTagSummary(editedPerson)));
+    }
+
+    /**
+     * Generates a summary of the tags.
+     */
+    public static String getTagSummary(Person student) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("%s (%s) - %s",
+                student.getName().fullName,
+                student.getMatNum().value,
+                student.getTags().isEmpty() ? "-"
+                        : student.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
+                                .map(tag -> tag.tagName) // Convert each tag to a string
+                                .collect(Collectors.joining(", "))
+                )
+        );
+        return sb.toString().trim();
     }
 
 }
