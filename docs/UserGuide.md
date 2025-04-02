@@ -306,6 +306,21 @@ Examples:
 2. Select the file type (either JSON or CSV)
 3. Select where you want to save your file at
 
+### Load Data : `load`
+
+Imports student data from an existing `.csv` or `.json` file.
+
+Format: `load -f FILE_NAME -ext FILE_EXTENSION`
+
+* The `FILE_NAME` should not include a file extension or path. It must refer to a file in the `/data` folder, e.g. `userdata`.
+* The `FILE_EXTENSION` must be either `csv` or `json`.
+* The file must follow TAssist's expected format. Invalid or malformed data will be rejected with a warning.
+* Duplicate or unparseable records will be skipped with error messages shown.
+
+Examples:
+* `load -f userdata -ext csv` loads a CSV file named `userdata.csv` located in the `/data` folder.
+* `load -f students -ext json` loads a JSON file named `students.json` in the `/data` folder.
+
 ### Exiting the program : `exit`
 
 Exits the program.
