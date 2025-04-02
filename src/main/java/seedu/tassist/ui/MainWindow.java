@@ -4,7 +4,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EXTENSION;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
