@@ -6,6 +6,7 @@ import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_INDEX_RANGE_VALUE;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_SEPARATORS;
+import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_ERROR;
 import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_INPUT;
 
 import java.util.ArrayList;
@@ -472,7 +473,11 @@ public class ParserUtil {
         String startStr = range[0].trim();
         String endStr = range[1].trim();
 
-        if (startStr.isEmpty() || endStr.isEmpty()) {
+        if (startStr.isEmpty()) {
+            throw new ParseException(MESSAGE_MULTIPLE_INDEX_ERROR + "\n"
+                    + MESSAGE_INVALID_INDEX + "\n" + MESSAGE_INVALID_INDEX_RANGE);
+        }
+        if (endStr.isEmpty()) {
             throw new ParseException(MESSAGE_MISSING_INDEX_RANGE_VALUE);
         }
 
