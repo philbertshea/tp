@@ -128,6 +128,8 @@ public class LabScore {
      * @return Updated {@code LabScore} object.
      */
     public LabScore refreshMaxScore(int maxScore) {
+        assert maxScore >= 0;
+        assert maxScore >= labScore;
         return new LabScore(labScore, maxScore);
     }
 
