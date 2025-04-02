@@ -57,8 +57,22 @@ public class CsvUtil {
 
         for (int i = 1; i < lines.size(); i++) {
             String[] parts = lines.get(i).split(",", -1);
-            if (parts.length < expectedFields) {
+
+            if (parts.length == 0) {
                 continue;
+            }
+
+            if (parts.length < expectedFields) {
+                String[] padded = new String[expectedFields];
+                System.arraycopy(parts, 0, padded, 0, parts.length);
+                for (int j = parts.length; j < expectedFields; j++) {
+                    padded[j] = "";
+                }
+                parts = padded;
+            }
+
+            if (parts.length > expectedFields) {
+                logger.warning("Line " + (i + 1) + " has extra fields, ignoring extras.");
             }
 
             Name name = new Name(parts[0]);
@@ -93,36 +107,26 @@ public class CsvUtil {
     }
 
     /**
-     * Converts a given list of objects from a class into its CSV data string representation.
-     * @param objects The list of objects to be converted into the CSV string
-     * @param <T> The generic type to create an instance of
-     * @return CSV data representation of the given list of class objects, in string
+     * Converts a given list of objects into a CSV string representation.
+     *
+     * @param objects The list of objects to be serialized.
+     * @param <T> The object type.
+     * @return A CSV-formatted string.
      */
     public static <T> String toCsvString(List<T> objects) {
         if (objects == null || objects.isEmpty()) {
             throw new IllegalArgumentException("Object list is empty.");
         }
 
-        // Get class type from the first object
         Class<?> clazz = objects.get(0).getClass();
-
-        // Get CSV header
         String header = getHeader(clazz);
-
-        // Get CSV rows
         List<String> rows = objects.stream()
                 .map(CsvUtil::getRow)
                 .collect(Collectors.toList());
 
-        // Combine header and rows
         return header + "\n" + String.join("\n", rows);
     }
 
-    /**
-     * Retrives the name of the fields in the class and formats them into the CSV header.
-     * @param clazz The class object to get the header from
-     * @return A string representation of the headers
-     */
     private static String getHeader(Class<?> clazz) {
         return List.of(clazz.getDeclaredFields())
                 .stream()
@@ -130,18 +134,12 @@ public class CsvUtil {
                 .collect(Collectors.joining(","));
     }
 
-    /**
-     * Converts a given instance of an object into is CSV data string representation.
-     * @param obj The T object to be converted into the CSV string
-     * @param <T> The generic type to create an instance of
-     * @return CSV data representation of the given class instance, in string
-     */
     private static <T> String getRow(T obj) {
         try {
             return List.of(obj.getClass().getDeclaredFields())
                     .stream()
                     .map(field -> {
-                        field.setAccessible(true); // Allow access to private fields
+                        field.setAccessible(true);
                         try {
                             return escapeCsv(field.get(obj));
                         } catch (IllegalAccessException e) {
@@ -155,18 +153,10 @@ public class CsvUtil {
     }
 
     /**
-     * Escapes a given value for safe inclusion in a CSV file.
-     * <p>
-     * This method converts an object to its string representation and ensures that
-     * special characters are properly escaped according to CSV format rules.
-     * </p>
-     * <p>
-     * If the string contains a comma (`,`), double quote (`"`), or newline (`\n`),
-     * it is enclosed in double quotes (`"`). Any existing double quotes within the
-     * string are escaped by doubling them (`""`).
-     * </p>
-     * @param value The object to be converted to a CSV-safe string. Can be {@code null}.
-     * @return A properly escaped CSV string. Returns an empty string if input is {@code null}.
+     * Escapes special characters in CSV fields.
+     *
+     * @param value The object to escape.
+     * @return The escaped string.
      */
     private static String escapeCsv(Object value) {
         if (value == null) {
@@ -174,7 +164,7 @@ public class CsvUtil {
         }
         String str = value.toString();
         if (str.contains(",") || str.contains("\"") || str.contains("\n")) {
-            str = "\"" + str.replace("\"", "\"\"") + "\""; // Escape double quotes
+            str = "\"" + str.replace("\"", "\"\"") + "\"";
         }
         return str;
     }
