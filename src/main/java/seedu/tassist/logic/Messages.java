@@ -39,8 +39,15 @@ public class Messages {
     public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range!"
             + "\nEnsure that start <= end and all values are positive integers."
             + "\nExpected format: start-end (e.g., 2-4).";
+    public static final String MESSAGE_MULTIPLE_INDEX_INPUT = "Invalid index format! "
+            + "Please input each index separated by a comma. "
+            + "\nExpected format: index, index,... (e.g., 2,4)";
+    public static final String MESSAGE_MIXED_INDEX_INPUT = "Invalid index input. "
+            + "Only digits, commas and dashes";
+    public static final String MESSAGE_MISSING_SEPARATORS = "Invalid index input. "
+            + "Ensure commas or dashes separate numbers.";
     public static final String MESSAGE_MISSING_INDEX_RANGE_VALUE = "Missing start or end value in range.";
-
+    public static final String MESSAGE_MULTIPLE_INDEX_ERROR = "Invalid index! Possible issues:";
     /**
      * Returns an error message indicating the duplicate prefixes.
      */

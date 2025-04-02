@@ -34,7 +34,7 @@ public class DeleteCommandParserTest {
                 Index.fromOneBased(7)
         );
         DeleteCommand expectedCommand = new DeleteCommand(expectedIndexes);
-        assertParseSuccess(parser, " -i 1-3, 5, 7", expectedCommand);
+        assertParseSuccess(parser, " -i 1-3,5, 7", expectedCommand);
 
         assertParseSuccess(parser, " -i 1", new DeleteCommand(Collections.singletonList(INDEX_FIRST_PERSON)));
 

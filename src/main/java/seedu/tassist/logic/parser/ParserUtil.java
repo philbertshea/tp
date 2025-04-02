@@ -4,8 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
-import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_INDEX_RANGE_VALUE;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_SEPARATORS;
+import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_INPUT;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -332,14 +333,31 @@ public class ParserUtil {
      */
     public static List<Index> parseMultipleIndexes(String input) throws ParseException {
         requireNonNull(input);
-        String trimmedInput = input.trim();
-        if (trimmedInput.isEmpty()) {
-            throw new ParseException(MESSAGE_MISSING_ARGUMENTS);
+
+        if (input.matches(".*\\d\\s+\\d.*")) {
+            throw new ParseException(MESSAGE_MISSING_SEPARATORS);
         }
 
-        Set<Integer> indexSet = parseToSortedUniqueIntegers(trimmedInput);
+        String trimmedInput = input.trim();
+        String[] tokens = trimmedInput.split(",");
+
+        Set<Integer> indexSet = new TreeSet<>();
+        for (String token : tokens) {
+            token = token.trim();
+            if (token.isEmpty()) {
+                throw new ParseException(MESSAGE_MULTIPLE_INDEX_INPUT);
+            }
+
+            if (token.contains("-")) {
+                parseRange(token, indexSet);
+            } else {
+                parseSingleIndex(token, indexSet);
+            }
+        }
+
         return convertIntegersToIndexes(indexSet);
     }
+
 
     /**
      * Parses an input string representing a list of TutGroups ("T01,T02", "T02-T05")
@@ -385,6 +403,10 @@ public class ParserUtil {
 
         for (String part : parts) {
             part = part.trim();
+            if (part.isEmpty()) {
+                throw new ParseException(MESSAGE_MULTIPLE_INDEX_INPUT);
+            }
+
             if (part.contains("-")) {
                 parseRange(part, indexSet);
             } else {
@@ -438,6 +460,11 @@ public class ParserUtil {
      */
     private static void parseRange(String rangeStr, Set<Integer> indexSet) throws ParseException {
         String[] range = rangeStr.split("-");
+
+        if (rangeStr.matches(".*--.*") || rangeStr.matches(".*-.*-.*")) {
+            throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
+        }
+
         if (range.length != 2) {
             throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
         }
@@ -448,9 +475,10 @@ public class ParserUtil {
         if (startStr.isEmpty() || endStr.isEmpty()) {
             throw new ParseException(MESSAGE_MISSING_INDEX_RANGE_VALUE);
         }
+
         try {
-            int start = Integer.parseInt(range[0].trim());
-            int end = Integer.parseInt(range[1].trim());
+            int start = Integer.parseInt(startStr);
+            int end = Integer.parseInt(endStr);
 
             if (start <= 0 || end <= 0) {
                 throw new ParseException(MESSAGE_INVALID_INDEX);
@@ -458,11 +486,12 @@ public class ParserUtil {
             if (start > end) {
                 throw new ParseException(MESSAGE_INVALID_INDEX_RANGE);
             }
+
             for (int i = start; i <= end; i++) {
                 indexSet.add(i);
             }
         } catch (NumberFormatException e) {
-            throw new ParseException(MESSAGE_INVALID_INDEX_RANGE, e);
+            throw new ParseException(MESSAGE_INVALID_INDEX, e);
         }
     }
 
