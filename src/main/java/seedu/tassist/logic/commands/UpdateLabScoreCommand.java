@@ -37,19 +37,19 @@ public class UpdateLabScoreCommand extends Command {
             + "-sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
             + "-msc MAX SCORE (must be positive integer, set max score for the lab). \n"
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
-            + "This update student of index 1 as lab 1 score as 10/10.\n"
-            + "Note: There default max score for all labs is 25.\n";
+            + "This updates student of index 1 as lab 1 score as 10/10.\n"
+            + "Note: The default max score for all labs is 25.\n";
 
     public static final String MESSAGE_INVALID_LAB_NUMBER = "This lab does not exist."
             + "There are only %1$d labs";
 
     public static final String MESSAGE_INVALID_SCORE =
             "The updated score cannot exceed the maximum score for the lab."
-                    + "Your input: %1$d. The maximum score for this lab: %2$d.";
+            + "Your input: %1$d. The maximum score for this lab: %2$d.";
 
     public static final String MESSAGE_INVALID_MAX_SCORE =
             "The updated max score cannot be lesser than the current score for the lab."
-                    + "Your input: %1$d. The current score for this lab: %2$d.";
+            + "Your input: %1$d. The current score for this lab: %2$d.";
 
     public static final String MESSAGE_INVALID_NEGATIVE_SCORE =
             "The score cannot be a negative number";
@@ -146,7 +146,7 @@ public class UpdateLabScoreCommand extends Command {
     }
 
     /**
-     * Refreshes all the contacts maxLabScore with the updated version.
+     * Refreshes all the contacts {@code maxLabScore} with the updated version.
      *
      * @param model The provided model.
      */
