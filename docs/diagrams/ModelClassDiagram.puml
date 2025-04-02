@@ -64,17 +64,18 @@ Person *--> "*" Tag
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
 
-Name -[hidden]right-> Phone
-Phone -[hidden]right-> TeleHandle
-TeleHandle -[hidden]right-> Email
+Name -[hidden]right-> Email
 Email -[hidden]right-> MatNum
-MatNum -[hidden]right-> TutGroup
-TutGroup -[hidden]right-> LabGroup
-LabGroup -[hidden]right-> Faculty
+MatNum -[hidden]right-> Faculty
 Faculty -[hidden]right-> Year
-Year -[hidden]right-> AttendanceList
-AttendanceList -[hidden]right-> Remark
-Remark -[hidden]right-> Tag
+Year -[hidden]right-> Tag
+Tag -[hidden]right-> Remark
+
+Name -[hidden]down-> AttendanceList
+AttendanceList -[hidden]right-> Phone
+Phone -[hidden]right-> TeleHandle
+TeleHandle -[hidden]right-> TutGroup
+TutGroup -[hidden]right-> LabGroup
 
 note "At least one must be present" as PhoneTeleNote
 PhoneTeleNote .. Phone #black

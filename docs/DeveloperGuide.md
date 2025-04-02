@@ -14,6 +14,7 @@
 ## **Acknowledgements**
 
 This project was adapted from [AB3](https://se-education.org/addressbook-level3/) (source code provided [here](https://github.com/nus-cs2103-AY2425S2/tp)).
+
 This project adapts the matriculation number checksum from [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) (source code provided [here](https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js)).
 
 Online images are used for the icons of the attendance tags: 
@@ -124,7 +125,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="600" />
+<puml src="diagrams/ModelClassDiagram.puml"/>
 
 
 The `Model` component,
