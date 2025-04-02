@@ -8,13 +8,23 @@ import static seedu.tassist.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_YEAR_AMY;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.tassist.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.tassist.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.tassist.logic.commands.EditCommand.MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS;
+import static seedu.tassist.logic.commands.EditCommand.MESSAGE_LAB_GROUP_REQUIRED;
+import static seedu.tassist.logic.commands.EditCommand.MESSAGE_PHONE_REQUIRED;
+import static seedu.tassist.logic.commands.EditCommand.MESSAGE_TELEHANDLE_REQUIRED;
+import static seedu.tassist.logic.commands.EditCommand.MESSAGE_TUT_GROUP_REQUIRED;
+import static seedu.tassist.logic.commands.EditCommand.getEditedStudentsSummary;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.tassist.testutil.TypicalPersons.BADAMY;
+import static seedu.tassist.testutil.TypicalPersons.BADBOB;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -37,7 +47,12 @@ public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    private final List<Index> expectedMultipleIndex = Arrays.asList(
+            Index.fromOneBased(1),
+            Index.fromOneBased(2)
+    );
 
+    // ================= JUnits for Singles Editing =================
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
         Person editedPerson = new PersonBuilder().build();
@@ -197,5 +212,53 @@ public class EditCommandTest {
         assertEquals(expected, editCommand.toString());
     }
 
-    // TODO: JUnits for batch editing
+    // ================= JUnits for Mandatory (Optional) Param =================
+    @Test
+    public void execute_validateAtLeastOneMandatoryFieldPresent_failure() {
+        model.addPerson(BADBOB);
+        Index lastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
+        // Remove Phone when student only has phone (no telegram)
+        EditCommand editCommand = new EditCommand(List.of(lastPerson),
+                new EditPersonDescriptorBuilder().withPhone("").build());
+        assertCommandFailure(editCommand, model, MESSAGE_PHONE_REQUIRED);
+
+        // Remove Lab Group when student only has lab group (no tut group)
+        editCommand = new EditCommand(List.of(lastPerson),
+                new EditPersonDescriptorBuilder().withLabGroup("").build());
+        assertCommandFailure(editCommand, model, MESSAGE_LAB_GROUP_REQUIRED);
+
+        model.addPerson(BADAMY);
+        lastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
+
+        // Remove TeleHandle when student only has telehandle (no phone)
+        editCommand = new EditCommand(List.of(lastPerson),
+                new EditPersonDescriptorBuilder().withTeleHandle("").build());
+        assertCommandFailure(editCommand, model, MESSAGE_TELEHANDLE_REQUIRED);
+
+        // Remove Tut Group when student only tut group (no lab group)
+        editCommand = new EditCommand(List.of(lastPerson),
+                new EditPersonDescriptorBuilder().withTutGroup("").build());
+        assertCommandFailure(editCommand, model, MESSAGE_TUT_GROUP_REQUIRED);
+    }
+
+    // ================= JUnits for Batch Editing =================
+    @Test
+    public void execute_batchEdit_success() {
+
+        Person personOneInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPersonOne = new PersonBuilder(personOneInFilteredList).withYear(VALID_YEAR_AMY).build();
+
+        Person personTwoInFilteredList = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        Person editedPersonTwo = new PersonBuilder(personTwoInFilteredList).withYear(VALID_YEAR_AMY).build();
+        List<Person> editedStudents = List.of(editedPersonOne, editedPersonTwo);
+        EditCommand editCommand = new EditCommand(expectedMultipleIndex,
+                new EditPersonDescriptorBuilder().withYear(VALID_YEAR_AMY).build());
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPersonOne);
+        expectedModel.setPerson(model.getFilteredPersonList().get(1), editedPersonTwo);
+        assertCommandSuccess(editCommand, model, String.format(MESSAGE_EDIT_MULTIPLE_PERSON_SUCCESS,
+                getEditedStudentsSummary(editedStudents)), expectedModel);
+    }
+
 }

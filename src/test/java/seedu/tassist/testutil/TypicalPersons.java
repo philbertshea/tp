@@ -111,6 +111,21 @@ public class TypicalPersons {
             .withYear(VALID_YEAR_BOB).withRemark(VALID_REMARK_BOB)
             .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .build();
+    // Manually added - Only for EditCommand
+    public static final Person BADBOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+            .withEmail(VALID_EMAIL_BOB).withTeleHandle("")
+            .withMatNum(VALID_MAT_NUM_BOB).withTutGroup("")
+            .withLabGroup(VALID_LAB_GROUP_BOB).withFaculty(VALID_FACULTY_BOB)
+            .withYear(VALID_YEAR_BOB).withRemark(VALID_REMARK_BOB)
+            .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
+            .build();
+    public static final Person BADAMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone("")
+            .withEmail(VALID_EMAIL_AMY).withTeleHandle(VALID_TELE_HANDLE_AMY)
+            .withMatNum(VALID_MAT_NUM_AMY).withTutGroup(VALID_TUT_GROUP_AMY)
+            .withLabGroup("").withFaculty(VALID_FACULTY_AMY)
+            .withYear(VALID_YEAR_AMY).withRemark(VALID_REMARK_AMY)
+            .withAttendanceList(VALID_ATTENDANCE_STRING).withTags(VALID_TAG_FRIEND)
+            .build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
