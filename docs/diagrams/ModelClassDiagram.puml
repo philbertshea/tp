@@ -30,6 +30,7 @@ Class Name
 Class Phone
 Class Tag
 Class AttendanceList
+Class Attendance
 
 Class I #FFFFFF
 }
@@ -74,7 +75,7 @@ Tag -[hidden]right-> Remark
 
 Name -[hidden]down-> AttendanceList
 AttendanceList -[hidden]right-> Phone
-Attendance -[hidden]up-> AttendanceList
+Attendance -[hidden]right-> AttendanceList
 Phone -[hidden]right-> TeleHandle
 TeleHandle -[hidden]right-> TutGroup
 TutGroup -[hidden]right-> LabGroup
@@ -91,7 +92,9 @@ TutLabNote .. LabGroup #black
 TutGroup -[hidden]down-> TutLabNote
 LabGroup -[hidden]down-> TutLabNote
 
-note "If TutGroup is present, AttendanceList \ncontains 13 Attendance instances. \nElse, AttendanceList is empty." as AttListNote
+note "If TutGroup is present, AttendanceList \n\
+contains 13 Attendance instances. \nElse, \
+AttendanceList is empty." as AttListNote
 AttListNote .. AttendanceList #black
 AttListNote .. Attendance #black
 AttendanceList -[hidden]down-> AttListNote
