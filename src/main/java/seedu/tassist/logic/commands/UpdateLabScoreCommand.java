@@ -19,7 +19,14 @@ public class UpdateLabScoreCommand extends Command {
     public static final String COMMAND_WORD = "lab";
 
     public static final String MESSAGE_UPDATE_LAB_SCORE_SUCCESS =
-            "Update lab %2$d for index %1$d";
+            "Update lab %1$d score for student %2$d as %3$s";
+
+    public static final String MESSAGE_UPDATE_LAB_MAX_SCORE_SUCCESS =
+            "Update lab %1$d max score to be %2$d";
+
+    public static final String MESSAGE_UPDATE_BOTH_SCORES_SUCCESS =
+            "Update lab %1$d max score to be %2$d and lab %1$d score for student %3$d as %4$s";
+
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Update the lab score of a student that is identified by the index"
@@ -30,10 +37,11 @@ public class UpdateLabScoreCommand extends Command {
             + "-sc LAB SCORE (updated score, must be positive integer and smaller than max score)\n"
             + "-msc MAX SCORE (must be positive integer, set max score for the lab). \n"
             + "Example: " + COMMAND_WORD + " -i 1 -ln 1 -sc 10 -msc 10\n"
-            + "This update student of index 1 as lab 1 score as 10/10.";
+            + "This updates student of index 1 as lab 1 score as 10/10.\n"
+            + "Note: The default max score for all labs is 25.\n";
 
     public static final String MESSAGE_INVALID_LAB_NUMBER = "This lab does not exist."
-                    + "There are only %1$d labs";
+            + "There are only %1$d labs";
 
     public static final String MESSAGE_INVALID_SCORE =
             "The updated score cannot exceed the maximum score for the lab."
@@ -41,7 +49,7 @@ public class UpdateLabScoreCommand extends Command {
 
     public static final String MESSAGE_INVALID_MAX_SCORE =
             "The updated max score cannot be lesser than the current score for the lab."
-                    + "Your input: %1$d. The current score for this lab: %2$d.";
+            + "Your input: %1$d. The current score for this lab: %2$d.";
 
     public static final String MESSAGE_INVALID_NEGATIVE_SCORE =
             "The score cannot be a negative number";
@@ -79,6 +87,7 @@ public class UpdateLabScoreCommand extends Command {
         this.updateType = isMaxScore ? UpdateType.MAXLABSCORE : UpdateType.LABSCORE;
     }
 
+
     /**
      * Updates both lab score and max lab score for the specified student for the specified lab.
      *
@@ -100,36 +109,74 @@ public class UpdateLabScoreCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         List<Person> lastShownList = model.getFilteredPersonList();
-
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(MESSAGE_INVALID_INDEX);
         }
 
         Person personToUpdate = lastShownList.get(index.getZeroBased());
         LabScoreList newLabScoreList;
+        String successMessage;
+
         switch (updateType) {
         case LABSCORE:
             newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
+            updatePerson(model, personToUpdate, newLabScoreList);
+            successMessage = String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, labNumber, index.getOneBased(),
+                    newLabScoreList.getLabScores().get(labNumber - 1).toString());
             break;
         case MAXLABSCORE:
-            newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore);
+            newLabScoreList = personToUpdate.getLabScoreList().updateMaxLabScore(labNumber, maxLabScore, lastShownList);
+            updatePerson(model, personToUpdate, newLabScoreList);
+            refresh(model);
+            successMessage = String.format(MESSAGE_UPDATE_LAB_MAX_SCORE_SUCCESS, labNumber, maxLabScore);
             break;
         case BOTH:
-            newLabScoreList = personToUpdate.getLabScoreList().updateBothLabScore(labNumber, labScore, maxLabScore);
+            newLabScoreList = personToUpdate.getLabScoreList()
+                    .updateBothLabScore(labNumber, labScore, maxLabScore, lastShownList);
+            updatePerson(model, personToUpdate, newLabScoreList);
+            refresh(model);
+            successMessage = String.format(MESSAGE_UPDATE_BOTH_SCORES_SUCCESS, labNumber, maxLabScore,
+                    index.getOneBased(), newLabScoreList.getLabScores().get(labNumber - 1).toString());
             break;
         default:
-            newLabScoreList = personToUpdate.getLabScoreList().updateLabScore(labNumber, labScore);
-            break;
+            throw new CommandException("Error");
         }
+
+        return new CommandResult(successMessage);
+    }
+
+    /**
+     * Refreshes all the contacts {@code maxLabScore} with the updated version.
+     *
+     * @param model The provided model.
+     */
+    private void refresh(Model model) {
+        List<Person> lastShownList = model.getFilteredPersonList();
+        for (int i = 0; i < lastShownList.size(); i++) {
+            if (i == index.getZeroBased()) {
+                continue;
+            }
+            Person personToUpdate = lastShownList.get(i);
+            LabScoreList newLabScoreList = personToUpdate.getLabScoreList().refreshLabScore(labNumber, maxLabScore);
+            updatePerson(model, personToUpdate, newLabScoreList);
+        }
+    }
+
+    /**
+     * Updates the given person data.
+     *
+     * @param model The provided model.
+     * @param personToUpdate The person's data to update.
+     * @param newLabScoreList The new list of {@code LabScore} objects.
+     */
+    private void updatePerson(Model model, Person personToUpdate, LabScoreList newLabScoreList) {
         Person updatedPerson = new Person(personToUpdate.getName(), personToUpdate.getPhone(),
-                personToUpdate.getTeleHandle(), personToUpdate.getEmail(), personToUpdate.getMatNum(),
-                personToUpdate.getTutGroup(), personToUpdate.getLabGroup(), personToUpdate.getFaculty(),
-                personToUpdate.getYear(), personToUpdate.getRemark(), personToUpdate.getAttendanceList(),
-                newLabScoreList, personToUpdate.getTags());
+            personToUpdate.getTeleHandle(), personToUpdate.getEmail(), personToUpdate.getMatNum(),
+            personToUpdate.getTutGroup(), personToUpdate.getLabGroup(), personToUpdate.getFaculty(),
+            personToUpdate.getYear(), personToUpdate.getRemark(), personToUpdate.getAttendanceList(),
+            newLabScoreList, personToUpdate.getTags());
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-
-        return new CommandResult(String.format(MESSAGE_UPDATE_LAB_SCORE_SUCCESS, index.getZeroBased(), labNumber));
     }
 
     @Override
