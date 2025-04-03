@@ -675,16 +675,16 @@ testers are expected to do more *exploratory* testing.
 1. Editing a student while all students are being shown
 
    1. Prerequisites: List all students using the `list` command. Multiple students in the list.
-   
+
    1. Test Case: `edit -i 1 -n JohnDoe`<br>
       Expected: Edits the name of the 1st student to JohnDoe.
-   
+
    2. Test Case: `edit -i 1 -m A0000030U`<br>
       Expected: This student already exists in the address book.
-   
+
    3. Test Case: `edit -i 1 -p`<br>
       Expected: You cannot remove the Phone Number!
-   
+
    4. Test Case: `edit -i 2 -t`<br>
       Expected: You cannot remove the Tutorial Group!
 
@@ -713,8 +713,8 @@ testers are expected to do more *exploratory* testing.
    Expected: Persons at index 2 and 4 are deleted. Confirmation message shows both.
 
    1. Test case: `del -i 3, 6-7, 9` (mixed comma and range input)<br>
-   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
-   
+   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions.
+
    1. Test case: `del -i 3-1`<br>
    Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
 
@@ -741,13 +741,13 @@ testers are expected to do more *exploratory* testing.
 1. Tagging a student while all students are being shown
 
    1. Prerequisites: List all student using the `list` command. Multiple students in the list.
-   
+
    2. Test Case: `tag -a -i 1`<br>
       Expected: You need to provide a tag using the flag (-tag)
-   
+
    3. Test Case: `tag -a -i 1 -tag testTag`<br>
       Expected: Successfully added a tag
-   
+
    4. Test Case: `tag -m -i 1 -tag testTag -tag newTestTag`<br>
       Expected: Successfully edited a tag
 
@@ -758,11 +758,11 @@ testers are expected to do more *exploratory* testing.
 
 1. Marking the attendance of a student while all students are being shown.
 
-   1. Prerequisites: List all student using the `list` command. Multiple students in the list. 
+   1. Prerequisites: List all student using the `list` command. Multiple students in the list.
 
    1. Test case: `att -i 1 -w 5`<br>
       Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
-   
+
    1. Test case: `att -i 1 -w 5`<br>
       Expected: Expected: No student is deleted. Error details shown in the status message. Status bar remains the same.
 
@@ -833,7 +833,7 @@ testers are expected to do more *exploratory* testing.
 
 ### UI glitch upon selecting contact
 
-A contact will flicker when selected. This is likely due to the loading of attendance tags. 
+A contact will flicker when selected. This is likely due to the loading of attendance tags.
 
 ## **Appendix: Effort**
 
@@ -860,3 +860,4 @@ We rate the Team Project (TP) a 8/10.
 - Despite the seemingly minute additions to the MVP in terms of features, our goals were achieved.
 
 - A deeper understanding of software development and the tools available (e.g. Git).
+

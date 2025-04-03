@@ -40,9 +40,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
    * `edit -i 1 -p 91234567 -e johndoe@example.com` : Edits the phone number and email address of the 1st student to be `91234567` and `johndoe@example.com` respectively.
 
    * `tag -a -i 1 -tag lateStudent` : Adds a tag to the 1st student with the label `lateStudent`
-   
+
    * `del -i 3` : Deletes the contact at index 3.
-   
+
    * `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
 
    * `clear` : Deletes all contacts.
@@ -198,9 +198,9 @@ Tags also have a limit of 60 characters.
 
 <box type="tip" seamless>
 
-**Note:** 
-* If `TUTORIAL_GROUP` is provided as an input when adding a student, then the student is assigned 
-the Default Attendance List (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13). 
+**Note:**
+* If `TUTORIAL_GROUP` is provided as an input when adding a student, then the student is assigned
+the Default Attendance List (with No Tutorial for Weeks 1 and 2, and Not Attended for Weeks 3 to 13).
 * If no `TUTORIAL_GROUP` is provided as input when adding a student, then the student is assigned
 a Blank Attendance List.
 </box>
@@ -224,11 +224,11 @@ Format: `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMA
 * Existing values will be updated to the input values.
 * The behaviour of the edit command depends on the field being edited:
   * For mandatory fields of a student: `-n NAME`, `-e EMAIL`, `-m MATRICULATION_NUMBER`, a valid input value must be provided.
-to replace the current value. 
+to replace the current value.
     * E.g. `edit -i 1 -n Alex` is valid, editing the name of student of index 1 to Alex.
     * `edit -i 1 -n 123!#$` is invalid, because 123!#$ is not a valid name.
     * `edit -i 1 -n` is invalid, because a student must have a name, which is a mandatory field.
-  * There are two sets of conditional fields: Set 1: `-p PHONE_NUMBER -tg TELEGRAM_HANDLE` and 
+  * There are two sets of conditional fields: Set 1: `-p PHONE_NUMBER -tg TELEGRAM_HANDLE` and
   * Set 2: `-t TUTORIAL_GROUP -b LAB_GROUP`.
 These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVERY SET must have a valid input.
     * Providing a valid input value for either or both fields will always be supported as a valid edit.
@@ -237,7 +237,7 @@ These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVER
       * After the edit, the student has AT LEAST a valid `TUTORIAL_GROUP` OR a valid `LAB_GROUP`.
     * E.g. if the student of index 1 currently has a valid `PHONE_NUMBER` but no valid `TELEGRAM_HANDLE`:
       * `edit -i 1 -p 90001234` is valid, because he will still have a valid phone number after the edit.
-      * `edit -i 1 -t @telehandle123` is valid, because he will have BOTH a valid phone number 
+      * `edit -i 1 -t @telehandle123` is valid, because he will have BOTH a valid phone number
       AND a valid teleHandle after the edit.
       * `edit -i 1 -p` is INVALID, because the proposed edit would make the student have NEITHER a valid phone number,
       NOR a valid teleHandle after the edit.
@@ -389,7 +389,7 @@ Assuming the restrictions are satisfied,
        * If Alex of index 1 didn't attend Week 5 tutorial, mark him as Not Attended (or Unattended) using `att -i -w 5 -u`.
        * If Alex's tutorial group T01 falls on a public holiday, such that the Week 5 tutorial gets cancelled,
        mark the whole tutorial group as No Tutorial. Use the command `att -t T01 -w 5 -nt`.
-    2. If the student specified by the `INDEX` has No Tutorial in the given week, the command is invalid. 
+    2. If the student specified by the `INDEX` has No Tutorial in the given week, the command is invalid.
     This means you cannot mark an individual to any attendance status, if he currently has No Tutorial.
        * Assume Alex of tutorial group T01 originally had their tutorial cancelled due to the public holiday.
        Now, the profs announce a make-up tutorial for T01 that everyone must attend (like normal tutorials).
@@ -532,6 +532,6 @@ Action     | Format, Examples
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
-**Lab Score** | `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]` <br> e.g., `lab -i 1 -ln 1 -sc 20` 
+**Lab Score** | `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]` <br> e.g., `lab -i 1 -ln 1 -sc 20`
 **Load Data** | `load -f FILE_NAME -ext FILE_EXTENSION`<br> e.g., `load -f userdata -ext csv`
 **Export Data** | `export -f FILE_PATH`<br> e.g., `export -f ./data/test.csv`
