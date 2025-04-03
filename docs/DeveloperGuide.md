@@ -97,9 +97,9 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("del -i 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("del -i 1,3,5")` API call as an example.
 
-<puml src="diagrams/DeleteMultipleIndexesSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `del -i 1` Command" />
+<puml src="diagrams/DeleteMultipleIndexesSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `del -i 1,3,5` Command" />
 
 <box type="info" seamless>
 
