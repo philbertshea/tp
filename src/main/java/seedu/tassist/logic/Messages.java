@@ -13,7 +13,7 @@ import seedu.tassist.model.person.Person;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "This command is not recognised."
-            + "Please try again.";
+            + " Please try again.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_QUOTES = "Incorrect quote format detected!"
             + "\nA maximum of one quote should be found in between every flag."
@@ -29,12 +29,24 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
-    // For missing arguments in delete
+    public static final String MESSAGE_INVALID_INDEX = "Invalid index. "
+            + "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_MISSING_ARGUMENTS =
-            "Missing arguments!\nRequires -i <index>.";
-    // For invalid arguments in delete
-    public static final String MESSAGE_INVALID_ARGUMENTS =
-            "Invalid arguments detected!\nValid arguments are -i <index>.";
+            "Missing arguments!\nRequires -i <index>.\n%1$s";
+    public static final String MESSAGE_PERSON_INVALID_INDEX = "Invalid index (out of range)!"
+            + " You currently have %d records!";
+    public static final String MESSAGE_INVALID_INDEX_RANGE = "Invalid index range!"
+            + " Ensure that start <= end and all values are positive integers."
+            + "\nExpected format: start-end (e.g., 2-4).";
+    public static final String MESSAGE_MULTIPLE_INDEX_INPUT = "Invalid index format! "
+            + "Please input each index separated by a comma. "
+            + "\nExpected format: index, index,... (e.g., 2,4)";
+    public static final String MESSAGE_MIXED_INDEX_INPUT = "Invalid index input. "
+            + "Only digits, commas and dashes";
+    public static final String MESSAGE_MISSING_SEPARATORS = "Invalid index input. "
+            + "Ensure commas or dashes separate numbers.";
+    public static final String MESSAGE_MISSING_INDEX_RANGE_VALUE = "Missing start or end value in range.";
+    public static final String MESSAGE_MULTIPLE_INDEX_ERROR = "Invalid input! Possible issues:";
     /**
      * Returns an error message indicating the duplicate prefixes.
      */

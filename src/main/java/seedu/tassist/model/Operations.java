@@ -52,7 +52,9 @@ public class Operations {
         CommandType oldCommandType = currentState.getCommandType();
         ObservableList<Person> personList = model.getAddressBook().getPersonList();
 
-        if (oldCommandType == CommandType.CLEAR) {
+        if (oldCommandType == CommandType.LABSCORE) {
+            newState.setPerson(personList.toArray(new Person[0]));
+        } else if (oldCommandType == CommandType.CLEAR) {
             //Copy the whole address book
             newState.duplicatePeople(currentState.getPeople());
         } else if (oldCommandType == CommandType.ADD) {
@@ -61,7 +63,7 @@ public class Operations {
         } else if (oldCommandType == CommandType.DELETE) {
             newState.duplicatePeople(currentState.getPeople());
             newState.setIndex(personList.size() - 1);
-        } else if (oldCommandType == CommandType.EDIT || oldCommandType == CommandType.LABSCORE
+        } else if (oldCommandType == CommandType.EDIT
                 || oldCommandType == CommandType.ATTENDANCE) {
             Person person = personList.get(currentState.getIndex());
             newState.setPerson(person);
@@ -95,7 +97,7 @@ public class Operations {
             saveIndexCommand(personList);
         }
 
-        if (currentType == CommandType.CLEAR) {
+        if (currentType == CommandType.CLEAR || currentType == CommandType.LABSCORE) {
             //Save person list
             currentState.setPerson(personList.toArray(new Person[0]));
         }
@@ -116,7 +118,7 @@ public class Operations {
      * @param personList The current list of people in the address book.
      */
     public static void saveIndexCommand(ObservableList<Person> personList) {
-        if (personList.isEmpty()) {
+        if (personList.isEmpty() || currentState.getCommandType() == CommandType.LABSCORE) {
             return;
         }
 
@@ -227,8 +229,7 @@ public class Operations {
     public static void runCommand(Model model, Snapshot currentState) {
         CommandType currentCommand = currentState.getCommandType();
 
-        if (currentCommand == CommandType.EDIT || currentCommand == CommandType.ATTENDANCE
-                || currentCommand == CommandType.LABSCORE) {
+        if (currentCommand == CommandType.EDIT || currentCommand == CommandType.ATTENDANCE) {
             //Set back the previous person state
             List<Person> lastShownList = model.getFilteredPersonList();
             Person personToUpdate = lastShownList.get(currentState.getIndex());
@@ -258,6 +259,12 @@ public class Operations {
             } else {
                 //Reset address book (redo)
                 model.setAddressBook(new AddressBook());
+            }
+        } else if (currentCommand == CommandType.LABSCORE) {
+            model.setAddressBook(new AddressBook());
+            ArrayList<Person> addAll = currentState.getPeople();
+            for (Person person : addAll) {
+                model.addPerson(person);
             }
         }
     }

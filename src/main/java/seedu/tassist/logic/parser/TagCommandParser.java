@@ -24,8 +24,9 @@ public class TagCommandParser implements Parser<TagCommand> {
 
     public static final String MESSAGE_INVALID_ACTION_TYPE =
             "Either an add, edit or delete flag should be provided! \n%s";
-    public static final String MESSAGE_MISSING_TAG = "Add a tag! \n%s";
+    public static final String MESSAGE_MISSING_TAG = "You need to provide a tag using the flag (-tag)! \n%s";
     public static final String MESSAGE_MISSING_OLD_NEW_TAG = "You need an old tag and a new tag! \n%s";
+    public static final String MESSAGE_INVALID_ALL_TAGS = "You can only specify one of: -a, -m, or -d \n%s";
     /**
      * The different action types for the tag parsing
      */
@@ -47,24 +48,48 @@ public class TagCommandParser implements Parser<TagCommand> {
                         PREFIX_INDEX, PREFIX_TAG
                 );
 
+        // Checks is the add, delete, edit flags are present
         if (!anyPrefixesPresent(argMultimap, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG)) {
             throw new ParseException(String.format(MESSAGE_INVALID_ACTION_TYPE, MESSAGE_USAGE));
         }
 
+        // Check how many prefixes are there
+        int prefixCount = 0;
+        if (argMultimap.getValue(PREFIX_ADD_TAG).isPresent()) {
+            prefixCount++;
+        }
+        if (argMultimap.getValue(PREFIX_DELETE_TAG).isPresent()) {
+            prefixCount++;
+        }
+        if (argMultimap.getValue(PREFIX_EDIT_TAG).isPresent()) {
+            prefixCount++;
+        }
+
+        // Ensure exactly one prefix is present
+        if (prefixCount != 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_ALL_TAGS, MESSAGE_USAGE));
+        }
+
+
+        // Checks if the index has been provided
         if (!argMultimap.getValue(PREFIX_INDEX).isPresent()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
+        // Check if there are duplicates for the index, add, edit or delete flags
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG);
+
         Index index;
 
+        // Parse index
         try {
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_INDEX).orElse(""));
         } catch (ParseException pe) {
             throw new ParseException(Index.MESSAGE_CONSTRAINTS, pe);
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_INDEX, PREFIX_ADD_TAG, PREFIX_DELETE_TAG, PREFIX_EDIT_TAG);
+        // Check if the tags to be added, edited, deleted are missing
         if (!anyPrefixesPresent(argMultimap, PREFIX_TAG)) {
             throw new ParseException(String.format(MESSAGE_MISSING_TAG, MESSAGE_USAGE));
         }

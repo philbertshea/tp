@@ -71,6 +71,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
   e.g `-n NAME [-tag TAG]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
+  e.g. `[-tag TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-p PHONE_NUMBER -n NAME` is also acceptable.
@@ -175,10 +176,9 @@ These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVER
       NOR a valid teleHandle after the edit.
   * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input, or empty input.
 
-xamples:
+Examples:
 *  `edit -i 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit -i 2 -n Betsy Crower` Edits the name of the 2nd person to be `Betsy Crower`.
-
 
 #### 2. Edit multiple students (Batch edit)
 
@@ -231,7 +231,7 @@ Format: `tag -a -i INDEX [-tag TAG_NAME]...`
 Examples:
 * `tag -a -i 1 -tag lateStudent` Adds a tag to the 1st student with the label `lateStudent`
 * `tag -a -i 1 -tag NeedHelp -tag AbleToCompete` Adds a tag to the 1st student with the labels `NeedHelp` and `AbleToCompete`
-    * The resultant tags will be sorted alphabetically.
+  * The resultant tags will be sorted alphabetically.
 
 #### 2. Editing a tag
 
@@ -244,7 +244,7 @@ Format: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`
 * The `OLD_TAG_NAME` and `NEW_TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
 Examples:
-* `tag -m -i 1 -tag lastStudent -tag earlyStudent` Replaces the value of the `lateStudent` tag, of the 1st student, with `earlyStudent`
+* `tag -m -i 1 -tag lastStudent -tag earlyStudent` Replaces the value of the `lateStudent` tag, of the 1st student, with `earlyStudent` 
 * `tag -m -i 1 -tag NeedHelp -tag CanSurvive` Replaces the value of the `NeedHelp` tag, of the 1st student, with `CanSurvive`
 
 #### 3. Deleting tags
@@ -321,8 +321,25 @@ Examples:
 * `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
 * `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
-    * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
+  * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
 * `att -i 1-5 -w 3` marks the persons of indexes 1 to 5 (inclusive) of week 3 as Attended
+
+### Updating lab scores: `lab`
+Updates the lab score for the specified student, or update the maximum score for the specified lab.
+
+Format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]`
+
+3 ways of using this command
+1. Update lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE`.
+    * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE]`.
+2. Update maximum lab score: Updates the lab `LAB_NUMBER` maximum score to be `NEW_SCORE`.
+    * Command format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -msc [NEW_SCORE]`.
+    * Note that the `-i` flag is optional here as it will be ignored.
+3. Update both lab score and max lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE_1`
+   and at the same time update lab `LAB_NUMBER` maximum score to be `NEW_SCORE_2`.
+    * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE_1] -msc [NEW_SCORE_2]`.
+
+Note that for all cases, it the flags does not need to be in this specific order.
 
 ### Locating persons by name: `find`
 
