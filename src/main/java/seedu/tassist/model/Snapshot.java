@@ -1,34 +1,41 @@
 package seedu.tassist.model;
 
-import static seedu.tassist.logic.parser.ParserUtil.parseMultipleIndexes;
-
 import java.util.ArrayList;
-import java.util.List;
 
-import seedu.tassist.commons.core.index.Index;
-import seedu.tassist.logic.parser.exceptions.ParseException;
 import seedu.tassist.model.person.Person;
 
 /**
  * Captures a frame of the command.
  */
 public class Snapshot {
-    private static final int emptyIndex = -1;
-    private String commandString;
+
+    private String commandString = "";
+    private String commandTypeString = "";
     private Operations.CommandType commandType;
     private ArrayList<Person> people = new ArrayList<>();
 
-    private Integer index = null;
-
 
     /**
-     * Creates a new snapshot object.
+     * Creates a new snapshot object for RECORD type command.
      *
      * @param commandString The command string.
+     * @param commandTypeString The type of user command.
      * @param commandType The type of command.
      */
-    public Snapshot(String commandString, Operations.CommandType commandType) {
+    public Snapshot(String commandString, String commandTypeString, Operations.CommandType commandType) {
         this.commandString = commandString;
+        this.commandTypeString = commandTypeString;
+        this.commandType = commandType;
+    }
+
+    /**
+     * Creates a new snapshot object for IGNORE type command.
+     *
+     * @param commandTypeString The type of user command.
+     * @param commandType The type of command.
+     */
+    public Snapshot(String commandTypeString, Operations.CommandType commandType) {
+        this.commandTypeString = commandTypeString;
         this.commandType = commandType;
     }
 
@@ -39,7 +46,27 @@ public class Snapshot {
      */
     public Snapshot(Snapshot currentSnapshot) {
         this.commandString = currentSnapshot.commandString;
+        this.commandTypeString = currentSnapshot.commandTypeString;
         this.commandType = currentSnapshot.commandType;
+    }
+
+    /**
+     * Gets the command string that the user had input.
+     *
+     * @return The command string.
+     */
+    public String getCommandString() {
+        return commandString;
+    }
+
+
+    /**
+     * Gets the type of user command.
+     *
+     * @return The type of user command.
+     */
+    public String getCommandTypeString() {
+        return commandTypeString.toLowerCase();
     }
 
     /**
@@ -71,17 +98,6 @@ public class Snapshot {
         }
     }
 
-    /**
-     * Gets the person involved in the command.
-     *
-     * @return The person involved.
-     */
-    public Person getPerson() {
-        if (people.isEmpty()) {
-            return null;
-        }
-        return people.get(0);
-    }
 
     /**
      * Gets the entire list of people involved in the command.
@@ -92,59 +108,7 @@ public class Snapshot {
         return people;
     }
 
-    /**
-     * Duplicates the given list as the current list.
-     *
-     * @param duplicatePeopleList The list of people to duplicate.
-     */
-    public void duplicatePeople(ArrayList<Person> duplicatePeopleList) {
-        this.people = duplicatePeopleList;
-    }
 
-    /**
-     * Sets the index of the person involved.
-     *
-     * @param newIndex The new index.
-     */
-    public void setIndex(Integer newIndex) {
-        index = newIndex;
-    }
-
-    /**
-     * Gets the index of the person involved.
-     *
-     * @return The integer of the person involved.
-     */
-    public int getIndex() {
-        //Index field was set
-        if (index != null) {
-            return index;
-        }
-
-        int startSubstring = commandString.indexOf("-i");
-
-        //Index field not found
-        if (startSubstring < 0) {
-            return emptyIndex;
-        }
-
-        //Index field found
-        String commandIndex = commandString.substring(startSubstring + 3);
-
-        int endSubstring = commandIndex.indexOf(" ");
-        if (endSubstring > 0) {
-            commandIndex = commandIndex.substring(0, endSubstring);
-        }
-
-        List<Index> allIndex;
-        try {
-            allIndex = parseMultipleIndexes(commandIndex);
-        } catch (ParseException e) {
-            return emptyIndex;
-        }
-        index = allIndex.get(0).getZeroBased();
-        return index;
-    }
 
     @Override
     public boolean equals(Object other) {
@@ -159,8 +123,7 @@ public class Snapshot {
         Snapshot o = (Snapshot) other;
         return this.commandType.equals(o.commandType)
                 && this.commandString.equals(o.commandString)
-                && this.people.equals(o.people)
-                && ((this.index == null && o.index == null)
-                || this.index.equals(o.index));
+                && this.commandTypeString.equals(o.commandTypeString)
+                && this.people.equals(o.people);
     }
 }
