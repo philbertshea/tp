@@ -40,9 +40,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
    * `edit -i 1 -p 91234567 -e johndoe@example.com` : Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 
    * `tag -a -i 1 -tag lateStudent` : Adds a tag to the 1st student with the label `lateStudent`
-
-   * `del -i 3` : Deletes the 3rd contact shown in the current list.
-
+   
+   * `del -i 3` : Deletes the contact at index 3.
+   
    * `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
 
    * `clear` : Deletes all contacts.
@@ -378,18 +378,27 @@ Examples:
 
 ### Deleting a person : `del`
 
-Deletes the specified person from the address book.
+Deletes a person from the address book.
 
-Format: `del -i INDEX`
+Format: `del -i INDEX[,INDEX or RANGE]...`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
-* To specify multiple indexes, input indexes separated by comma (e.g. 1,2,3) or a range (e.g. 1-5)
+Parameters:
+* -i: Specifies the 1-based index(es) of the person(s) to delete. Accepts:
+ * Single index (e.g. 1)
+ * Multiple indices separated by commas (e.g. 1,3,5)
+ * Ranges using dashes (e.g. 2-4)
+ * Mixed usage (e.g. 1,3-5,7)
+
+Restrictions:
+* The index must be a positive non-zero integer.
+* Index ranges must be valid (e.g., 2-1 is not allowed).
+* The -i prefix must be provided only once. Multiple -i prefixes (e.g. -i 1 -i 2) are not allowed.
 
 Examples:
-* `del -i 2` deletes the 2nd person in the address book.
-* `del -i 1,4-6` deletes the 1st, 4th, 5th and 6th person in the address book.
+* `del -i 2` 
+ * Deletes the person at index 2.
+* `del -i 1,3-5,7` 
+ * Deletes persons at indices 1, 3, 4, 5, and 7.
 
 ### Clearing all entries : `clear`
 
@@ -467,7 +476,7 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Clear**  | `clear`
-**Delete** | `del -i INDEX`<br> e.g., `del -i 3`
+**Delete** | `del -i INDEX [,INDEX or RANGE]...`<br> e.g., `del -i 3`
 **Edit**   | `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]`<br> e.g.,`edit -i 2 -n James Lee -e jameslee@example.com`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`

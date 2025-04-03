@@ -57,7 +57,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `del -i 1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -688,13 +688,47 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `del -i 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First person in the list is deleted. Confirmation message is shown with their details.
 
    1. Test case: `del -i 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: Error message shown: "Invalid index. Index must be a non-zero positive integer and within the range of listed records.” No deletion occurs.
 
-   1. Other incorrect delete commands to try: `del`, `del -i x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   1. Test case: `del -i -1`<br>
+   Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
+
+   1. Test case: `del -i 999` (where 999 > number of students shown)<br>
+   Expected: Error message shown:  “Invalid index (out of range)! You currently have [number] records!” No deletion occurs.
+
+   1. Test case: `del -i 1-3` (range input)<br>
+   Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
+
+   1. Test case: `del -i 2,4` (comma-separated input)<br>
+   Expected: Persons at index 2 and 4 are deleted. Confirmation message shows both.
+
+   1. Test case: `del -i 3, 6-7, 9` (mixed comma and range input)<br>
+   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
+   
+   1. Test case: `del -i 3-1`<br>
+   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
+
+   1. Test case: `del -i 1 -i 2`<br>
+   Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
+
+   1. Test case: `del`<br>
+   Expected: Error message: “Missing arguments! Requires -i <index>.” Delete usage message displayed.
+
+   1. Test case: `del -i `<br>
+   Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
+
+   1. Test case: `del -i one`<br>
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
+
+   1. Test case: `del -i 1a`<br>
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
+
+   1. Test case: `del -i 1,,,2`<br>
+   Expected: Error message: "Invalid index format! Please input each index separated by a comma. Expected format: index, index,... (e.g., 2,4)"
+
 
 ### Marking attendance
 
@@ -710,6 +744,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
 
 ### Saving data
 

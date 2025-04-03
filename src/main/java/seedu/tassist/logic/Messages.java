@@ -30,7 +30,7 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_INVALID_INDEX = "Invalid index. "
-            + "Index is not a non-zero unsigned integer.";
+            + "Index must be a non-zero positive integer and within the range of listed records.";
     public static final String MESSAGE_MISSING_ARGUMENTS =
             "Missing arguments!\nRequires -i <index>.\n%1$s";
     public static final String MESSAGE_PERSON_INVALID_INDEX = "Invalid index (out of range)!"
