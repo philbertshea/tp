@@ -21,12 +21,16 @@ import seedu.tassist.storage.JsonSerializableAddressBook;
  */
 public class LoadDataCommand extends Command {
     public static final String COMMAND_WORD = "load";
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Loads the data from a JSON or CSV file into TAssist.\n"
-            + "Parameters: "
-            + PREFIX_FILE_PATH + "FILE_NAME "
-            + PREFIX_EXTENSION + "FILE_EXTENSION\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_FILE_PATH + "userdata " + PREFIX_EXTENSION + " csv";
+    public static final String MESSAGE_USAGE =
+        String.format(
+            "Usage: %s [OPTIONS]...\n\n"
+                    + "Loads the data from a JSON or CSV file into TAssist.\n"
+                    + "Mandatory arguments:\n"
+                    + "  %-7s       File name (without extension)\n"
+                    + "  %-7s       File extension (csv or json)\n\n"
+                    + "Example: %s %s userdata %s csv",
+            COMMAND_WORD, PREFIX_FILE_PATH, PREFIX_EXTENSION,
+            COMMAND_WORD, PREFIX_FILE_PATH, PREFIX_EXTENSION);
 
     public static final String MESSAGE_SUCCESS = "Loaded data from file: %1$s";
     public static final String INVALID_ARGUMENT_EXTENSION = "Invalid extension: %1$s";
