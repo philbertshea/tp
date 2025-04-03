@@ -10,32 +10,34 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
  * Holds the score and max score for a lab.
  */
 public class LabScore {
+    private static final int DEFAULT_SCORE = -1;
     private static ArrayList<Integer> allMaxScores = new ArrayList<>(List.of(25, 25, 25, 25));
-    private int labScore;
-    private int maxLabScore = 25; //Default max score is 25.
+
+    private int labScore = DEFAULT_SCORE;
+    private int maxLabScore = 25; // Default max score is 25
 
     /**
-     * Creates default LabScore object.
+     * Creates a default LabScore object.
      */
     public LabScore() {
-        labScore = -1;
+        labScore = DEFAULT_SCORE;
     }
 
     /**
-     * Creates default LabScore object with standardized lab score.
+     * Creates a default LabScore object with standardized lab score.
      *
-     * @param labNumber
+     * @param labNumber The lab number to get the maxScore.
      */
     public LabScore(int labNumber) {
-        labScore = -1;
+        labScore = DEFAULT_SCORE;
         maxLabScore = allMaxScores.get(labNumber);
     }
 
     /**
      * Creates a LabScore object with the provided parameters.
      *
-     * @param labScore the score to initialize with.s
-     * @param maxLabScore the max score of the lab to initialize.
+     * @param labScore The score to initialize with.
+     * @param maxLabScore The max score of the lab to initialize.
      */
     public LabScore(int labScore, int maxLabScore) {
         this.labScore = labScore;
@@ -54,9 +56,12 @@ public class LabScore {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_SCORE,
                             labScore, maxLabScore));
-        } else if (labScore < 0) {
+        }
+
+        if (labScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
+
         return new LabScore(labScore, maxLabScore);
     }
 
@@ -72,16 +77,18 @@ public class LabScore {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
                             maxLabScore, labScore));
-        } else if (maxLabScore < 0) {
+        }
+
+        if (maxLabScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
+
         return new LabScore(labScore, maxLabScore);
     }
 
     /**
      * Updates the standardized max lab score for the updated lab.
-     * This function is only called when it has just successfully updated
-     * the maxLabScore for one LabScore object.
+     * This function is only called when it has successfully updated the maxLabScore for one LabScore object.
      *
      * @param labNumber The lab that the maxLabScore is associated with.
      * @param maxLabScore The updated maxLabScore.
@@ -91,6 +98,12 @@ public class LabScore {
         allMaxScores.set(labNumber, maxLabScore);
     }
 
+    /**
+     * Gets the maxLabScore of the provided lab number.
+     *
+     * @param labNumber The lab to get the maxLabScore of.
+     * @return The maxLabScore.
+     */
     public static int getMaxLabScore(int labNumber) {
         return allMaxScores.get(labNumber);
     }
@@ -106,19 +119,21 @@ public class LabScore {
     public LabScore updateBothLabScore(int labScore, int maxLabScore) throws CommandException {
         if (labScore < 0 || maxLabScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
-        } else if (labScore > maxLabScore) {
+        }
+
+        if (labScore > maxLabScore) {
             throw new CommandException(
                     String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE,
                             maxLabScore, labScore));
         }
-        System.out.println(String.format("%d/%d", labScore, maxLabScore));
+
         return new LabScore(labScore, maxLabScore);
     }
 
     /**
      * Tests if the new max score is always equal or larger than the given score.
      *
-     * @param newMaxScore The new max score to test
+     * @param newMaxScore The new max score to test.
      * @return True when the provided max score is larger or equal to current score.
      */
     public boolean testValidMaxScore(int newMaxScore) {
@@ -134,12 +149,13 @@ public class LabScore {
     public LabScore refreshMaxScore(int maxScore) {
         assert maxScore >= 0;
         assert maxScore >= labScore;
+
         return new LabScore(labScore, maxScore);
     }
 
     @Override
     public String toString() {
-        if (labScore == -1) {
+        if (labScore == DEFAULT_SCORE) {
             return String.format("-/%d", maxLabScore);
         }
 
