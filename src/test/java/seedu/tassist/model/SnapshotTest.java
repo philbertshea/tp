@@ -12,14 +12,14 @@ public class SnapshotTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     @Test
     public void checkGetSetFunctions() {
-        Snapshot snapshotA = new Snapshot("lab -i 1 -ln 1 -sc 20", Operations.CommandType.RECORD);
+        Snapshot snapshotA = new Snapshot("lab -i 1 -ln 1 -sc 20", Operations.RecordType.RECORD);
         Snapshot snapshotB = new Snapshot(snapshotA);
         assertEquals(snapshotA, snapshotB);
 
-        assertEquals(snapshotB.getCommandType(), Operations.CommandType.RECORD);
+        assertEquals(snapshotB.getRecordType(), Operations.RecordType.RECORD);
 
-        snapshotA.setCommandType(Operations.CommandType.RECORD);
-        assertEquals(snapshotA.getCommandType(), Operations.CommandType.RECORD);
+        snapshotA.setRecordType(Operations.RecordType.RECORD);
+        assertEquals(snapshotA.getRecordType(), Operations.RecordType.RECORD);
 
         snapshotA.setPerson(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()));
         Person expectedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());

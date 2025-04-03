@@ -67,66 +67,66 @@ public class AddressBookParser {
         switch (commandWord) {
 
         case AddCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Add", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Add", Operations.RecordType.RECORD);
             return new AddCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Edit", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Edit", Operations.RecordType.RECORD);
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Delete", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Delete", Operations.RecordType.RECORD);
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Clear", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Clear", Operations.RecordType.RECORD);
             return new ClearCommand();
 
         case ListCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("List", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("List", Operations.RecordType.IGNORE);
             return new ListCommand();
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Help", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Help", Operations.RecordType.IGNORE);
             return new HelpCommand();
 
         case ToggleCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Toggle Command", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Toggle", Operations.RecordType.IGNORE);
             return new ToggleCommand();
 
         case MarkAttendanceCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Attendance" , Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Attendance" , Operations.RecordType.RECORD);
             return new MarkAttendanceCommandParser().parse(arguments);
 
         case SearchCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Search", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Search", Operations.RecordType.IGNORE);
             return new SearchCommandParser().parse(arguments);
 
         case UpdateLabScoreCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Lab Score", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Lab Score", Operations.RecordType.RECORD);
             return new UpdateLabScoreCommandParser().parse(arguments);
 
         case ExportDataCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Export data", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Export data", Operations.RecordType.IGNORE);
             return new ExportDataCommandParser().parse(arguments);
 
         case TagCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, "Tag", Operations.CommandType.RECORD);
+            Operations.recordCurrentCommand(userInput, "Tag", Operations.RecordType.RECORD);
             return new TagCommandParser().parse(arguments);
 
         case LoadDataCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Load data", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Load data", Operations.RecordType.IGNORE);
             return new LoadDataCommandParser().parse(arguments);
 
         case UndoCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(Operations.CommandType.UNDO);
+            Operations.recordCurrentCommand(Operations.RecordType.UNDO);
             return new UndoCommand();
 
         case RedoCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(Operations.CommandType.REDO);
+            Operations.recordCurrentCommand(Operations.RecordType.REDO);
             return new RedoCommand();
 
         default:
