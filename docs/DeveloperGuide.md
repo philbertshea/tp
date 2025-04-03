@@ -143,6 +143,19 @@ The `Model` component,
 
 </box>
 
+### LoadDataCommand
+
+The `LoadDataCommand` allows TAssist to import student data from external files in `.csv` or `.json` format.
+
+- It is parsed by `LoadDataCommandParser`, which validates the file name and extension.
+- Supported extensions: `.csv` and `.json`.
+- Upon execution, the command passes control to the `Storage` component, which attempts to read the file and parse its contents.
+- The parsed students are added into the existing address book model. Duplicate and malformed entries are filtered with user-facing error messages.
+- If the data file is missing, corrupted, or contains entries violating the schema, the command raises a `CommandException` with detailed context.
+
+<puml src="diagrams/LoadDataSequenceDiagram.puml" alt="Sequence diagram for LoadDataCommand" />
+
+This feature streamlines bulk data import and is useful for onboarding existing records into TAssist with minimal manual effort.
 
 ### Storage component
 
