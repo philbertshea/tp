@@ -261,7 +261,7 @@ Examples:
 * `edit -i 1, 4, 5 -y 2 -f SOC` Edits the year of study for the 1st, 4th and 5th students to be 2 and faculty to be SOC
 
 
-<box type="tip" seamless>
+<box type="info" seamless>
 
 **Note:**
 * The behaviour of editing a `TUTORIAL_GROUP` on the student's Attendance List depends on his original and updated
@@ -382,6 +382,7 @@ Assuming the restrictions are satisfied,
     * If `-u` is provided, new attendance status is NOT ATTENDED.
     * If `-nt` is provided, new attendance status is NO TUTORIAL.
 
+<box type="info" seamless>
 * **Note**: Additional restrictions apply on the marking attendance command.
   * Commands using the `-i` flag have additional restrictions.
     1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
@@ -401,7 +402,9 @@ Assuming the restrictions are satisfied,
        Then it doesn't make sense to mark his attendance for any week.
        * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
        his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
+</box>
 
+<box type="info" seamless>
 * **Note**: You can now mark the attendance of multiple students and tutorial groups as valid.
   However, do note that if you are using the `-i` flag, to mark attendance of students by index,
   the restrictions aforementioned apply to EVERY student listed.
@@ -411,7 +414,7 @@ Assuming the restrictions are satisfied,
           marked as No Tutorial for week 3, which is appropriate given their tutorial is cancelled.
         * `att -i 1-10 -w 3` gives you an error because students 3, 4, 5 do not fulfill the restrictions.
         * You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
-
+</box>
 
 Examples:
 * `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
