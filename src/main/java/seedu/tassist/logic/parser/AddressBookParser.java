@@ -94,7 +94,7 @@ public class AddressBookParser {
             return new HelpCommand();
 
         case ToggleCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Toggle Command", Operations.CommandType.IGNORE);
+            Operations.recordCurrentCommand("Toggle", Operations.RecordType.IGNORE);
             return new ToggleCommand();
 
         case MarkAttendanceCommand.COMMAND_WORD:
