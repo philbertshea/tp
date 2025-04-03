@@ -38,11 +38,11 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
    * `add -n John Doe -p 98765432 -e johnd@example.com -m A0123456J -t T01` : Adds a contact named `John Doe` to TAssist.
 
    * `edit -i 1 -p 91234567 -e johndoe@example.com` : Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-   
+
    * `tag -a -i 1 -tag lateStudent` : Adds a tag to the 1st student with the label `lateStudent`
-   
+
    * `del -i 3` : Deletes the 3rd contact shown in the current list.
-   
+
    * `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
 
    * `clear` : Deletes all contacts.
@@ -50,6 +50,9 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
    * `exit` : Exits the app.
 
 1. Tired of using the user guide to understand how to use? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
+
+1. Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
+   ![UiToggle](images/UiToggle.png)
 
 1. To show more details about a particular contact, click on the contact itself!<br>
    ![UiExtend](images/UiExtend.png)
@@ -94,6 +97,16 @@ Shows a message explaning how to access the help page.
 
 Format: `help`
 
+### Toggling view : `toggle`
+
+Toggles the student record view to be more compact.
+The following particulars of a student will be hidden if compact view is enabled where applicable: `PHONE_NUMBER`, `TELEGRAM_HANDLE`, `EMAIL`, `MATRICULATION_NUMBER`, `YEAR` and `FACULTY`.
+
+<box type="tip" seamless>
+
+**Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
+  </box>
+
 
 ### Adding a person: `add`
 
@@ -117,14 +130,14 @@ Want to manually calculate the checksum?
 
 <box type="tip" seamless>
 
-**Tip:** A person can have any number of tags (including 0).
-Tags must be a single word consisting of alphanumeric characters only.
-Tags must also be at most 60 characters.
+**Tip:** Only the **matriculation number** of a record makes them unique!
 </box>
 
 <box type="tip" seamless>
 
-**Tip:** Only the **matriculation number** of a record makes them unique!
+**Tip:** A person can have any number of tags (including 0).
+Tags must be a single word consisting of alphanumeric characters only.
+Tags also have a limit of 60 characters.
 </box>
 
 <box type="tip" seamless>
@@ -248,7 +261,7 @@ Format: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`
 * The `OLD_TAG_NAME` and `NEW_TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
 Examples:
-* `tag -m -i 1 -tag lastStudent -tag earlyStudent` Replaces the value of the `lateStudent` tag, of the 1st student, with `earlyStudent` 
+* `tag -m -i 1 -tag lastStudent -tag earlyStudent` Replaces the value of the `lateStudent` tag, of the 1st student, with `earlyStudent`
 * `tag -m -i 1 -tag NeedHelp -tag CanSurvive` Replaces the value of the `NeedHelp` tag, of the 1st student, with `CanSurvive`
 
 #### 3. Deleting tags
@@ -371,7 +384,7 @@ Format: `del -i INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​ 
+* The index **must be a positive integer** 1, 2, 3, …​
 * To specify multiple indexes, input indexes separated by comma (e.g. 1,2,3) or a range (e.g. 1-5)
 
 Examples:

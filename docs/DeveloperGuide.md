@@ -17,7 +17,7 @@ This project was adapted from [AB3](https://se-education.org/addressbook-level3/
 
 This project adapts the matriculation number checksum from [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) (source code provided [here](https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js)).
 
-Online images are used for the icons of the attendance tags: 
+Online images are used for the icons of the attendance tags:
 * [Check Icon](https://www.iconsdb.com/white-icons/checkmark-icon.html)
 * [Cross Icon](https://www.iconsdb.com/white-icons/x-mark-icon.html)
 * [Ban Icon](https://www.iconsdb.com/white-icons/ban-icon.html)
@@ -340,12 +340,39 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **MSS**
 
-1.  TAssist displays all students
+1.  TAssist displays all students.
 
     Use case ends.
 
+**Use case: UC02 - Exit System**
 
-**Use case: UC02 - Add a student**
+**MSS**
+
+1. User requests to exit TAssist.
+2. TAssist saves current data.
+3. TAssist exits.
+
+    Use case ends.
+
+**Use case: UC03 - Display Help Message**
+
+**MSS**
+
+1. User requests to display a help message.
+2. TAssist displays a help message.
+
+   Use case ends.
+
+**Use case: UC04 - Toggle Contact List View**
+
+**MSS**
+
+1. User requests to toggle the UI view between compact and detailed view of student record.
+2. TAssist updates the UI to reflect the selected view mode.
+
+   Use case ends.
+
+**Use case: UC05 - Add a student**
 
 **MSS**
 
@@ -395,7 +422,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 *a. At any time, user clears input.
     Use case ends.
 
-**Use case: UC03 - Delete a student**
+**Use case: UC06 - Delete a student**
 
 **MSS**
 
@@ -440,7 +467,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case ends.
 
-**Use case: UC04 - Mark attendance for a student**
+**Use case: UC07 - Mark attendance for a student**
 
 **MSS**
 
@@ -492,7 +519,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
       Use case ends.
 
 
-**Use case: UC05 - Update lab score for a student**
+**Use case: UC08 - Update lab score for a student**
 
 **MSS**
 
@@ -537,7 +564,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
       Use case ends.
 
-**Use case: UC06 - Load data from file**
+**Use case: UC09 - Load data from file**
 
 **MSS**
 
@@ -585,7 +612,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at Step 3.
 
-**Use case: UC07 - Save data to file**
+**Use case: UC010 - Save data to file**
 
 **MSS**
 
