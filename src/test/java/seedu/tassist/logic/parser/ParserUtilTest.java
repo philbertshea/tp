@@ -2,7 +2,7 @@ package seedu.tassist.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;

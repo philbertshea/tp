@@ -1,6 +1,9 @@
 package seedu.tassist.logic.parser;
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
+import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_ERROR;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_INDEX_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TUT_GROUP_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_WEEK_DESC;
@@ -14,6 +17,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_WEEK;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_WEEK;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.List;
@@ -102,7 +106,8 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidWeek_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                MESSAGE_INVALID_WEEK + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
@@ -113,7 +118,10 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidIndex_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                MESSAGE_MULTIPLE_INDEX_ERROR + "\n"
+                + MESSAGE_INVALID_INDEX + "\n" + MESSAGE_INVALID_INDEX_RANGE
+                + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + INVALID_INDEX_DESC + " "
@@ -124,7 +132,8 @@ public class MarkAttendanceCommandParserTest {
     @Test
     public void parse_invalidTutGroup_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                MarkAttendanceCommand.MESSAGE_USAGE);
+                TutGroup.MESSAGE_CONSTRAINTS + " Or, check for invalid flags.\n"
+                + MarkAttendanceCommand.MESSAGE_USAGE);
 
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + INVALID_TUT_GROUP_DESC + " "

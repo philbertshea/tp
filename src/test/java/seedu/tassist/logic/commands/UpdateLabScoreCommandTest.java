@@ -15,6 +15,7 @@ import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.ModelManager;
 import seedu.tassist.model.UserPrefs;
+import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.Person;
 import seedu.tassist.testutil.PersonBuilder;
 
@@ -24,12 +25,13 @@ public class UpdateLabScoreCommandTest {
     @Test
     public void successCase() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(firstPerson).withLabScores("4.20/25|-|-|-").build();
+        Person editedPerson = new PersonBuilder(firstPerson).withLabScores("4.20/25|-/25|-/25|-/25").build();
 
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, false);
         String expectedMessage = String.format(UpdateLabScoreCommand.MESSAGE_UPDATE_LAB_SCORE_SUCCESS,
-                0, VALID_LAB_NUMBER_A);
+                VALID_LAB_NUMBER_A, INDEX_FIRST_PERSON.getOneBased(),
+                editedPerson.getLabScoreList().getLabScores().get(VALID_LAB_NUMBER_A - 1).toString());
         System.out.println(expectedMessage);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -78,8 +80,9 @@ public class UpdateLabScoreCommandTest {
         int invalidMaxScore = VALID_LAB_SCORE_A - 10;
         UpdateLabScoreCommand command = new UpdateLabScoreCommand(INDEX_FIRST_PERSON,
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_A, invalidMaxScore);
-        String validErrorMessage = String.format(UpdateLabScoreCommand.MESSAGE_INVALID_MAX_SCORE, invalidMaxScore,
-                VALID_LAB_SCORE_A);
+
+        String validErrorMessage = String.format(LabScoreList.INVALID_LAB_MAX_SCORE, 3, invalidMaxScore);
+
         assertCommandFailure(command, model, validErrorMessage);
     }
 

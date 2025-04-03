@@ -41,17 +41,21 @@ public class LabScoreTest {
 
     @Test
     public void successUpdateLabMaxScore() {
+
         LabScore newLabScore = new LabScore();
+
         LabScore correctLabScore = new LabScore(15, 30);
+
         LabScore updatedLabScore = null;
         try {
             newLabScore = newLabScore.updateLabScore(15);
             updatedLabScore = newLabScore.updateMaxLabScore(30);
+
         } catch (CommandException e) {
             fail();
         }
 
-        assertEquals(updatedLabScore, correctLabScore);
+        assertEquals(updatedLabScore.toString(), correctLabScore.toString());
 
     }
 
