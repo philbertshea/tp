@@ -19,8 +19,6 @@ public class ExportDataCommandParserTest {
 
     private static final String INVALID_OUTPUT_FILE = "./nonexisitantFile";
     private static final String INVALID_PARENT_DIRECTORY = "./nonexisitantDir/test.csv";
-    private static final String INVALID_WINDOWS_FILE_PATH = "";
-    private static final String INVALID_MAC_FILE_PATH = "";
     private ExportDataCommandParser parser = new ExportDataCommandParser();
 
     @Test
