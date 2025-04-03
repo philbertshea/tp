@@ -663,7 +663,7 @@ testers are expected to do more *exploratory* testing.
       Expected: First person in the list is deleted. Confirmation message is shown with their details.
 
    1. Test case: `del -i 0`<br>
-      Expected: Error message shown: “Invalid index. Index is not a non-zero positive integer.” No deletion occurs.
+      Expected: Error message shown: "Invalid index. Index must be a non-zero positive integer and within the range of listed records.” No deletion occurs.
 
    1. Test case: `del -i -1`<br>
    Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
