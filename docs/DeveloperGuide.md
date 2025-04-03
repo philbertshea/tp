@@ -14,9 +14,10 @@
 ## **Acknowledgements**
 
 This project was adapted from [AB3](https://se-education.org/addressbook-level3/) (source code provided [here](https://github.com/nus-cs2103-AY2425S2/tp)).
+
 This project adapts the matriculation number checksum from [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) (source code provided [here](https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js)).
 
-Online images are used for the icons of the attendance tags: 
+Online images are used for the icons of the attendance tags:
 * [Check Icon](https://www.iconsdb.com/white-icons/checkmark-icon.html)
 * [Cross Icon](https://www.iconsdb.com/white-icons/x-mark-icon.html)
 * [Ban Icon](https://www.iconsdb.com/white-icons/ban-icon.html)
@@ -56,7 +57,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `del -i 1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -124,7 +125,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="600" />
+<puml src="diagrams/ModelClassDiagram.puml"/>
 
 
 The `Model` component,
@@ -138,10 +139,23 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="600" />
+<puml src="diagrams/BetterModelClassDiagram.puml"/>
 
 </box>
 
+### LoadDataCommand
+
+The `LoadDataCommand` allows TAssist to import student data from external files in `.csv` or `.json` format.
+
+- It is parsed by `LoadDataCommandParser`, which validates the file name and extension.
+- Supported extensions: `.csv` and `.json`.
+- Upon execution, the command passes control to the `Storage` component, which attempts to read the file and parse its contents.
+- The parsed students are added into the existing address book model. Duplicate and malformed entries are filtered with user-facing error messages.
+- If the data file is missing, corrupted, or contains entries violating the schema, the command raises a `CommandException` with detailed context.
+
+<puml src="diagrams/LoadDataSequenceDiagram.puml" alt="Sequence diagram for LoadDataCommand" />
+
+This feature streamlines bulk data import and is useful for onboarding existing records into TAssist with minimal manual effort.
 
 ### Storage component
 
@@ -339,12 +353,39 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **MSS**
 
-1.  TAssist displays all students
+1.  TAssist displays all students.
 
     Use case ends.
 
+**Use case: UC02 - Exit System**
 
-**Use case: UC02 - Add a student**
+**MSS**
+
+1. User requests to exit TAssist.
+2. TAssist saves current data.
+3. TAssist exits.
+
+    Use case ends.
+
+**Use case: UC03 - Display Help Message**
+
+**MSS**
+
+1. User requests to display a help message.
+2. TAssist displays a help message.
+
+   Use case ends.
+
+**Use case: UC04 - Toggle Contact List View**
+
+**MSS**
+
+1. User requests to toggle the UI view between compact and detailed view of student record.
+2. TAssist updates the UI to reflect the selected view mode.
+
+   Use case ends.
+
+**Use case: UC05 - Add a student**
 
 **MSS**
 
@@ -394,7 +435,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 *a. At any time, user clears input.
     Use case ends.
 
-**Use case: UC03 - Delete a student**
+**Use case: UC06 - Delete a student**
 
 **MSS**
 
@@ -439,7 +480,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case ends.
 
-**Use case: UC04 - Mark attendance for a student**
+**Use case: UC07 - Mark attendance for a student**
 
 **MSS**
 
@@ -491,7 +532,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
       Use case ends.
 
 
-**Use case: UC05 - Update lab score for a student**
+**Use case: UC08 - Update lab score for a student**
 
 **MSS**
 
@@ -536,7 +577,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
       Use case ends.
 
-**Use case: UC06 - Load data from file**
+**Use case: UC09 - Load data from file**
 
 **MSS**
 
@@ -584,7 +625,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at Step 3.
 
-**Use case: UC07 - Save data to file**
+**Use case: UC010 - Save data to file**
 
 **MSS**
 
@@ -660,13 +701,47 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `del -i 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First person in the list is deleted. Confirmation message is shown with their details.
 
    1. Test case: `del -i 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: Error message shown: "Invalid index. Index must be a non-zero positive integer and within the range of listed records.” No deletion occurs.
 
-   1. Other incorrect delete commands to try: `del`, `del -i x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   1. Test case: `del -i -1`<br>
+   Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
+
+   1. Test case: `del -i 999` (where 999 > number of students shown)<br>
+   Expected: Error message shown:  “Invalid index (out of range)! You currently have [number] records!” No deletion occurs.
+
+   1. Test case: `del -i 1-3` (range input)<br>
+   Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
+
+   1. Test case: `del -i 2,4` (comma-separated input)<br>
+   Expected: Persons at index 2 and 4 are deleted. Confirmation message shows both.
+
+   1. Test case: `del -i 3, 6-7, 9` (mixed comma and range input)<br>
+   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
+   
+   1. Test case: `del -i 3-1`<br>
+   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
+
+   1. Test case: `del -i 1 -i 2`<br>
+   Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
+
+   1. Test case: `del`<br>
+   Expected: Error message: “Missing arguments! Requires -i <index>.” Delete usage message displayed.
+
+   1. Test case: `del -i `<br>
+   Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
+
+   1. Test case: `del -i one`<br>
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
+
+   1. Test case: `del -i 1a`<br>
+   Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
+
+   1. Test case: `del -i 1,,,2`<br>
+   Expected: Error message: "Invalid index format! Please input each index separated by a comma. Expected format: index, index,... (e.g., 2,4)"
+
 
 ### Marking attendance
 
@@ -682,6 +757,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
+
 
 ### Saving data
 
