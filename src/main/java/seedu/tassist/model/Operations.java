@@ -19,7 +19,7 @@ public class Operations {
     /**
      * Holds all the types of commands involved.
      */
-    public enum CommandType { IGNORE, UNDO, REDO, RECORD }
+    public enum RecordType { IGNORE, UNDO, REDO, RECORD }
     public static final String COMMAND_IGNORED = "%1$s command was the last command, no changes has occurred";
     private static final String ERROR_MESSAGE = "You have reached the limit of %s";
     private static final String EMPTY_ERROR_MESSAGE = "There is nothing to %s.";
@@ -28,27 +28,27 @@ public class Operations {
     private static ArrayList<Snapshot> futureStates = new ArrayList<>();
     private static Snapshot currentState = null;
 
-    private static CommandType lastCommand;
+    private static RecordType lastCommand;
 
     private static boolean isRecorded = false;
 
     /**
      * Records the undo and redo command state.
      *
-     * @param commandType The type of command (either undo or redo).
+     * @param recordType The type of recording (either undo or redo).
      * @throws ParseException If there is nothing to redo and undo.
      */
-    public static void recordCurrentCommand(CommandType commandType) throws ParseException {
-        assert commandType == CommandType.REDO || commandType == CommandType.UNDO;
+    public static void recordCurrentCommand(RecordType recordType) throws ParseException {
+        assert recordType == RecordType.REDO || recordType == RecordType.UNDO;
         boolean isEmptyStates = pastStates.isEmpty() && futureStates.isEmpty();
         if (currentState == null || isEmptyStates) {
-            throw new ParseException(String.format(EMPTY_ERROR_MESSAGE, commandType.toString().toLowerCase()));
+            throw new ParseException(String.format(EMPTY_ERROR_MESSAGE, recordType.toString().toLowerCase()));
         }
 
-        lastCommand = commandType;
+        lastCommand = recordType;
 
         Snapshot copyState;
-        if (commandType == CommandType.UNDO) {
+        if (recordType == RecordType.UNDO) {
             copyState = pastStates.isEmpty() ? currentState : pastStates.get(pastStates.size() - 1);
         } else {
             copyState = futureStates.isEmpty() ? currentState : futureStates.get(futureStates.size() - 1);
@@ -58,7 +58,7 @@ public class Operations {
         ObservableList<Person> personList = model.getAddressBook().getPersonList();
         newState.setPerson(personList.toArray(new Person[0]));
 
-        if (commandType == CommandType.UNDO) {
+        if (recordType == RecordType.UNDO) {
             futureStates.add(newState);
         } else {
             pastStates.add(newState);
@@ -69,16 +69,16 @@ public class Operations {
      * Records the ignore command state.
      *
      * @param commandTypeString The type of user command.
-     * @param commandType The type of command (ignore command).
+     * @param recordType The type of recording (ignore type).
      */
-    public static void recordCurrentCommand(String commandTypeString, CommandType commandType) {
-        assert commandType == CommandType.IGNORE;
+    public static void recordCurrentCommand(String commandTypeString, RecordType recordType) {
+        assert recordType == RecordType.IGNORE;
         if (model == null) {
             return;
         }
 
-        currentState = new Snapshot(commandTypeString, commandType);
-        lastCommand = commandType;
+        currentState = new Snapshot(commandTypeString, recordType);
+        lastCommand = recordType;
         pastStates.add(currentState);
 
         isRecorded = true;
@@ -89,16 +89,16 @@ public class Operations {
      *
      * @param command The user command that is executed.
      * @param commandTypeString The type of user command.
-     * @param commandType The type of command (record command).
+     * @param recordType The type of command (record command).
      */
-    public static void recordCurrentCommand(String command, String commandTypeString, CommandType commandType) {
-        assert commandType == CommandType.RECORD;
+    public static void recordCurrentCommand(String command, String commandTypeString, RecordType recordType) {
+        assert recordType == RecordType.RECORD;
         if (model == null) {
             return;
         }
 
-        currentState = new Snapshot(command, commandTypeString, commandType);
-        lastCommand = commandType;
+        currentState = new Snapshot(command, commandTypeString, recordType);
+        lastCommand = recordType;
 
         //Record state data.
         ObservableList<Person> personList = model.getAddressBook().getPersonList();
@@ -120,7 +120,7 @@ public class Operations {
         }
 
         // Resets future stack if timeline was changed
-        boolean isUpdateStack = lastCommand == CommandType.RECORD || lastCommand == CommandType.IGNORE;
+        boolean isUpdateStack = lastCommand == RecordType.RECORD || lastCommand == RecordType.IGNORE;
         if (isUpdateStack && !futureStates.isEmpty()) {
             futureStates.clear();
         }
@@ -163,8 +163,8 @@ public class Operations {
 
         currentState = pastStates.remove(pastStates.size() - 1);
 
-        CommandType currentCommandType = currentState.getCommandType();
-        if (currentCommandType == CommandType.IGNORE) {
+        RecordType currentRecordType = currentState.getRecordType();
+        if (currentRecordType == RecordType.IGNORE) {
             return String.format(COMMAND_IGNORED, currentState.getCommandTypeString());
         }
 
@@ -189,8 +189,8 @@ public class Operations {
 
         currentState = futureStates.remove(futureStates.size() - 1);
 
-        CommandType currentCommandType = currentState.getCommandType();
-        if (currentCommandType == CommandType.IGNORE) {
+        RecordType currentRecordType = currentState.getRecordType();
+        if (currentRecordType == RecordType.IGNORE) {
             return String.format(COMMAND_IGNORED, currentState.getCommandTypeString());
         }
 
@@ -207,9 +207,9 @@ public class Operations {
      * @param currentState The current state.
      */
     public static void runCommand(Model model, Snapshot currentState) {
-        CommandType currentCommand = currentState.getCommandType();
+        RecordType currentCommand = currentState.getRecordType();
 
-        if (currentCommand == CommandType.RECORD) {
+        if (currentCommand == RecordType.RECORD) {
             model.setAddressBook(new AddressBook());
             ArrayList<Person> addAll = currentState.getPeople();
             for (Person person : addAll) {
