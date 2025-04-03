@@ -110,7 +110,7 @@ How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a student).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
@@ -548,7 +548,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 2. Ideally entirely keyboard driven, with minimal mouse clicks required.
 2. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 3. Should respond to user input relatively quickly (under 1s).
-3. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+3. Should be able to hold up to 1000 students without a noticeable sluggishness in performance for typical usage.
 4. Data should be stored locally and should be in a human editable text file, not involving the use of a Database Management System.
 5. Should save backups occasionally.
 6. Should follow Object-oriented paradigm primarily.
@@ -601,11 +601,98 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
-### Deleting a person
+### Toggling student contact details
+1. Toggling student contact details within the UI. Performed within one session.
 
-1. Deleting a person while all persons are being shown
+    1. Prerequisites: Full contact details are seen on the UI (default setting upon startup).
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    1. Test case: `toggle`<br>
+       Expected: Message shown in the status message. Some contact details are hidden.
+
+    1. Test case: `toggle`<br>
+       Expected: Message shown in the status message. All contact details are shown.
+
+### Listing all contacts
+1. Listing all contacts within the UI.
+    1. Prerequisites: Show only a subset of contacts using the `search` command.
+
+    1. Test case: `list`<br>
+       Expected: All contacts will be shown in the UI.
+
+### Searching for particular contacts
+
+1. Searching for a particular contact.
+
+    1. Prerequisites: Contact with name `Alex Yeoh` exists.
+
+    1. Test case: `search -n ye`<br>
+       Expected: Contact of `Alex Yeoh` is shown on the UI. Status message updated.
+
+### Redo command: redo
+1. Redo a command that has data changes (`lab`, `att` etc.)
+    1. Test case (redo lab command `lab -ln 1 -msc 25`): `redo`<br>
+       Expected: Successfully redo lab score command. <br>
+       Command was: lab -ln 1 -msc 25
+1. Redo a command that has no data changes (`list` etc.)
+    1. Test case (redo command list): `redo`<br>
+       Expected: list command was the last command, no changes has occurred
+1. Hit limit of redo (no more things to redo)
+    1. Test case: `redo`<br>
+       Expected: You have reached the limit of redo
+
+### Undo command: undo
+1. Undo a command that has data changes (`lab`, `att` etc.)
+    1. Test case (undo `lab command lab -ln 1 -msc 25`): `undo`<br>
+       Expected: Successfully undo lab score command. <br>
+       Command was: lab -ln 1 -msc 25
+
+1. Undo a command that has no data changes (`list` etc.)
+    1. Test case (undo command `list`): `undo`<br>
+       Expected: list command was the last command, no changes has occurred
+
+1. Hit limit of undo (no more things to undo)
+    1. Test case: `undo`<br>
+       Expected: You have reached the limit of undo
+
+### Adding a student
+1. Adding contacts in one session.
+    1. Test case: `add -n stresson -p 94309214 -t T01 -m A0243421 -e e05941325@u.nus.edu`<br>
+       Expected: Adds a new contact.
+
+    1. Test case: `add -n stresson -p 94309214 -t T01 -m A0243421 -e e05941325@u.nus.edu`<br>
+       Expected: Duplicate is detected. Error details shown in the status message.
+
+    1. Test case: `add -n stresson -p 94309214 -t T01 -m A0312456 -e e05941325@u.nus.edu`<br>
+       Expected: Adds a new contact. Only matriculation number defines a unique contact.
+
+    1. Test case: `add -n name with -t flag in their name -p 94309214 -t T01 -m A8569364 -e e05941325@u.nus.edu`<br>
+       Expected: Duplicate flag is detected. Error details shown in the status message.
+
+    1. Test case: `add -n "name with -t flag in their name" -p 94309214 -t T01 -m A8569364 -e e05941325@u.nus.edu`<br>
+       Expected: Adds a new contact.
+
+### Editing a student
+1. Editing a student while all students are being shown
+
+   1. Prerequisites: List all students using the `list` command. Multiple students in the list.
+
+   1. Test Case: `edit -i 1 -n JohnDoe`<br>
+      Expected: Edits the name of the 1st student to JohnDoe.
+
+   2. Test Case: `edit -i 1 -m A0000030U`<br>
+      Expected: This student already exists in the address book.
+
+   3. Test Case: `edit -i 1 -p`<br>
+      Expected: You cannot remove the Phone Number!
+
+   4. Test Case: `edit -i 2 -t`<br>
+      Expected: You cannot remove the Tutorial Group!
+
+### Deleting a student
+
+1. Deleting a student while all students are being shown
+
+   1. Prerequisites: List all students using the `list` command. Multiple students in the list.
 
    1. Test case: `del -i 1`<br>
       Expected: First person in the list is deleted. Confirmation message is shown with their details.
@@ -626,8 +713,8 @@ testers are expected to do more *exploratory* testing.
    Expected: Persons at index 2 and 4 are deleted. Confirmation message shows both.
 
    1. Test case: `del -i 3, 6-7, 9` (mixed comma and range input)<br>
-   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions. 
-   
+   Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions.
+
    1. Test case: `del -i 3-1`<br>
    Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
 
@@ -650,21 +737,89 @@ testers are expected to do more *exploratory* testing.
    Expected: Error message: "Invalid index format! Please input each index separated by a comma. Expected format: index, index,... (e.g., 2,4)"
 
 
+### Tagging a student
+1. Tagging a student while all students are being shown
+
+   1. Prerequisites: List all student using the `list` command. Multiple students in the list.
+
+   2. Test Case: `tag -a -i 1`<br>
+      Expected: You need to provide a tag using the flag (-tag)
+
+   3. Test Case: `tag -a -i 1 -tag testTag`<br>
+      Expected: Successfully added a tag
+
+   4. Test Case: `tag -m -i 1 -tag testTag -tag newTestTag`<br>
+      Expected: Successfully edited a tag
+
+   5. Test Case: `tag -d -i 1 -tag newTestTag`<br>
+      Expected: Successfully deleted a tag
+
 ### Marking attendance
 
-1. Marking the attendance of a person while all persons are being shown.
+1. Marking the attendance of a student while all students are being shown.
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list. 
+   1. Prerequisites: List all student using the `list` command. Multiple students in the list.
 
    1. Test case: `att -i 1 -w 5`<br>
       Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
-   
+
    1. Test case: `att -i 1 -w 5`<br>
-      Expected: Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: Expected: No student is deleted. Error details shown in the status message. Status bar remains the same.
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
+### Lab Score
+
+1. Updating lab score for specified student
+
+    1. Test case: `lab -i 1 -ln 1 -sc 20`<br>
+       Expected: Update lab 1 score for student 1 as 20/25
+
+    1. Test case: `lab -i 1 -ln 1 -sc 40`<br>
+       Expected: The updated score cannot exceed the maximum score for the lab.Your input: 40. The maximum score for this lab: 25. <br>
+       Note: In this case, the maximum score was set to be 25
+
+    1. Test case: `lab -i 1 -ln 10 -sc 20`<br>
+       Expected: Lab number must be between 1 and 4
+
+1. Updating max lab score for a specific lab
+
+    1. Test case: `lab -ln 1 -msc 30`<br>
+       Expected: Update lab 1 max score to be 30
+
+    1. Test case: `lab -ln 1 -msc 5`<br>
+       Expected:  The updated max score cannot be lesser than the current score for the lab.Your input: 5. The current score for this lab: 25. <br>
+       Note: In this case, the score for lab 1 was set to 25.
+
+1. Updating both lab score and max lab score
+    1. Test case: `lab -i 1 -ln 1 -sc 20 -msc 35`<br>
+       Expected: Update lab 1 max score to be 35 and lab 1 score for student 1 as 20/35
+
+    1. Test case: `lab -ln 1 -sc 20 -msc 35`<br>
+       Expected: Invalid index. Index must be a non-zero positive integer and within the range of listed records.
+
+    1. Test case: `lab -i 5 -ln 1 -sc 20 -msc 35`<br>
+       Expected: This index does not exist. It exceeds the maximum number of contacts
+
+### Loading data
+1. Loading CSV data into the application
+   1. Prerequisites: You need to have a file at ./data/userdata.csv
+   2. Test Case: `load -f userdata -ext csv`
+      Expected: Loaded data from file: userdata.csv
+
+2. Loading JSON data into the application
+   1. Prerequisites: You need to have a file at ./data/addressbook.json
+   2. Test Case: `load -f addressbook -ext json`
+      Expected: Loaded data from file: addressbook.json
+
+### Exporting data
+1. Export data as CSV format
+   2. Test Case: `export -f ./data/test.csv`
+      Expected: Exported data to file: ./data/test.csv
+1. Export data as JSON format
+   2. Test Case: `export -f ./data/test.json`
+      Expected: Exported data to file: ./data/test.csv
 
 ### Saving data
 
@@ -673,4 +828,36 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+## **Appendix: Planned Enhancements**
+
+### UI glitch upon selecting contact
+
+A contact will flicker when selected. This is likely due to the loading of attendance tags.
+
+## **Appendix: Effort**
+
+### Difficulty level
+
+We rate the Team Project (TP) a 8/10.
+
+### Challenges faced
+
+- Navigating through the large code base proved to be a significant challenge, especially at the start. It was hard to understand what went wrong and debugging took a significant amount of time and effort.
+
+- Creation of test cases was also difficult, especially when thinking of creative ways to break the code or handle unexpected input.
+
+- Trying to establish a balance when restricting user inputs was also difficult. While flexibility allowed for overzealous inputs, it also creates more opportunities for different user combinations to potentially generate crashes which has to be separately tested.
+
+- JavaFX was new to everyone in the team. As such, minor improvements to the UI came at the cost of extensive debugging and researching for solutions online to circumvent issues.
+
+### Effort required
+
+- A lot of effort was required by many to ensure that deadlines were met. Work schedules had to be rearranged to ensure that PR's from all members are vetted and accepted before submission deadlines.
+
+### Achievements
+
+- Despite the seemingly minute additions to the MVP in terms of features, our goals were achieved.
+
+- A deeper understanding of software development and the tools available (e.g. Git).
 
