@@ -669,7 +669,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
 
    1. Test case: `del -i 999` (where 999 > number of students shown)<br>
-   Expected: Error message shown:  “Invalid index (out of range)! You currently have <numeber> records!” No deletion occurs.
+   Expected: Error message shown:  “Invalid index (out of range)! You currently have [number] records!” No deletion occurs.
 
    1. Test case: `del -i 1-3` (range input)<br>
    Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
@@ -687,7 +687,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
 
    1. Test case: `del`<br>
-   Expected: Error message: “Missing arguments! Requires -i <index>.”. Delete usage message displayed.
+   Expected: Error message: “Missing arguments! Requires -i <index>.” Delete usage message displayed.
 
    1. Test case: `del -i `<br>
    Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
