@@ -48,6 +48,9 @@ public class CommandTestUtil {
     public static final String VALID_MAT_NUM_BOB = "A9876543L";
     public static final String VALID_TUT_GROUP_AMY = "T05";
     public static final String VALID_TUT_GROUP_BOB = "T03";
+    public static final String VALID_TUT_GROUP_A = "T01";
+    public static final String VALID_TUT_GROUP_B = "T02";
+    public static final String VALID_TUT_GROUP_C = "T03";
     public static final String VALID_LAB_GROUP_AMY = "B10";
     public static final String VALID_LAB_GROUP_BOB = "B04";
     public static final String VALID_FACULTY_AMY = "SoC";

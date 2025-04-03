@@ -7,8 +7,12 @@ import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_ERROR;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_INDEX_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_TUT_GROUP_DESC;
 import static seedu.tassist.logic.commands.CommandTestUtil.INVALID_WEEK_DESC;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_A;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_AMY;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_B;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_C;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_WEEK_A;
+import static seedu.tassist.logic.commands.CommandTestUtil.VALID_WEEK_B;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NOT_ATTENDED;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_MARK_NO_TUTORIAL;
@@ -19,6 +23,8 @@ import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.logic.parser.ParserUtil.MESSAGE_INVALID_WEEK;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 
 import java.util.List;
 
@@ -33,73 +39,284 @@ public class MarkAttendanceCommandParserTest {
 
     @Test
     public void parse_markAttendedValidIndexAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
         MarkAttendanceCommand expectedCommand =
                 new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ATTENDED);
         assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + ","
+                + INDEX_SECOND_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B;
+        expectedCommand = new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON),
+                VALID_WEEK_B, Attendance.ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_SECOND_PERSON.getOneBased() + ","
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markNotAttendedValidIndexAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
-                + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_NOT_ATTENDED;
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
         MarkAttendanceCommand expectedCommand =
                 new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.NOT_ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + ","
+                + INDEX_SECOND_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON),
+                VALID_WEEK_B, Attendance.NOT_ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.NOT_ATTENDED);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_SECOND_PERSON.getOneBased() + ","
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.NOT_ATTENDED);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markOnMcValidIndexAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
-                + PREFIX_WEEK + " " + VALID_WEEK_A + " "
-                + PREFIX_MARK_ON_MC;
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
         MarkAttendanceCommand expectedCommand =
                 new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ON_MC);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + ","
+                + INDEX_SECOND_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON),
+                VALID_WEEK_B, Attendance.ON_MC);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.ON_MC);
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + "-"
+                + INDEX_SECOND_PERSON.getOneBased() + ","
+                + INDEX_THIRD_PERSON.getOneBased() + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON),
+                VALID_WEEK_A, Attendance.ON_MC);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markAttendedValidTutGroupAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                VALID_WEEK_A, Attendance.ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
+                VALID_WEEK_A, Attendance.ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_A)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_B, Attendance.ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + "-"
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_B + "-" + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markNotAttendedValidTutGroupAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                VALID_WEEK_A, Attendance.NOT_ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
+                VALID_WEEK_A, Attendance.NOT_ATTENDED, List.of(new TutGroup(VALID_TUT_GROUP_A)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_B, Attendance.NOT_ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + "-"
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.NOT_ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_B + "-" + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NOT_ATTENDED;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.NOT_ATTENDED,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markOnMcValidTutGroupAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                VALID_WEEK_A, Attendance.ON_MC, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
+                VALID_WEEK_A, Attendance.ON_MC, List.of(new TutGroup(VALID_TUT_GROUP_A)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_B, Attendance.ON_MC,
+                List.of(new TutGroup(VALID_TUT_GROUP_A), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + "-"
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.ON_MC,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_B + "-" + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_ON_MC;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.ON_MC,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_markNoTutValidTutGroupAndWeek_success() {
+        // EP: One Index - No comma, No hyphen.
         String userInput = MarkAttendanceCommand.COMMAND_WORD + " "
-                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_AMY + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + " "
                 + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NO_TUTORIAL;
         MarkAttendanceCommand expectedCommand = new MarkAttendanceCommand(
-                VALID_WEEK_A, Attendance.NO_TUTORIAL, List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
+                VALID_WEEK_A, Attendance.NO_TUTORIAL, List.of(new TutGroup(VALID_TUT_GROUP_A)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_B + " " + PREFIX_MARK_NO_TUTORIAL;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_B, Attendance.NO_TUTORIAL,
+                List.of(new TutGroup(VALID_TUT_GROUP_A), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + "-"
+                + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NO_TUTORIAL;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.NO_TUTORIAL,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        // EP: Comma and hyphen-separated list of indexes.
+        userInput = MarkAttendanceCommand.COMMAND_WORD + " "
+                + PREFIX_TUT_GROUP + " " + VALID_TUT_GROUP_A + ","
+                + VALID_TUT_GROUP_B + "-" + VALID_TUT_GROUP_C + " "
+                + PREFIX_WEEK + " " + VALID_WEEK_A + " " + PREFIX_MARK_NO_TUTORIAL;
+        expectedCommand = new MarkAttendanceCommand(VALID_WEEK_A, Attendance.NO_TUTORIAL,
+                List.of(new TutGroup(VALID_TUT_GROUP_A),
+                        new TutGroup(VALID_TUT_GROUP_B), new TutGroup(VALID_TUT_GROUP_C)));
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
