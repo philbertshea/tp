@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javafx.scene.control.Label;
 import seedu.tassist.commons.core.index.Index;
 import seedu.tassist.logic.Messages;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -56,6 +55,10 @@ public class TagCommand extends Command {
     public static final String MESSAGE_DEL_NO_MORE_ITEMS = "There are no more items to delete!";
     public static final String MESSAGE_INVALID_ACTION = "Action passed to Tag Command is invalid!";
     public static final String MESSAGE_TAG_SUCCESS = "Successfully %s tag(s): \n%s";
+    public static final String MESSAGE_DUPLICATE_TAG = "The tags you want to add have already been already added!";
+    public static final String MESSAGE_DEL_INVALID_TAGS = "The tags you want to delete dont exist";
+    public static final String MESSAGE_EDIT_OLD_TAG_NOT_FOUND = "The tag you want to edit cannot be found!";
+    public static final String MESSAGE_EDIT_EXISTENT_NEW_TAG = "The tag's new value you want to add already exists!";
 
     private final Index index;
     private final ActionType action;
@@ -74,6 +77,12 @@ public class TagCommand extends Command {
     public TagCommand(Index index, ActionType action, Set<Tag> tags, Tag oldTag, Tag newTag) {
         requireNonNull(index);
         requireNonNull(action);
+        if (action == ActionType.ADD || action == ActionType.DEL) {
+            requireNonNull(tags);
+        } else if (action == ActionType.EDIT) {
+            requireNonNull(oldTag);
+            requireNonNull(newTag);
+        }
         this.index = index;
         this.action = action;
         this.tags = tags; // for edit, the first tag is old, second tag is new
@@ -106,7 +115,7 @@ public class TagCommand extends Command {
         if (action == ActionType.ADD) {
             res = editedTags.addAll(tags);
             if (!res) {
-                throw new CommandException("The tags you want to add have already been already added!");
+                throw new CommandException(MESSAGE_DUPLICATE_TAG);
             }
         } else if (action == ActionType.DEL) {
             if (editedTags.isEmpty()) {
@@ -114,16 +123,16 @@ public class TagCommand extends Command {
             }
             res = editedTags.removeAll(tags);
             if (!res) {
-                throw new CommandException("The tags you want to delete dont exist");
+                throw new CommandException(MESSAGE_DEL_INVALID_TAGS);
             }
         } else if (action == ActionType.EDIT) {
             res = editedTags.remove(oldTag);
             if (!res) {
-                throw new CommandException("The tag you want to edit cannot be found!");
+                throw new CommandException(MESSAGE_EDIT_OLD_TAG_NOT_FOUND);
             }
             res = editedTags.add(newTag);
             if (!res) {
-                throw new CommandException("The tag's new value you want to add already exists!");
+                throw new CommandException(MESSAGE_EDIT_EXISTENT_NEW_TAG);
             }
         } else {
             throw new CommandException(MESSAGE_INVALID_ACTION);
