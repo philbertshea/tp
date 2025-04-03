@@ -18,6 +18,7 @@ public class LabScoreList {
     public static final String INVALID_LAB_MAX_SCORE =
             "Person %d has score higher than the max lab score (%d) that you wish to set.";
     private static int labTotal = 4;
+    private static boolean isInitialization = true;
     public static final String LAB_NUMBER_CONSTRAINT = String.format(
             "Lab number must be between 1 and %d", labTotal);
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
@@ -200,11 +201,17 @@ public class LabScoreList {
             return false;
         }
 
-        //validate individual lab string
+        // Validate individual lab string
         for (int i = 0; i < total; i++) {
-            isValidLabSaveString(labs[i]);
+            boolean isLabValid = isValidLabSaveString(labs[i], i);
+            if (!isLabValid) {
+                return false;
+            }
         }
 
+        if (isInitialization) {
+            isInitialization = false;
+        }
         return true;
     }
 
@@ -214,7 +221,7 @@ public class LabScoreList {
      * @param labString The string to validate if it is correct.
      * @return A boolean showing if the string is valid.
      */
-    private static boolean isValidLabSaveString(String labString) {
+    private static boolean isValidLabSaveString(String labString, int labNumber) {
         String[] scoreSplit = labString.split("/");
         if (scoreSplit.length != 2) {
             return false;
@@ -224,7 +231,11 @@ public class LabScoreList {
             if (!scoreSplit[0].equals("-")) {
                 Integer.parseInt(scoreSplit[0]);
             }
-            Integer.parseInt(scoreSplit[1]);
+            int fileLabMaxScore = Integer.parseInt(scoreSplit[1]);
+            if (!isInitialization) {
+                System.out.println(fileLabMaxScore == LabScore.getMaxLabScore(labNumber));
+                return fileLabMaxScore == LabScore.getMaxLabScore(labNumber);
+            }
         } catch (NumberFormatException e) {
             return false;
         }

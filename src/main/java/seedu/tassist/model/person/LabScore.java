@@ -91,6 +91,10 @@ public class LabScore {
         allMaxScores.set(labNumber, maxLabScore);
     }
 
+    public static int getMaxLabScore(int labNumber) {
+        return allMaxScores.get(labNumber);
+    }
+
     /**
      * Updates the lab score and max lab score for this lab.
      *
