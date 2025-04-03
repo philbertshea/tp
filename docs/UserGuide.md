@@ -444,6 +444,48 @@ Examples:
 * `load -f userdata -ext csv` loads a CSV file named `userdata.csv` located in the `/data` folder.
 * `load -f students -ext json` loads a JSON file named `students.json` in the `/data` folder.
 
+### Undo command: `undo`
+Format: `undo`
+
+Undo the last command that was executed.
+
+Supported commands:
+* `add`
+* `edit`
+* `delete`
+* `clear`
+* `att`
+* `lab`
+* `tag`
+
+The following commands will ignore any changes:
+* `list`
+* `exit`
+* `help`
+* `toggle`
+* `search`
+  * Note: run the list command to see any updated changes to student's information if you any more commands.
+* `export`
+* `load`
+
+### Redo command: `redo`
+Format: `redo`
+
+Redo the last command that was executed. 
+Refer to **Undo Command** for the list of commands supported.
+
+Note: if you undo a command and run any other **valid** commands 
+(including ignored command such as `list`), you will not be able to redo
+any of the old commands that you had just undo.
+* Example: 
+  1. Run a command `lab -ln 1 -msc 25`
+  2. `undo` (undo the command `lab -ln 1 -msc 25`)
+  3. Here you can still redo the command, but if you run something step 4:
+  4. `list` or `att -i 1 -w 3`
+  5. You cannot redo the `lab -ln 1 -msc 25` command
+
+
+
 ### Exiting the program : `exit`
 
 Exits the program.
