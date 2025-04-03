@@ -9,6 +9,7 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_INDEX;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.TagCommandParser.MESSAGE_INVALID_ACTION_TYPE;
+import static seedu.tassist.logic.parser.TagCommandParser.MESSAGE_INVALID_ALL_TAGS;
 import static seedu.tassist.logic.parser.TagCommandParser.MESSAGE_MISSING_OLD_NEW_TAG;
 import static seedu.tassist.logic.parser.TagCommandParser.MESSAGE_MISSING_TAG;
 
@@ -62,5 +63,10 @@ public class TagCommandParserTest {
         // Only 1 tag specified for edit
         assertParseFailure(parser, " " + PREFIX_EDIT_TAG + " " + PREFIX_INDEX + " 1 " + PREFIX_TAG + " friend",
                 String.format(MESSAGE_MISSING_OLD_NEW_TAG, MESSAGE_USAGE));
+
+        // All action flags added
+        assertParseFailure(parser, " " + PREFIX_ADD_TAG + " " + PREFIX_EDIT_TAG + " " + PREFIX_EDIT_TAG + " "
+                        + PREFIX_INDEX + " 1 " + PREFIX_TAG + " friend",
+                String.format(MESSAGE_INVALID_ALL_TAGS, MESSAGE_USAGE));
     }
 }

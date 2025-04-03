@@ -3,6 +3,7 @@ package seedu.tassist.model.person;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.commands.exceptions.CommandException;
@@ -13,10 +14,12 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
     public static final String INVALID_LAB_SAVE = "Lab string is loaded incorrectly";
+
+    public static final String INVALID_LAB_MAX_SCORE =
+            "Person %d has score higher than the max lab score (%d) that you wish to set.";
     private static int labTotal = 4;
     public static final String LAB_NUMBER_CONSTRAINT = String.format(
             "Lab number must be between 1 and %d", labTotal);
-
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
 
     /**
@@ -24,7 +27,7 @@ public class LabScoreList {
      */
     public LabScoreList() {
         for (int i = 0; i < labTotal; i++) {
-            labScoreList.add(new LabScore());
+            labScoreList.add(new LabScore(i));
         }
     }
 
@@ -35,13 +38,11 @@ public class LabScoreList {
      */
     public LabScoreList(String[] labs) {
         for (int i = 0; i < labs.length; i++) {
-            if (labs[i].equals("-")) {
-                labScoreList.add(new LabScore());
-            } else {
-                String[] scoreSplit = labs[i].split("/");
-                labScoreList.add(new LabScore(Integer.parseInt(scoreSplit[0]),
-                        Integer.parseInt(scoreSplit[1])));
-            }
+            String[] scoreSplit = labs[i].split("/");
+            Integer labScore = scoreSplit[0].equals("-") ? -1 : Integer.parseInt(scoreSplit[0]);
+            Integer maxLabScore = Integer.parseInt(scoreSplit[1]);
+            labScoreList.add(new LabScore(labScore, maxLabScore));
+            LabScore.updateMaxLabScore(i, maxLabScore);
         }
     }
 
@@ -76,9 +77,12 @@ public class LabScoreList {
      * @return Updated {@code LabScoreList}.
      * @throws CommandException When lab number is invalid.
      */
-    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore) throws CommandException {
+    public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts)
+            throws CommandException {
+        validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
+        LabScore.updateMaxLabScore(labNumber - 1, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -91,9 +95,25 @@ public class LabScoreList {
      * @return Updated {@code LabScoreList}.
      * @throws CommandException When lab number is invalid.
      */
-    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore) throws CommandException {
+    public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore, List<Person> allContacts)
+            throws CommandException {
+        validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
+        LabScore.updateMaxLabScore(labNumber - 1, maxLabScore);
+        return new LabScoreList(copiedScores);
+    }
+
+    /**
+     * Refreshes the max lab score for all the labs involved.
+     *
+     * @param labNumber The LabScore object to update.
+     * @param maxLabScore The updated max score for the lab.
+     * @return Updated {@code LabScoreList}.
+     */
+    public LabScoreList refreshLabScore(int labNumber, int maxLabScore) {
+        LabScore[] copiedScores = Arrays.copyOf(labScoreList.toArray(new LabScore[labTotal]), labTotal);
+        copiedScores[labNumber - 1] = copiedScores[labNumber - 1].refreshMaxScore(maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -129,6 +149,23 @@ public class LabScoreList {
         return labNo > 0 && labNo <= labTotal;
     }
 
+    private void validMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts) throws CommandException {
+        if (maxLabScore < 0) {
+            throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
+        }
+        for (int i = 0; i < allContacts.size(); i++) {
+            LabScoreList checkList = allContacts.get(i).getLabScoreList();
+            if (checkList == this) {
+                continue;
+            }
+
+            boolean validMaxScore = checkList.labScoreList.get(labNumber - 1).testValidMaxScore(maxLabScore);
+            if (!validMaxScore) {
+                throw new CommandException(String.format(INVALID_LAB_MAX_SCORE, i + 1, maxLabScore));
+            }
+        }
+    }
+
     /**
      * Gets the list of LabScore objects.
      *
@@ -146,6 +183,8 @@ public class LabScoreList {
      */
     public static boolean isValidSaveString(String saveString) {
         int total;
+
+        //get total labs
         int split = saveString.indexOf(".");
         try {
             if (split == -1) {
@@ -155,27 +194,39 @@ public class LabScoreList {
         } catch (NumberFormatException e) {
             return false;
         }
+
         String[] labs = saveString.substring(split + 1).split("\\Q|\\E");
         if (labs.length != total) {
             return false;
         }
 
+        //validate individual lab string
         for (int i = 0; i < total; i++) {
-            if (labs[i].equals("-")) {
-                continue;
-            }
-            String[] scoreSplit = labs[i].split("/");
-            if (scoreSplit.length != 2) {
-                return false;
-            }
+            isValidLabSaveString(labs[i]);
+        }
 
-            try {
+        return true;
+    }
+
+    /**
+     * Checks if the lab save string is valid.
+     *
+     * @param labString The string to validate if it is correct.
+     * @return A boolean showing if the string is valid.
+     */
+    private static boolean isValidLabSaveString(String labString) {
+        String[] scoreSplit = labString.split("/");
+        if (scoreSplit.length != 2) {
+            return false;
+        }
+
+        try {
+            if (!scoreSplit[0].equals("-")) {
                 Integer.parseInt(scoreSplit[0]);
-                Integer.parseInt(scoreSplit[1]);
-            } catch (NumberFormatException e) {
-                return false;
             }
-
+            Integer.parseInt(scoreSplit[1]);
+        } catch (NumberFormatException e) {
+            return false;
         }
 
         return true;

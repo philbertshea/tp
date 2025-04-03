@@ -2,6 +2,7 @@ package seedu.tassist.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.tassist.commons.util.AppUtil.checkArgument;
+import static seedu.tassist.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.tassist.model.person.Attendance.isValidAttendance;
 import static seedu.tassist.model.person.Attendance.isValidWeek;
 
@@ -15,14 +16,16 @@ import java.util.stream.Stream;
 public class AttendanceList {
     public static final String MESSAGE_CONSTRAINTS =
             "Week number must be unsigned integer from 1 to 13 inclusive.\n"
-            + "Attendance value must be 0, 1 or 2.\n"
+            + "Attendance status value must be 0, 1, 2 or 3.\n"
             + "0 representing Not Attended, 1 representing Attended, \n"
-            + "2 representing On MC, 3 representing No Tutorial.";
+            + "2 representing On MC, 3 representing No Tutorial.\n";
     public static final String ATTENDANCE_STRING_MESSAGE_CONSTRAINTS =
             "Attendance string must contain exactly 13 digits, each being 0, 1, 2 or 3\n"
             + "whereby the ith digit (from the left) represents the attendance for ith week\n"
             + "0 representing Not Attended, 1 representing Attended, \n"
-            + "2 representing On MC, 3 representing No Tutorial.";
+            + "2 representing On MC, 3 representing No Tutorial.\n"
+            + "Additional Restriction: A person WITHOUT a tutorial group must have an empty attendance string\n"
+            + "while a person WITH a tutorial group must have a 13-digit attendance string.\n";
     public static final String DEFAULT_ATTENDANCE_STRING = "3300000000000";
     public static final AttendanceList EMPTY_ATTENDANCE_LIST = new AttendanceList();
 
@@ -38,6 +41,7 @@ public class AttendanceList {
 
     /**
      * Checks if attendanceString has 13 digits, each digit being 0, 1, 2 or 3.
+     *
      * @param attendanceString Attendance String to check.
      * @return Boolean representing whether attendanceString is valid.
      */
@@ -47,24 +51,34 @@ public class AttendanceList {
     }
 
     /**
-     * Checks if attendanceString is a valid non-empty string,
-     * or attendanceString is empty.
-     * @param attendanceString Attendance String to check.
+     * Takes in an {@code attendanceString} and a {@code tutGroup}.
+     * If {@code tutGroup} is empty, returns whether the {@code attendanceString} is also empty.
+     * Else, returns whether the {@code attendanceString} is a valid non-empty Attendance String.
+     * Rationale: Students with an empty {@code tutGroup} must have an empty {@code attendanceString}.
+     * Students with a non-empty {@code tutGroup} must have a valid non-empty {@code attendanceString}.
+     *
+     * @param attendanceString Attendance String to be checked.
+     * @param tutGroup Tutorial Group of the person to check attendance string for.
      * @return Boolean representing whether attendanceString is valid.
      */
-    public static boolean isValidAttendanceString(String attendanceString) {
-        requireNonNull(attendanceString);
-        return attendanceString.isEmpty() || isValidNonEmptyAttendanceString(attendanceString);
+    public static boolean isValidAttendanceStringGivenTutGroup(String attendanceString, TutGroup tutGroup) {
+        requireAllNonNull(attendanceString, tutGroup);
+        if (tutGroup.isEmpty()) {
+            return attendanceString.isEmpty();
+        } else {
+            return isValidNonEmptyAttendanceString(attendanceString);
+        }
     }
 
     /**
      * Generates AttendanceList based on a valid attendanceString.
+     *
      * @param attendanceString Attendance String to generate AttendanceList from.
      * @return AttendanceList generated.
      */
     public static AttendanceList generateAttendanceList(String attendanceString) {
         requireNonNull(attendanceString);
-        checkArgument(isValidAttendanceString(attendanceString),
+        checkArgument(attendanceString.isEmpty() || isValidNonEmptyAttendanceString(attendanceString),
                 ATTENDANCE_STRING_MESSAGE_CONSTRAINTS);
 
         if (attendanceString.isEmpty()) {

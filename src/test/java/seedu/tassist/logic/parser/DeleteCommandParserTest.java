@@ -2,6 +2,7 @@ package seedu.tassist.logic.parser;
 
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -33,7 +34,7 @@ public class DeleteCommandParserTest {
                 Index.fromOneBased(7)
         );
         DeleteCommand expectedCommand = new DeleteCommand(expectedIndexes);
-        assertParseSuccess(parser, " -i 1-3, 5, 7", expectedCommand);
+        assertParseSuccess(parser, " -i 1-3,5, 7", expectedCommand);
 
         assertParseSuccess(parser, " -i 1", new DeleteCommand(Collections.singletonList(INDEX_FIRST_PERSON)));
 
@@ -48,7 +49,7 @@ public class DeleteCommandParserTest {
 
         // User typed nothing at all
         assertParseFailure(parser, "",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_MISSING_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
