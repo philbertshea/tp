@@ -383,7 +383,8 @@ Assuming the restrictions are satisfied,
     * If `-nt` is provided, new attendance status is NO TUTORIAL.
 
 <box type="info" seamless>
-* **Note**: Additional restrictions apply on the marking attendance command.
+
+**Note**: Additional restrictions apply on the marking attendance command.
   * Commands using the `-i` flag have additional restrictions.
     1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
     as having No Tutorial.
@@ -405,7 +406,8 @@ Assuming the restrictions are satisfied,
 </box>
 
 <box type="info" seamless>
-* **Note**: You can now mark the attendance of multiple students and tutorial groups as valid.
+
+**Note**: You can now mark the attendance of multiple students and tutorial groups as valid.
   However, do note that if you are using the `-i` flag, to mark attendance of students by index,
   the restrictions aforementioned apply to EVERY student listed.
     * For example, you want to mark students of index 1 to 10 (inclusive) as attended for week 3.
