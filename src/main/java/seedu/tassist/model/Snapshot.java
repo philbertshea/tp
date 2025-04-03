@@ -11,7 +11,7 @@ public class Snapshot {
 
     private String commandString = "";
     private String commandTypeString = "";
-    private Operations.CommandType commandType;
+    private Operations.RecordType recordType;
     private ArrayList<Person> people = new ArrayList<>();
 
 
@@ -20,23 +20,23 @@ public class Snapshot {
      *
      * @param commandString The command string.
      * @param commandTypeString The type of user command.
-     * @param commandType The type of command.
+     * @param recordType The type of recording.
      */
-    public Snapshot(String commandString, String commandTypeString, Operations.CommandType commandType) {
+    public Snapshot(String commandString, String commandTypeString, Operations.RecordType recordType) {
         this.commandString = commandString;
         this.commandTypeString = commandTypeString;
-        this.commandType = commandType;
+        this.recordType = recordType;
     }
 
     /**
      * Creates a new snapshot object for IGNORE type command.
      *
      * @param commandTypeString The type of user command.
-     * @param commandType The type of command.
+     * @param recordType The type of recording.
      */
-    public Snapshot(String commandTypeString, Operations.CommandType commandType) {
+    public Snapshot(String commandTypeString, Operations.RecordType recordType) {
         this.commandTypeString = commandTypeString;
-        this.commandType = commandType;
+        this.recordType = recordType;
     }
 
     /**
@@ -47,7 +47,7 @@ public class Snapshot {
     public Snapshot(Snapshot currentSnapshot) {
         this.commandString = currentSnapshot.commandString;
         this.commandTypeString = currentSnapshot.commandTypeString;
-        this.commandType = currentSnapshot.commandType;
+        this.recordType = currentSnapshot.recordType;
     }
 
     /**
@@ -70,21 +70,21 @@ public class Snapshot {
     }
 
     /**
-     * Gets the current command type.
+     * Gets the current record type.
      *
-     * @return The current command type.
+     * @return The current record type.
      */
-    public Operations.CommandType getCommandType() {
-        return commandType;
+    public Operations.RecordType getRecordType() {
+        return recordType;
     }
 
     /**
-     * Sets the command type.
+     * Sets the record type.
      *
-     * @param newCommandType The new command type.
+     * @param newRecordType The new record type.
      */
-    public void setCommandType(Operations.CommandType newCommandType) {
-        commandType = newCommandType;
+    public void setRecordType(Operations.RecordType newRecordType) {
+        recordType = newRecordType;
     }
 
     /**
@@ -121,7 +121,7 @@ public class Snapshot {
         }
 
         Snapshot o = (Snapshot) other;
-        return this.commandType.equals(o.commandType)
+        return this.recordType.equals(o.recordType)
                 && this.commandString.equals(o.commandString)
                 && this.commandTypeString.equals(o.commandTypeString)
                 && this.people.equals(o.people);

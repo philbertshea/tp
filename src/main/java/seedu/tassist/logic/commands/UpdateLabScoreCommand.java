@@ -12,7 +12,7 @@ import seedu.tassist.model.person.LabScoreList;
 import seedu.tassist.model.person.Person;
 
 /**
- * Update the lab score of a student for the specified lab.
+ * Updates the lab score of a student for the specified lab.
  */
 public class UpdateLabScoreCommand extends Command {
 
@@ -139,7 +139,7 @@ public class UpdateLabScoreCommand extends Command {
                     index.getOneBased(), newLabScoreList.getLabScores().get(labNumber - 1).toString());
             break;
         default:
-            throw new CommandException("Error");
+            throw new CommandException(MESSAGE_USAGE);
         }
 
         return new CommandResult(successMessage);
@@ -175,6 +175,7 @@ public class UpdateLabScoreCommand extends Command {
             personToUpdate.getTutGroup(), personToUpdate.getLabGroup(), personToUpdate.getFaculty(),
             personToUpdate.getYear(), personToUpdate.getRemark(), personToUpdate.getAttendanceList(),
             newLabScoreList, personToUpdate.getTags());
+
         model.setPerson(personToUpdate, updatedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
