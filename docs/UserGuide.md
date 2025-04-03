@@ -132,7 +132,7 @@ Refer to **Undo Command** for the list of commands supported.
 Tip: if you undo a command and run any other **valid** commands
 (including ignored command such as `list`), you will not be able to redo
 any of the old commands that you had just undo.
-<box/>
+</box>
 * Example:
     1. Run a command `lab -ln 1 -msc 25`
     2. `undo` (undo the command `lab -ln 1 -msc 25`)
