@@ -14,6 +14,7 @@
 ## **Acknowledgements**
 
 This project was adapted from [AB3](https://se-education.org/addressbook-level3/) (source code provided [here](https://github.com/nus-cs2103-AY2425S2/tp)).
+
 This project adapts the matriculation number checksum from [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) (source code provided [here](https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js)).
 
 Online images are used for the icons of the attendance tags: 
@@ -124,7 +125,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="600" />
+<puml src="diagrams/ModelClassDiagram.puml"/>
 
 
 The `Model` component,
@@ -138,7 +139,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="600" />
+<puml src="diagrams/BetterModelClassDiagram.puml"/>
 
 </box>
 
