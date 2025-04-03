@@ -11,13 +11,12 @@ public class RedoCommand extends Command {
 
     public static final String COMMAND_WORD = "redo";
 
-    public static final String MESSAGE_REDO_SUCCESS = "Redo %1$s successfully";
-
+    public static final String MESSAGE_REDO_SUCCESS = "Successfully redo %1$s command.\nCommand was: %2$s";
     @Override
     public CommandResult execute(Model model) throws CommandException {
         String response = Operations.redo(model);
 
-        return new CommandResult(String.format(MESSAGE_REDO_SUCCESS, response));
+        return new CommandResult(response);
     }
 
     @Override

@@ -14,9 +14,10 @@
 ## **Acknowledgements**
 
 This project was adapted from [AB3](https://se-education.org/addressbook-level3/) (source code provided [here](https://github.com/nus-cs2103-AY2425S2/tp)).
+
 This project adapts the matriculation number checksum from [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) (source code provided [here](https://github.com/nusmodifications/nus-matriculation-number-calculator/blob/gh-pages/matric.js)).
 
-Online images are used for the icons of the attendance tags: 
+Online images are used for the icons of the attendance tags:
 * [Check Icon](https://www.iconsdb.com/white-icons/checkmark-icon.html)
 * [Cross Icon](https://www.iconsdb.com/white-icons/x-mark-icon.html)
 * [Ban Icon](https://www.iconsdb.com/white-icons/ban-icon.html)
@@ -41,7 +42,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/Main.java) and [`MainApp`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -73,13 +74,13 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/ui/Ui.java)
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -90,7 +91,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -122,9 +123,9 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="600" />
+<puml src="diagrams/ModelClassDiagram.puml"/>
 
 
 The `Model` component,
@@ -138,19 +139,19 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="600" />
+<puml src="diagrams/BetterModelClassDiagram.puml"/>
 
 </box>
 
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2425S2-CS2103-F15-4/tp/blob/master/src/main/java/seedu/tassist/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both taassist data and user preference data in JSON and CSV format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -339,12 +340,39 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **MSS**
 
-1.  TAssist displays all students
+1.  TAssist displays all students.
 
     Use case ends.
 
+**Use case: UC02 - Exit System**
 
-**Use case: UC02 - Add a student**
+**MSS**
+
+1. User requests to exit TAssist.
+2. TAssist saves current data.
+3. TAssist exits.
+
+    Use case ends.
+
+**Use case: UC03 - Display Help Message**
+
+**MSS**
+
+1. User requests to display a help message.
+2. TAssist displays a help message.
+
+   Use case ends.
+
+**Use case: UC04 - Toggle Contact List View**
+
+**MSS**
+
+1. User requests to toggle the UI view between compact and detailed view of student record.
+2. TAssist updates the UI to reflect the selected view mode.
+
+   Use case ends.
+
+**Use case: UC05 - Add a student**
 
 **MSS**
 
@@ -394,7 +422,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 *a. At any time, user clears input.
     Use case ends.
 
-**Use case: UC03 - Delete a student**
+**Use case: UC06 - Delete a student**
 
 **MSS**
 
@@ -439,7 +467,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case ends.
 
-**Use case: UC04 - Mark attendance for a student**
+**Use case: UC07 - Mark attendance for a student**
 
 **MSS**
 
@@ -491,7 +519,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
       Use case ends.
 
 
-**Use case: UC05 - Update lab score for a student**
+**Use case: UC08 - Update lab score for a student**
 
 **MSS**
 
@@ -536,7 +564,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
       Use case ends.
 
-**Use case: UC06 - Load data from file**
+**Use case: UC09 - Load data from file**
 
 **MSS**
 
@@ -584,7 +612,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at Step 3.
 
-**Use case: UC07 - Save data to file**
+**Use case: UC010 - Save data to file**
 
 **MSS**
 
@@ -701,6 +729,21 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `del -i 1,,,2`<br>
    Expected: Error message: "Invalid index format! Please input each index separated by a comma. Expected format: index, index,... (e.g., 2,4)"
 
+
+### Marking attendance
+
+1. Marking the attendance of a person while all persons are being shown.
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list. 
+
+   1. Test case: `att -i 1 -w 5`<br>
+      Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
+   
+   1. Test case: `att -i 1 -w 5`<br>
+      Expected: Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+   1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
+      Expected: Similar to previous.
 
 
 ### Saving data

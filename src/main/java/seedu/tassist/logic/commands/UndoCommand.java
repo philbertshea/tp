@@ -11,13 +11,13 @@ public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
 
-    public static final String MESSAGE_UNDO_SUCCESS = "Undo %1$s successfully";
+    public static final String MESSAGE_UNDO_SUCCESS = "Successfully undo %1$s command.\nCommand was: %2$s";
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         String response = Operations.undo(model);
 
-        return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, response));
+        return new CommandResult(response);
     }
 
     @Override

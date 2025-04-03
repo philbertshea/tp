@@ -1,5 +1,7 @@
 package seedu.tassist.storage;
 
+import static seedu.tassist.model.person.AttendanceList.isValidAttendanceStringGivenTutGroup;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -144,8 +146,9 @@ public class JsonAdaptedPerson {
                 Remark::isValidRemark, Remark.MESSAGE_CONSTRAINTS, Remark::new);
 
         final AttendanceList modelAttendanceList = validateAndCreate(attendances,
-                AttendanceList.class, AttendanceList::isValidAttendanceString,
-                AttendanceList.MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
+                AttendanceList.class, attendanceString ->
+                        isValidAttendanceStringGivenTutGroup(attendanceString, modelTutGroup),
+                AttendanceList.ATTENDANCE_STRING_MESSAGE_CONSTRAINTS, AttendanceList::generateAttendanceList);
 
         final LabScoreList modelLabScoreList = validateAndCreate(labScores, LabScoreList.class,
                 LabScoreList::isValidSaveString, LabScoreList.INVALID_LAB_SAVE,

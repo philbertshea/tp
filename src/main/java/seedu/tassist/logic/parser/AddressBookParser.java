@@ -22,6 +22,7 @@ import seedu.tassist.logic.commands.MarkAttendanceCommand;
 import seedu.tassist.logic.commands.RedoCommand;
 import seedu.tassist.logic.commands.SearchCommand;
 import seedu.tassist.logic.commands.TagCommand;
+import seedu.tassist.logic.commands.ToggleCommand;
 import seedu.tassist.logic.commands.UndoCommand;
 import seedu.tassist.logic.commands.UpdateLabScoreCommand;
 import seedu.tassist.logic.parser.exceptions.ParseException;
@@ -66,51 +67,58 @@ public class AddressBookParser {
         switch (commandWord) {
 
         case AddCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, Operations.CommandType.ADD);
+            Operations.recordCurrentCommand(userInput, "Add", Operations.CommandType.RECORD);
             return new AddCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, Operations.CommandType.EDIT);
+            Operations.recordCurrentCommand(userInput, "Edit", Operations.CommandType.RECORD);
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, Operations.CommandType.DELETE);
+            Operations.recordCurrentCommand(userInput, "Delete", Operations.CommandType.RECORD);
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Clear Command", Operations.CommandType.CLEAR);
+            Operations.recordCurrentCommand(userInput, "Clear", Operations.CommandType.RECORD);
             return new ClearCommand();
 
         case ListCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("List Command", Operations.CommandType.IGNORED);
+            Operations.recordCurrentCommand("List", Operations.CommandType.IGNORE);
             return new ListCommand();
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Help Command", Operations.CommandType.IGNORED);
+            Operations.recordCurrentCommand("Help", Operations.CommandType.IGNORE);
             return new HelpCommand();
 
+        case ToggleCommand.COMMAND_WORD:
+            Operations.recordCurrentCommand("Toggle Command", Operations.CommandType.IGNORE);
+            return new ToggleCommand();
+
         case MarkAttendanceCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, Operations.CommandType.ATTENDANCE);
+            Operations.recordCurrentCommand(userInput, "Attendance" , Operations.CommandType.RECORD);
             return new MarkAttendanceCommandParser().parse(arguments);
 
         case SearchCommand.COMMAND_WORD:
+            Operations.recordCurrentCommand("Search", Operations.CommandType.IGNORE);
             return new SearchCommandParser().parse(arguments);
 
         case UpdateLabScoreCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand(userInput, Operations.CommandType.LABSCORE);
+            Operations.recordCurrentCommand(userInput, "Lab Score", Operations.CommandType.RECORD);
             return new UpdateLabScoreCommandParser().parse(arguments);
 
         case ExportDataCommand.COMMAND_WORD:
-            Operations.recordCurrentCommand("Export Command", Operations.CommandType.IGNORED);
+            Operations.recordCurrentCommand("Export data", Operations.CommandType.IGNORE);
             return new ExportDataCommandParser().parse(arguments);
 
         case TagCommand.COMMAND_WORD:
+            Operations.recordCurrentCommand(userInput, "Tag", Operations.CommandType.RECORD);
             return new TagCommandParser().parse(arguments);
 
         case LoadDataCommand.COMMAND_WORD:
+            Operations.recordCurrentCommand("Load data", Operations.CommandType.IGNORE);
             return new LoadDataCommandParser().parse(arguments);
 
         case UndoCommand.COMMAND_WORD:

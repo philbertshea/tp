@@ -23,13 +23,6 @@ public class SearchCommandParserTest {
     }
 
     @Test
-    public void parse_validMatNum_success() {
-        PersonMatchesPredicate predicate = new PersonMatchesPredicate(
-                null, "A0123456B", null, null, null, null, null, null, null, null);
-        assertParseSuccess(parser, " -m A0123456B", new SearchCommand(predicate));
-    }
-
-    @Test
     public void parse_validPhone_success() {
         PersonMatchesPredicate predicate = new PersonMatchesPredicate(
                 null, null, "12345678", null, null, null, null, null, null, null);

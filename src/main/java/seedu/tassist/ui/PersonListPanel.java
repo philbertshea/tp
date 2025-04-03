@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -19,6 +20,7 @@ public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
     private final Map<Person, PersonCard> displayedCards = new HashMap<>();
+    private final BooleanProperty compactView;
 
     @FXML
     private ListView<Person> personListView;
@@ -26,10 +28,14 @@ public class PersonListPanel extends UiPart<Region> {
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public PersonListPanel(ObservableList<Person> personList) {
+    public PersonListPanel(ObservableList<Person> personList, BooleanProperty compactView) {
         super(FXML);
+        this.compactView = compactView;
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
+
+        compactView.addListener((obs,
+                                 oldVal, newVal) -> personListView.refresh());
 
         personListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
@@ -61,12 +67,9 @@ public class PersonListPanel extends UiPart<Region> {
                 PersonCard personCard = new PersonCard(person, getIndex() + 1);
                 setGraphic(personCard.getRoot());
 
-                // Store reference to the card.
-                displayedCards.put(person, personCard);
-
-                // Check if this item is currently selected and update visibility accordingly.
+                boolean isCompactView = compactView.get();
                 boolean isSelected = getListView().getSelectionModel().getSelectedItem() == person;
-                personCard.showDetails(isSelected);
+                personCard.showDetails(!isCompactView || isSelected);
             }
         }
     }

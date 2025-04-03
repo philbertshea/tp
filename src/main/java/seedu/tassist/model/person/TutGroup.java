@@ -11,7 +11,7 @@ import static seedu.tassist.commons.util.AppUtil.checkArgument;
 public class TutGroup implements Comparable<TutGroup> {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid tutorial group!"
-            + "\nTutorial group should either start with a 'T' or 't'"
+            + "\nTutorial group should either start with a 'T' or 't' "
             + "followed by a maximum of two digits larger than 0.";
 
     public static final String VALIDATION_REGEX = "^[Tt]([1-9]|0[1-9]|[1-9]\\d)$";

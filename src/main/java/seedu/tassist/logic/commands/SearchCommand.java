@@ -24,22 +24,27 @@ public class SearchCommand extends Command {
 
     public static final String COMMAND_WORD = "search";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Searches for students based on given parameters. "
-            + "Parameters: "
-            + "[" + PREFIX_NAME + " NAME (supports partial matches)] "
-            + "[" + PREFIX_MAT_NUM + " MATRICULATION NUMBER] "
-            + "[" + PREFIX_PHONE + " PHONE] "
-            + "[" + PREFIX_TELE_HANDLE + " TELEGRAM HANDLE] "
-            + "[" + PREFIX_EMAIL + " EMAIL] "
-            + "[" + PREFIX_TAG + " TAG] "
-            + "[" + PREFIX_TUT_GROUP + " TUTORIAL GROUP] "
-            + "[" + PREFIX_LAB_GROUP + " LAB GROUP] "
-            + "[" + PREFIX_FACULTY + " FACULTY] "
-            + "[" + PREFIX_YEAR + " YEAR] "
-            + "\nExample: " + COMMAND_WORD + " "
-            + PREFIX_NAME + " Alice "
-            + PREFIX_TAG + " friend";
+    public static final String MESSAGE_USAGE =
+        String.format(
+            "Usage: %s [OPTIONS]...\n\n"
+                    + "Searches for students based on given parameters.\n"
+                    + "All arguments are optional. Multiple options can be used together.\n\n"
+                    + "Options:\n"
+                    + "  %-7s       Name (supports partial match)\n"
+                    + "  %-7s       Matriculation number\n"
+                    + "  %-7s       Phone number\n"
+                    + "  %-7s       Telegram handle\n"
+                    + "  %-7s       Email address\n"
+                    + "  %-7s       Tutorial group\n"
+                    + "  %-7s       Lab group\n"
+                    + "  %-7s       Faculty\n"
+                    + "  %-7s       Academic year\n"
+                    + "  %-7s       Tag (can be specified multiple times)\n\n"
+                    + "Example: %s %s Alice %s friend",
+            COMMAND_WORD,
+            PREFIX_NAME, PREFIX_MAT_NUM, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_EMAIL,
+            PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY, PREFIX_YEAR, PREFIX_TAG,
+            COMMAND_WORD, PREFIX_NAME, PREFIX_TAG);
 
     private final PersonMatchesPredicate predicate;
 

@@ -42,6 +42,7 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
         int week;
         boolean hasIndex = argMultimap.getValue(PREFIX_INDEX).isPresent();
         boolean hasTutGroup = argMultimap.getValue(PREFIX_TUT_GROUP).isPresent();
+        boolean hasWeek = argMultimap.getValue(PREFIX_WEEK).isPresent();
         boolean isNotAttended = argMultimap.getValue(PREFIX_MARK_NOT_ATTENDED).isPresent();
         boolean isOnMc = argMultimap.getValue(PREFIX_MARK_ON_MC).isPresent();
         boolean isNoTut = argMultimap.getValue(PREFIX_MARK_NO_TUTORIAL).isPresent();
@@ -53,12 +54,13 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
                 || (hasIndex && isNoTut); // Cannot set Attendance as No Tutorial for Index commands.
         boolean hasNeitherIndexNorTutGroup = !hasIndex && !hasTutGroup;
 
-        if (hasAtLeastTwoConflictingFlags || hasNeitherIndexNorTutGroup) {
+        if (hasAtLeastTwoConflictingFlags || hasNeitherIndexNorTutGroup || !hasWeek) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                             MarkAttendanceCommand.MESSAGE_USAGE)
             );
         }
+
 
         try {
             week = ParserUtil.parseWeek(argMultimap.getValue(PREFIX_WEEK).orElse(""));
@@ -69,8 +71,8 @@ public class MarkAttendanceCommandParser implements Parser<MarkAttendanceCommand
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            MarkAttendanceCommand.MESSAGE_USAGE), ive
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ive.getMessage()
+                            + " Or, check for invalid flags.\n" + MarkAttendanceCommand.MESSAGE_USAGE), ive
             );
         }
 

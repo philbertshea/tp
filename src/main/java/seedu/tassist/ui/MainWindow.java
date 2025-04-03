@@ -6,8 +6,11 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FILE_PATH;
 import java.io.File;
 import java.util.logging.Logger;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -40,6 +43,7 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private BooleanProperty compactView = new SimpleBooleanProperty(false);
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -55,6 +59,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private CheckMenuItem toggleViewMenuItem;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -116,7 +123,7 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList(), compactView);
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
@@ -157,31 +164,29 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.show();
     }
 
+    @FXML
+    private void handleToggleView() {
+        compactView.set(!compactView.get());
+    }
+
 
     @FXML
     private void handleExport() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Export Data");
-
-        // Set the allowed directory
-        File allowedDirectory = new File("data");
-        if (!allowedDirectory.exists()) {
-            allowedDirectory.mkdirs(); // Create the directory if it doesn't exist
-        }
-        fileChooser.setInitialDirectory(allowedDirectory);
+        fileChooser.setTitle("Export Data As...");
 
         // Set default file extension options
-        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
-        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV File (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter(
+                "JSON File (*.json)", "*.json");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter(
+                "CSV File (*.csv)", "*.csv");
         fileChooser.getExtensionFilters().addAll(jsonFilter, csvFilter);
 
-        // Show save dialog
         File file = fileChooser.showSaveDialog(primaryStage);
+
         if (file != null) {
-            String[] fileData = file.getName().split("\\.");
             try {
-                executeCommand(ExportDataCommand.COMMAND_WORD + " "
-                        + PREFIX_FILE_PATH + fileData[0] + " " + PREFIX_EXTENSION + fileData[1]);
+                executeCommand(ExportDataCommand.COMMAND_WORD + " " + PREFIX_FILE_PATH + " " + file.toPath());
             } catch (CommandException | ParseException e) {
                 logger.info("An error occurred while exporting: " + e.getMessage());
             }
@@ -253,6 +258,10 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
+            }
+
+            if (commandResult.isShowFullView()) {
+                handleToggleView();
             }
 
             if (commandResult.isExit()) {

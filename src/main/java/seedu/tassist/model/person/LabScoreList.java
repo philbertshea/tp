@@ -82,7 +82,7 @@ public class LabScoreList {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
-        LabScore.updateMaxLabScore(labNumber, maxLabScore);
+        LabScore.updateMaxLabScore(labNumber - 1, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
@@ -100,7 +100,7 @@ public class LabScoreList {
         validMaxLabScore(labNumber, maxLabScore, allContacts);
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
-        LabScore.updateMaxLabScore(labNumber, maxLabScore);
+        LabScore.updateMaxLabScore(labNumber - 1, maxLabScore);
         return new LabScoreList(copiedScores);
     }
 
