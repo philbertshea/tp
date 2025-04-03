@@ -659,16 +659,29 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
+   1. Test case: `del -i 1`<br>
       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `del -i 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `del`, `del -i x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Marking attendance
+
+1. Marking the attendance of a person while all persons are being shown.
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list. 
+
+   1. Test case: `att -i 1 -w 5`<br>
+      Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
+   
+   1. Test case: `att -i 1 -w 5`<br>
+      Expected: Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+   1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
+      Expected: Similar to previous.
 
 ### Saving data
 
