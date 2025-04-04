@@ -367,7 +367,9 @@ Examples:
 Marks the attendance of an individual student, or a tutorial group.
 
 <box type="tip" seamless>
+
 **Tip**: With the new release, you can now mark the attendance of multiple students or tutorial groups.
+
 </box>
 
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
@@ -379,17 +381,21 @@ Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 * Optional parameters: EITHER ONE OF `-mc`, `-u`, OR `-nt`
   * Not accepted: TWO or more of the above flags.
 
-Assuming the restrictions are satisfied,
-* Marks the attendance of a student (if `-i INDEX` is provided)
-  OR all students in a tutorial group (if `-t TUTORIAL_GROUP` is provided).
-* The new attendance status is ATTENDED by default. However:
-    * If `-mc` is provided, new attendance status is ON MC.
-    * If `-u` is provided, new attendance status is NOT ATTENDED.
-    * If `-nt` is provided, new attendance status is NO TUTORIAL.
+Note the following restrictions on the provided inputs.
+* `INDEX` must be a **positive integer**, from 1 to n inclusive, where n is the number of students in the list.
+    * In the case whereby n = 0, i.e. there are no students in the list, then you will need to minimally add one student
+      with a valid tutorial group into the list, in order to use the Mark Attendance Command.
+* `TUTORIAL_GROUP` must be a **String of three characters**.
+    * The first character must be a capital 'T' or small letter 't'.
+    * The second and third characters must be numerical digits from 0 to 9 inclusive.
+    * Valid `TUTORIAL_GROUP` inputs include `T01`, `T02`, `t10`.
+    * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
+  of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
+  tutorial group T99, then this is not a valid tutorial group that matches to any student, given the current list of students.
+* Note that a valid index and tutorial group does NOT necessarily mean the command will be valid. 
+There are other restrictions to fulfill, as illustrated by the parameters above and the additional restrictions below.
 
-<box type="info" seamless>
-
-**Note**: Additional restrictions apply on the marking attendance command.
+Additional restrictions apply on the marking attendance command.
   * Commands using the `-i` flag have additional restrictions.
     1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
     as having No Tutorial.
@@ -408,11 +414,47 @@ Assuming the restrictions are satisfied,
        Then it doesn't make sense to mark his attendance for any week.
        * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
        his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
-</box>
+
+Assuming the restrictions are satisfied,
+* Marks the attendance of a student (if `-i INDEX` is provided)
+  OR all students in a tutorial group (if `-t TUTORIAL_GROUP` is provided).
+* The new attendance status is ATTENDED by default. However:
+    * If `-mc` is provided, new attendance status is ON MC.
+    * If `-u` is provided, new attendance status is NOT ATTENDED.
+    * If `-nt` is provided, new attendance status is NO TUTORIAL.
 
 <box type="info" seamless>
 
 **Note**: You can now mark the attendance of multiple students and tutorial groups as valid.
+
+* `INDEX` now accepts a comma (`,`) or hyphen (`-`) separated range of indexes.
+  * Every index listed, or implied in a provided range, must be a valid index.
+  That is, every index provided must be a **positive integer** , from 1 to n inclusive, 
+  where n is the number of students in the full list of students.
+
+  * Besides, if a hyphen-separated range is provided, it must be of the format `a-b`, such that `a <= b`.
+  This means that the hyphen-separated range must be **non-decreasing**.
+  * **NO SPACES** are allowed in the provided index range.
+  * Valid inputs: `1,2,3` (indexes 1, 2 and 3); `1-3` (indexes 1 to 3 inclusive); `1,2-3` (indexes 1, and indexes 2 to 3 inclusive)
+  * Invalid inputs: `-1-3` (indexes -1 and 0 implied by the range are invalid); `1, 2` (space not allowed)
+
+* `TUTORIAL_GROUP` now accepts a comma or hyphen-separated list of tutorial groups.
+  * Every tutorial group listed, or implied in a provided range, must be a valid tutorial group.
+  That is, every tutorial group provided must be a String of three characters.
+    * The first character must be a capital 'T' or small letter 't'.
+    * The second and third characters must be numerical digits from 0 to 9 inclusive.
+    * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
+      of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
+      tutorial group T99, then this is not a valid tutorial group that matches to any student, given the current list of students.
+
+  * Besides, if a hyphen-separated range is provided, it must be of the format `Tab-Tcd` (`T` can be replaced with `t`)
+  such that `a`, `b`, `c` and `d` are numerical digits from 0 to 9 inclusive, and `ab <= cd` in decimal format.
+  (more accurately, `a * 10 + b` is smaller than or equal to `c * 10 + d`)
+  This means that the hyphen-separated range must be **non-decreasing**.
+  * **NO SPACES** are allowed in the provided index range.
+  * Valid inputs: `T01,T02,T03` (tutorial groups T01, T02 and T03); `1-3` (tutorial groups T01 to T03 inclusive); 
+  `T01,t02-t03` (tutorial groups T01, and tutorial groups T02 to T03 inclusive)
+  * Invalid inputs: `1-3` (invalid format of tutorial groups); `T05-T01` (descending range of tutorial groups)
 
 - However, do note that if you are using the `-i` flag, to mark attendance of students by index,
   the restrictions aforementioned apply to EVERY student listed.
@@ -420,7 +462,8 @@ Assuming the restrictions are satisfied,
   - You realise that student 3 has no tutorial group, and students 4,5 are in tutorial group T03,
   and group T03's tutorial has been cancelled due to the clashing holiday. They are currently
   marked as No Tutorial for week 3, which is appropriate given their tutorial is cancelled.
-  - `att -i 1-10 -w 3` gives you an error because students 3, 4, 5 do not fulfill the restrictions.
+  - `att -i 1-10 -w 3` gives you an error because students 3, 4, 5 do not fulfill the restrictions. The error message 
+  will show the first student that does not fulfill the restrictions within the range of indexes provided.
   - You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
   </box>
 
@@ -462,6 +505,39 @@ Format: `load -f FILE_NAME -ext FILE_EXTENSION`
 Examples:
 * `load -f userdata -ext csv` loads a CSV file named `userdata.csv` located in the `/data` folder.
 * `load -f students -ext json` loads a JSON file named `students.json` in the `/data` folder.
+
+<box type="info" seamless>
+
+What is the `attendances` attribute in the CSV or JSON file?
+
+Our explanation here might be slightly complicated. 
+* If you are an amateur user, please avoid touching this attribute
+in the CSV or JSON files involved, when using the Load data command. 
+
+We use either a length-0 Empty String `""` or a length-13 String of 13 digits from 0 to 3 inclusive to denote a student's attendance records.
+* If a student has no `TUTORIAL_GROUP`, he MUST have an Empty String, as his `attendances` or `attendanceList` attribute.
+* If a student has a valid `TUTORIAL_GROUP`, he MUST have a length-13 String of 13 digits from 0 to 3 inclusive, as his `attendances` attribute.
+* This means that in the CSV or JSON file loaded, the ONLY VALID combinations of `tutGroup` and `attendances` are:
+  1. `tutGroup` = `""` AND `attendances` = `""`
+  2. `tutGroup` = some valid tutorial group e.g. `T01` 
+  AND `attendances` = some valid length-13 string of 13 digits from 0 to 3 inclusive, e.g. `3300000000000`.
+* If AT LEAST ONE of the students' data provided in the JSON or CSV file do not follow the above combinations,
+the file will be deemed as CORRUPTED, and the app will start from an Empty AddressBook.
+* Do note you will need to adapt this to the JSON or CSV formatting just like other attributes.
+
+A length-0 Empty String `""` represents a Blank Attendance List.
+A length-13 String of 13 digits from 0 to 3 inclusive represents an Attendance List that tracks attendances for weeks 1 to 13 (inclusive).
+* The `i`<sup>th</sup> digit in this string (1-indexed, counting from the left) represents the attendance status of the student in week `i`.
+* The digit `0` represents attendance status of NOT ATTENDED, digit `1` represents attendance status of ATTENDED,
+digit `2` represents attendance status of ON MC, digit `3` represents attendance status of NO TUTORIAL.
+  * For example, if `attendances` is a string `"3300011111222"`, the student has had NO TUTORIAL for weeks 1 and 2,
+  NOT ATTENDED tutorials for weeks 3, 4 and 5, ATTENDED tutorials for weeks 6, 7, 8, 9, 10, and ON MC for weeks 11, 12 and 13.
+* If AT LEAST ONE of the students' data provided in the JSON or CSV file do not follow the above restrictions,
+e.g. one student has `attendances` being a String of an invalid length (not 0 and not 13) like `"00000"`,
+or a String of valid length but having invalid characters (e.g. digits 4 to 9 inclusive, alphabet, symbols)
+like `"0000011111334"`, the file will be CORRUPTED and the app will start from an Empty AddressBook.
+
+  </box>
 
 ### Export Data : `export`
 

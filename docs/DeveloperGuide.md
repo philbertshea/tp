@@ -426,15 +426,23 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at step 2.
 
-* 1d. User requests that the student be marked as not attended.
+* 1d. The student that the user wants to mark attendance for does not have
+  a valid tutorial group.
 
-    * 1d1. TAssist marks the student as not attended for the indicated week.
+    * 1d1. TAssist shows an error message, informing the user that the student
+    has no tutorial group, and therefore cannot be marked attendance for tutorials.
+    
+    * 1d2. User enters new data.
+
+* 1e. User requests that the student be marked as not attended.
+
+    * 1e1. TAssist marks the student as not attended for the indicated week.
 
       Use case ends.
 
-* 1e. User requests that the student be marked as on MC.
+* 1f. User requests that the student be marked as on MC.
 
-    * 1e1. TAssist marks the student as on MC for the indicated week.
+    * 1f1. TAssist marks the student as on MC for the indicated week.
 
       Use case ends.
 
