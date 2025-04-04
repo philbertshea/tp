@@ -30,6 +30,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
+
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
@@ -53,6 +54,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
 1. Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
    ![UiToggle](images/UiToggle.png)
+
 
 1. To show more details about a particular contact, click on the contact itself!<br>
    ![UiExtend](images/UiExtend.png)
@@ -78,7 +80,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
   e.g `-n NAME [-tag TAG]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[-tag TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[-tag TAG]…​` can be used as ` ` (i.e. 0 times), `-tag friend`, `-tag friend -tag family` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `-n NAME -p PHONE_NUMBER`, `-p PHONE_NUMBER -n NAME` is also acceptable.
@@ -105,7 +107,7 @@ The following particulars of a student will be hidden if compact view is enabled
 <box type="tip" seamless>
 
 **Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
-  </box>
+</box>
 
 ### Listing all students : `list`
 
@@ -129,16 +131,19 @@ Redo the last command that was executed.
 Refer to **Undo Command** for the list of commands supported.
 
 <box type="tip" seamless>
-Tip: if you undo a command and run any other **valid** commands
+
+**Tip**: if you undo a command and run any other **valid** commands
 (including ignored command such as `list`), you will not be able to redo
 any of the old commands that you had just undo.
+
 </box>
-* Example:
-    1. Run a command `lab -ln 1 -msc 25`
-    2. `undo` (undo the command `lab -ln 1 -msc 25`)
-    3. Here you can still redo the command, but if you run something step 4:
-    4. `list` or `att -i 1 -w 3`
-    5. You cannot redo the `lab -ln 1 -msc 25` command
+
+Example:
+1. Run a command `lab -ln 1 -msc 25`
+1. `undo` (undo the command `lab -ln 1 -msc 25`)
+1. Here you can still redo the command, but if you run something step 4:
+1. `list` or `att -i 1 -w 3`
+1. You cannot redo the `lab -ln 1 -msc 25` command
 
 ### Undo command: `undo`
 Format: `undo`
@@ -286,7 +291,7 @@ Deletes the specified student from the address book.
 Format: `del -i INDEX[,INDEX or RANGE]...`
 
 Parameters:
-* -i: Specifies the 1-based index(es) of the person(s) to delete. Accepts:
+* `-i`: Specifies the 1-based index(es) of the person(s) to delete. Accepts:
 * Single index (e.g. 1)
 * Multiple indices separated by commas (e.g. 1,3,5)
 * Ranges using dashes (e.g. 2-4)
@@ -295,7 +300,7 @@ Parameters:
 Restrictions:
 * The index must be a positive non-zero integer.
 * Index ranges must be valid (e.g., 2-1 is not allowed).
-* The -i prefix must be provided only once. Multiple -i prefixes (e.g. -i 1 -i 2) are not allowed.
+* The -i prefix must be provided only once. Multiple `-i` prefixes (e.g. `-i 1 -i 2`) are not allowed.
 
 Examples:
 * `del -i 2`
@@ -335,8 +340,8 @@ Edits a current tag.
 
 Format: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`
 
-* Edits the tag `OLD_TAG_NAME` and replaces the tags value with `NEW_TAG_NAME` of the student at the specified INDEX. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
-* You can only edit 1 tag at a time. The OLD_TAG_NAME must exist for you to edit and replace its value.
+* Edits the tag `OLD_TAG_NAME` and replaces the tags value with `NEW_TAG_NAME` of the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
+* You can only edit 1 tag at a time. The `OLD_TAG_NAME` must exist for you to edit and replace its value.
 * The `OLD_TAG_NAME` and `NEW_TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
 Examples:
@@ -408,15 +413,16 @@ Assuming the restrictions are satisfied,
 <box type="info" seamless>
 
 **Note**: You can now mark the attendance of multiple students and tutorial groups as valid.
-  However, do note that if you are using the `-i` flag, to mark attendance of students by index,
+
+- However, do note that if you are using the `-i` flag, to mark attendance of students by index,
   the restrictions aforementioned apply to EVERY student listed.
-    * For example, you want to mark students of index 1 to 10 (inclusive) as attended for week 3.
-        * You realise that student 3 has no tutorial group, and students 4,5 are in tutorial group T03,
-          and group T03's tutorial has been cancelled due to the clashing holiday. They are currently
-          marked as No Tutorial for week 3, which is appropriate given their tutorial is cancelled.
-        * `att -i 1-10 -w 3` gives you an error because students 3, 4, 5 do not fulfill the restrictions.
-        * You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
-</box>
+  - For example, you want to mark students of index 1 to 10 (inclusive) as attended for week 3.
+  - You realise that student 3 has no tutorial group, and students 4,5 are in tutorial group T03,
+  and group T03's tutorial has been cancelled due to the clashing holiday. They are currently
+  marked as No Tutorial for week 3, which is appropriate given their tutorial is cancelled.
+  - `att -i 1-10 -w 3` gives you an error because students 3, 4, 5 do not fulfill the restrictions.
+  - You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
+  </box>
 
 Examples:
 * `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
@@ -488,22 +494,19 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+TAssist data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+TAssist data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, TAssist will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause the TAssist to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+
 </box>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -536,7 +539,7 @@ Action     | Format, Examples
 **Delete** | `del -i INDEX [,INDEX or RANGE]...`<br> e.g., `del -i 3`
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
-**Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) [-mc] [-u] [-nt]`
+**Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) -w WEEK [-mc] [-u] [-nt]`
 **Lab Score** | `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]` <br> e.g., `lab -i 1 -ln 1 -sc 20`
 **Load Data** | `load -f FILE_NAME -ext FILE_EXTENSION`<br> e.g., `load -f userdata -ext csv`
 **Export Data** | `export -f FILE_PATH`<br> e.g., `export -f ./data/test.csv`
