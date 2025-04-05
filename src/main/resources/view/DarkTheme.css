@@ -139,10 +139,9 @@
 }
 
 .cell_name_label {
-    -fx-font-family: "Segoe  UI";
+    -fx-font-family: "Segoe UI";
     -fx-font-size: 16px;
     -fx-text-fill: white;
-    fx-stroke-width: 0.3;
     -fx-effect: dropshadow(gaussian, white, 0.7, 0.7, 0.0, 0.0),
     dropshadow(gaussian, white, 0.5, 0.5, 0.3, 0.3);
     -fx-priority: 1000000;
