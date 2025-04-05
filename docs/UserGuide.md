@@ -75,6 +75,8 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
 * Items in parentheses requires at least one of them to be supplied.<br>
   e.g `(-p PHONE_NUMBER -tg TELEGRAM_HANDLE)` means either `-p PHONE_NUMBER` or `-tg TELEGRAM_HANDLE` or both `-p PHONE_NUMBER -tg TELEGRAM HANDLE` are accepted.
+  * **Important Exception**: For the MarkAttendanceCommand, `(-i INDEX -t TUTORIAL_GROUP)` will ONLY allow EITHER `-i INDEX`
+  OR `-t TUTORIAL_GROUP` as inputs, but NOT BOTH. Do take note of this particular exception.
 
 * Items in square brackets are optional.<br>
   e.g `-n NAME [-tag TAG]` can be used as `-n John Doe -tag friend` or as `-n John Doe`.
