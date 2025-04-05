@@ -285,28 +285,39 @@ Examples:
           Then the student's Attendance List remains as a Blank Attendance List.
 </box>
 
-### Deleting a student : `del`
-Deletes the specified student from the address book.
+### Deleting student(s): `del`
+Deletes the specified student(s) from the address book.
 
+#### 1. Delete a single student
+Format: `del -i INDEX`
+
+Details:
+* Deletes the student at the specified INDEX.
+* The index refers to the number shown in the current displayed list.
+* The index must be a positive non-zero integer (e.g., 1, 2, 3...).
+* Only one student will be deleted.
+
+Example:
+* del -i 2 → Deletes the student at index 2.
+
+#### 2. Delete multiple students (Batch delete)
+Deletes multiple students in a single command using comma-separated indices or index ranges.
 Format: `del -i INDEX[,INDEX or RANGE]...`
 
-Parameters:
-* `-i`: Specifies the 1-based index(es) of the person(s) to delete. Accepts:
-* Single index (e.g. 1)
-* Multiple indices separated by commas (e.g. 1,3,5)
-* Ranges using dashes (e.g. 2-4)
-* Mixed usage (e.g. 1,3-5,7)
-
-Restrictions:
-* The index must be a positive non-zero integer.
-* Index ranges must be valid (e.g., 2-1 is not allowed).
-* The -i prefix must be provided only once. Multiple `-i` prefixes (e.g. `-i 1 -i 2`) are not allowed.
-
-Examples:
-* `del -i 2`
-* Deletes the person at index 2.
-* `del -i 1,3-5,7`
-* Deletes persons at indices 1, 3, 4, 5, and 7.
+Details:
+* Accepts:
+    * Multiple indices: 1,3,5
+    * Index ranges: 2-4 
+    * Mixed usage: 1,3-5,7
+      Commas , separate each index or range.
+* Ranges use dashes - (e.g., 3-5 includes 3, 4, and 5).
+* Indexes must be positive non-zero integers.
+* All indices must be within the current list size.
+* The -i prefix must be provided only once. 
+    * E.g., del -i 1,2 ✅  del -i 1 -i 2 ❌
+ 
+Example:
+* del -i 1,3-5,7 → Deletes students at indices 1, 3, 4, 5, and 7.
 
 ### Clearing all entries : `clear`
 
@@ -536,7 +547,7 @@ Action     | Format, Examples
 **Undo**   | `undo`
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Edit**   | `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]`<br> e.g.,`edit -i 2 -n James Lee -e jameslee@example.com`
-**Delete** | `del -i INDEX [,INDEX or RANGE]...`<br> e.g., `del -i 3`
+**Delete** | Single: del -i INDEX <br> e.g., del -i 3 <br> Batch: del -i INDEX[,INDEX or RANGE]... <br> e.g., del -i 1,3-5,7
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) -w WEEK [-mc] [-u] [-nt]`
