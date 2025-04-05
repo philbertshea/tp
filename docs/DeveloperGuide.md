@@ -771,11 +771,11 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `att -i 1 -w 5`<br>
       Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
 
-   1. Test case: `att -i 1 -w 5`<br>
-      Expected: Expected: No student is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `att -t T01 -w 5`<br>
+      Expected: All students in the tutorial group T01 are marked as attended for week 5. (Provided the restrictions of the mark attendance command are satisfied)
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+      Expected: Error messages describing the error.
 
 ### Lab Score
 
