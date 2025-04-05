@@ -71,7 +71,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 **Notes about the command format:**<br>
 
 * Commands are **case sensitive**.<br>
-  e.g. `add` is valid but not `ADD`.
+  e.g. `add` is valid but not `ADD`, `Add`, etc.
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add -n NAME`, `NAME` is a parameter which can be used as `add -n John Doe`.

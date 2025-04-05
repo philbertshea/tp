@@ -838,6 +838,11 @@ testers are expected to do more *exploratory* testing.
 
 A bug causes the selection of a contact to slightly flicker. This is likely due to the loading of attendance tags.
 
+### Ensuring readable non-alphanumerical characters.
+
+This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
+To allow for overzealous input validation, the application allows for most unicode characters to be provided. As such, one can have names such as `恵凛`, `まさひろ`, or even `Nguyễn Thị Minh Hằng`. However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
+
 ## **Appendix: Effort**
 
 ### Difficulty level
