@@ -286,11 +286,14 @@ Examples:
 </box>
 
 ### Deleting student(s): `del`
-Deletes the specified student(s) from the address book.
+Deletes the specified student(s) from the currently displayed list.
+
+⚠️ Important: The INDEX refers to the position in the currently displayed list, not the overall index in the address book. 
+For example, if you used the search command before, index 1 refers to the first student in the filtered list.
 
 #### 1. Delete a single student
+Deletes one student from the currently displayed list.
 Format: `del -i INDEX`
-
 Details:
 * Deletes the student at the specified INDEX.
 * The index refers to the number shown in the current displayed list.
@@ -298,12 +301,11 @@ Details:
 * Only one student will be deleted.
 
 Example:
-* del -i 2 → Deletes the student at index 2.
+* del -i 2 → Deletes the second student shown in the current list view.
 
 #### 2. Delete multiple students (Batch delete)
 Deletes multiple students in a single command using comma-separated indices or index ranges.
 Format: `del -i INDEX[,INDEX or RANGE]...`
-
 Details:
 * Accepts:
     * Multiple indices: 1,3,5
@@ -313,6 +315,7 @@ Details:
 * Ranges use dashes - (e.g., 3-5 includes 3, 4, and 5).
 * Indexes must be positive non-zero integers.
 * All indices must be within the current list size.
+* Ranges must be valid (e.g., 2-1 is not allowed).
 * The -i prefix must be provided only once. 
     * E.g., del -i 1,2 ✅  del -i 1 -i 2 ❌
  
