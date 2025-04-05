@@ -372,11 +372,33 @@ Marks the attendance of an individual student, or a tutorial group.
 
 </box>
 
+<box type="info" seamless>
+
+**Note**: This will be a long documentation, because of the multiple restrictions imposed
+on the MarkAttendanceCommand. However, the brief summary is here:
+
+Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
+* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`, ONLY,
+where `INDEX` is a positive integer from 1 to n inclusive, n being the number of students on the list 
+(if n=0, you'll have to add one first) and `TUTORIAL_GROUP` is a string of three characters, first
+character being `T` or `t`, the second and third characters being digits from 0 to 9 inclusive, e.g. `T01`.
+* Mandatory parameter: `-w WEEK`, where `WEEK` is a positive integer from 1 to 13 inclusive.
+* Optional parameters: EITHER ONE OF `-mc` (mark on MC), `-u` (mark as not attended), OR `-nt` (mark as no tutorial) ONLY.
+* Note there are additional restrictions. For example, you cannot mark attendance for students with no tutorial group.
+  (Use the edit command to add a tutorial group for the student first).`-nt` also applies to commands with `-t` ONLY, not `-i`.
+  (It does not make sense to mark one student as having no tutorial - this function is for tutorials being cancelled, so
+the whole tutorial group should be affected).
+
+This note is offered here as a **Brief Summary ONLY**. There are additional restrictions as outlined below in the
+full documentation. If you encounter issues, do check whether that corresponding command is valid first, using
+the documentation below.
+</box>
+
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 
-* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`
+* Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`, ONLY.
   * Not accepted: NEITHER of the flags provided, or BOTH flags provided together.
-* Mandatory parameter: `-w WEEK`
+* Mandatory parameter: `-w WEEK`.
   * Not accepted: MISSING week flag
 * Optional parameters: EITHER ONE OF `-mc`, `-u`, OR `-nt`
   * Not accepted: TWO or more of the above flags.
@@ -472,7 +494,7 @@ Examples:
 * `att -i 2 -w 10 -mc` marks the second student as on MC for Tutorial Week 10.
 * `att -t T01 -w 1 -nt` marks the whole tutorial group T01 as No Tutorial for Tutorial Week 1.
   * This means each student in tutorial group T01 has his attendance updated to No Tutorial.
-* `att -i 1-5 -w 3` marks the students of indexes 1 to 5 (inclusive) of week 3 as Attended
+* `att -i 1-5 -w 3` marks the students of indexes 1 to 5 (inclusive) of week 3 as Attended.
 
 ### Updating lab scores: `lab`
 Updates the lab score for the specified student, or update the maximum score for the specified lab.
@@ -615,7 +637,7 @@ Action     | Format, Examples
 **Delete** | `del -i INDEX [,INDEX or RANGE]...`<br> e.g., `del -i 3`
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
-**Mark Attendance**   | `att (-i INDEX -t [TUTORIAL GROUP]) -w WEEK [-mc] [-u] [-nt]`
+**Mark Attendance**   | `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
 **Lab Score** | `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]` <br> e.g., `lab -i 1 -ln 1 -sc 20`
 **Load Data** | `load -f FILE_NAME -ext FILE_EXTENSION`<br> e.g., `load -f userdata -ext csv`
 **Export Data** | `export -f FILE_PATH`<br> e.g., `export -f ./data/test.csv`
