@@ -43,18 +43,30 @@ public class MarkAttendanceCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void constructor_nullIndex_throwsNullPointerException() {
+    public void constructor_nullIndexList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
                 new MarkAttendanceCommand(null, 1, Attendance.ATTENDED));
     }
 
     @Test
-    public void constructor_nullTutGroup_throwsNullPointerException() {
+    public void constructor_nullTutGroupList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
                 new MarkAttendanceCommand(1, Attendance.ATTENDED, null));
     }
 
-    public String getReplacedIndexAndNewString(
+    /**
+     * Gets the replaced index and the String after replacement of the character
+     * at that replaced index, concatenated as a String. This is a helper function for use in testing.
+     *
+     * This method
+     *
+     * @param newStatus The new status to replace a char in the String of some valid replacement index to.
+     * @param existingAttendanceString The existing attendance string.
+     * @param firstReplacementIndex The first potential index to be replaced.
+     * @param secondReplacementIndex The second potential index to be replaced.
+     * @return String with the replaced index and the new String after replacement.
+     */
+    private String getReplacedIndexAndNewString(
             String newStatus, String existingAttendanceString,
             int firstReplacementIndex, int secondReplacementIndex) {
 
@@ -81,7 +93,7 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
-    public void execute_markIndexAttendedUnfilteredList_success() {
+    public void execute_markIndividualIndexAttendedUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String existingAttendanceString = firstPerson.getAttendanceList().toString();
