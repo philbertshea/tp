@@ -534,10 +534,6 @@ Examples:
 
 What is the `attendances` attribute in the CSV or JSON file?
 
-Our explanation here might be slightly complicated. 
-* If you are an amateur user, please avoid touching this attribute
-in the CSV or JSON files involved, when using the Load data command. 
-
 We use either a length-0 Empty String `""` or a length-13 String of 13 digits from 0 to 3 inclusive to denote a student's attendance records.
 * If a student has no `TUTORIAL_GROUP`, he MUST have an Empty String, as his `attendances` or `attendanceList` attribute.
 * If a student has a valid `TUTORIAL_GROUP`, he MUST have a length-13 String of 13 digits from 0 to 3 inclusive, as his `attendances` attribute.
@@ -561,7 +557,7 @@ e.g. one student has `attendances` being a String of an invalid length (not 0 an
 or a String of valid length but having invalid characters (e.g. digits 4 to 9 inclusive, alphabet, symbols)
 like `"0000011111334"`, the file will be CORRUPTED and the app will start from an Empty AddressBook.
 
-  </box>
+</box>
 
 ### Export Data : `export`
 
