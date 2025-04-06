@@ -288,7 +288,7 @@ Examples:
 ### Deleting student(s): `del`
 Deletes the specified student(s) from the currently displayed list.
 
-⚠️ Important: The INDEX refers to the position in the currently displayed list, not the overall index in the address book. 
+Note: The INDEX refers to the position in the currently displayed list, not the overall index in the address book. 
 For example, if you used the search command before, index 1 refers to the first student in the filtered list.
 
 #### 1. Delete a single student
@@ -317,7 +317,9 @@ Details:
 * All indices must be within the current list size.
 * Ranges must be valid (e.g., 2-1 is not allowed).
 * The -i prefix must be provided only once. 
-    * E.g., del -i 1,2 ✅  del -i 1 -i 2 ❌
+    * E.g., 
+    * Valid: del -i 1,2 
+    * Invalid: del -i 1 -i 2 
  
 Example:
 * del -i 1,3-5,7 → Deletes students at indices 1, 3, 4, 5, and 7.
