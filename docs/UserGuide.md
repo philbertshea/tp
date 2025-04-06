@@ -377,13 +377,13 @@ Marks the attendance of an individual student, or a tutorial group.
 <box type="info" seamless>
 
 **Note**: This will be a long documentation, because of the multiple restrictions imposed
-on the MarkAttendanceCommand. However, the brief summary is here:
+on the marking of attendance. However, the brief summary is here:
 
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 * Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`, ONLY,
 where `INDEX` is a positive integer from 1 to n inclusive, n being the number of students on the list 
-(if n=0, you'll have to add one first) and `TUTORIAL_GROUP` is a string of three characters, first
-character being `T` or `t`, the second and third characters being digits from 0 to 9 inclusive, e.g. `T01`.
+(if n=0, you'll have to add one first) and `TUTORIAL_GROUP` is a string of two or three characters, first
+character being `T` or `t`, the second (and optional third) characters being digits from 0 to 9 inclusive, e.g. `T01`.
 * Mandatory parameter: `-w WEEK`, where `WEEK` is a positive integer from 1 to 13 inclusive.
 * Optional parameters: EITHER ONE OF `-mc` (mark on MC), `-u` (mark as not attended), OR `-nt` (mark as no tutorial) ONLY.
 * Note there are additional restrictions. For example, you cannot mark attendance for students with no tutorial group.
@@ -409,10 +409,10 @@ Note the following restrictions on the provided inputs.
 * `INDEX` must be a **positive integer**, from 1 to n inclusive, where n is the number of students in the list.
     * In the case whereby n = 0, i.e. there are no students in the list, then you will need to minimally add one student
       with a valid tutorial group into the list, in order to use the Mark Attendance Command.
-* `TUTORIAL_GROUP` must be a **String of three characters**.
+* `TUTORIAL_GROUP` must be a **String of two OR three characters**.
     * The first character must be a capital 'T' or small letter 't'.
-    * The second and third characters must be numerical digits from 0 to 9 inclusive.
-    * Valid `TUTORIAL_GROUP` inputs include `T01`, `T02`, `t10`.
+    * The second (and optional third) character must be numerical digits from 0 to 9 inclusive.
+    * Valid `TUTORIAL_GROUP` inputs include `T1` (which is equivalent to `T01`), `T02`, `t10`.
     * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
   of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
   tutorial group T99, then this is not a valid tutorial group that matches to any student, given the current list of students.
@@ -464,9 +464,9 @@ Assuming the restrictions are satisfied,
 
 * `TUTORIAL_GROUP` now accepts a comma or hyphen-separated list of tutorial groups.
   * Every tutorial group listed, or implied in a provided range, must be a valid tutorial group.
-  That is, every tutorial group provided must be a String of three characters.
+  That is, every tutorial group provided must be a String of two or three characters.
     * The first character must be a capital 'T' or small letter 't'.
-    * The second and third characters must be numerical digits from 0 to 9 inclusive.
+    * The second (and optional third) character must be numerical digits from 0 to 9 inclusive.
     * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
       of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
       tutorial group T99, then this is not a valid tutorial group that matches to any student, given the current list of students.
