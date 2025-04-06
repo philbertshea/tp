@@ -132,7 +132,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores a `UserPref` object that represents the user's preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <box type="info" seamless>
@@ -496,8 +496,8 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **MSS**
 
-1.  User opens the app.
-2.  TAssist loads data from a file stored at a specified location.
+1.  User requests to load data by specifying a file location.
+2.  TAssist loads data from the specified file location.
 3.  TAssist displays all students and their information, as loaded from file.
 
     Use case ends.
@@ -506,7 +506,9 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 * 2a. File at specified location is missing.
 
-    * 2a1. TAssist displays no student data.
+    * 2a1. TAssist displays an error message.
+    
+    * 2a2. TAssist displays no student data.
 
     Use case ends.
 
@@ -709,10 +711,10 @@ testers are expected to do more *exploratory* testing.
       Expected: Error message shown: "Invalid index. Index must be a non-zero positive integer and within the range of listed records.” No deletion occurs.
 
    1. Test case: `del -i -1`<br>
-   Expected: Error message shown: “Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
+   Expected: Error message shown: "Invalid input.” Possible issues shown (invalid range input or non-zero integer). No deletion occurs.
 
    1. Test case: `del -i 999` (where 999 > number of students shown)<br>
-   Expected: Error message shown:  “Invalid index (out of range)! You currently have [number] records!” No deletion occurs.
+   Expected: Error message shown: "Invalid index (out of range)! You currently have [number] records!” No deletion occurs.
 
    1. Test case: `del -i 1-3` (range input)<br>
    Expected: Persons at index 1, 2, and 3 are deleted. Confirmation message lists all three.
@@ -724,16 +726,16 @@ testers are expected to do more *exploratory* testing.
    Expected: All specified persons are deleted. Duplicates are ignored. Confirmation message lists all unique deletions.
 
    1. Test case: `del -i 3-1`<br>
-   Expected: Error message shown:  “Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
+   Expected: Error message shown: "Invalid index range! Ensure that start <= end and all values are positive integers. Expected format: start-end (e.g., 2-4).”
 
    1. Test case: `del -i 1 -i 2`<br>
-   Expected: Error message shown: “Multiple values specified for the following single-valued field(s): -i”
+   Expected: Error message shown: "Multiple values specified for the following single-valued field(s): -i”
 
    1. Test case: `del`<br>
-   Expected: Error message: “Missing arguments! Requires -i <index>.” Delete usage message displayed.
+   Expected: Error message: "Missing arguments! Requires -i <index>.” Delete usage message displayed.
 
    1. Test case: `del -i `<br>
-   Expected: Error message: “Missing arguments! Requires -i <index>..” Delete usage message displayed.
+   Expected: Error message: "Missing arguments! Requires -i <index>..” Delete usage message displayed.
 
    1. Test case: `del -i one`<br>
    Expected: Error message: "Invalid index. Only digits, commas and dashes are allowed."
@@ -797,7 +799,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Update lab 1 max score to be 30
 
     1. Test case: `lab -ln 1 -msc 5`<br>
-       Expected:  The updated max score cannot be lesser than the current score for the lab.Your input: 5. The current score for this lab: 25. <br>
+       Expected: The updated max score cannot be lesser than the current score for the lab.Your input: 5. The current score for this lab: 25. <br>
        Note: In this case, the score for lab 1 was set to 25.
 
 1. Updating both lab score and max lab score

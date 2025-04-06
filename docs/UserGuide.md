@@ -522,9 +522,12 @@ Imports student data from an existing `.csv` or `.json` file.
 Format: `load -f FILE_NAME -ext FILE_EXTENSION`
 
 * The `FILE_NAME` should not include a file extension or path. It must refer to a file in the `/data` folder, e.g. `userdata`.
+* The `FILE_NAME` must contain only alphanumeric characters, dashes, or underscores (e.g., `my-data_123`).
+* Unlike the `export` command, the `load` command can only access files directly in the `/data` folder of the application. Full or relative paths with special characters (like `~` or `/`) are not supported.
 * The `FILE_EXTENSION` must be either `csv` or `json`.
 * The file must follow TAssist's expected format. Invalid or malformed data will be rejected with a warning.
-* Duplicate or unparseable records will be skipped with error messages shown.
+* Duplicate records will be skipped with error messages shown.
+* For CSV files, formatting errors (such as missing commas or incorrect number of fields) may cause the entire file to fail loading, with an appropriate error message displayed.
 
 Examples:
 * `load -f userdata -ext csv` loads a CSV file named `userdata.csv` located in the `/data` folder.
