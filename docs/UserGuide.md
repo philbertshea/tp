@@ -117,12 +117,31 @@ Format: `list`
 
 ### Searching students: `search`
 
-Search for students based on parameters.
+Search for students based on specific parameters. At least one parameter must be provided.
 
-Format: `search [OPTIONS]`
+Format: `search (-n NAME) [-p PHONE_NUMBER] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-tag TAG]`
+
+* The search is case-insensitive (e.g., `john` will match `John`).
+* The order of parameters does not matter.
+* If multiple parameters of the same type are provided (e.g., `-f SoC -f FoS`), only the last one is used for searching.
+* The search supports partial matching (e.g., `jo` will match `John`).
+
+Parameters:
+* `-n`: Search by student name
+* `-p`: Search by phone number
+* `-e`: Search by email address
+* `-m`: Search by matriculation number
+* `-t`: Search by tutorial group
+* `-b`: Search by lab group
+* `-f`: Search by faculty
+* `-y`: Search by year of study
+* `-tag`: Search by tag
 
 Examples:
-* `search -n john` returns `john` and `John Doe`
+* `search -n john` returns students with names containing "john" (e.g., "John Doe", "Johnny")
+* `search -f Computing` returns students from the Computing faculty
+* `search -t T01` returns all students in tutorial group T01
+* `search -tag lateStudent` returns students tagged with "lateStudent"
 
 ### Redo command: `redo`
 Format: `redo`
@@ -165,7 +184,6 @@ The following commands will ignore any changes:
 * `help`
 * `toggle`
 * `search`
-    * Note: run the list command to see any updated changes to student's information if you any more commands.
 * `export`
 * `load`
 
@@ -531,7 +549,7 @@ Action     | Format, Examples
 **Help**   | `help`
 **Toggle** | `toggle`
 **List**   | `list`
-**Search** | `search [OPTIONS]`<br> e.g., `search -n john`
+**Search** | `search (-n NAME) [-p PHONE_NUMBER] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-tag TAG]`
 **Redo**   | `redo`
 **Undo**   | `undo`
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`

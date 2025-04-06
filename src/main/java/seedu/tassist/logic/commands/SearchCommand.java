@@ -1,6 +1,9 @@
 package seedu.tassist.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+
+import seedu.tassist.logic.Messages;
+import seedu.tassist.logic.commands.exceptions.CommandException;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_FACULTY;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_LAB_GROUP;
@@ -11,9 +14,6 @@ import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TELE_HANDLE;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_TUT_GROUP;
 import static seedu.tassist.logic.parser.CliSyntax.PREFIX_YEAR;
-
-import seedu.tassist.logic.Messages;
-import seedu.tassist.logic.commands.exceptions.CommandException;
 import seedu.tassist.model.Model;
 import seedu.tassist.model.person.PersonMatchesPredicate;
 
@@ -28,7 +28,8 @@ public class SearchCommand extends Command {
         String.format(
             "Usage: %s [OPTIONS]...\n\n"
                     + "Searches for students based on given parameters.\n"
-                    + "All arguments are optional. Multiple options can be used together.\n\n"
+                    + "At least one argument is necessary. Multiple options can be used together.\n"
+                    + "If duplicate arguments of the same type are provided, only the latest one will be considered.\n\n"
                     + "Options:\n"
                     + "  %-7s       Name (supports partial match)\n"
                     + "  %-7s       Matriculation number\n"
