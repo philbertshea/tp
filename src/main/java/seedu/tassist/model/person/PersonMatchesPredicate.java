@@ -73,7 +73,7 @@ public class PersonMatchesPredicate implements Predicate<Person> {
                                         .anyMatch(t -> StringUtil.containsIgnoreCase(t.tagName, tag))))
                 && (tutGroup == null || (
                         tutGroup.isEmpty() ? person.getTutGroup().value.isEmpty()
-                                : StringUtil.containsIgnoreCase(person.getTutGroup().value, tutGroup)))
+                                : person.getTutGroup().equals(new TutGroup(tutGroup))))
                 && (labGroup == null || (
                         labGroup.isEmpty() ? person.getLabGroup().value.isEmpty()
                                 : StringUtil.containsIgnoreCase(person.getLabGroup().value, labGroup)))
