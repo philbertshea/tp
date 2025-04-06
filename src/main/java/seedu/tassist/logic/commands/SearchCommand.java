@@ -28,7 +28,8 @@ public class SearchCommand extends Command {
         String.format(
             "Usage: %s [OPTIONS]...\n\n"
                     + "Searches for students based on given parameters.\n"
-                    + "All arguments are optional. Multiple options can be used together.\n\n"
+                    + "At least one argument is necessary. Multiple options can be used together.\n"
+                    + "Only the latest argument will be considered if duplicated.\n\n"
                     + "Options:\n"
                     + "  %-7s       Name (supports partial match)\n"
                     + "  %-7s       Matriculation number\n"
