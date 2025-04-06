@@ -488,8 +488,8 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
 **MSS**
 
-1.  User opens the app.
-2.  TAssist loads data from a file stored at a specified location.
+1.  User requests to load data by specifying a file location.
+2.  TAssist loads data from the specified file location.
 3.  TAssist displays all students and their information, as loaded from file.
 
     Use case ends.
