@@ -3,9 +3,11 @@
   title: "Wei En's Project Portfolio Page"
 ---
 
-### Project: AddressBook Level 3
+### Project: TAssist
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+TAssist is a desktop application used by CS2106 Teaching Assistants (TAs) for tracking their students in different
+tutorial and/or lab groups. It tracks students' essential information like names, numbers or telegram handles,
+matriculation numbers, school/faculty, and other relevant information.
 
 Given below are my contributions to the project.
 
@@ -17,7 +19,7 @@ Given below are my contributions to the project.
 
 * **New Feature**: Added a history command that allows the user to navigate to previous commands using up/down keys.
 
-* **Code contributed**: [RepoSense link]()
+* **Code contributed**: [RepoSense link](https://nus-cs2103-ay2425s2.github.io/tp-dashboard/?search=philbertshea&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-02-21&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other)
 
 * **Project management**:
   * Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub

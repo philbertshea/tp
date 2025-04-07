@@ -3,7 +3,7 @@
   title: "Philbert Shea's Project Portfolio Page"
 ---
 
-### Project: 
+### Project: TAssist
 
 TAssist is a desktop application used by CS2106 Teaching Assistants (TAs) for tracking their students in different
 tutorial and/or lab groups. It tracks students' essential information like names, numbers or telegram handles,
@@ -53,7 +53,7 @@ Given below are my contributions to the project.
 
 * **Testing**:
   * Added (I think) very comprehensive testing for methods introduced from my MarkAttendanceCommand, MarkAttendanceCommandParser,
-  Attendance and AttendanceList classes.
+  Attendance and AttendanceList classes. Increased the CodeCov coverage from 73% to 75%.
 
 * **Documentation**:
   * Added comprehensive documentation in the user guide for the marking of attendance.
