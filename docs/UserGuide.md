@@ -266,7 +266,8 @@ These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVER
       AND a valid teleHandle after the edit.
       * `edit -i 1 -p` is INVALID, because the proposed edit would make the student have NEITHER a valid phone number,
       NOR a valid teleHandle after the edit.
-  * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input, or empty input.
+  * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input (except `YEAR`), or empty input.
+  * The valid range of `YEAR` is from 1 to 6
 
 Examples:
 *  `edit -i 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st student to be `91234567` and `johndoe@example.com` respectively.
@@ -280,6 +281,7 @@ Format: `edit -i INDEX_RANGE [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y
 * Edits the student at the specified `INDEX_RANGE`. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided. (Only the 4 stated here can be edited. Any other fields will not be accepted.)
 * Existing values will be updated to the input values.
+* The valid range of `YEAR` is from 1 to 6
 
 Examples:
 * `edit -i 1-3 -y 2` Edits the year of study for the 1st to 3rd students to be 2
@@ -293,7 +295,8 @@ Examples:
   status (whether he had a tutorial group before the edit, and will have one after the edit).
     * Case 1: A student originally has a valid `TUTORIAL_GROUP` (and hence a valid Attendance List),
         * Case 1.1: An edit command is given to edit his `TUTORIAL_GROUP` to another valid `TUTORIAL_GROUP`.
-          Then the student's Attendance List is carried over (No change to the Attendance List).
+          Then the student's Attendance List is carried over (No change to the Attendance List). This allows the tutor
+          to retain the previous tutorial attendance history of a student who has transferred to another tutorial group.
         * Case 1.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
           Provided the aforementioned restrictions on the conditional parameters are fulfilled (i.e. the student has a valid `LAB_GROUP`),
           then the student's Attendance List is cleared and replaced with the Blank Attendance List.
@@ -305,28 +308,44 @@ Examples:
           Then the student's Attendance List remains as a Blank Attendance List.
 </box>
 
-### Deleting a student : `del`
-Deletes the specified student from the address book.
+### Deleting student(s): `del`
+Deletes the specified student(s) from the currently displayed list.
 
+Note: The INDEX refers to the position in the currently displayed list, not the overall index in the address book. 
+For example, if you used the search command before, index 1 refers to the first student in the filtered list.
+
+#### 1. Delete a single student
+Deletes one student from the currently displayed list.
+Format: `del -i INDEX`
+Details:
+* Deletes the student at the specified INDEX.
+* The index refers to the number shown in the current displayed list.
+* The index must be a positive non-zero integer (e.g., 1, 2, 3...).
+* Only one student will be deleted.
+
+Example:
+* del -i 2 → Deletes the second student shown in the current list view.
+
+#### 2. Delete multiple students (Batch delete)
+Deletes multiple students in a single command using comma-separated indices or index ranges.
 Format: `del -i INDEX[,INDEX or RANGE]...`
-
-Parameters:
-* `-i`: Specifies the 1-based index(es) of the person(s) to delete. Accepts:
-* Single index (e.g. 1)
-* Multiple indices separated by commas (e.g. 1,3,5)
-* Ranges using dashes (e.g. 2-4)
-* Mixed usage (e.g. 1,3-5,7)
-
-Restrictions:
-* The index must be a positive non-zero integer.
-* Index ranges must be valid (e.g., 2-1 is not allowed).
-* The -i prefix must be provided only once. Multiple `-i` prefixes (e.g. `-i 1 -i 2`) are not allowed.
-
-Examples:
-* `del -i 2`
-* Deletes the person at index 2.
-* `del -i 1,3-5,7`
-* Deletes persons at indices 1, 3, 4, 5, and 7.
+Details:
+* Accepts:
+    * Multiple indices: 1,3,5
+    * Index ranges: 2-4 
+    * Mixed usage: 1,3-5,7
+      Commas , separate each index or range.
+* Ranges use dashes - (e.g., 3-5 includes 3, 4, and 5).
+* Indexes must be positive non-zero integers.
+* All indices must be within the current list size.
+* Ranges must be valid (e.g., 2-1 is not allowed).
+* The -i prefix must be provided only once. 
+    * E.g., 
+    * Valid: del -i 1,2 
+    * Invalid: del -i 1 -i 2 
+ 
+Example:
+* del -i 1,3-5,7 → Deletes students at indices 1, 3, 4, 5, and 7.
 
 ### Clearing all entries : `clear`
 
@@ -405,7 +424,7 @@ character being `T` or `t`, the second (and optional third) characters being dig
 * Mandatory parameter: `-w WEEK`, where `WEEK` is a positive integer from 1 to 13 inclusive.
 * Optional parameters: EITHER ONE OF `-mc` (mark on MC), `-u` (mark as not attended), OR `-nt` (mark as no tutorial) ONLY.
 * Note there are additional restrictions. For example, you cannot mark attendance for students with no tutorial group.
-  (Use the edit command to add a tutorial group for the student first).`-nt` also applies to commands with `-t` ONLY, not `-i`.
+  (Use the edit command to add a tutorial group for the student first). `-nt` also applies to commands with `-t` ONLY, not `-i`.
   (It does not make sense to mark one student as having no tutorial - this function is for tutorials being cancelled, so
 the whole tutorial group should be affected).
 
@@ -653,7 +672,7 @@ Action     | Format, Examples
 **Undo**   | `undo`
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Edit**   | `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]`<br> e.g.,`edit -i 2 -n James Lee -e jameslee@example.com`
-**Delete** | `del -i INDEX [,INDEX or RANGE]...`<br> e.g., `del -i 3`
+**Delete** | Single: del -i INDEX <br> e.g., del -i 3 <br> Batch: del -i INDEX[,INDEX or RANGE]... <br> e.g., del -i 1,3-5,7
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
