@@ -12,10 +12,12 @@ public class SnapshotTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     @Test
     public void checkGetSetFunctions() {
+        // Check object equality
         Snapshot snapshotA = new Snapshot("lab -i 1 -ln 1 -sc 20", Operations.RecordType.RECORD);
         Snapshot snapshotB = new Snapshot(snapshotA);
         assertEquals(snapshotA, snapshotB);
 
+        // Check if all the get and set functions works correctly
         assertEquals(snapshotB.getRecordType(), Operations.RecordType.RECORD);
 
         snapshotA.setRecordType(Operations.RecordType.RECORD);
