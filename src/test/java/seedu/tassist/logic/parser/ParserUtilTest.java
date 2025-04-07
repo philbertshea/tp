@@ -5,6 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.tassist.testutil.TypicalPersons.ALICE;
+import static seedu.tassist.testutil.TypicalPersons.BENSON;
+import static seedu.tassist.testutil.TypicalPersons.CARL;
+import static seedu.tassist.testutil.TypicalPersons.DANIEL;
+import static seedu.tassist.testutil.TypicalPersons.ELLE;
+import static seedu.tassist.testutil.TypicalPersons.FIONA;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalPersons;
 
@@ -384,21 +390,52 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void getPersonsInTutorialGroup_nullTutGroups_throwsNullPointerException() {
+    public void getPersonsInTutorialGroups_nullTutGroups_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
                 ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), null));
     }
 
     @Test
-    public void getPersonsInTutorialGroup_validListAndTutorialGroups_success() {
-        // All Persons in provided list are of the provided tut group -> Returns the same list.
-        List<Person> expectedListReturned = getTypicalPersons();
+    public void getPersonsInTutorialGroups_validListAndTutorialGroups_success() {
+        // EP: List with valid tutorial groups.
+
+        // Value: One tutorial group only.
+        // Alice, Benson, Carl and Daniel in the typical persons list are of tutorial group T01.
+        List<Person> expectedListReturned = Arrays.asList(ALICE, BENSON, CARL, DANIEL);
         assertEquals(expectedListReturned,
                 ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T01"))));
 
-        // None of the Persons in provided list are of the provided tut group -> Returns an empty list.
+        // Value: Duplicate tutorial groups.
+        // Alice, Benson, Carl and Daniel in the typical persons list are of tutorial group T01.
+        expectedListReturned = Arrays.asList(ALICE, BENSON, CARL, DANIEL);
+        assertEquals(expectedListReturned, ParserUtil.getPersonsInTutorialGroups(
+                getTypicalPersons(), List.of(new TutGroup("T01"), new TutGroup("T01"), new TutGroup("T01"))));
+
+        // Value: Multiple tutorial groups.
+        // Alice, Benson, Carl, Daniel, Elle and Fiona in the typical persons list
+        // are of tutorial groups T01 and T02.
+        expectedListReturned = Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA);
+        assertEquals(expectedListReturned, ParserUtil.getPersonsInTutorialGroups(
+                getTypicalPersons(), List.of(new TutGroup("T01"), new TutGroup("T02"))));
+
+        // EP: List with invalid tutorial groups.
+
+        // Value: One tutorial group only.
+        // None of the Persons in provided list are in group T99 -> Returns an empty list.
         assertEquals(new ArrayList<Person>(),
                 ParserUtil.getPersonsInTutorialGroups(getTypicalPersons(), List.of(new TutGroup("T99"))));
+
+        // Value: Multiple tutorial groups.
+        // None of the Persons in provided list are in groups T97, T98, T99 -> Returns an empty list.
+        assertEquals(new ArrayList<Person>(), ParserUtil.getPersonsInTutorialGroups(
+                getTypicalPersons(), List.of(new TutGroup("T97"), new TutGroup("T98"), new TutGroup("T99"))));
+
+        // EP: List with a mix of valid and invalid tutorial groups.
+        // Alice, Benson, Carl and Daniel in the typical persons list are of tutorial group T01.
+        // No one is in tutorial group T02.
+        expectedListReturned = Arrays.asList(ALICE, BENSON, CARL, DANIEL);
+        assertEquals(expectedListReturned, ParserUtil.getPersonsInTutorialGroups(
+                getTypicalPersons(), List.of(new TutGroup("T01"), new TutGroup("T98"), new TutGroup("T99"))));
     }
 
     @Test

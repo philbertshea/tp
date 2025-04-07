@@ -351,7 +351,7 @@ public class AttendanceListTest {
         // Same AttendanceList instance -> returns true.
         assertTrue(attendanceList.equals(attendanceList));
 
-        // Same attendanceString -> returns true.
+        // Different AttendanceList instance of same Attendance String -> returns true.
         assertTrue(attendanceList.equals(attendanceListDuplicate));
 
         // Null -> returns false.
@@ -360,7 +360,7 @@ public class AttendanceListTest {
         // Different types -> returns false.
         assertFalse(attendanceList.equals(5.0f));
 
-        // Different attendanceString -> returns false.
+        // Different AttendanceList instance of different Attendance String -> returns false.
         assertFalse(attendanceList.equals(attendanceListDifferent));
     }
 }

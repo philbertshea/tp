@@ -1,5 +1,6 @@
 package seedu.tassist.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.tassist.logic.commands.CommandTestUtil.VALID_TUT_GROUP_AMY;
@@ -21,8 +22,10 @@ import static seedu.tassist.logic.commands.MarkAttendanceCommand.MESSAGE_MARK_WH
 import static seedu.tassist.testutil.Assert.assertThrows;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.tassist.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -43,18 +46,30 @@ public class MarkAttendanceCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void constructor_nullIndex_throwsNullPointerException() {
+    public void constructor_nullIndexList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
                 new MarkAttendanceCommand(null, 1, Attendance.ATTENDED));
     }
 
     @Test
-    public void constructor_nullTutGroup_throwsNullPointerException() {
+    public void constructor_nullTutGroupList_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () ->
                 new MarkAttendanceCommand(1, Attendance.ATTENDED, null));
     }
 
-    public String getReplacedIndexAndNewString(
+    /**
+     * Gets the replaced index and the String after replacement of the character
+     * at that replaced index, concatenated as a String. This is a helper function for use in testing.
+     *
+     * This method
+     *
+     * @param newStatus The new status to replace a char in the String of some valid replacement index to.
+     * @param existingAttendanceString The existing attendance string.
+     * @param firstReplacementIndex The first potential index to be replaced.
+     * @param secondReplacementIndex The second potential index to be replaced.
+     * @return String with the replaced index and the new String after replacement.
+     */
+    private String getReplacedIndexAndNewString(
             String newStatus, String existingAttendanceString,
             int firstReplacementIndex, int secondReplacementIndex) {
 
@@ -80,8 +95,26 @@ public class MarkAttendanceCommandTest {
 
     }
 
+    /**
+     * Takes in a valid {@code existingString} of length 13, a {@code week} integer from 1 to 13 inclusive,
+     * and a {@code newAttendanceStatus} integer from 0 to 3 inclusive.
+     *
+     * @param existingString Existing Attendance String of length 13.
+     * @param week Integer from 1 to 13 inclusive.
+     * @param newAttendanceStatus Integer from 0 to 3 inclusive.
+     * @return New Attendance String after substitution.
+     */
+    private String replaceAttendanceString(String existingString, int week, int newAttendanceStatus) {
+        assert existingString != null && existingString.length() == 13;
+        assert week > 0 && week < 14
+                && (newAttendanceStatus == Attendance.ATTENDED || newAttendanceStatus == Attendance.NOT_ATTENDED
+                || newAttendanceStatus == Attendance.ON_MC || newAttendanceStatus == Attendance.NO_TUTORIAL);
+
+        return existingString.substring(0, week - 1) + newAttendanceStatus + existingString.substring(week);
+    }
+
     @Test
-    public void execute_markIndexAttendedUnfilteredList_success() {
+    public void execute_markSingleIndexAttendedUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String existingAttendanceString = firstPerson.getAttendanceList().toString();
@@ -107,8 +140,98 @@ public class MarkAttendanceCommandTest {
 
     }
 
+
     @Test
-    public void execute_markIndexNotAttendedUnfilteredList_success() {
+    public void execute_markMultipleIndexesAttendedWeek3UnfilteredList_success() {
+        // Boundary value: week 3.
+        // Weeks 1 and 2 have attendance status of No Tutorial, hence it is invalid to mark
+        // attendance for weeks 1 and 2 on an indexList. (Only for tutGroupList)
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 3;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markMultipleIndexesAttendedWeek10UnfilteredList_success() {
+        // Other value: week 10.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 10;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markMultipleIndexesAttendedWeek13UnfilteredList_success() {
+        // Boundary value: Week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 13;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markSingleIndexNotAttendedUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String existingAttendanceString = firstPerson.getAttendanceList().toString();
@@ -133,9 +256,97 @@ public class MarkAttendanceCommandTest {
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
 
     }
+    @Test
+    public void execute_markMultipleIndexesNotAttendedWeek3UnfilteredList_success() {
+        // Boundary value: week 3.
+        // Weeks 1 and 2 have attendance status of No Tutorial, hence it is invalid to mark
+        // attendance for weeks 1 and 2 on an indexList. (Only for tutGroupList)
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 3;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.NOT_ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.NOT_ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
 
     @Test
-    public void execute_markIndexOnMcUnfilteredList_success() {
+    public void execute_markMultipleIndexesNotAttendedWeek10UnfilteredList_success() {
+        // Other value: week 10.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 10;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.NOT_ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.NOT_ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markMultipleIndexesNotAttendedWeek13UnfilteredList_success() {
+        // Boundary value: Week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 13;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.NOT_ATTENDED);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.NOT_ATTENDED);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markSingleIndexOnMcUnfilteredList_success() {
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         String existingAttendanceString = firstPerson.getAttendanceList().toString();
@@ -161,11 +372,100 @@ public class MarkAttendanceCommandTest {
 
     }
 
+    @Test
+    public void execute_markMultipleIndexesOnMcWeek3UnfilteredList_success() {
+        // Boundary value: week 3.
+        // Weeks 1 and 2 have attendance status of No Tutorial, hence it is invalid to mark
+        // attendance for weeks 1 and 2 on an indexList. (Only for tutGroupList)
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 3;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ON_MC);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ON_MC);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markMultipleIndexesOnMcWeek10UnfilteredList_success() {
+        // Other value: week 10.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 10;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ON_MC);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ON_MC);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_markMultipleIndexesOnMcWeek13UnfilteredList_success() {
+        // Boundary value: Week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        List<Index> indexes = Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON);
+
+        int weekToMark = 13;
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        StringBuilder expectedMessage = new StringBuilder();
+
+        for (Index index: indexes) {
+            Person personToMark = model.getFilteredPersonList().get(index.getZeroBased());
+            String existingAttendanceString = personToMark.getAttendanceList().toString();
+            String newAttendanceString = replaceAttendanceString(
+                    existingAttendanceString, weekToMark, Attendance.ON_MC);
+
+            Person editedPerson = new PersonBuilder(personToMark)
+                    .withAttendanceList(newAttendanceString).build();
+            expectedModel.setPerson(model.getFilteredPersonList().get(index.getZeroBased()), editedPerson);
+            expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                    editedPerson.getName(), editedPerson.getMatNum(), weekToMark)).append("\n");
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(indexes, weekToMark, Attendance.ON_MC);
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+    }
+
 
     @Test
     public void execute_markIndexGivenNoTutorialUnfilteredList_failure() {
 
-        // First Person uses Default Attendance String, where Tutorial Week 1 and 2 has No Tutorial.
+        // First Person uses Default Attendance String, with No Tutorial in Weeks 1 and 2.
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         int weekToEdit = 1;
         MarkAttendanceCommand commandSetWeek1Attended =
@@ -186,52 +486,22 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
-    public void execute_markTutGroupNoTutorialUnfilteredList_success() {
+    public void execute_markSingleTutGroupNotAttendedWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
         StringBuilder expectedMessage = new StringBuilder();
         TutGroup tutGroupToEdit = new TutGroup("T01");
-        int replacementIndex = 5;
-        int weekToEdit = replacementIndex + 1;
-        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
-                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
-        for (Person person : model.getFilteredPersonList()) {
-            if (person.getTutGroup().equals(tutGroupToEdit)) {
-                String existingAttendanceString = person.getAttendanceList().toString();
-                String newAttendanceString = existingAttendanceString.substring(0, replacementIndex)
-                        + Attendance.NO_TUTORIAL
-                        + existingAttendanceString.substring(replacementIndex + 1);
-                Person editedPerson = new PersonBuilder(person)
-                        .withAttendanceList(newAttendanceString).build();
-                expectedModel.setPerson(person, editedPerson);
-                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
-                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
-            }
-        }
-
-        MarkAttendanceCommand command =
-                new MarkAttendanceCommand(replacementIndex + 1, Attendance.NO_TUTORIAL, List.of(tutGroupToEdit));
-
-        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
-
-    }
-
-    @Test
-    public void execute_markTutGroupNotAttendedUnfilteredList_success() {
-        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-
-        StringBuilder expectedMessage = new StringBuilder();
-        TutGroup tutGroupToEdit = new TutGroup("T01");
-        int replacementIndex = 5;
-        int weekToEdit = replacementIndex + 1;
+        int weekToEdit = 1;
         expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
                 tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
         for (Person person : model.getFilteredPersonList()) {
             if (person.getTutGroup().equals(tutGroupToEdit)) {
                 String existingAttendanceString = person.getAttendanceList().toString();
-                String newAttendanceString = existingAttendanceString.substring(0, replacementIndex)
-                        + Attendance.NOT_ATTENDED
-                        + existingAttendanceString.substring(replacementIndex + 1);
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
                 Person editedPerson = new PersonBuilder(person)
                         .withAttendanceList(newAttendanceString).build();
                 expectedModel.setPerson(person, editedPerson);
@@ -240,29 +510,207 @@ public class MarkAttendanceCommandTest {
             }
         }
 
-        MarkAttendanceCommand command =
-                new MarkAttendanceCommand(replacementIndex + 1, Attendance.NOT_ATTENDED, List.of(tutGroupToEdit));
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, List.of(tutGroupToEdit));
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
     }
 
     @Test
-    public void execute_markTutGroupAttendedUnfilteredList_success() {
+    public void execute_markSingleTutGroupNotAttendedWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
         StringBuilder expectedMessage = new StringBuilder();
         TutGroup tutGroupToEdit = new TutGroup("T01");
-        int replacementIndex = 5;
-        int weekToEdit = replacementIndex + 1;
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+
+    @Test
+    public void execute_markSingleTutGroupNotAttendedWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+
+    @Test
+    public void execute_markMultipleTutGroupsNotAttendedWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsNotAttendedWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsNotAttendedWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NOT_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NOT_ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NOT_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NOT_ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupAttendedWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 1;
         expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
                 tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
         for (Person person : model.getFilteredPersonList()) {
             if (person.getTutGroup().equals(tutGroupToEdit)) {
                 String existingAttendanceString = person.getAttendanceList().toString();
-                String newAttendanceString = existingAttendanceString.substring(0, replacementIndex)
-                        + Attendance.ATTENDED
-                        + existingAttendanceString.substring(replacementIndex + 1);
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
                 Person editedPerson = new PersonBuilder(person)
                         .withAttendanceList(newAttendanceString).build();
                 expectedModel.setPerson(person, editedPerson);
@@ -271,29 +719,205 @@ public class MarkAttendanceCommandTest {
             }
         }
 
-        MarkAttendanceCommand command =
-                new MarkAttendanceCommand(replacementIndex + 1, Attendance.ATTENDED, List.of(tutGroupToEdit));
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, List.of(tutGroupToEdit));
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
     }
 
     @Test
-    public void execute_markTutGroupOnMcUnfilteredList_success() {
+    public void execute_markSingleTutGroupAttendedWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
         StringBuilder expectedMessage = new StringBuilder();
         TutGroup tutGroupToEdit = new TutGroup("T01");
-        int replacementIndex = 5;
-        int weekToEdit = replacementIndex + 1;
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupAttendedWeek13UnfilteredList_success() {
+        // Other value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsAttendedWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsAttendedWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsAttendedWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_ATTENDED_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ATTENDED);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_ATTENDED_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ATTENDED, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupOnMcWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 1;
         expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
                 tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
         for (Person person : model.getFilteredPersonList()) {
             if (person.getTutGroup().equals(tutGroupToEdit)) {
                 String existingAttendanceString = person.getAttendanceList().toString();
-                String newAttendanceString = existingAttendanceString.substring(0, replacementIndex)
-                        + Attendance.ON_MC
-                        + existingAttendanceString.substring(replacementIndex + 1);
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
                 Person editedPerson = new PersonBuilder(person)
                         .withAttendanceList(newAttendanceString).build();
                 expectedModel.setPerson(person, editedPerson);
@@ -302,8 +926,391 @@ public class MarkAttendanceCommandTest {
             }
         }
 
-        MarkAttendanceCommand command =
-                new MarkAttendanceCommand(replacementIndex + 1, Attendance.ON_MC, List.of(tutGroupToEdit));
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupOnMcWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupOnMcWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsOnMcWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsOnMcWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsOnMcWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_MC_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.ON_MC);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_MC_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.ON_MC, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupNoTutorialWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupNoTutorialWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markSingleTutGroupNoTutorialWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        TutGroup tutGroupToEdit = new TutGroup("T01");
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupToEdit.toString(), weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (person.getTutGroup().equals(tutGroupToEdit)) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, List.of(tutGroupToEdit));
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsNoTutorialWeek1UnfilteredList_success() {
+        // Boundary value: week 1.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 1;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsNoTutorialWeek5UnfilteredList_success() {
+        // Other value: week 5.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 5;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, tutGroupsToEdit);
+
+        assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
+
+    }
+
+    @Test
+    public void execute_markMultipleTutGroupsNoTutorialWeek13UnfilteredList_success() {
+        // Boundary value: week 13.
+        // Note: Testing is separated for different test week values, because
+        // repeating this test within a single test method leads to errors.
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+        StringBuilder expectedMessage = new StringBuilder();
+        List<TutGroup> tutGroupsToEdit = Arrays.asList(new TutGroup("T01"), new TutGroup("T02"), new TutGroup("T03"));
+        String tutGroupString = tutGroupsToEdit.stream()
+                .reduce("", (acc, tg) ->
+                        acc + tg.toString() + ", ", (x, y) -> x + y);
+        tutGroupString = tutGroupString.substring(0, tutGroupString.length() - 2);
+
+        int weekToEdit = 13;
+        expectedMessage.append(String.format(MESSAGE_MARK_TUT_GROUP_NO_TUTORIAL_SUCCESS,
+                tutGroupString, weekToEdit)).append("\n-------------\n");
+        for (Person person : model.getFilteredPersonList()) {
+            if (tutGroupsToEdit.contains(person.getTutGroup())) {
+                String existingAttendanceString = person.getAttendanceList().toString();
+                String newAttendanceString = replaceAttendanceString(
+                        existingAttendanceString, weekToEdit, Attendance.NO_TUTORIAL);
+                Person editedPerson = new PersonBuilder(person)
+                        .withAttendanceList(newAttendanceString).build();
+                expectedModel.setPerson(person, editedPerson);
+                expectedMessage.append(String.format(MESSAGE_MARK_NO_TUTORIAL_SUCCESS,
+                        editedPerson.getName(), editedPerson.getMatNum(), weekToEdit)).append("\n");
+            }
+        }
+
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                weekToEdit, Attendance.NO_TUTORIAL, tutGroupsToEdit);
 
         assertCommandSuccess(command, model, expectedMessage.toString(), expectedModel);
 
@@ -351,27 +1358,44 @@ public class MarkAttendanceCommandTest {
     }
 
     @Test
+    public void checkIfIndexFlagCommandValid_validPerson_doesNotThrowException() {
+        // Build a person with empty attendanceList.
+        Person personWithEmptyAttendanceList = new PersonBuilder()
+                .withTutGroup("T01")
+                .withAttendanceList(PersonBuilder.DEFAULT_ATTENDANCE_STRING).build();
+        MarkAttendanceCommand command = new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON), 5, Attendance.ATTENDED);
+        assertDoesNotThrow(() ->
+                command.checkIfIndexFlagCommandValid(personWithEmptyAttendanceList));
+    }
+
+    // No tests for generating of success messages, as those are private methods
+    // within the MarkAttendanceCommand class.
+
+    @Test
     public void equals() {
         final MarkAttendanceCommand standardCommand =
                 new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ATTENDED);
 
-        // Same values -> returns true.
+        // Same object -> returns true.
+        assertTrue(standardCommand.equals(standardCommand));
+
+        // Different object of same values -> returns true.
         MarkAttendanceCommand commandWithSameValues =
                 new MarkAttendanceCommand(List.of(INDEX_FIRST_PERSON), VALID_WEEK_A, Attendance.ATTENDED);
         assertTrue(standardCommand.equals(commandWithSameValues));
-
-        // Same object -> returns true.
-        assertTrue(standardCommand.equals(standardCommand));
 
         // Null -> returns false.
         assertFalse(standardCommand.equals(null));
 
         // Different types -> returns false.
-        assertFalse(standardCommand.equals(new ClearCommand()));
+        assertFalse(standardCommand.equals(5.0f));
 
-        // Different index -> returns false.
+        // Different index list -> returns false.
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
                 List.of(INDEX_SECOND_PERSON), VALID_WEEK_A, Attendance.ATTENDED)));
+        assertFalse(standardCommand.equals(new MarkAttendanceCommand(
+                List.of(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON), VALID_WEEK_A, Attendance.ATTENDED)));
 
         // Different week -> returns false.
         assertFalse(standardCommand.equals(new MarkAttendanceCommand(
@@ -385,10 +1409,14 @@ public class MarkAttendanceCommandTest {
                 new MarkAttendanceCommand(VALID_WEEK_B, Attendance.NO_TUTORIAL,
                         List.of(new TutGroup(VALID_TUT_GROUP_AMY)));
 
-        // Different tut group -> returns false.
+        // Different tut group list -> returns false.
         assertFalse(standardCommandWithTutGroup.equals(
                 new MarkAttendanceCommand(VALID_WEEK_B, Attendance.NO_TUTORIAL,
                 List.of(new TutGroup(VALID_TUT_GROUP_BOB)))));
+
+        assertFalse(standardCommandWithTutGroup.equals(
+                new MarkAttendanceCommand(VALID_WEEK_B, Attendance.NO_TUTORIAL,
+                        List.of(new TutGroup(VALID_TUT_GROUP_AMY), new TutGroup(VALID_TUT_GROUP_BOB)))));
 
     }
 

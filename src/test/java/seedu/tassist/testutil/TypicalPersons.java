@@ -66,19 +66,19 @@ public class TypicalPersons {
             .withTags("friends").build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withTeleHandle("@ellie")
-            .withMatNum("A0000005N").withTutGroup("T01").withLabGroup("B01")
+            .withMatNum("A0000005N").withTutGroup("T02").withLabGroup("B01")
             .withFaculty("SoC").withYear("5").withRemark("todo")
             .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-/25|-/25|-/25").build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withTeleHandle("@kunzzz")
-            .withMatNum("A0000006M").withTutGroup("T01").withLabGroup("B01")
+            .withMatNum("A0000006M").withTutGroup("T02").withLabGroup("B01")
             .withFaculty("SoC").withYear("6").withRemark("todo")
             .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-/25|-/25|-/25").build();
     public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withTeleHandle("@bestie")
-            .withMatNum("A0000007L").withTutGroup("T01").withLabGroup("B01")
+            .withMatNum("A0000007L").withTutGroup("T03").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
             .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-/25|-/25|-/25").build();
@@ -86,7 +86,7 @@ public class TypicalPersons {
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
             .withEmail("stefan@example.com").withTeleHandle("@hoo0n")
-            .withMatNum("A0000010X").withTutGroup("T01").withLabGroup("B01")
+            .withMatNum("A0000010X").withTutGroup("T02").withLabGroup("B01")
             .withFaculty("SoC").withYear("3").withRemark("todo")
             .withAttendanceList(AttendanceList.DEFAULT_ATTENDANCE_STRING)
             .withLabScores("4.25/25|-/25|-/25|-/25").build();
