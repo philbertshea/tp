@@ -850,8 +850,33 @@ A bug causes the selection of a contact to slightly flicker. This is likely due 
 
 ### Ensuring readable non-alphanumerical characters.
 
-This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
-To allow for overzealous input validation, the application allows for most unicode characters to be provided. As such, one can have names such as `恵凛`, `まさひろ`, or even `Nguyễn Thị Minh Hằng`. However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
+1. This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
+   * To allow for overzealous input validation, the application allows for most unicode characters to be provided. 
+   * As such, one can have names such as `恵凛`, `まさひろ`, or even `Nguyễn Thị Minh Hằng`. 
+   * However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. 
+   * Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
+
+1. Bulk marking of attendance for several weeks, or for all students, at one go.
+    * We understand that some users may want to mark attendance for several weeks, or for all students, using one command.
+    * Currently, our MarkAttendanceCommand only supports marking attendance for one week at a time, on multiple students
+      given a range of indexes, or a range of tutorial groups.
+    * We will consider extending support for marking attendance over a range of weeks, as well as
+      marking attendance for all students in the list, in the future.
+
+1. Matching of attendance records to an existing tutorial group.
+    * We understand that when a student gets newly added to some existing tutorial group,
+      OR the tutorial group of an existing student gets edited to some existing tutorial group,
+      it will only make sense that the weeks of "No Tutorial" from this existing tutorial group
+      get copied over to the attendance list of the new student.
+    * For instance, if a student is transferred from `T01` (with all weeks having tutorial) to `T02`
+      (with week 7 having no tutorial, due to a public holiday), then the attendance status for week 7
+      should be set to "No Tutorial", consistent with other students in tutorial group `T02`.
+    * Similarly, if a new student is added to `T02`, his attendance status for week 7 should be set to "No Tutorial"
+      by default, consistent with other students in tutorial group `T02`.
+    * We will consider extending support for cross-checking a student's new tutorial group, against the
+      attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
+      with the new tutorial group, in the future.
+
 
 ## **Appendix: Effort**
 

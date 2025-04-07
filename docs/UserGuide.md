@@ -315,7 +315,7 @@ Examples:
 </box>
 
 ### Deleting a student : `del`
-Deletes the specified student from TAssist.
+Deletes the specified student(s) from the currently displayed list.
 
 Format: `del -i INDEX[,INDEX or RANGE]...`
 
