@@ -1052,9 +1052,6 @@ testers are expected to do more *exploratory* testing.
 
 ## **Appendix: Planned Enhancements**
 
-### UI glitch upon selecting contact
-
-A contact will flicker when selected. This is likely due to the loading of attendance tags.
 
 ## **Appendix: Effort**
 
