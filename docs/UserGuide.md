@@ -266,7 +266,8 @@ These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVER
       AND a valid teleHandle after the edit.
       * `edit -i 1 -p` is INVALID, because the proposed edit would make the student have NEITHER a valid phone number,
       NOR a valid teleHandle after the edit.
-  * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input, or empty input.
+  * Optional fields like `FACULTY`, `YEAR` and `REMARKS` can be edited to any valid input (except `YEAR`), or empty input.
+  * The valid range of `YEAR` is from 1 to 6
 
 Examples:
 *  `edit -i 1 -p 91234567 -e johndoe@example.com` Edits the phone number and email address of the 1st student to be `91234567` and `johndoe@example.com` respectively.
@@ -280,6 +281,7 @@ Format: `edit -i INDEX_RANGE [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y
 * Edits the student at the specified `INDEX_RANGE`. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided. (Only the 4 stated here can be edited. Any other fields will not be accepted.)
 * Existing values will be updated to the input values.
+* The valid range of `YEAR` is from 1 to 6
 
 Examples:
 * `edit -i 1-3 -y 2` Edits the year of study for the 1st to 3rd students to be 2

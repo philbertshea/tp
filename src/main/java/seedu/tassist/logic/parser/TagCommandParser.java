@@ -94,6 +94,10 @@ public class TagCommandParser implements Parser<TagCommand> {
             throw new ParseException(String.format(MESSAGE_MISSING_TAG, MESSAGE_USAGE));
         }
 
+        if (argMultimap.getAllValues(PREFIX_TAG).contains("")) {
+            throw new ParseException(String.format("Tags cannot be empty! \n%s", Tag.MESSAGE_CONSTRAINTS));
+        }
+
         List<Tag> tagList = ParserUtil.parseTagsList(argMultimap.getAllValues(PREFIX_TAG));
 
         if (arePrefixesPresent(argMultimap, PREFIX_ADD_TAG)) {
