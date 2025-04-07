@@ -34,7 +34,7 @@ Given below are my contributions to the project.
     * **Enhancement: Bulk marking of attendance**: I added support to bulk-mark attendance for multiple indexes or tutorial groups.
     The similar restrictions apply on each person in the range of indexes provided.
 
-* **Code contributed**: [RepoSense link]()
+* **Code contributed**: [RepoSense link](https://nus-cs2103-ay2425s2.github.io/tp-dashboard/?search=philbertshea)
 
 * **Project management**:
   * Managed and published all the releases so far, from `v1.3` to `v1.5.1`, with the help of team members to write detailed
