@@ -845,6 +845,11 @@ testers are expected to do more *exploratory* testing.
 
 A contact will flicker when selected. This is likely due to the loading of attendance tags.
 
+### Lab score section will be added regardless of a student being in a lab group or not.
+The lab score section will always be added to a contact.
+This is due to the lab score not being linked to the checking of lab group.
+The planned enhancement is to check if a student is in a lab group before adding the lab scores to the student.
+
 ## **Appendix: Effort**
 
 ### Difficulty level
