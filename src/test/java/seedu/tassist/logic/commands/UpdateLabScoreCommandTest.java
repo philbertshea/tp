@@ -51,14 +51,15 @@ public class UpdateLabScoreCommandTest {
                 VALID_LAB_NUMBER_A, VALID_LAB_SCORE_B);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
-        for (int i = 0; i < model.getFilteredPersonList().size(); i++) {
-            Person person = model.getFilteredPersonList().get(i);
+        for (int i = 0; i < expectedModel.getFilteredPersonList().size(); i++) {
+            Person person = expectedModel.getFilteredPersonList().get(i);
             LabScoreList labScoreList = person.getLabScoreList().refreshLabScore(VALID_LAB_NUMBER_A, VALID_LAB_SCORE_B);
             Person editedPerson = new PersonBuilder(person).withLabScores(labScoreList.toString()).build();
             expectedModel.setPerson(person, editedPerson);
         }
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        model = new ModelManager(model.getAddressBook(), new UserPrefs());
     }
 
     @Test
@@ -76,14 +77,26 @@ public class UpdateLabScoreCommandTest {
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedFirstPerson);
-        for (int i = 1; i < model.getFilteredPersonList().size(); i++) {
-            Person person = model.getFilteredPersonList().get(i);
+        for (int i = 1; i < expectedModel.getFilteredPersonList().size(); i++) {
+            Person person = expectedModel.getFilteredPersonList().get(i);
             LabScoreList labScoreList = person.getLabScoreList().refreshLabScore(VALID_LAB_NUMBER_A, VALID_LAB_SCORE_B);
             Person editedPerson = new PersonBuilder(person).withLabScores(labScoreList.toString()).build();
             expectedModel.setPerson(person, editedPerson);
         }
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+        reset(expectedModel);
+    }
+
+    private void reset(Model expectedModel) {
+        // Reset to default for other test cases
+        for (int i = 0; i < model.getFilteredPersonList().size(); i++) {
+            Person person = model.getFilteredPersonList().get(i);
+            LabScoreList labScoreList = person.getLabScoreList().refreshLabScore(VALID_LAB_NUMBER_A, 25);
+            Person editedPerson = new PersonBuilder(person).withLabScores(labScoreList.toString()).build();
+            expectedModel.setPerson(person, editedPerson);
+        }
     }
 
 
