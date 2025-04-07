@@ -142,7 +142,7 @@ Want to manually calculate the checksum?
 
 <box type="tip" seamless>
 
-**Tip:** Only the **matriculation number** of a record makes them unique!
+**Tip:** Only the **matriculation number** of a record makes them unique! This is to allow students who have to share contacts temporarily do so where appropriate.
 </box>
 
 <box type="tip" seamless>
@@ -164,6 +164,12 @@ Tags also have a limit of 60 characters.
 Examples:
 * `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 * `add -n Doe -tg @doe_a_deer -e e7654321@u.nus.edu -b B01 -m A7654321J`
+
+Notable Constraints:
+* `NAME`, `FACULTY`, `REMARK` allows for **most** Unicode characters. Note that it is possible for some characters to be unable to be rendered, and the use of alphanumerics is highly recommended instead. This is to allow you (the user) to have freedom of customizing or using short forms as you please, though the onus would also be on you to remember them too!
+* `PHONE_NUMBER`  ranges from `4~15` digits following [international guidelines](https://worldpopulationreview.com/country-rankings/phone-number-length-by-country).
+* `TUTORIAL_GROUP` and `LAB_GROUP` each follow the same format: `TXX` and `BXX` respectively, where `X` refers to a single digit. You may input a single digit and the formatting will be handled by the application. e.g. `T1` will be converted to `T01` for you.
+* Other unmentioned constraints will be prompted by the application itself when an invalid input for the particular field is provided.
 
 ### Searching students: `search`
 
