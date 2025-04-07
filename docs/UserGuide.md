@@ -295,7 +295,8 @@ Examples:
   status (whether he had a tutorial group before the edit, and will have one after the edit).
     * Case 1: A student originally has a valid `TUTORIAL_GROUP` (and hence a valid Attendance List),
         * Case 1.1: An edit command is given to edit his `TUTORIAL_GROUP` to another valid `TUTORIAL_GROUP`.
-          Then the student's Attendance List is carried over (No change to the Attendance List).
+          Then the student's Attendance List is carried over (No change to the Attendance List). This allows the tutor
+          to retain the previous tutorial attendance history of a student who has transferred to another tutorial group.
         * Case 1.2: An edit command is given to edit his `TUTORIAL_GROUP` to an empty input.
           Provided the aforementioned restrictions on the conditional parameters are fulfilled (i.e. the student has a valid `LAB_GROUP`),
           then the student's Attendance List is cleared and replaced with the Blank Attendance List.
@@ -423,7 +424,7 @@ character being `T` or `t`, the second (and optional third) characters being dig
 * Mandatory parameter: `-w WEEK`, where `WEEK` is a positive integer from 1 to 13 inclusive.
 * Optional parameters: EITHER ONE OF `-mc` (mark on MC), `-u` (mark as not attended), OR `-nt` (mark as no tutorial) ONLY.
 * Note there are additional restrictions. For example, you cannot mark attendance for students with no tutorial group.
-  (Use the edit command to add a tutorial group for the student first).`-nt` also applies to commands with `-t` ONLY, not `-i`.
+  (Use the edit command to add a tutorial group for the student first). `-nt` also applies to commands with `-t` ONLY, not `-i`.
   (It does not make sense to mark one student as having no tutorial - this function is for tutorials being cancelled, so
 the whole tutorial group should be affected).
 
