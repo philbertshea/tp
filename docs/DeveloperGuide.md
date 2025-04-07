@@ -374,7 +374,9 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     * 1d1. TAssist shows an error message, saying the student has already been deleted.
 
+
   Use case ends.
+
 
 **Use case: UC07 - Mark attendance for a student**
 
@@ -424,6 +426,10 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
     
     * 1d2. User enters new data.
 
+  Steps 1d1 and 1d2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
 * 1e. The student that the user wants to mark attendance for currently has no tutorial.
 
     * 1e1. TAssist shows an error message, informing the user that the student has no tutorial.
@@ -432,6 +438,10 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   the whole tutorial group as some other status like "Not Attended" first.
 
     * 1e2. User enters new data.
+
+  Steps 1e1 and 1e2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
 
 * 1f. User requests that the student be marked as not attended.
 
@@ -495,6 +505,10 @@ is not provided.
 
     * 1d2. User enters new data.
 
+  Steps 1d1 and 1d2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
 * 1e. Within the range of indexes provided, there is at least one student that currently has no tutorial.
 
     * 1e1. TAssist shows an error message, informing the user that at least one student has no tutorial.
@@ -505,6 +519,10 @@ is not provided.
       All students in the provided range of students must have an attendance status that is not "No Tutorial".
   
     * 1e2. User enters new data.
+
+  Steps 1e1 and 1e2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
 
 * 1f. User requests that the students be marked as not attended.
 
