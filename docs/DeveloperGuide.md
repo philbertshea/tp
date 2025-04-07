@@ -435,7 +435,6 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
       Use case ends.
 
-
 **Use case: UC08 - Update lab score for a student**
 
 **MSS**
