@@ -1063,10 +1063,12 @@ testers are expected to do more *exploratory* testing.
    * We will consider extending support for cross-checking a student's new tutorial group, against the
    attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
    with the new tutorial group, in the future.
-3. Lab score section will only show for those in a lab group.
-    * It is a known error that currently, the lab score section will always be added to a contact regardless of
-    the student being in a lab group or not. This is due to the lab score not being linked to the checking of lab group.
-    * We plan to check if a student is in a lab group before adding the lab scores to the student.
+3. Lab score section will only be shown for those in a lab group.
+    * It is a known error that currently, the lab score section will always be shown for all student regardless of
+    the student being in a lab group or not. This is due to the lab score section always being added to a student when
+    adding a new student to the list.
+    * We plan to check if a student is in a lab group before adding the lab scores to the student 
+    in a future implementation.
 
 ## **Appendix: Effort**
 
