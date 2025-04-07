@@ -115,6 +115,53 @@ public class DeleteCommandTest {
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
 
+    @Test
+    public void execute_mixedIndexesAndRanges_deletesSuccessfully() {
+        List<Index> mixedIndexes = List.of(INDEX_FIRST_PERSON, Index.fromOneBased(3),
+                Index.fromOneBased(4), Index.fromOneBased(5),
+                Index.fromOneBased(7));
+        List<Person> peopleToDelete = mixedIndexes.stream()
+                .map(i -> model.getFilteredPersonList().get(i.getZeroBased()))
+                .collect(Collectors.toList());
+
+        DeleteCommand deleteCommand = new DeleteCommand(mixedIndexes);
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        for (Person p : peopleToDelete) {
+            expectedModel.deletePerson(p);
+        }
+
+        String expectedMessage = String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                peopleToDelete.size(), DeleteCommand.getDeletedStudentsSummary(peopleToDelete));
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_duplicateIndexes_deletesOnlyOnce() {
+        List<Index> duplicateIndexes = List.of(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON);
+        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+
+        DeleteCommand deleteCommand = new DeleteCommand(duplicateIndexes);
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(personToDelete);
+
+        String expectedMessage = String.format(MESSAGE_DELETE_MULTIPLE_SUCCESS,
+                1, DeleteCommand.getDeletedStudentsSummary(List.of(personToDelete)));
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_outOfBoundsMixedIndex_throwsCommandException() {
+        List<Index> invalidIndexes = List.of(INDEX_FIRST_PERSON, Index.fromOneBased(999));
+        DeleteCommand deleteCommand = new DeleteCommand(invalidIndexes);
+
+        int currentSize = model.getFilteredPersonList().size();
+        String expectedMessage = String.format(MESSAGE_PERSON_INVALID_INDEX, currentSize);
+        assertCommandFailure(deleteCommand, model, expectedMessage);
+    }
 
 
     @Test
