@@ -2,7 +2,10 @@ package seedu.tassist.logic.parser;
 
 
 import static seedu.tassist.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.tassist.logic.Messages.MESSAGE_INVALID_INDEX_RANGE;
 import static seedu.tassist.logic.Messages.MESSAGE_MISSING_ARGUMENTS;
+import static seedu.tassist.logic.Messages.MESSAGE_MULTIPLE_INDEX_INPUT;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.tassist.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.tassist.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -39,6 +42,26 @@ public class DeleteCommandParserTest {
         assertParseSuccess(parser, " -i 1", new DeleteCommand(Collections.singletonList(INDEX_FIRST_PERSON)));
 
         assertParseSuccess(parser, " -i 2", new DeleteCommand(Collections.singletonList(INDEX_SECOND_PERSON)));
+    }
+
+    @Test
+    public void parse_mixedIndicesAndRanges_success() {
+        List<Index> expectedIndexes = Arrays.asList(
+                Index.fromOneBased(1),
+                Index.fromOneBased(3),
+                Index.fromOneBased(4),
+                Index.fromOneBased(5),
+                Index.fromOneBased(7)
+        );
+        DeleteCommand expectedCommand = new DeleteCommand(expectedIndexes);
+        assertParseSuccess(parser, " -i 1,3-5,7", expectedCommand);
+    }
+
+    @Test
+    public void parse_validRange_returnsSuccess() {
+        // Deletes persons at index 1, 2, 3.
+        assertParseFailure(parser, "del -i 1-3",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -97,19 +120,49 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_invalidRange_throwsParseException() {
+        // e.g. user typed "-i 5-2" => invalid range.
         assertParseFailure(parser, "-i 5-2",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidMixedInput_throwsParseException() {
+        // e.g. user typed "-i a-b" => invalid range.
         assertParseFailure(parser, "-i 2, a-b",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_nonNumericRange_throwsParseException() {
+        // e.g. user typed "-i 1-two" => invalid range.
         assertParseFailure(parser, "-i 1-two",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_extraCommas_returnsError() {
+        // e.g. user typed "-i 1,,,2"
+        assertParseFailure(parser, " -i 1,,,2", MESSAGE_MULTIPLE_INDEX_INPUT);
+    }
+
+    @Test
+    public void parse_alphanumeric_returnsError() {
+        // e.g. user typed "-i 1a"
+        assertParseFailure(parser, " -i 1a", MESSAGE_INVALID_INDEX);
+    }
+
+    @Test
+    public void parse_malformedRange_returnsError() {
+        // Multiple dashes in a single token
+        assertParseFailure(parser, " -i 1-2-3", MESSAGE_INVALID_INDEX_RANGE);
+
+        assertParseFailure(parser, " -i 2--3", MESSAGE_INVALID_INDEX_RANGE);
+
+
+        assertParseFailure(parser, " -i -1-2", MESSAGE_INVALID_INDEX_RANGE);
+
+
+        assertParseFailure(parser, " -i 1-", MESSAGE_INVALID_INDEX_RANGE);
+
     }
 }
