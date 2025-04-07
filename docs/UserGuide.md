@@ -12,6 +12,11 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 * high efficiency for fast typers
 * human editable file formats for data persistence
 
+CS2106 TAs can look forward to these attractive features that would assist their day-to-day tasks as a TA:
+* Tracking a student's key school information like matriculation number, and handy information like their telegram handle
+* Managing handy tags as reminders for students they may need to pay particular attention to
+* Marking of tutorial attendance and updating of lab scores
+
 <!-- * Table of Contents -->
 <page-nav-print />
 
@@ -27,7 +32,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 1. Copy the file to the folder you want to use as the _home folder_ for TAssist.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   A GUI similar to the one below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 
@@ -42,15 +47,17 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
    * `tag -a -i 1 -tag lateStudent` : Adds a tag to the 1st student with the label `lateStudent`
 
-   * `del -i 3` : Deletes the contact at index 3.
+   * `del -i 3` : Deletes the student at index 3.
+
+   * `att -i 3 -w 5` : Marks the student at index 3 as attended tutorial in week 5.
 
    * `export -f ./data/test.csv` Exports the current data as a CSV file into the path ./data/test.csv
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all students.
 
    * `exit` : Exits the app.
 
-1. Tired of using the user guide to understand how to use? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
+1. Tired of reading the user guide to understand how to use our app? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
 
 1. Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
    ![UiToggle](images/UiToggle.png)
@@ -73,7 +80,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   e.g. in `add -n NAME`, `NAME` is a parameter which can be used as `add -n John Doe`.
 
-* Items in parentheses requires at least one of them to be supplied.<br>
+* For items in parentheses, at least one of them must be supplied.<br>
   e.g `(-p PHONE_NUMBER -tg TELEGRAM_HANDLE)` means either `-p PHONE_NUMBER` or `-tg TELEGRAM_HANDLE` or both `-p PHONE_NUMBER -tg TELEGRAM HANDLE` are accepted.
   * **Important Exception**: For the MarkAttendanceCommand, `(-i INDEX -t TUTORIAL_GROUP)` will ONLY allow EITHER `-i INDEX`
   OR `-t TUTORIAL_GROUP` as inputs, but NOT BOTH. Do take note of this particular exception.
@@ -95,7 +102,7 @@ TAssist is a **desktop app designed for CS2106 Teaching Assistants (TAs) to mana
 
 ### Viewing help : `help`
 
-Shows a message explaning how to access the help page.
+Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
@@ -197,7 +204,7 @@ Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULA
 
 <box type="tip" seamless>
 
-**Tip:** Matriculation numbers follows a checksum rule!
+**Tip:** Matriculation numbers follow a checksum rule!
 See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
 
 Want to manually calculate the checksum?
@@ -248,8 +255,8 @@ Format: `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMA
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * The behaviour of the edit command depends on the field being edited:
-  * For mandatory fields of a student: `-n NAME`, `-e EMAIL`, `-m MATRICULATION_NUMBER`, a valid input value must be provided.
-to replace the current value.
+  * For mandatory fields of a student: `-n NAME`, `-e EMAIL`, `-m MATRICULATION_NUMBER`, 
+  a valid input value must be provided to replace the current value.
     * E.g. `edit -i 1 -n Alex` is valid, editing the name of student of index 1 to Alex.
     * `edit -i 1 -n 123!#$` is invalid, because 123!#$ is not a valid name.
     * `edit -i 1 -n` is invalid, because a student must have a name, which is a mandatory field.
@@ -274,7 +281,7 @@ Examples:
 
 #### 2. Edit multiple students (Batch edit)
 
-Edits several existing student in the address book in one go.
+Edits several existing students in the address book in one go.
 
 Format: `edit -i INDEX_RANGE [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY]`
 * Edits the student at the specified `INDEX_RANGE`. The index **must be a positive integer** 1, 2, 3, …​
@@ -360,7 +367,7 @@ Edits a current tag.
 
 Format: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`
 
-* Edits the tag `OLD_TAG_NAME` and replaces the tags value with `NEW_TAG_NAME` of the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the tag `OLD_TAG_NAME` and replaces the tag's value with `NEW_TAG_NAME` of the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
 * You can only edit 1 tag at a time. The `OLD_TAG_NAME` must exist for you to edit and replace its value.
 * The `OLD_TAG_NAME` and `NEW_TAG_NAME` must be alphanumeric and have a maximum of 60 characters.
 
@@ -400,8 +407,8 @@ on the marking of attendance. However, the brief summary is here:
 Format: `att (-i INDEX -t TUTORIAL_GROUP) -w WEEK [-mc] [-u] [-nt]`
 * Conditional parameters: EITHER `-i INDEX` OR `-t TUTORIAL_GROUP`, ONLY,
 where `INDEX` is a positive integer from 1 to n inclusive, n being the number of students on the list 
-(if n=0, you'll have to add one first) and `TUTORIAL_GROUP` is a string of two or three characters, first
-character being `T` or `t`, the second (and optional third) characters being digits from 0 to 9 inclusive, e.g. `T01`.
+(if n=0, you'll have to add one first) and `TUTORIAL_GROUP` is a string of two or three characters, whereby the first
+character is `T` or `t`, and the second (and optional third) character(s) is/are digits from 0 to 9 inclusive, e.g. `T01`.
 * Mandatory parameter: `-w WEEK`, where `WEEK` is a positive integer from 1 to 13 inclusive.
 * Optional parameters: EITHER ONE OF `-mc` (mark on MC), `-u` (mark as not attended), OR `-nt` (mark as no tutorial) ONLY.
 * Note there are additional restrictions. For example, you cannot mark attendance for students with no tutorial group.
@@ -429,7 +436,7 @@ Note the following restrictions on the provided inputs.
       with a valid tutorial group into the list, in order to use the Mark Attendance Command.
 * `TUTORIAL_GROUP` must be a **String of two OR three characters**.
     * The first character must be a capital 'T' or small letter 't'.
-    * The second (and optional third) character must be numerical digits from 0 to 9 inclusive.
+    * The second (and optional third) character(s) must be numerical digit(s) from 0 to 9 inclusive.
     * Valid `TUTORIAL_GROUP` inputs include `T1` (which is equivalent to `T01`), `T02`, `t10`.
     * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
   of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
@@ -437,7 +444,7 @@ Note the following restrictions on the provided inputs.
 * Note that a valid index and tutorial group does NOT necessarily mean the command will be valid. 
 There are other restrictions to fulfill, as illustrated by the parameters above and the additional restrictions below.
 
-Additional restrictions apply on the marking attendance command.
+Additional restrictions apply to the marking attendance command.
   * Commands using the `-i` flag have additional restrictions.
     1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
     as having No Tutorial.
@@ -461,9 +468,9 @@ Assuming the restrictions are satisfied,
 * Marks the attendance of a student (if `-i INDEX` is provided)
   OR all students in a tutorial group (if `-t TUTORIAL_GROUP` is provided).
 * The new attendance status is ATTENDED by default. However:
-    * If `-mc` is provided, new attendance status is ON MC.
-    * If `-u` is provided, new attendance status is NOT ATTENDED.
-    * If `-nt` is provided, new attendance status is NO TUTORIAL.
+    * If `-mc` is provided, the new attendance status is ON MC.
+    * If `-u` is provided, the new attendance status is NOT ATTENDED.
+    * If `-nt` is provided, the new attendance status is NO TUTORIAL.
 
 <box type="info" seamless>
 
@@ -487,7 +494,7 @@ Assuming the restrictions are satisfied,
     * The second (and optional third) character must be numerical digits from 0 to 9 inclusive.
     * Besides, note the additional restriction that a `TUTORIAL_GROUP` provided must be a tutorial group attribute
       of at least ONE student in the list. For example, if `T99` is provided, but no students in the list are of
-      tutorial group T99, then this is not a valid tutorial group that matches to any student, given the current list of students.
+      tutorial group T99, then this is not a valid tutorial group that can be matched to any student, given the current list of students.
 
   * Besides, if a hyphen-separated range is provided, it must be of the format `Tab-Tcd` (`T` can be replaced with `t`)
   such that `a`, `b`, `c` and `d` are numerical digits from 0 to 9 inclusive, and `ab <= cd` in decimal format.
@@ -531,7 +538,7 @@ Format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCO
    and at the same time update lab `LAB_NUMBER` maximum score to be `NEW_SCORE_2`.
     * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE_1] -msc [NEW_SCORE_2]`.
 
-Note that for all cases, it the flags does not need to be in this specific order.
+Note that for all cases, the flags do not need to be in this specific order.
 
 ### Load Data : `load`
 
@@ -620,7 +627,7 @@ TAssist data is saved automatically as a JSON file `[JAR file location]/data/add
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, TAssist will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+If your changes to the data file make its format invalid, TAssist will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the TAssist to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </box>
@@ -630,7 +637,7 @@ Furthermore, certain edits can cause the TAssist to behave in unexpected ways (e
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
