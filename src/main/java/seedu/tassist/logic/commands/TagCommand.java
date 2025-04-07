@@ -32,7 +32,7 @@ public class TagCommand extends Command {
     public static final String COMMAND_WORD = "tag";
 
     public static final String MESSAGE_USAGE = String.format(
-            "Usage: tag [%s|%s|%s] %s INDEX [OPTIONS]\n\n"
+            "Usage: tag -[%s|%s|%s] %s INDEX [OPTIONS]\n\n"
                     + "Commands:\n"
                     + "  %s          Adds new tags to the person identified by INDEX in the displayed list.\n"
                     + "  %s          Edits an existing tag of a person identified by INDEX in the displayed list.\n"
@@ -55,8 +55,9 @@ public class TagCommand extends Command {
     public static final String MESSAGE_DEL_NO_MORE_ITEMS = "There are no more items to delete!";
     public static final String MESSAGE_INVALID_ACTION = "Action passed to Tag Command is invalid!";
     public static final String MESSAGE_TAG_SUCCESS = "Successfully %s tag(s): \n%s";
-    public static final String MESSAGE_DUPLICATE_TAG = "The tags you want to add have already been already added!";
-    public static final String MESSAGE_DEL_INVALID_TAGS = "The tags you want to delete dont exist";
+    public static final String MESSAGE_DUPLICATE_TAG =
+            "The tags you want to add have already been already added! \nTags: %s";
+    public static final String MESSAGE_DEL_INVALID_TAGS = "The tags you want to delete dont exist \nTags: %s";
     public static final String MESSAGE_EDIT_OLD_TAG_NOT_FOUND = "The tag you want to edit cannot be found!";
     public static final String MESSAGE_EDIT_EXISTENT_NEW_TAG = "The tag's new value you want to add already exists!";
 
@@ -111,29 +112,36 @@ public class TagCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         EditCommand.EditPersonDescriptor editPersonDescriptor = new EditCommand.EditPersonDescriptor();
         Set<Tag> editedTags = new HashSet<>(personToEdit.getTags());
-        boolean res;
         if (action == ActionType.ADD) {
-            res = editedTags.addAll(tags);
-            if (!res) {
-                throw new CommandException(MESSAGE_DUPLICATE_TAG);
+            Set<Tag> intersect = new HashSet<>(editedTags);
+            intersect.retainAll(tags);
+            if (!intersect.isEmpty()) {
+                String intersectStr = intersect.stream().map(Tag::toString).collect(Collectors.joining(", "));
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_TAG, intersectStr));
             }
+
+            editedTags.addAll(tags);
         } else if (action == ActionType.DEL) {
             if (editedTags.isEmpty()) {
                 throw new CommandException(MESSAGE_DEL_NO_MORE_ITEMS);
             }
-            res = editedTags.removeAll(tags);
-            if (!res) {
-                throw new CommandException(MESSAGE_DEL_INVALID_TAGS);
+            if (!editedTags.containsAll(tags)) {
+                Set<Tag> diff = new HashSet<>(tags);
+                diff.removeAll(editedTags);
+                String diffStr = diff.stream().map(Tag::toString).collect(Collectors.joining(", "));
+                throw new CommandException(String.format(MESSAGE_DEL_INVALID_TAGS, diffStr));
             }
+            editedTags.removeAll(tags);
         } else if (action == ActionType.EDIT) {
-            res = editedTags.remove(oldTag);
-            if (!res) {
+
+            if (!editedTags.contains(oldTag)) {
                 throw new CommandException(MESSAGE_EDIT_OLD_TAG_NOT_FOUND);
             }
-            res = editedTags.add(newTag);
-            if (!res) {
+            editedTags.remove(oldTag);
+            if (editedTags.contains(newTag)) {
                 throw new CommandException(MESSAGE_EDIT_EXISTENT_NEW_TAG);
             }
+            editedTags.add(newTag);
         } else {
             throw new CommandException(MESSAGE_INVALID_ACTION);
         }

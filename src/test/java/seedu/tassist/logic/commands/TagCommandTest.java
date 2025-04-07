@@ -20,6 +20,7 @@ import static seedu.tassist.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -108,27 +109,15 @@ public class TagCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
-
-        // Adding it back for multi
-        tags.add(new Tag("testTag2"));
-        newTags = new HashSet<>(tags);
-        newTags.addAll(model.getFilteredPersonList().get(0).getTags());
-        editedPerson = new PersonBuilder(model.getFilteredPersonList().get(0))
-                .withTags(convertSetToArray(newTags)).build();
-        tagCommand = new TagCommand(INDEX_FIRST_PERSON, TagCommandParser.ActionType.ADD, tags, null, null);
-        expectedMessage = String.format(MESSAGE_TAG_SUCCESS,
-                TagCommandParser.ActionType.ADD, getTagSummary(editedPerson));
-        expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
-        assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_addDuplicatedTags_failure() {
-        Set<Tag> exisitingTags = model.getFilteredPersonList().get(0).getTags();
+        Set<Tag> existingTags = model.getFilteredPersonList().get(0).getTags();
+        String existingStr = existingTags.stream().map(Tag::toString).collect(Collectors.joining(", "));
         TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, TagCommandParser.ActionType.ADD,
-                exisitingTags, null, null);
-        assertCommandFailure(tagCommand, model, MESSAGE_DUPLICATE_TAG);
+                existingTags, null, null);
+        assertCommandFailure(tagCommand, model, String.format(MESSAGE_DUPLICATE_TAG, existingStr));
     }
 
     // ================= JUnits for Tags (Delete) =================
@@ -172,9 +161,10 @@ public class TagCommandTest {
 
     @Test
     public void execute_deleteNonExistentTags_failure() {
+        String diffStr = tags.stream().map(Tag::toString).collect(Collectors.joining(", "));
         TagCommand tagCommand = new TagCommand(INDEX_FIRST_PERSON, TagCommandParser.ActionType.DEL,
                 tags, null, null);
-        assertCommandFailure(tagCommand, model, MESSAGE_DEL_INVALID_TAGS);
+        assertCommandFailure(tagCommand, model, String.format(MESSAGE_DEL_INVALID_TAGS, diffStr));
     }
 
     // ================= JUnits for Tags (Edit) =================

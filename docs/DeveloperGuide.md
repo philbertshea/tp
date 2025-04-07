@@ -406,7 +406,8 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   Use case resumes at step 2.
 
 * 1b. User does not provide at least one mandatory argument
-  required to mark a student's attendance.
+  required to mark a student's attendance. For example, the week number
+  is not provided.
 
     * 1b1. TAssist shows an error message, requesting for missing arguments.
 
@@ -435,20 +436,224 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
     
     * 1d2. User enters new data.
 
-* 1e. User requests that the student be marked as not attended.
+* 1e. The student that the user wants to mark attendance for currently has no tutorial.
 
-    * 1e1. TAssist marks the student as not attended for the indicated week.
+    * 1e1. TAssist shows an error message, informing the user that the student has no tutorial.
+  It does not make sense to mark an individual student with a cancelled tutorial as attended.
+  To mark the student as any other attendance status for that week, the user would need to mark
+  the whole tutorial group as some other status like "Not Attended" first.
+
+    * 1e2. User enters new data.
+
+* 1f. User requests that the student be marked as not attended.
+
+    * 1f1. TAssist marks the student as not attended for the indicated week.
 
       Use case ends.
 
-* 1f. User requests that the student be marked as on MC.
+* 1g. User requests that the student be marked as on MC.
 
-    * 1f1. TAssist marks the student as on MC for the indicated week.
+    * 1g1. TAssist marks the student as on MC for the indicated week.
+
+      Use case ends.
+
+**Use case: UC08 - Mark attendance for multiple students**
+
+**MSS**
+
+1.  User requests to mark attendance for a range of students in the list, for some week
+2.  TAssist marks the students as attended for the indicated week
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to mark a student's attendance. For example, the week number
+is not provided.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, within the range of indexes provided, there is at least
+  one index that is of an invalid format (like a negative index). Or, the range may be of an
+  invalid format, not using the required syntax of commas and hyphens, or is descending in order.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. Within the range of indexes provided, there is at least one student that has valid no tutorial group.
+
+    * 1d1. TAssist shows an error message, informing the user that at least one student
+      has no tutorial group, and therefore cannot be marked attendance for tutorials.
+  All students in the provided range of students must have a valid tutorial group.
+
+    * 1d2. User enters new data.
+
+* 1e. Within the range of indexes provided, there is at least one student that currently has no tutorial.
+
+    * 1e1. TAssist shows an error message, informing the user that at least one student has no tutorial.
+      It does not make sense to mark an individual student with a cancelled tutorial as attended.
+      To mark the student as any other attendance status for that week, the user would need to mark
+      the whole tutorial group as some other status like "Not Attended" first.
+  
+      All students in the provided range of students must have an attendance status that is not "No Tutorial".
+  
+    * 1e2. User enters new data.
+
+* 1f. User requests that the students be marked as not attended.
+
+    * 1f1. TAssist marks all the students as not attended for the indicated week.
+
+      Use case ends.
+
+* 1g. User requests that the students be marked as on MC.
+
+    * 1g1. TAssist marks all the students as on MC for the indicated week.
+
+      Use case ends.
+
+**Use case: UC09 - Mark attendance for a tutorial group**
+
+**MSS**
+
+1.  User requests to mark attendance for a tutorial group in the list, for some week
+2.  TAssist marks the tutorial group as attended for the indicated week
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to mark a tutorial group's attendance. For instance,
+he does not provide the week number required.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides a tutorial group that is not a valid tutorial group
+of any student in the list, or a week number that is out of range.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. User requests that the tutorial group be marked as not attended.
+
+    * 1d1. TAssist marks everyone in the tutorial group as not attended for the indicated week.
+
+      Use case ends.
+
+* 1e. User requests that the tutorial group be marked as on MC.
+
+    * 1e1. TAssist marks everyone in the tutorial group as on MC for the indicated week.
+
+      Use case ends.
+
+* 1f. User requests that the tutorial group be marked as no tutorial.
+For example, the tutorial is cancelled due to a public holiday.
+
+    * 1f1. TAssist marks everyone in the tutorial group as no tutorial for the indicated week.
+
+      Use case ends.
+
+**Use case: UC10 - Mark attendance for multiple tutorial groups**
+
+**MSS**
+
+1.  User requests to mark attendance for a range of tutorial groups in the list, for some week
+2.  TAssist marks the tutorial groups as attended for the indicated week
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to mark the tutorial groups' attendance. For instance,
+  he does not provide the week number required.
+
+    * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+    * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, within the range of tutorial groups provided, there is at least
+one tutorial group that is of an invalid format, or there is at least one tutorial group
+that is not a tutorial group of any student in the list. Or, the range may be of an
+invalid format, not using the required syntax of commas and hyphens, or is descending in order.
+
+    * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+    * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1d. User requests that the tutorial groups be marked as not attended.
+
+    * 1d1. TAssist marks everyone in the tutorial groups as not attended for the indicated week.
+
+      Use case ends.
+
+* 1e. User requests that the tutorial groups be marked as on MC.
+
+    * 1e1. TAssist marks everyone in the tutorial groups as on MC for the indicated week.
+
+      Use case ends.
+
+* 1f. User requests that the tutorial groups be marked as no tutorial.
+  For example, the tutorial is cancelled due to a public holiday.
+
+    * 1f1. TAssist marks everyone in the tutorial groups as no tutorial for the indicated week.
 
       Use case ends.
 
 
-**Use case: UC08 - Update lab score for a student**
+**Use case: UC11 - Update lab score for a student**
 
 **MSS**
 
@@ -493,7 +698,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
       Use case ends.
 
-**Use case: UC09 - Load data from file**
+**Use case: UC12 - Load data from file**
 
 **MSS**
 
@@ -543,7 +748,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case resumes at Step 3.
 
-**Use case: UC010 - Save data to file**
+**Use case: UC13 - Save data to file**
 
 **MSS**
 
@@ -613,6 +818,8 @@ testers are expected to do more *exploratory* testing.
 
    1. Re-launch the app by using the `java -jar TAssist.jar` command.<br>
        Expected: The most recent window size and location is retained.
+
+1. _{ more test cases …​ }_
 
 ### Toggling student contact details
 1. Toggling student contact details within the UI. Performed within one session.
@@ -776,8 +983,14 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `att -i 1 -w 5`<br>
       Expected: First contact is marked as attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
 
+   1. Test case: `att -i 1 -w 5 -u`<br>
+      Expected: First contact is marked as not attended for week 5. (Provided he satisfies the restrictions of the mark attendance command)
+
    1. Test case: `att -t T01 -w 5`<br>
       Expected: All students in the tutorial group T01 are marked as attended for week 5. (Provided the restrictions of the mark attendance command are satisfied)
+
+   1. Test case: `att -i T01-T02 -w 5`<br>
+      Expected: All students in the tutorial groups T01 and T02 are marked as attended for week 5. (Provided the restrictions of the mark attendance command are satisfied)
 
    1. Other incorrect delete commands to try: `att`, `att -i x`, `...` (where x is larger than the list size)<br>
       Expected: Error messages describing the error.
@@ -844,12 +1057,6 @@ testers are expected to do more *exploratory* testing.
 
 ## **Appendix: Planned Enhancements**
 
-### UI glitch upon selecting contact
-
-A bug causes the selection of a contact to slightly flicker. This is likely due to the loading of attendance tags.
-
-### Ensuring readable non-alphanumerical characters.
-
 1. This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
    * To allow for overzealous input validation, the application allows for most unicode characters to be provided. 
    * As such, one can have names such as `恵凛`, `まさひろ`, or even `Nguyễn Thị Minh Hằng`. 
@@ -876,7 +1083,6 @@ A bug causes the selection of a contact to slightly flicker. This is likely due 
     * We will consider extending support for cross-checking a student's new tutorial group, against the
       attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
       with the new tutorial group, in the future.
-
 
 ## **Appendix: Effort**
 
