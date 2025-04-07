@@ -43,7 +43,7 @@ public class Attendance {
     /**
      * Returns true if a given attendance is a valid attendance.
      *
-     * @return Boolean
+     * @return Boolean representing if the given attendance is valid.
      */
     public static boolean isValidAttendance(int attendance) {
         return attendance == ATTENDED
@@ -61,6 +61,11 @@ public class Attendance {
         return week > 0 && week < 14;
     }
 
+    /**
+     * Concatenates "W", the week value, and ":", returning a String, used as the prefix for Attendance tags on the UI.
+     *
+     * @return String to be used as the prefix for Attendance tags on the UI (in the PersonCard component).
+     */
     public String getWeekAsTagPrefix() {
         return "W" + this.week + ":";
     }
