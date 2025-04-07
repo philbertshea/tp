@@ -831,14 +831,6 @@ testers are expected to do more *exploratory* testing.
    2. Test Case: `export -f ./data/test.json`
       Expected: Exported data to file: ./data/test.csv
 
-### Saving data
-
-1. Dealing with missing/corrupted data files
-
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
-
 ## **Appendix: Planned Enhancements**
 
 ### UI glitch upon selecting contact
