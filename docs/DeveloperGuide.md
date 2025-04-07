@@ -178,6 +178,34 @@ Classes used by multiple components are in the `seedu.tassist.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Undo and redo command
+When a command is entered, the class `AddressBookParser` will call the different parsers to parse the command string
+based on the command word provided. Within the different switch statements of `AddressBookParser`, a function call to
+the class `Operations` is also made to record the string and current state (i.e. the `personList` of the address book) 
+and saved to a list (`pastStates`). 
+The combination of string, type and `personList` are saved as an object called `Snapshot`.
+
+* If the command is invalid, the `Snapshot` object will be removed from the list.
+* If the command is valid, the `Snapshot` object remains.
+
+The list will grow with every command added until an `Undo` command is executed.
+
+When an `Undo` command is executed, it will remove the last added `Snapshot` from the list (`pastStates`) and 
+load the `personList` as the current list. The `Snapshot` object is then saved in another list (`futureStates`) 
+for the `Redo` command.
+
+Similarly, when a `Redo` command is executed, it will remove the last added `Snapshot` object from 
+the list (`futureStates`), load the `personList` as the current list, before adding the `Snapshot` object back to the
+list (`pastStates`).
+
+Note:
+* An exception is thrown when the required list is empty.
+  * For `Undo`, it is `pastStates`.
+  * For `Redo`, it is `futureStates`.
+* When a valid command is executed after the `Undo` command runs, 
+the `futureStates` list is cleared.
+
+
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_

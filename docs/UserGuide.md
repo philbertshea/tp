@@ -556,6 +556,8 @@ Examples:
 * `lab -i 1 -ln 1 -sc 29 -msc 30` updates lab 1 maximum score to be 30 and 
 also updates the first student lab score to be 29/30.
 
+Also note that the flags and commands used here are case-sensitive.
+
 ### Load Data : `load`
 
 Imports student data from an existing `.csv` or `.json` file.
