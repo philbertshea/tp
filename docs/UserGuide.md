@@ -444,6 +444,9 @@ Note the following restrictions on the provided inputs.
 * Note that a valid index and tutorial group does NOT necessarily mean the command will be valid. 
 There are other restrictions to fulfill, as illustrated by the parameters above and the additional restrictions below.
 
+![invalid index](images/MarkAttendanceInvalidIndex.png)
+Passing in an invalid index will result in an error message.
+
 Additional restrictions apply to the marking attendance command.
   * Commands using the `-i` flag have additional restrictions.
     1. `-nt` flag cannot be used on a command with the `-i` flag. This means you cannot mark an individual
@@ -463,6 +466,11 @@ Additional restrictions apply to the marking attendance command.
        Then it doesn't make sense to mark his attendance for any week.
        * If you realise Alex is actually in tutorial group T01, use the `edit` command to edit
        his `TUTORIAL_GROUP` to T01 first. Then you can use the mark attendance command on him.
+
+![no tutorial](images/MarkAttendanceNoTutorial.png)
+Marking attendance for one student for a week he has no tutorial in, will result in an error message.
+* You will need to mark his whole tutorial group as attended/not attended for the week first, before
+you can mark the individual index as attended/not attended.
 
 Assuming the restrictions are satisfied,
 * Marks the attendance of a student (if `-i INDEX` is provided)
@@ -515,6 +523,9 @@ Assuming the restrictions are satisfied,
   will show the first student that does not fulfill the restrictions within the range of indexes provided.
   - You will need to mark attendance for the other people using `att -i 1-2,6-10 -w 3`.
   </box>
+
+![valid command](images/MarkAttendanceValid.png)
+An example of a valid command to mark the attendance of individuals of indexes 5 and 6, as attended week 7's tutorial.
 
 Examples:
 * `att -i 1 -w 3` marks the first student as attended Tutorial Week 3.
