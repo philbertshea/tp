@@ -589,11 +589,11 @@ For example, the tutorial is cancelled due to a public holiday.
 
       Use case ends.
 
-**Use case: UC10 - Mark attendance for a range of tutorial groups**
+**Use case: UC10 - Mark attendance for multiple tutorial groups**
 
 **MSS**
 
-1.  User requests to mark attendance for a range of tutorial group in the list, for some week
+1.  User requests to mark attendance for a range of tutorial groups in the list, for some week
 2.  TAssist marks the tutorial groups as attended for the indicated week
 
     Use case ends.
