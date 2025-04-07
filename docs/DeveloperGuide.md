@@ -132,7 +132,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user's preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores a `UserPref` object that represents the user's preferences. This is exposed to the outside as a `ReadOnlyUserPref` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <box type="info" seamless>
@@ -171,17 +171,6 @@ The `Storage` component,
 ### Common classes
 
 Classes used by multiple components are in the `seedu.tassist.commons` package.
-
---------------------------------------------------------------------------------------------------------------------
-
-## **Implementation**
-
-This section describes some noteworthy details on how certain features are implemented.
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -225,7 +214,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | new user       | see an introductory video of the app                                     | learn about key features and basic usage of the application.                                                                                                                                            |
 | `* * *`  | user           | add a student's record                                                   | note their particulars and begin keeping track of their attendance and/or lab scores.                                                                                                                   |
 | `* * *`  | user           | update a student's tutorial attendance                                   | maintain accurate administrative records.                                                                                                                                                               |
-| `* * *`  | user           | udpate a student's grades for labs                                       | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
+| `* * *`  | user           | update a student's grades for labs                                       | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
 | `*`      | user           | label students with tags                                                 | keep track of additional information such as students who may require additional attention.                                                                                                             |
 | `* * *`  | user           | delete a student record                                                  | remove students who dropped the class, incorrect entries, or outdated records.                                                                                                                          |
 | `* *`    | user           | edit a students record                                                   | fix inaccurate information within records.                                                                                                                                                              |
