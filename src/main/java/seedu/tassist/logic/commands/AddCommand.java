@@ -30,6 +30,7 @@ public class AddCommand extends Command {
             String.format(
             "Usage: %s [OPTIONS]...\n\n"
                     + "Adds a person to the address book.\n"
+                    + "Summary required fields: %s, %s, %s (%s or %s) (%s or %s)\n"
                     + "Mandatory arguments:\n"
                     + "  %-7s       Name\n"
                     + "  %-7s       Email\n"
@@ -49,6 +50,8 @@ public class AddCommand extends Command {
                     + "%s @johnDoe %s T01 %s B02 %s School of Computing %s 3 %s TA candidate "
                     + "%s friends %s owesMoney",
                     COMMAND_WORD, PREFIX_NAME, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_PHONE,
+                    PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP,
+                    PREFIX_NAME, PREFIX_EMAIL, PREFIX_MAT_NUM, PREFIX_PHONE,
                     PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP, PREFIX_LAB_GROUP, PREFIX_FACULTY,
                     PREFIX_YEAR, PREFIX_REMARK, PREFIX_TAG, COMMAND_WORD, PREFIX_NAME, PREFIX_EMAIL,
                     PREFIX_MAT_NUM, PREFIX_PHONE, PREFIX_TELE_HANDLE, PREFIX_TUT_GROUP,
