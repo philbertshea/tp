@@ -494,7 +494,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 **MSS**
 
 1.  User requests to mark attendance for a range of students in the list, for some week
-2.  TAssist marks the students as attended for the indicated week
+2.  TAssist marks the student's as attended for the indicated week
 
     Use case ends.
 
