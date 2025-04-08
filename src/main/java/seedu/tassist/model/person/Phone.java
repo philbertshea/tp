@@ -13,7 +13,7 @@ public class Phone {
 
     public static final String MESSAGE_CONSTRAINTS = "Invalid phone number!"
             + "\nPhone numbers should only contain numbers, "
-            + "and should be between 3 to 15 digits long."
+            + "and should be between 4 to 15 digits long."
             + "\n+ is also allowed as the first character only.";
     public static final String VALIDATION_REGEX = "^\\+?\\d{4,15}$";
     public final String value;

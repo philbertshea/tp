@@ -15,7 +15,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[homepage](https://github.com/ChinZJ)]
 [[github](https://github.com/ChinZJ)]
-[[portfolio](team/chinzj.md)]
+[[PPP portfolio](team/chinzj.md)]
 
 * Role: Deliverables and Deadlines
 * Responsibilities: Ensure project deliverables are done on time and in the right format.
@@ -25,7 +25,7 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/hhlh27.png" width="200px">
 
 [[github](http://github.com/hhlh27)]
-[[portfolio](team/hhlh27.md)]
+[[PPP portfolio](team/hhlh27.md)]
 
 * Role: Integration
 * Responsibilities: In charge of versioning of the code, maintaining code repository
@@ -44,7 +44,7 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/aquaimpact.png" width="200px">
 
 [[github](http://github.com/aquaimpact)]
-[[portfolio](team/aquaimpact.md)]
+[[PPP portfolio](team/aquaimpact.md)]
 
 * Role: Documentation
 * Responsibilities: Quality of various project documents
@@ -54,7 +54,7 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/philbertshea.png" width="200px">
 
 [[github](http://github.com/philbertshea)]
-[[portfolio](team/philbertshea.md)]
+[[PPP portfolio](team/philbertshea.md)]
 
 * Role: Code Quality
 * Responsibilities: Looks after code quality, ensures adherence to coding standards, etc.
@@ -65,7 +65,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[homepage](https://xuxuezhou.github.io/)]
 [[github](https://github.com/xuxuezhou)]
-[[portfolio](team/xuxuezhou.md)]
+[[PPP portfolio](team/xuxuezhou.md)]
 
 * Role: Testing
 * Responsibilities: Ensures the testing of the project is done properly and on time.
