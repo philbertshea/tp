@@ -64,13 +64,12 @@ CS2106 TAs can look forward to these attractive features that would assist their
    ![UiToggle](images/UiToggle.png)
 
 
-1. To show more details about a particular contact, click on the contact itself!<br>
+* To show more details about a particular contact, click on the contact itself!<br>
    ![UiExtend](images/UiExtend.png)
 
 
-1. Refer to the [Features](#features) below for details of each command.
-
-1. Note that for all features below, the commands are all case-sensitive.
+* Refer to the [Features](#features) below for details of each command.
+  * Note that for all features below, the commands are all case-sensitive.
 --------------------------------------------------------------------------------------------------------------------
 
 ## Features
