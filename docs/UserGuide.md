@@ -37,6 +37,7 @@ CS2106 TAs can look forward to these attractive features that would assist their
 
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+   **Note**: For Windows users, copying text from a `code block` will result in the appending of an unknown symbol into your text. Do make sure that it is removed!
    Some example commands you can try:
 
    * `list` : Lists all contacts.
@@ -112,8 +113,6 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
-**Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
-</box>
 
 ### Listing all students : `list`
 
@@ -121,12 +120,15 @@ Shows a list of all students in TAssist.
 
 Format: `list`
 
+<box type="tip" seamless>
+
+**Tip:** `PHONE_NUMBER` AND `TELEGRAM_HANDLE` can be copied to your clipboard! Just click on it!
+</box>
+
 ### Toggling view : `toggle`
 
 Toggles the student record view to be more compact.
 The following particulars of a student will be hidden if compact view is enabled where applicable: `PHONE_NUMBER`, `TELEGRAM_HANDLE`, `EMAIL`, `YEAR` and `FACULTY`.
-
-<box type="tip" seamless>
 
 ### Adding a student: `add`
 
@@ -136,7 +138,7 @@ Format: `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULA
 
 <box type="tip" seamless>
 
-**Tip:** You **do not need to fill in the entire matriculation number**, only **'A' followed by 8 digits!**. The last character follows a checksum rule!
+**Tip:** You **do not need to fill in the entire matriculation number**, only **'A' followed by 7 digits!**. The last character follows a checksum rule!
 See [here](https://nusmodifications.github.io/nus-matriculation-number-calculator/) for a matriculation number calculator.
 
 Want to manually calculate the checksum?
@@ -146,7 +148,7 @@ Want to manually calculate the checksum?
 - `A0000000Y` has a sum of `0` and thus ends with `Y`.
 - `A4000049Y` has a sum of `13` and thus also ends with `Y`.
 - `A0000001X` has a sum of `1` and thus ends with `X`.
-  </box>
+</box>
 
 <box type="tip" seamless>
 
@@ -217,7 +219,7 @@ Refer to **Undo Command** for the list of commands supported.
 
 **Tip**: if you undo a command and run any other **valid** commands
 (including ignored command such as `list`), you will not be able to redo
-any of the old commands that you had just undo.
+any of the old commands that you had just undone.
 
 </box>
 
@@ -279,7 +281,7 @@ These are conditional fields, whereby AT LEAST ONE or BOTH of the fields in EVER
       * After the edit, the student has AT LEAST a valid `TUTORIAL_GROUP` OR a valid `LAB_GROUP`.
     * E.g. if the student of index 1 currently has a valid `PHONE_NUMBER` but no valid `TELEGRAM_HANDLE`:
       * `edit -i 1 -p 90001234` is valid, because he will still have a valid phone number after the edit.
-      * `edit -i 1 -t @telehandle123` is valid, because he will have BOTH a valid phone number
+      * `edit -i 1 -tg @telehandle123` is valid, because he will have BOTH a valid phone number
       AND a valid teleHandle after the edit.
       * `edit -i 1 -p` is INVALID, because the proposed edit would make the student have NEITHER a valid phone number,
       NOR a valid teleHandle after the edit.
@@ -328,9 +330,6 @@ Examples:
 ### Deleting student(s): `del`
 Deletes the specified student(s) from the currently displayed list.
 
-Note: The INDEX refers to the position in the currently displayed list, not the overall index in the address book. 
-For example, if you used the search command before, index 1 refers to the first student in the filtered list.
-
 #### 1. Delete a single student
 Deletes one student from the currently displayed list.
 Format: `del -i INDEX`
@@ -339,6 +338,12 @@ Details:
 * The index refers to the number shown in the current displayed list.
 * The index must be a positive non-zero integer (e.g., 1, 2, 3...).
 * Only one student will be deleted.
+
+<box type="tip" seamless>
+
+**Note:** The `INDEX` refers to the position in the currently displayed list, not the overall index in the address book.
+For example, if you used the `search` command before, index 1 refers to the first student in the filtered list.
+</box>
 
 Example:
 * del -i 2 → Deletes the second student shown in the current list view.
@@ -705,10 +710,10 @@ Action     | Format, Examples
 **Undo**   | `undo`
 **Add**    | `add -n NAME (-p PHONE_NUMBER -tg TELEGRAM_HANDLE) -e EMAIL -m MATRICULATION_NUMBER (-t TUTORIAL_GROUP -b LAB_GROUP) [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS] [-tag TAG]…​` <br> e.g., `add -n John -p 81234567 -tg @jornn -e e1234567@u.nus.edu -m A1234567X -t T02 -b B03 -f Computing -y 5 -r Likes to sing`
 **Edit**   | `edit -i INDEX [-n NAME] [-p PHONE_NUMBER] [-tg TELEGRAM_HANDLE] [-e EMAIL] [-m MATRICULATION_NUMBER] [-t TUTORIAL_GROUP] [-b LAB_GROUP] [-f FACULTY] [-y YEAR_OF_STUDY] [-r REMARKS]`<br> e.g.,`edit -i 2 -n James Lee -e jameslee@example.com`
-**Delete** | Single: del -i INDEX <br> e.g., del -i 3 <br> Batch: del -i INDEX[,INDEX or RANGE]... <br> e.g., del -i 1,3-5,7
+**Delete** | Single: `del -i INDEX` <br> e.g., `del -i 3` <br> Batch: `del -i INDEX[,INDEX or RANGE]…​` <br> e.g., `del -i 1,3-5,7`
 **Clear**  | `clear`
 **Tag**    | Add: `tag -a -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -a -i 1 -tag lateStudent`<br><br> Edit: `tag -m -i INDEX -tag OLD_TAG_NAME -tag NEW_TAG_NAME`<br> e.g., `tag -m -i 1 -tag lastStudent -tag earlyStudent`<br><br> Delete: `tag -d -i INDEX [-tag TAG_NAME]...`<br> e.g., `tag -d -i 1 -tag earlyStudent`
 **Mark Attendance**   | `att (-i INDEX -t TUTORIAL GROUP) -w WEEK [-mc] [-u] [-nt]`
-**Lab Score** | `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]` <br> e.g., `lab -i 1 -ln 1 -sc 20`
+**Lab Score** | Update lab score: `lab -i INDEX -ln LAB_NUMBER -sc NEW_SCORE` <br> e.g. `lab -i 1 -ln 1 -sc 20` <br> Update max lab score:`lab [-i INDEX] -ln LAB_NUMBER -msc NEW_SCORE` <br> e.g. `lab -ln 1 -msc 30` <br> Update both scores: `lab -i INDEX -ln LAB_NUMBER -sc NEW_SCORE_1 -msc NEW_SCORE_2` <br> `e.g. lab -i 1 -ln 1 -sc 20 -msc 25`
 **Load Data** | `load -f FILE_NAME -ext FILE_EXTENSION`<br> e.g., `load -f userdata -ext csv`
 **Export Data** | `export -f FILE_PATH`<br> e.g., `export -f ./data/test.csv`

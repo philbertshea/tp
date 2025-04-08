@@ -204,6 +204,7 @@ Note:
   * For `Redo`, it is `futureStates`.
 * When a valid command is executed after the `Undo` command runs, 
 the `futureStates` list is cleared.
+* If any other valid command apart from `redo` is executed after `undo`, the `featureStates` list will be cleared.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -361,7 +362,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     Use case resumes at step 3.
 
-*a. At any time, user clears input.
+* *a. At any time, user clears input.
 
     Use case ends.
 
@@ -408,8 +409,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     * 1d1. TAssist shows an error message, saying the student has already been deleted.
 
-
-  Use case ends.
+    Use case ends.
 
 
 **Use case: UC07 - Mark attendance for a student**
@@ -481,13 +481,13 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     * 1f1. TAssist marks the student as not attended for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1g. User requests that the student be marked as on MC.
 
     * 1g1. TAssist marks the student as on MC for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 **Use case: UC08 - Mark attendance for multiple students**
 
@@ -562,13 +562,13 @@ is not provided.
 
     * 1f1. TAssist marks all the students as not attended for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1g. User requests that the students be marked as on MC.
 
     * 1g1. TAssist marks all the students as on MC for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 **Use case: UC09 - Mark attendance for a tutorial group**
 
@@ -615,20 +615,20 @@ of any student in the list, or a week number that is out of range.
 
     * 1d1. TAssist marks everyone in the tutorial group as not attended for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1e. User requests that the tutorial group be marked as on MC.
 
     * 1e1. TAssist marks everyone in the tutorial group as on MC for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1f. User requests that the tutorial group be marked as no tutorial.
 For example, the tutorial is cancelled due to a public holiday.
 
     * 1f1. TAssist marks everyone in the tutorial group as no tutorial for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 **Use case: UC10 - Mark attendance for multiple tutorial groups**
 
@@ -677,20 +677,20 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
     * 1d1. TAssist marks everyone in the tutorial groups as not attended for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1e. User requests that the tutorial groups be marked as on MC.
 
     * 1e1. TAssist marks everyone in the tutorial groups as on MC for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 * 1f. User requests that the tutorial groups be marked as no tutorial.
   For example, the tutorial is cancelled due to a public holiday.
 
     * 1f1. TAssist marks everyone in the tutorial groups as no tutorial for the indicated week.
 
-      Use case ends.
+    Use case ends.
 
 
 **Use case: UC11 - Update lab score for a student**
@@ -897,7 +897,6 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
   * 1c1. TAssist displays an error message.
 
   Use case ends.
-*
 
 **Use case: UC17 - Redo the last command**
 
@@ -922,7 +921,6 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
   * 1c1. TAssist displays an error message.
 
   Use case ends.
-* 
 
 
 ### Non-Functional Requirements
@@ -953,6 +951,7 @@ using the [Name]Manager.java class following the [Name] interface.
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Sequence diagram**: a diagram that shows the flow of the program.
 * **TA**: Teaching Assistant
+* **MC**: Medical Certificate (Proof of absence as certified by a medical professional, like a doctor)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -986,7 +985,7 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by using the `java -jar TAssist.jar` command.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+1. To close the application, use either the `exit` command or click the `x` at the top right corner.
 
 ### Toggling student contact details
 1. Toggling student contact details within the UI. Performed within one session.
@@ -1170,7 +1169,7 @@ testers are expected to do more *exploratory* testing.
        Expected: Update lab 1 score for student 1 as 20/25
 
     1. Test case: `lab -i 1 -ln 1 -sc 40`<br>
-       Expected: The updated score cannot exceed the maximum score for the lab.Your input: 40. The maximum score for this lab: 25. <br>
+       Expected: Person 1 has score higher than the max lab score (5) that you wish to set. <br>
        Note: In this case, the maximum score was set to be 25
 
     1. Test case: `lab -i 1 -ln 10 -sc 20`<br>
@@ -1216,14 +1215,10 @@ testers are expected to do more *exploratory* testing.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
-
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
+1. Saving of data is automatically done, there is no command to manually save the data.
 
 ## **Appendix: Planned Enhancements**
-Team size: 5
+Team size: 6
 
 1. This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
    * To allow for overzealous input validation, the application allows for most unicode characters to be provided. 
@@ -1231,14 +1226,14 @@ Team size: 5
    * However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. 
    * Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
 
-2. Bulk marking of attendance for several weeks, or for all students, at one go.
+1. Bulk marking of attendance for several weeks, or for all students, at one go.
     * We understand that some users may want to mark attendance for several weeks, or for all students, using one command.
     * Currently, our MarkAttendanceCommand only supports marking attendance for one week at a time, on multiple students
       given a range of indexes, or a range of tutorial groups.
     * We will consider extending support for marking attendance over a range of weeks, as well as
       marking attendance for all students in the list, in the future.
 
-3. Matching of attendance records to an existing tutorial group.
+1. Matching of attendance records to an existing tutorial group.
    * We understand that when a student gets newly added to some existing tutorial group, 
    OR the tutorial group of an existing student gets edited to some existing tutorial group, 
    it will only make sense that the weeks of "No Tutorial" from this existing tutorial group 
@@ -1252,18 +1247,25 @@ Team size: 5
    attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
    with the new tutorial group, in the future.
 
-4. Lab score section will only be shown for those in a lab group.
+1. Lab score section will only be shown for those in a lab group.
     * It is a known error that currently, the lab score section will always be shown for all student regardless of
     the student being in a lab group or not. This is due to the lab score section always being added to a student when
     adding a new student to the list.
     * We plan to check if a student is in a lab group before adding the lab scores to the student 
     in a future implementation.
 
-5. De-selection of a person contact.
+1. De-selection of a person contact.
     * When a contact is selected in the UI, there is currently no means to de-select it.
     * This means that under the compact view achieved through the `toggle` command, one contact will always be expanded.
     * The current fix for this will be to run a `search` command that shows nothing, before running `list` again.
     * Considering the fact that TAssist is primarily a keyboard driven application, we do not expect most users to be using mouse options that heavily, and will thus be implemented in a future date.
+
+1. More comprehensive error messages for invalid commands 
+    * Error messages for invalid commands currently remind the user about the full, expected usage of the command.
+    * Some error messages may not manage to identify the problematic input within the given command. For example, when an invalid flag is provided after the index input (like `lab -i 1 -ln25`), the current implementation will prompt the user that the index given is invalid. This is because the app recognises this invalid flag (-ln25) as part of the preceding input to the preceding flag (`-i`). The app therefore treats this index input (`1 -ln25`) as invalid.
+    * This feature flaw is prevalent across all of our commands, due to our implementation of recognising flags and inputs. 
+    * We understand that users may want better informed error messages to invalid commands. To fix this feature flaw, we will propose to alter our implementation of recognising inaccurate flags and inputs, to better meet users' needs. 
+    * In the meantime, we would appreciate that users could kindly refer to our User Guide, which contains comprehensive information about the flags and inputs expected for each command. Thank you very much!
 
 ## **Appendix: Effort**
 
