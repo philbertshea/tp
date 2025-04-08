@@ -1184,8 +1184,8 @@ testers are expected to do more *exploratory* testing.
        Expected: Update lab 1 score for student 1 as 20/25
 
     1. Test case: `lab -i 1 -ln 1 -sc 40`<br>
-       Expected: Person 1 has score higher than the max lab score (5) that you wish to set. <br>
-       Note: In this case, the maximum score was set to be 25
+       Expected: The updated max score cannot be lesser than the current score for the lab.Your input: 5. The current score for this lab: 25. <br>
+       Note: In this case, the score for lab 1 was set to 25.
 
     1. Test case: `lab -i 1 -ln 10 -sc 20`<br>
        Expected: Lab number must be between 1 and 4
@@ -1196,8 +1196,9 @@ testers are expected to do more *exploratory* testing.
        Expected: Update lab 1 max score to be 30
 
     1. Test case: `lab -ln 1 -msc 5`<br>
-       Expected: The updated max score cannot be lesser than the current score for the lab.Your input: 5. The current score for this lab: 25. <br>
-       Note: In this case, the score for lab 1 was set to 25.
+      Expected: Person 1 has score higher than the max lab score (5) that you wish to set. <br>
+      Note: In this case, the maximum score was set to be 25
+       
 
 1. Updating both lab score and max lab score
     1. Test case: `lab -i 1 -ln 1 -sc 20 -msc 35`<br>
