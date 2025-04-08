@@ -29,7 +29,7 @@ public class UpdateLabScoreCommand extends Command {
 
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Update the lab score of a student that is identified by the index"
+            + ": Update the lab score of a student that is identified by the index "
             + "with the provided lab number and marks. \n"
             + "Mandatory Parameters: -i INDEX (must be positive integer and within valid index range)"
             + "-ln LAB NUMBER (positive integer between 1 and 4 inclusive) \n"
@@ -44,11 +44,11 @@ public class UpdateLabScoreCommand extends Command {
             + "There are only %1$d labs";
 
     public static final String MESSAGE_INVALID_SCORE =
-            "The updated score cannot exceed the maximum score for the lab."
+            "The updated score cannot exceed the maximum score for the lab.\n"
             + "Your input: %1$d. The maximum score for this lab: %2$d.";
 
     public static final String MESSAGE_INVALID_MAX_SCORE =
-            "The updated max score cannot be lesser than the current score for the lab."
+            "The updated max score cannot be lesser than the current score for the lab.\n"
             + "Your input: %1$d. The current score for this lab: %2$d.";
 
     public static final String MESSAGE_INVALID_NEGATIVE_SCORE =

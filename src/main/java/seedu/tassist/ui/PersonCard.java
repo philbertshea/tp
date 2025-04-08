@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -85,14 +86,22 @@ public class PersonCard extends UiPart<Region> {
         Text phoneText = new Text(person.getPhone().value);
         phoneText.setCursor(Cursor.HAND);
         phoneText.setStyle("-fx-fill: white; -fx-underline: true;");
-        phoneText.setOnMouseClicked(event -> copyToClipboard(phoneText.getText()));
+        phoneText.addEventFilter(MouseEvent.MOUSE_PRESSED, MouseEvent::consume);
+        phoneText.setOnMouseClicked(event -> {
+            copyToClipboard(phoneText.getText());
+            event.consume();
+        });
 
         Text separator = new Text("    "); // Space separator
 
         Text telegramText = new Text(person.getTeleHandle().value);
         telegramText.setCursor(Cursor.HAND);
         telegramText.setStyle("-fx-fill: white; -fx-underline: true;");
-        telegramText.setOnMouseClicked(event -> copyToClipboard(telegramText.getText()));
+        telegramText.addEventFilter(MouseEvent.MOUSE_PRESSED, MouseEvent::consume);
+        telegramText.setOnMouseClicked(event -> {
+            copyToClipboard(telegramText.getText());
+            event.consume();
+        });
 
         // Guaranteed for either phone or telegram Handle to have a value.
         contact.getChildren().clear();

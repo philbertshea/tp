@@ -14,13 +14,15 @@ import seedu.tassist.logic.commands.exceptions.CommandException;
 public class LabScoreList {
     public static final String INVALID_LAB_SCORE = "Lab score needs to be a number";
     public static final String INVALID_LAB_SAVE = "Lab string is loaded incorrectly";
-
+    public static final String EXCEED_MAX_LAB_SCORE_LIMIT = "Maximum limit of lab score is 100";
     public static final String INVALID_LAB_MAX_SCORE =
             "Person %d has score higher than the max lab score (%d) that you wish to set.";
     private static int labTotal = 4;
-    private static boolean isInitialization = true;
     public static final String LAB_NUMBER_CONSTRAINT = String.format(
-            "Lab number must be between 1 and %d", labTotal);
+            "Lab number must be provided and must be between 1 and %d", labTotal);
+    private static boolean isInitialization = true;
+    private static int limitMaxLabScore = 100;
+    private static boolean isUpdatingBothScores = true;
     private ArrayList<LabScore> labScoreList = new ArrayList<>();
 
     /**
@@ -80,7 +82,7 @@ public class LabScoreList {
      */
     public LabScoreList updateMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts)
             throws CommandException {
-        validMaxLabScore(labNumber, maxLabScore, allContacts);
+        validMaxLabScore(!isUpdatingBothScores, labNumber, maxLabScore, allContacts);
 
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateMaxLabScore(maxLabScore);
@@ -100,7 +102,7 @@ public class LabScoreList {
      */
     public LabScoreList updateBothLabScore(int labNumber, int labScore, int maxLabScore, List<Person> allContacts)
             throws CommandException {
-        validMaxLabScore(labNumber, maxLabScore, allContacts);
+        validMaxLabScore(isUpdatingBothScores, labNumber, maxLabScore, allContacts);
 
         LabScore[] copiedScores = getLabScoresWhenValid(labNumber);
         copiedScores[labNumber - 1] = copiedScores[labNumber - 1].updateBothLabScore(labScore, maxLabScore);
@@ -160,19 +162,25 @@ public class LabScoreList {
     /**
      * Checks if the provided max score is valid.
      *
+     * @param isUpdatingBoth Whether the function that calls this is updating both max score and score.
      * @param labNumber The lab of the score to check.
      * @param maxLabScore The score that is being checked.
      * @param allContacts The list of people that needs to be checked.
      * @throws CommandException If {@code maxLabScore} is not valid.
      */
-    private void validMaxLabScore(int labNumber, int maxLabScore, List<Person> allContacts) throws CommandException {
+    private void validMaxLabScore(boolean isUpdatingBoth, int labNumber, int maxLabScore, List<Person> allContacts)
+            throws CommandException {
         if (maxLabScore < 0) {
             throw new CommandException(UpdateLabScoreCommand.MESSAGE_INVALID_NEGATIVE_SCORE);
         }
 
+        if (maxLabScore > limitMaxLabScore) {
+            throw new CommandException(EXCEED_MAX_LAB_SCORE_LIMIT);
+        }
+
         for (int i = 0; i < allContacts.size(); i++) {
             LabScoreList checkList = allContacts.get(i).getLabScoreList();
-            if (checkList == this) {
+            if (checkList == this && isUpdatingBoth) {
                 continue;
             }
 
