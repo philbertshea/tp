@@ -784,6 +784,48 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
     Use case ends.
 
+**Use case: UC14 - Undo the last command**
+
+**MSS**
+
+1.  User requests to undo the last command.
+2.  TAssist undoes the last command.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. No command has been run before.
+
+  * 1a1. TAssist displays an error message.
+
+  Use case ends.
+* 1b. No available command to undo.
+  * 1b1. TAssist displays an error message.
+  
+  Use case ends.
+
+**Use case: UC15 - Redo the last command**
+
+**MSS**
+
+1.  User requests to redo the last command.
+2.  TAssist redoes the last command.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. No command has been run before.
+
+  * 1a1. TAssist displays an error message.
+
+  Use case ends.
+* 1b. No available command to redo.
+  * 1b1. TAssist displays an error message.
+
+  Use case ends.
+
 
 ### Non-Functional Requirements
 
