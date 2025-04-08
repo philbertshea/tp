@@ -23,6 +23,7 @@ public class UpdateLabScoreCommandParserTest {
 
     @Test
     public void successCaseLabScore() {
+        // EP: valid command string
         String userInput = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
@@ -34,6 +35,7 @@ public class UpdateLabScoreCommandParserTest {
 
     @Test
     public void successCaseMaxLabScore() {
+        // EP: valid command string
         String userInput = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
@@ -45,6 +47,7 @@ public class UpdateLabScoreCommandParserTest {
 
     @Test
     public void successCaseBothLabScores() {
+        // EP: valid command string
         String userInput = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
@@ -57,13 +60,12 @@ public class UpdateLabScoreCommandParserTest {
 
     @Test
     public void testMissingField() {
-
+        // EP: invalid command string (missing field)
         String missingIndex = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
                 + PREFIX_LAB_SCORE + " " + VALID_LAB_SCORE_A;
 
         assertParseFailure(parser, missingIndex, MESSAGE_INVALID_INDEX);
-
 
 
         String labErrorMessage = String.format(LabScoreList.LAB_NUMBER_CONSTRAINT);
@@ -74,13 +76,37 @@ public class UpdateLabScoreCommandParserTest {
 
         assertParseFailure(parser, missingLabNumber, labErrorMessage);
 
+
         String missingFieldMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 UpdateLabScoreCommand.MESSAGE_USAGE);
 
-
-        String missingLabScoreAndMaxLabScore = UpdateLabScoreCommand.COMMAND_WORD + " "
+        String missingLabScore = UpdateLabScoreCommand.COMMAND_WORD + " "
                 + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
                 + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A;
-        assertParseFailure(parser, missingLabScoreAndMaxLabScore, missingFieldMessage);
+        assertParseFailure(parser, missingLabScore, missingFieldMessage);
+    }
+
+    @Test
+    public void testInvalidScore() {
+        String invalidScoreValue = "text";
+
+        // EP: invalid score (string instead of int)
+        String invalidScore = UpdateLabScoreCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
+                + PREFIX_LAB_SCORE + " " + invalidScoreValue;
+
+        String errorMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                UpdateLabScoreCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, invalidScore, errorMessage);
+
+        // EP: invalid max score (string instead of int)
+        String invalidMaxScore = UpdateLabScoreCommand.COMMAND_WORD + " "
+                + PREFIX_INDEX + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                + PREFIX_LAB_NUMBER + " " + VALID_LAB_NUMBER_A + " "
+                + PREFIX_MAX_LAB_SCORE + " " + invalidScoreValue;
+
+        assertParseFailure(parser, invalidMaxScore, errorMessage);
     }
 }

@@ -132,7 +132,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user's preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores a `UserPref` object that represents the user's preferences. This is exposed to the outside as a `ReadOnlyUserPref` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <box type="info" seamless>
@@ -205,12 +205,6 @@ Note:
 * When a valid command is executed after the `Undo` command runs, 
 the `futureStates` list is cleared.
 
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -253,7 +247,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | new user       | see an introductory video of the app                                     | learn about key features and basic usage of the application.                                                                                                                                            |
 | `* * *`  | user           | add a student's record                                                   | note their particulars and begin keeping track of their attendance and/or lab scores.                                                                                                                   |
 | `* * *`  | user           | update a student's tutorial attendance                                   | maintain accurate administrative records.                                                                                                                                                               |
-| `* * *`  | user           | udpate a student's grades for labs                                       | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
+| `* * *`  | user           | update a student's grades for labs                                       | identify if they are struggling with course content and may require additional guidance. This also helps me keep track of graded assignments without rummaging through all the scripts in my workspace. |
 | `*`      | user           | label students with tags                                                 | keep track of additional information such as students who may require additional attention.                                                                                                             |
 | `* * *`  | user           | delete a student record                                                  | remove students who dropped the class, incorrect entries, or outdated records.                                                                                                                          |
 | `* *`    | user           | edit a students record                                                   | fix inaccurate information within records.                                                                                                                                                              |
@@ -413,7 +407,9 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     * 1d1. TAssist shows an error message, saying the student has already been deleted.
 
+
   Use case ends.
+
 
 **Use case: UC07 - Mark attendance for a student**
 
@@ -463,6 +459,10 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
     
     * 1d2. User enters new data.
 
+  Steps 1d1 and 1d2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
 * 1e. The student that the user wants to mark attendance for currently has no tutorial.
 
     * 1e1. TAssist shows an error message, informing the user that the student has no tutorial.
@@ -471,6 +471,10 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   the whole tutorial group as some other status like "Not Attended" first.
 
     * 1e2. User enters new data.
+
+  Steps 1e1 and 1e2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
 
 * 1f. User requests that the student be marked as not attended.
 
@@ -534,6 +538,10 @@ is not provided.
 
     * 1d2. User enters new data.
 
+  Steps 1d1 and 1d2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
 * 1e. Within the range of indexes provided, there is at least one student that currently has no tutorial.
 
     * 1e1. TAssist shows an error message, informing the user that at least one student has no tutorial.
@@ -544,6 +552,10 @@ is not provided.
       All students in the provided range of students must have an attendance status that is not "No Tutorial".
   
     * 1e2. User enters new data.
+
+  Steps 1e1 and 1e2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
 
 * 1f. User requests that the students be marked as not attended.
 
