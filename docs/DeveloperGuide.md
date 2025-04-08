@@ -732,13 +732,90 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case resumes at step 2.
 
-* 1d. User requests that the lab score be updated for all students in a lab session.
+**Use case: UC12 - Update max lab score for a lab**
 
-    * 1d1. TAssist updates the lab score for all students for the indicated lab session.
+**MSS**
 
-      Use case ends.
+1.  User requests to update maximum lab score for a lab.
+2.  TAssist updates the maximum lab score for all the student for the indicated lab session
 
-**Use case: UC12 - Load data from file**
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to update the maximum lab score.
+
+  * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+  * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides a lab session that is out of range, or an invalid maximum lab score.
+
+  * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+  * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+
+**Use case: UC13 - Update lab score for a student and maximum lab score for a lab**
+
+**MSS**
+
+1.  User requests to update lab score for a student in the list, for some lab session. 
+    At the same time, update the maximum lab score for the specified lab.
+2.  TAssist updates the lab score for the student for the indicated lab session, and 
+    update the maximum lab score for the indicated lab.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to update a student's lab score.
+
+  * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+  * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides an index that is out of range, 
+  or the given maximum score for the lab is lower than the student's score.
+
+  * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+  * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+
+**Use case: UC14 - Load data from file**
 
 **MSS**
 
@@ -788,7 +865,7 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case resumes at Step 3.
 
-**Use case: UC13 - Save data to file**
+**Use case: UC15 - Save data to file**
 
 **MSS**
 
@@ -797,7 +874,7 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case ends.
 
-**Use case: UC14 - Undo the last command**
+**Use case: UC16 - Undo the last command**
 
 **MSS**
 
@@ -808,17 +885,21 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
 **Extensions**
 
-* 1a. No command has been run before.
+* 1a. There is a command available to undo
 
-  * 1a1. TAssist displays an error message.
+  Use case resumes at step 2.
+* 1b. No command has been run before.
 
-  Use case ends.
-* 1b. No available command to undo.
   * 1b1. TAssist displays an error message.
-  
-  Use case ends.
 
-**Use case: UC15 - Redo the last command**
+  Use case ends.
+* 1c. No available command to undo.
+  * 1c1. TAssist displays an error message.
+
+  Use case ends.
+*
+
+**Use case: UC17 - Redo the last command**
 
 **MSS**
 
@@ -829,15 +910,19 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
 **Extensions**
 
-* 1a. No command has been run before.
+* 1a. There is a command available to redo
+  
+  Use case resumes at step 2.
+* 1b. No command has been run before.
 
-  * 1a1. TAssist displays an error message.
-
-  Use case ends.
-* 1b. No available command to redo.
   * 1b1. TAssist displays an error message.
 
   Use case ends.
+* 1c. No available command to redo.
+  * 1c1. TAssist displays an error message.
+
+  Use case ends.
+* 
 
 
 ### Non-Functional Requirements
