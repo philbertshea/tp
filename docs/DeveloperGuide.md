@@ -178,6 +178,33 @@ Classes used by multiple components are in the `seedu.tassist.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Undo and redo command
+When a command is entered, the class `AddressBookParser` will call the different parsers to parse the command string
+based on the command word provided. Within the different switch statements of `AddressBookParser`, a function call to
+the class `Operations` is also made to record the string and current state (i.e. the `personList` of the address book) 
+and saved to a list (`pastStates`). 
+The combination of string, type and `personList` are saved as an object called `Snapshot`.
+
+* If the command is invalid, the `Snapshot` object will be removed from the list.
+* If the command is valid, the `Snapshot` object remains.
+
+The list will grow with every command added until an `Undo` command is executed.
+
+When an `Undo` command is executed, it will remove the last added `Snapshot` from the list (`pastStates`) and 
+load the `personList` as the current list. The `Snapshot` object is then saved in another list (`futureStates`) 
+for the `Redo` command.
+
+Similarly, when a `Redo` command is executed, it will remove the last added `Snapshot` object from 
+the list (`futureStates`), load the `personList` as the current list, before adding the `Snapshot` object back to the
+list (`pastStates`).
+
+Note:
+* An exception is thrown when the required list is empty.
+  * For `Undo`, it is `pastStates`.
+  * For `Redo`, it is `futureStates`.
+* When a valid command is executed after the `Undo` command runs, 
+the `futureStates` list is cleared.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -705,13 +732,90 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case resumes at step 2.
 
-* 1d. User requests that the lab score be updated for all students in a lab session.
+**Use case: UC12 - Update max lab score for a lab**
 
-    * 1d1. TAssist updates the lab score for all students for the indicated lab session.
+**MSS**
 
-      Use case ends.
+1.  User requests to update maximum lab score for a lab.
+2.  TAssist updates the maximum lab score for all the student for the indicated lab session
 
-**Use case: UC12 - Load data from file**
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to update the maximum lab score.
+
+  * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+  * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides a lab session that is out of range, or an invalid maximum lab score.
+
+  * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+  * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+
+**Use case: UC13 - Update lab score for a student and maximum lab score for a lab**
+
+**MSS**
+
+1.  User requests to update lab score for a student in the list, for some lab session. 
+    At the same time, update the maximum lab score for the specified lab.
+2.  TAssist updates the lab score for the student for the indicated lab session, and 
+    update the maximum lab score for the indicated lab.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User provides only the mandatory arguments in the
+  correct format, or provides additional arguments on top
+  of the mandatory arguments, all in the correct format.
+
+  Use case resumes at step 2.
+
+* 1b. User does not provide at least one mandatory argument
+  required to update a student's lab score.
+
+  * 1b1. TAssist shows an error message, requesting for missing arguments.
+
+  * 1b2. User enters new data.
+
+  Steps 1b1 and 1b2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+* 1c. User provides at least one argument that is invalid, or in incorrect format.
+  For instance, user provides an index that is out of range, 
+  or the given maximum score for the lab is lower than the student's score.
+
+  * 1c1. TAssist shows an error message, requesting for valid arguments in correct format.
+
+  * 1c2. User enters new data.
+
+  Steps 1c1 and 1c2 are repeated until the data entered are correct.
+
+  Use case resumes at step 2.
+
+
+**Use case: UC14 - Load data from file**
 
 **MSS**
 
@@ -761,7 +865,7 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case resumes at Step 3.
 
-**Use case: UC13 - Save data to file**
+**Use case: UC15 - Save data to file**
 
 **MSS**
 
@@ -769,6 +873,56 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 2.  TAssist saves students' data into a file, at a specified location.
 
   Use case ends.
+
+**Use case: UC16 - Undo the last command**
+
+**MSS**
+
+1.  User requests to undo the last command.
+2.  TAssist undoes the last command.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There is a command available to undo
+
+  Use case resumes at step 2.
+* 1b. No command has been run before.
+
+  * 1b1. TAssist displays an error message.
+
+  Use case ends.
+* 1c. No available command to undo.
+  * 1c1. TAssist displays an error message.
+
+  Use case ends.
+*
+
+**Use case: UC17 - Redo the last command**
+
+**MSS**
+
+1.  User requests to redo the last command.
+2.  TAssist redoes the last command.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There is a command available to redo
+  
+  Use case resumes at step 2.
+* 1b. No command has been run before.
+
+  * 1b1. TAssist displays an error message.
+
+  Use case ends.
+* 1c. No available command to redo.
+  * 1c1. TAssist displays an error message.
+
+  Use case ends.
+* 
 
 
 ### Non-Functional Requirements
@@ -1069,6 +1223,7 @@ testers are expected to do more *exploratory* testing.
 1. _{ more test cases …​ }_
 
 ## **Appendix: Planned Enhancements**
+Team size: 5
 
 1. This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
    * To allow for overzealous input validation, the application allows for most unicode characters to be provided. 
@@ -1076,14 +1231,14 @@ testers are expected to do more *exploratory* testing.
    * However, due to the extensive nature of such characters, we have not properly ensured that all characters can be displayed by the UI, and may appear as `▯` instead. 
    * Considering the fact that this application is targeted for English typists, we strongly recommend only alphanumerical characters be provided to the application instead.
 
-1. Bulk marking of attendance for several weeks, or for all students, at one go.
+2. Bulk marking of attendance for several weeks, or for all students, at one go.
     * We understand that some users may want to mark attendance for several weeks, or for all students, using one command.
     * Currently, our MarkAttendanceCommand only supports marking attendance for one week at a time, on multiple students
       given a range of indexes, or a range of tutorial groups.
     * We will consider extending support for marking attendance over a range of weeks, as well as
       marking attendance for all students in the list, in the future.
 
-1. Matching of attendance records to an existing tutorial group.
+3. Matching of attendance records to an existing tutorial group.
    * We understand that when a student gets newly added to some existing tutorial group, 
    OR the tutorial group of an existing student gets edited to some existing tutorial group, 
    it will only make sense that the weeks of "No Tutorial" from this existing tutorial group 
@@ -1097,7 +1252,14 @@ testers are expected to do more *exploratory* testing.
    attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
    with the new tutorial group, in the future.
 
-1. De-selection of a person contact.
+4. Lab score section will only be shown for those in a lab group.
+    * It is a known error that currently, the lab score section will always be shown for all student regardless of
+    the student being in a lab group or not. This is due to the lab score section always being added to a student when
+    adding a new student to the list.
+    * We plan to check if a student is in a lab group before adding the lab scores to the student 
+    in a future implementation.
+
+5. De-selection of a person contact.
     * When a contact is selected in the UI, there is currently no means to de-select it.
     * This means that under the compact view achieved through the `toggle` command, one contact will always be expanded.
     * The current fix for this will be to run a `search` command that shows nothing, before running `list` again.

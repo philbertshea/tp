@@ -57,18 +57,19 @@ CS2106 TAs can look forward to these attractive features that would assist their
 
    * `exit` : Exits the app.
 
-1. Tired of reading the user guide to understand how to use our app? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
 
-1. Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
+* Tired of reading the user guide to understand how to use our app? Just type the command name (e.g. `edit`) into the command box to know more about how to use the command!
+
+* Student particulars that you would not require on a regular basis can be hidden! Simply type `toggle` and they will disappear! Alternatively click on `view` → `Compact View`! <br>
    ![UiToggle](images/UiToggle.png)
 
 
-1. To show more details about a particular contact, click on the contact itself!<br>
+* To show more details about a particular contact, click on the contact itself!<br>
    ![UiExtend](images/UiExtend.png)
 
 
-1. Refer to the [Features](#features) below for details of each command.
-
+* Refer to the [Features](#features) below for details of each command.
+  * Note that for all features below, the commands are all case-sensitive.
 --------------------------------------------------------------------------------------------------------------------
 
 ## Features
@@ -565,19 +566,24 @@ Examples:
 ### Updating lab scores: `lab`
 Updates the lab score for the specified student, or update the maximum score for the specified lab.
 
-Format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -sc [NEW_SCORE] -msc [MAXIMUM_LAB_SCORE]`
-
 3 ways of using this command
 1. Update lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE`.
-    * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE]`.
+    * Command format: `lab -i INDEX -ln LAB_NUMBER -sc NEW_SCORE`.
 2. Update maximum lab score: Updates the lab `LAB_NUMBER` maximum score to be `NEW_SCORE`.
-    * Command format: `lab (-i [INDEX]) -ln [LAB_NUMBER] -msc [NEW_SCORE]`.
-    * Note that the `-i` flag is optional here as it will be ignored.
+    * Command format: `lab [-i INDEX] -ln LAB_NUMBER -msc NEW_SCORE`.
+    * Note that the maximum lab score is capped at 100. Scores above 100 will not be accepted.
+    * Note that the `-i` flag is optional here as it will be ignored if it is provided.
 3. Update both lab score and max lab score: Updates the student `INDEX` lab `LAB_NUMBER` score to be `NEW_SCORE_1`
    and at the same time update lab `LAB_NUMBER` maximum score to be `NEW_SCORE_2`.
-    * Command format: `lab -i [INDEX] -ln [LAB_NUMBER] -sc [NEW_SCORE_1] -msc [NEW_SCORE_2]`.
+    * Command format: `lab -i INDEX -ln LAB_NUMBER -sc NEW_SCORE_1 -msc NEW_SCORE_2`.
 
-Note that for all cases, the flags do not need to be in this specific order.
+Examples:
+* `lab -i 1 -ln 1 -sc 20` updates the first student lab score to be 20/25 
+(assuming default maximum score is not changed).
+* `lab -ln 2 -msc 35` updates the maximum score for lab 2 to be 35.
+* `lab -i 1 -ln 1 -sc 29 -msc 30` updates lab 1 maximum score to be 30 and 
+also updates the first student lab score to be 29/30.
+
 
 ### Load Data : `load`
 
