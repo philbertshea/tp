@@ -481,13 +481,13 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     * 1f1. TAssist marks the student as not attended for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * 1g. User requests that the student be marked as on MC.
 
     * 1g1. TAssist marks the student as on MC for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * *a. At any time, user clears input.
 
@@ -566,13 +566,13 @@ is not provided.
 
     * 1f1. TAssist marks all the students as not attended for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * 1g. User requests that the students be marked as on MC.
 
     * 1g1. TAssist marks all the students as on MC for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * *a. At any time, user clears input.
 
@@ -629,14 +629,14 @@ of any student in the list, or a week number that is out of range.
 
     * 1e1. TAssist marks everyone in the tutorial group as on MC for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * 1f. User requests that the tutorial group be marked as no tutorial.
 For example, the tutorial is cancelled due to a public holiday.
 
     * 1f1. TAssist marks everyone in the tutorial group as no tutorial for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * *a. At any time, user clears input.
 
@@ -695,14 +695,14 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
     * 1e1. TAssist marks everyone in the tutorial groups as on MC for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * 1f. User requests that the tutorial groups be marked as no tutorial.
   For example, the tutorial is cancelled due to a public holiday.
 
     * 1f1. TAssist marks everyone in the tutorial groups as no tutorial for the indicated week.
 
-    Use case ends.
+  Use case ends.
 
 * *a. At any time, user clears input.
 
