@@ -489,6 +489,10 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
     Use case ends.
 
+* *a. At any time, user clears input.
+
+  Use case ends.
+
 **Use case: UC08 - Mark attendance for multiple students**
 
 **MSS**
@@ -507,7 +511,7 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
   Use case resumes at step 2.
 
 * 1b. User does not provide at least one mandatory argument
-  required to mark a student's attendance. For example, the week number
+  required to mark the students' attendance. For example, the week number
 is not provided.
 
     * 1b1. TAssist shows an error message, requesting for missing arguments.
@@ -570,6 +574,10 @@ is not provided.
 
     Use case ends.
 
+* *a. At any time, user clears input.
+
+  Use case ends.
+
 **Use case: UC09 - Mark attendance for a tutorial group**
 
 **MSS**
@@ -629,6 +637,10 @@ For example, the tutorial is cancelled due to a public holiday.
     * 1f1. TAssist marks everyone in the tutorial group as no tutorial for the indicated week.
 
     Use case ends.
+
+* *a. At any time, user clears input.
+
+  Use case ends.
 
 **Use case: UC10 - Mark attendance for multiple tutorial groups**
 
@@ -692,6 +704,9 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
     Use case ends.
 
+* *a. At any time, user clears input.
+
+  Use case ends.
 
 **Use case: UC11 - Update lab score for a student**
 
