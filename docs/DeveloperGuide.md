@@ -1138,6 +1138,7 @@ testers are expected to do more *exploratory* testing.
 1. _{ more test cases …​ }_
 
 ## **Appendix: Planned Enhancements**
+Team size: 5
 
 1. This pertains to the `NAME`, `FACULTY`, and `REMARK` of a contact.
    * To allow for overzealous input validation, the application allows for most unicode characters to be provided. 
