@@ -105,10 +105,10 @@ public class RedoCommandTest {
     @Test
     public void successfulRedoDelete() {
         Operations.update(model);
-        String clearCommandString = "del -i 1";
+        String deleteCommandString = "del -i 1";
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         try {
-            Command command = new AddressBookParser().parseCommand(clearCommandString);
+            Command command = new AddressBookParser().parseCommand(deleteCommandString);
             command.execute(model);
             assertNotEquals(model.getFilteredPersonList().size(),
                     expectedModel.getFilteredPersonList().size());
@@ -148,6 +148,32 @@ public class RedoCommandTest {
                 expectedModel.getFilteredPersonList().size());
     }
 
+    @Test
+    public void timelineChangeThrowRedoError() {
+        Operations.update(model);
+        String addCommandString = "add -n Aohn Doe -e Aohnd@example.com -m A1123456J -p 98765432 -tg @johnDoe -t T01";
+        String deleteCommandString = "del -i 1";
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        try {
+            Command command = new AddressBookParser().parseCommand(addCommandString);
+            command.execute(model);
+            runUndoCommand();
+            Operations.update(model);
+            command = new AddressBookParser().parseCommand(deleteCommandString);
+            command.execute(model);
+            runRedoCommand();
+        } catch (ParseException | CommandException e) {
+            fail();
+        } catch (RuntimeException e) {
+            // The error string was set private, and it is hard to use commandFailure for this case
+            String errorMessage = "java.lang.RuntimeException: "
+                    + "seedu.tassist.logic.commands.exceptions.CommandException: You have reached the limit of redo";
+            assertEquals(e.toString(), errorMessage);
+        }
+
+
+    }
+
 
     private void runUndoCommand() {
         String undoCommandString = "undo";
@@ -160,9 +186,9 @@ public class RedoCommandTest {
     }
 
     private void runRedoCommand() {
-        String undoCommandString = "redo";
+        String redoCommandString = "redo";
         try {
-            Command command = new AddressBookParser().parseCommand(undoCommandString);
+            Command command = new AddressBookParser().parseCommand(redoCommandString);
             command.execute(model);
         } catch (ParseException | CommandException e) {
             throw new RuntimeException(e);
