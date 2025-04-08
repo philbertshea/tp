@@ -1064,7 +1064,7 @@ testers are expected to do more *exploratory* testing.
    * We will consider extending support for marking attendance over a range of weeks, as well as
    marking attendance for all students in the list, in the future.
 
-2. Matching of attendance records to an existing tutorial group.
+1. Matching of attendance records to an existing tutorial group.
    * We understand that when a student gets newly added to some existing tutorial group, 
    OR the tutorial group of an existing student gets edited to some existing tutorial group, 
    it will only make sense that the weeks of "No Tutorial" from this existing tutorial group 
@@ -1077,6 +1077,12 @@ testers are expected to do more *exploratory* testing.
    * We will consider extending support for cross-checking a student's new tutorial group, against the
    attendance lists of other students from the same tutorial group, such as to match the weeks of "No Tutorial"
    with the new tutorial group, in the future.
+
+1. De-selection of a person contact.
+    * When a contact is selected in the UI, there is currently no means to de-select it.
+    * This means that under the compact view achieved through the `toggle` command, one contact will always be expanded.
+    * The current fix for this will be to run a `search` command that shows nothing, before running `list` again.
+    * Considering the fact that TAssist is primarily a keyboard driven application, we do not expect most users to be using mouse options that heavily, and will thus be implemented in a future date.
    
 ## **Appendix: Effort**
 
