@@ -489,9 +489,11 @@ For all use cases below, the **System** is the `TAssist` and the **Actor** is th
 
   Use case ends.
 
+
 * *a. At any time, user clears input.
 
   Use case ends.
+
 
 **Use case: UC08 - Mark attendance for multiple students**
 
@@ -562,17 +564,20 @@ is not provided.
 
   Use case resumes at step 2.
 
+
 * 1f. User requests that the students be marked as not attended.
 
     * 1f1. TAssist marks all the students as not attended for the indicated week.
 
   Use case ends.
 
+
 * 1g. User requests that the students be marked as on MC.
 
     * 1g1. TAssist marks all the students as on MC for the indicated week.
 
   Use case ends.
+
 
 * *a. At any time, user clears input.
 
@@ -619,17 +624,20 @@ of any student in the list, or a week number that is out of range.
 
   Use case resumes at step 2.
 
+
 * 1d. User requests that the tutorial group be marked as not attended.
 
     * 1d1. TAssist marks everyone in the tutorial group as not attended for the indicated week.
 
     Use case ends.
 
+
 * 1e. User requests that the tutorial group be marked as on MC.
 
     * 1e1. TAssist marks everyone in the tutorial group as on MC for the indicated week.
 
   Use case ends.
+
 
 * 1f. User requests that the tutorial group be marked as no tutorial.
 For example, the tutorial is cancelled due to a public holiday.
@@ -638,9 +646,11 @@ For example, the tutorial is cancelled due to a public holiday.
 
   Use case ends.
 
+
 * *a. At any time, user clears input.
 
   Use case ends.
+
 
 **Use case: UC10 - Mark attendance for multiple tutorial groups**
 
@@ -685,17 +695,20 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case resumes at step 2.
 
+
 * 1d. User requests that the tutorial groups be marked as not attended.
 
     * 1d1. TAssist marks everyone in the tutorial groups as not attended for the indicated week.
 
     Use case ends.
 
+
 * 1e. User requests that the tutorial groups be marked as on MC.
 
     * 1e1. TAssist marks everyone in the tutorial groups as on MC for the indicated week.
 
   Use case ends.
+
 
 * 1f. User requests that the tutorial groups be marked as no tutorial.
   For example, the tutorial is cancelled due to a public holiday.
@@ -704,9 +717,11 @@ invalid format, not using the required syntax of commas and hyphens, or is desce
 
   Use case ends.
 
+
 * *a. At any time, user clears input.
 
   Use case ends.
+
 
 **Use case: UC11 - Update lab score for a student**
 
