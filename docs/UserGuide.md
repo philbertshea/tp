@@ -27,16 +27,16 @@ CS2106 TAs can look forward to these attractive features that would assist their
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here](https://github.com/AY2425S2-CS2103-F15-4/tp/releases/tag/v1.5).
+1. Download the latest `.jar` file from [here](https://github.com/AY2425S2-CS2103-F15-4/tp/releases/tag/v1.5).
 
-3. Copy the file to the folder you want to use as the _home folder_ for TAssist.
+1. Copy the file to the folder you want to use as the _home folder_ for TAssist.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAssist.jar` command to run the application.<br>
    A GUI similar to the one below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 
-5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
    * `list` : Lists all contacts.
