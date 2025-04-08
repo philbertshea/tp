@@ -69,6 +69,7 @@ public class PersonListPanel extends UiPart<Region> {
                 displayedCards.remove(person);
             } else {
                 PersonCard personCard = new PersonCard(person, getIndex() + 1);
+
                 personCard.getRoot().setOpacity(0);
                 setGraphic(personCard.getRoot());
                 FadeTransition fade = new FadeTransition(Duration.millis(200), personCard.getRoot());
